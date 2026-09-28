@@ -1,0 +1,6 @@
+[project]
+name = "mlx-minigpt-from-scratch"
+version = "0.1.0"
+description = "A from-scratch Decoder-Only MiniGPT learning project for Apple Silicon using Apple MLX."
+requires-python = ">=3.12,<3.13"
+dependencies = []
