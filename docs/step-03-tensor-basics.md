@@ -127,3 +127,57 @@ axis 2 = Channel / Feature
 ```
 
 `reshape` 不等于 transpose；本阶段暂时不讲 transpose。
+
+
+## Step 03.4 — Reshape vs Transpose
+
+`reshape` 与 `transpose` 不是同一件事。
+
+### reshape
+
+```text
+(2, 3) -> (3, 2)
+```
+
+元素按原顺序重新分组。
+
+### transpose
+
+```text
+axis 0 <-> axis 1
+```
+
+会交换轴的顺序。
+
+例如：
+
+```text
+[[1, 2, 3],
+ [4, 5, 6]]
+```
+
+reshape 为 `(3, 2)`：
+
+```text
+[[1, 2],
+ [3, 4],
+ [5, 6]]
+```
+
+transpose 为 `(3, 2)`：
+
+```text
+[[1, 4],
+ [2, 5],
+ [3, 6]]
+```
+
+以后 Multi-Head Attention 会使用：
+
+```text
+(B, T, C)
+-> reshape
+(B, T, H, D)
+-> transpose
+(B, H, T, D)
+```
