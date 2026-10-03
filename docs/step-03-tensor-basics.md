@@ -181,3 +181,37 @@ transpose 为 `(3, 2)`：
 -> transpose
 (B, H, T, D)
 ```
+
+
+## Step 03.5 — Broadcasting
+
+Broadcasting 允许 shape 不完全相同的 tensor 做逐元素运算，只要它们的维度满足兼容规则。
+
+例如：
+
+```text
+x.shape = (2, 3)
+b.shape = (3,)
+```
+
+执行：
+
+```python
+x + b
+```
+
+逻辑上相当于把 `b` 沿缺少的最外层维度复用：
+
+```text
+[[1, 2, 3],      [[10, 20, 30],
+ [4, 5, 6]]  +    [10, 20, 30]]
+```
+
+MiniGPT 中会用到：
+
+```text
+tok_emb: (B, T, C)
+pos_emb:    (T, C)
+```
+
+相加时 `pos_emb` 会沿 Batch 维广播。
