@@ -131,3 +131,61 @@ Linear 将最后一个维度变成：
 ```
 
 而 Batch 和 Time 维保持不变。
+
+
+### `layer` 不是普通函数，而是可调用对象
+
+执行：
+
+```python
+layer = nn.Linear(2, 3, bias=False)
+```
+
+会创建一个 `nn.Linear` 对象，并把它赋给变量 `layer`。
+
+这个对象内部保存：
+
+```text
+layer
+├── weight
+├── bias（如果启用）
+└── 前向计算逻辑
+```
+
+因此：
+
+```python
+layer.weight
+```
+
+可以访问这一层自己的权重。
+
+而：
+
+```python
+out = layer(x)
+```
+
+并不是在调用一个普通 Python 函数，而是在调用这个对象定义的“可调用”行为。Python 中对象可以实现 `__call__`，于是可以像函数一样使用。
+
+对 `nn.Linear` 而言，忽略 bias 时，概念上等价于：
+
+```python
+out = x @ layer.weight.T
+```
+
+所以要区分：
+
+```python
+layer = nn.Linear(...)
+```
+
+= 创建一层，并初始化/保存这层自己的参数。
+
+而：
+
+```python
+layer(x)
+```
+
+= 用这层当前保存的参数对输入 `x` 做一次前向计算。
