@@ -94,3 +94,36 @@ axis 0 = Batch
 axis 1 = Time
 axis 2 = Channel / Feature
 ```
+
+
+## Step 03.3 — Reshape
+
+`reshape` 改变 tensor 的逻辑形状，但要求元素总数保持一致。
+
+例如：
+
+```text
+(2, 3) -> (3, 2)
+```
+
+因为：
+
+```text
+2 × 3 = 3 × 2 = 6
+```
+
+同样：
+
+```text
+(2, 3) -> (6,)
+```
+
+也是合法的。
+
+最基本规则：
+
+```text
+旧 shape 各维长度的乘积 = 新 shape 各维长度的乘积
+```
+
+`reshape` 不等于 transpose；本阶段暂时不讲 transpose。
