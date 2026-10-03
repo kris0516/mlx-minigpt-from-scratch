@@ -21,3 +21,8 @@ venv/
 /runs/
 /outputs/
 *.log
+
+# Local learning notebooks
+# Course notebooks under notebooks/ are tracked.
+# Personal runnable/editable copies under notebooks/work/ are intentionally ignored.
+/notebooks/work/*.ipynb
