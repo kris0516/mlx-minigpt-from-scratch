@@ -236,3 +236,51 @@ Broadcasting 从最后一个维度开始，逐维向左比较。
 ```
 
 关键是从右往左比较，而不是从左往右。
+
+
+## Step 03.7 — Reduction, axis=-1, keepdims
+
+Reduction 会把某个 axis 上的一组数字压缩成更少的数字，例如 `sum`、`mean`。
+
+对于：
+
+```text
+x.shape = (2, 3)
+```
+
+`mean(axis=0)` 会压缩第 0 轴，结果 shape 为 `(3,)`。
+
+`mean(axis=1)` 会压缩第 1 轴，结果 shape 为 `(2,)`。
+
+`axis=-1` 表示最后一个轴。
+
+`keepdims=True` 会保留被压缩的 axis，只把长度变成 1：
+
+```text
+(2, 3) -> mean(axis=-1)                -> (2,)
+(2, 3) -> mean(axis=-1, keepdims=True) -> (2, 1)
+```
+
+这样结果可以自然地通过 broadcasting 再参与逐元素运算。
+
+这正是后续 RMSNorm 中：
+
+```python
+mx.mean(..., axis=-1, keepdims=True)
+```
+
+的 shape 基础。
+
+### Step 3 完成
+
+目前已覆盖：
+
+- tensor / shape
+- axis
+- indexing
+- reshape
+- transpose
+- broadcasting
+- reduction
+- axis=-1
+- keepdims
