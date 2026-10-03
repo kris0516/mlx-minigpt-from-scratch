@@ -52,3 +52,45 @@ shape = (2, 2, 3)
 ```
 
 本步暂时不学习 axis、reshape、transpose 或 broadcast。
+
+## Step 03.2 — Axis
+
+对：
+
+```text
+shape = (2, 2, 3)
+```
+
+可以逐层读取：
+
+```text
+axis 0: 2 个矩阵
+axis 1: 每个矩阵 2 行
+axis 2: 每行 3 个元素
+```
+
+Axis 从 0 开始编号。
+
+索引示例：
+
+```python
+tensor[0]        # 固定 axis 0 的第 0 个位置
+tensor[:, 0, :]  # axis 0 全部，axis 1 取第 0 行，axis 2 全部
+tensor[:, :, 0]  # 前两轴全部，axis 2 取第 0 个元素
+```
+
+其中 `:` 表示该 axis 全部保留。
+
+以后 Transformer 常见的：
+
+```text
+(B, T, C)
+```
+
+只是给三个 axis 起了语义名字：
+
+```text
+axis 0 = Batch
+axis 1 = Time
+axis 2 = Channel / Feature
+```
