@@ -252,3 +252,77 @@ This teaching MiniGPT uses GELU because it follows the classic GPT/Transformer f
 ### Core lesson
 
 The role of GELU here is not merely “training stability”; its more fundamental role is to introduce non-linearity so the MLP cannot collapse into a single affine transformation.
+
+
+## Step 04.4 — Build the first MLP
+
+Classic Transformer/GPT-style MLP:
+
+```text
+C -> 4C -> GELU -> C
+```
+
+### Why expand?
+
+The first Linear creates a larger intermediate feature workspace:
+
+```text
+C -> 4C
+```
+
+GELU applies non-linearity to these intermediate features, and the second Linear projects them back:
+
+```text
+4C -> C
+```
+
+The factor 4 is a classic architecture convention, not a mathematical requirement.
+
+### Shape behavior
+
+For MiniGPT hidden states:
+
+```text
+(B,T,C)
+-> Linear(C,4C)
+(B,T,4C)
+-> GELU
+(B,T,4C)
+-> Linear(4C,C)
+(B,T,C)
+```
+
+The MLP transforms the final feature axis independently at every Batch/Time position.
+
+### Position-wise behavior
+
+Changing one token's input does not change another token's MLP output. All positions share the same MLP parameters, but there is no cross-token mixing inside the MLP.
+
+This prepares the later Transformer distinction:
+
+```text
+Attention -> cross-position communication
+MLP       -> within-position feature transformation
+```
+
+### Parameter count
+
+With `bias=False`:
+
+```text
+c_fc   : (4C, C) -> 4C^2
+c_proj : (C, 4C) -> 4C^2
+total             -> 8C^2
+```
+
+For `C=128`:
+
+```text
+8 * 128^2 = 131,072 parameters
+```
+
+GELU has no trainable parameters.
+
+### Step 4 complete
+
+The learner now has the minimum neural-network building blocks needed before studying how parameters are learned.
