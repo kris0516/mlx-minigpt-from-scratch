@@ -132,3 +132,69 @@ X @ layer.weight.T
 比较，两者应一致。
 
 这证明 `nn.Linear` 的底层核心仍是前面手算的矩阵乘法；训练阶段才会让随机初始化的 `weight` 逐步变成有用参数。
+
+
+## Step 04.2 — Parameters, Bias, and `nn.Module`
+
+### Parameter
+
+区分：
+
+```text
+input data      -> 每个样本变化
+architecture    -> 由开发者设定
+parameters      -> 训练过程中被更新
+```
+
+例如 `Linear(2,3,bias=False)` 的 weight shape 为 `(3,2)`，因此有 6 个权重参数。
+
+### Bias
+
+带 bias 的 Linear：
+
+```text
+y = xW^T + b
+```
+
+`Linear(2,3,bias=True)`：
+
+```text
+weight: (3,2) -> 6
+bias:   (3,)  -> 3
+total          -> 9
+```
+
+bias 让映射具有平移自由度。严格数学上 `Wx+b` 是 affine transformation，但神经网络库通常仍称其为 Linear layer。
+
+### `nn.Module`
+
+`nn.Module` 用于组织神经网络中的参数和子模块。
+
+自定义模型：
+
+```python
+class TinyProjector(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.proj = nn.Linear(2, 3)
+
+    def __call__(self, x):
+        return self.proj(x)
+```
+
+### Parameter tree
+
+`model.parameters()` 会递归取得 Module 和子 Module 中的数组参数，并保留嵌套结构。
+
+例如：
+
+```text
+TinyProjector
+└── proj
+    ├── weight
+    └── bias
+```
+
+可用 `tree_flatten` 展平后统计参数总数。
+
+MLX 中公开的 `mx.array` Module 成员会进入参数体系；默认可训练，除非 freeze。固定常量需要和模型参数区分开，这一点会在 causal mask 实现时再次使用。
