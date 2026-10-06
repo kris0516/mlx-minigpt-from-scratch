@@ -19,7 +19,8 @@ Step 1   complete
 Step 2   complete
 Step 3   complete
 Step 4.1 complete
-Next: Step 4.2 — Parameters, bias, and nn.Module
+Step 4.2 current / lesson created
+Next after learner finishes: Step 4.3 — Non-linearity, ReLU, GELU
 ```
 
 ## Non-negotiable teaching constraints
@@ -145,8 +146,8 @@ mlx-minigpt-from-scratch/
 
 ## Immediate next action
 
-Continue with:
+Current lesson:
 
 > **Step 4.2 — Parameters, bias, and `nn.Module`**
 
-Do not jump ahead to Attention or training loops until the learner finishes the current Step.
+After the learner finishes it, continue with Step 4.3 — Non-linearity, ReLU, and GELU. Do not jump ahead to Attention or training loops.
