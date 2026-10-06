@@ -243,7 +243,7 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - `nn.Linear(in_features, out_features)`
 - MLX weight storage shape
 
-### 4.2 Parameters, bias, and `nn.Module` 🚧
+### 4.2 Parameters, bias, and `nn.Module` ✅
 
 - what a trainable parameter is
 - fixed constants vs trainable arrays
@@ -251,7 +251,7 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - what `nn.Module` provides
 - how MLX discovers and organizes parameter trees
 
-### 4.3 Non-linearity: ReLU and GELU
+### 4.3 Non-linearity: ReLU and GELU 🚧
 
 - why stacked Linear layers collapse into one Linear map without activation
 - simple function-composition example
@@ -1095,9 +1095,10 @@ Step 1   ✅ Complete
 Step 2   ✅ Complete
 Step 3   ✅ Complete
 Step 4.1 ✅ Complete / taught
-Step 4.2 🚧 Current
+Step 4.2 ✅ Complete
+Step 4.3 🚧 Current
 ```
 
 Current lesson:
 
-> **Step 4.2 — Parameters, bias, and `nn.Module`**
+> **Step 4.3 — Non-linearity: ReLU and GELU**
