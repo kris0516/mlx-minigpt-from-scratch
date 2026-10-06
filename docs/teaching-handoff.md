@@ -21,8 +21,9 @@ Step 3   complete
 Step 4.1 complete
 Step 4.2 complete
 Step 4.3 complete
-Step 4.4 current / lesson created
-Next after learner finishes: Step 5.1 — Prediction, target, and loss
+Step 4.4 complete
+Step 5.1 current / lesson created
+Next after learner finishes: Step 5.2 — Minimal calculus for learning
 ```
 
 ## Non-negotiable teaching constraints
@@ -150,6 +151,6 @@ mlx-minigpt-from-scratch/
 
 Current lesson:
 
-> **Step 4.4 — Build the first MLP**
+> **Step 5.1 — Prediction, target, and loss**
 
-After the learner finishes it, Step 4 is complete. Continue with Step 5.1 — Prediction, target, and loss. Do not jump ahead to Attention or training loops.
+After the learner finishes it, continue with Step 5.2 — Minimal calculus for learning. Do not jump ahead to Attention or training loops.
