@@ -230,7 +230,7 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 
 ---
 
-## Step 4 — From matrix multiplication to neural networks 🚧
+## Step 4 — From matrix multiplication to neural networks ✅
 
 **Goal:** turn familiar matrix multiplication into the basic learnable components used inside a Transformer.
 
@@ -259,7 +259,7 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - GELU intuition and why GPT-like models use smooth nonlinear activations
 - do not overclaim that GELU alone guarantees training stability
 
-### 4.4 Build the first MLP 🚧
+### 4.4 Build the first MLP ✅
 
 - `C → 4C → GELU → C`
 - expansion as a larger feature workspace
@@ -271,11 +271,11 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 
 ---
 
-## Step 5 — How a neural network actually learns
+## Step 5 — How a neural network actually learns 🚧
 
 **Goal:** see a parameter change because a prediction was wrong.
 
-### 5.1 Prediction, target, and loss
+### 5.1 Prediction, target, and loss 🚧
 
 - model output vs desired output
 - squared error with tiny scalar examples
@@ -1097,9 +1097,10 @@ Step 3   ✅ Complete
 Step 4.1 ✅ Complete / taught
 Step 4.2 ✅ Complete
 Step 4.3 ✅ Complete
-Step 4.4 🚧 Current
+Step 4.4 ✅ Complete
+Step 5.1 🚧 Current
 ```
 
 Current lesson:
 
-> **Step 4.4 — Build the first MLP**
+> **Step 5.1 — Prediction, target, and loss**
