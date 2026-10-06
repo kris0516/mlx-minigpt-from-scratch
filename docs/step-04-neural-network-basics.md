@@ -9,25 +9,13 @@
 3. **04.3 Non-linearity** — 为什么纯 Linear 堆叠不够，ReLU/GELU 的意义
 4. **04.4 MLP** — 组合出 MiniGPT 中的前馈网络
 
-## Step 04.1 — Linear
+## Step 04.1 — Linear（canonical merged version）
 
-### 1D vector 不等于 row matrix
+本节整合此前三个 4.1 版本，正式保留以下全部主题：
 
-下面三种 shape 必须区分：
+### A. Linear = feature mixing
 
-```text
-(2,)   -> 1D vector
-(1, 2) -> 1×2 row matrix
-(2, 1) -> 2×1 column matrix
-```
-
-它们可以包含相同的两个数字，但 rank 与轴结构不同。
-
-### 为什么 `W.shape = (3,2)`
-
-输入有 2 个特征，输出希望有 3 个特征。
-
-每个输出都需要两个输入的加权组合：
+输入 `x = [x0, x1]`，若要得到 3 个输出：
 
 ```text
 y0 = w00*x0 + w01*x1
@@ -35,15 +23,26 @@ y1 = w10*x0 + w11*x1
 y2 = w20*x0 + w21*x1
 ```
 
-因此需要 3 组权重，每组 2 个数：
+因此：
 
 ```text
 W.shape = (3,2)
-          ↑  ↑
-        输出 输入
+        = (output_features, input_features)
 ```
 
-### 两种等价写法
+每个输出都是输入特征的一次加权组合，因此 Linear 具有 feature mixing 的意义。
+
+### B. 1D vector / row matrix / column matrix
+
+```text
+(2,)   -> 1D vector
+(1,2)  -> 1×2 row matrix
+(2,1)  -> 2×1 column matrix
+```
+
+三者可包含相同数字，但 axis 结构不同。
+
+### C. 两种等价的矩阵写法
 
 列向量写法：
 
@@ -59,133 +58,77 @@ x_row @ W.T -> y_row
 (1,2)  (2,3)   (1,3)
 ```
 
-两者只是数据摆放方向不同，计算出的三个特征值相同。
-
-### 为什么 `(2,) @ (2,3)` 可以计算？
-
-若左操作数是一维 vector：
+### D. 1D matmul 的特殊规则
 
 ```text
-x.shape = (2,)
+(2,) @ (2,3) -> (3,)
 ```
 
-矩阵乘法 `@` 会使用 1D operand 的特殊规则。理解上可以把左边暂时补成：
+理解上，左侧 1D vector 在矩阵乘法语义中临时按 `(1,2)` 参与运算，计算结束后临时 size-1 维被移除。
+
+原始变量本身不会永久变成 `(1,2)`。
+
+### E. Batch 共用同一套参数
 
 ```text
-(2,) -> (1,2)
+X.shape = (B, C_in)
+W.T     = (C_in, C_out)
+
+X @ W.T -> (B, C_out)
 ```
 
-于是：
+每个样本使用同一个权重矩阵。这是 parameter sharing 的基本形式。
 
-```text
-(1,2) @ (2,3) -> (1,3)
-```
-
-完成乘法后，临时补进去的最前面那个 size-1 维度会被移除，所以实际返回：
-
-```text
-(3,)
-```
-
-重要：`x` 本身并没有永久变成 `(1,2)`。
-
-显式写：
-
-```python
-x.reshape(1, 2) @ W.T
-```
-
-才会真正得到 shape `(1,3)`。
-
-### MLX `nn.Linear`
-
-MLX 的：
-
-```python
-nn.Linear(2, 3, bias=False)
-```
-
-内部权重 shape 是：
-
-```text
-(3,2)
-= (output_dims, input_dims)
-```
-
-核心计算对应：
-
-```python
-x @ weight.T
-```
-
-真实 MiniGPT 中输入通常为：
+MiniGPT 中则常见：
 
 ```text
 (B, T, C_in)
-```
-
-Linear 将最后一个维度变成：
-
-```text
+-> Linear
 (B, T, C_out)
 ```
 
-而 Batch 和 Time 维保持不变。
+前面的 Batch / Time 维保留，Linear 主要变换最后一维。
 
-
-### `layer` 不是普通函数，而是可调用对象
-
-执行：
+### F. `nn.Linear` 与 `layer`
 
 ```python
+import mlx.nn as nn
 layer = nn.Linear(2, 3, bias=False)
 ```
 
-会创建一个 `nn.Linear` 对象，并把它赋给变量 `layer`。
+`nn.Linear(...)` 创建一个 Linear 对象；`layer` 不是普通函数。
 
-这个对象内部保存：
+对象内部保存：
 
 ```text
 layer
 ├── weight
-├── bias（如果启用）
-└── 前向计算逻辑
+├── bias（可选）
+└── forward rule
 ```
 
-因此：
-
-```python
-layer.weight
-```
-
-可以访问这一层自己的权重。
-
-而：
-
-```python
-out = layer(x)
-```
-
-并不是在调用一个普通 Python 函数，而是在调用这个对象定义的“可调用”行为。Python 中对象可以实现 `__call__`，于是可以像函数一样使用。
-
-对 `nn.Linear` 而言，忽略 bias 时，概念上等价于：
-
-```python
-out = x @ layer.weight.T
-```
-
-所以要区分：
-
-```python
-layer = nn.Linear(...)
-```
-
-= 创建一层，并初始化/保存这层自己的参数。
-
-而：
+Python 对象可以实现可调用行为，因此：
 
 ```python
 layer(x)
 ```
 
-= 用这层当前保存的参数对输入 `x` 做一次前向计算。
+表示调用这层的前向计算。
+
+### G. 拆掉黑盒
+
+当 `bias=False` 时：
+
+```python
+layer(X)
+```
+
+可直接与：
+
+```python
+X @ layer.weight.T
+```
+
+比较，两者应一致。
+
+这证明 `nn.Linear` 的底层核心仍是前面手算的矩阵乘法；训练阶段才会让随机初始化的 `weight` 逐步变成有用参数。
