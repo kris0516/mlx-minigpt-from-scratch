@@ -198,3 +198,57 @@ TinyProjector
 可用 `tree_flatten` 展平后统计参数总数。
 
 MLX 中公开的 `mx.array` Module 成员会进入参数体系；默认可训练，除非 freeze。固定常量需要和模型参数区分开，这一点会在 causal mask 实现时再次使用。
+
+
+## Step 04.3 — Non-linearity: ReLU and GELU
+
+### Why stacked Linear layers are not enough
+
+Without non-linearity:
+
+```text
+h = x W1^T + b1
+y = h W2^T + b2
+```
+
+can be algebraically combined into another affine transformation:
+
+```text
+y = x Wnew^T + bnew
+```
+
+So stacking affine layers alone does not create a richer function family.
+
+### Activation function
+
+Insert a non-linear function between Linear layers:
+
+```text
+Linear -> Activation -> Linear
+```
+
+Now the middle operation cannot generally be absorbed into one fixed matrix.
+
+### ReLU
+
+```text
+ReLU(x) = max(0, x)
+```
+
+It is piecewise linear but globally non-linear because of the kink at zero.
+
+### GELU
+
+A useful definition:
+
+```text
+GELU(x) = x * Phi(x)
+```
+
+where `Phi` is the standard Gaussian CDF. GELU smoothly gates the input based on its magnitude rather than hard-zeroing all negative inputs.
+
+This teaching MiniGPT uses GELU because it follows the classic GPT/Transformer feed-forward design. Modern LLMs may instead use gated activations such as SwiGLU.
+
+### Core lesson
+
+The role of GELU here is not merely “training stability”; its more fundamental role is to introduce non-linearity so the MLP cannot collapse into a single affine transformation.
