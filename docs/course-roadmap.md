@@ -251,7 +251,7 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - what `nn.Module` provides
 - how MLX discovers and organizes parameter trees
 
-### 4.3 Non-linearity: ReLU and GELU 🚧
+### 4.3 Non-linearity: ReLU and GELU ✅
 
 - why stacked Linear layers collapse into one Linear map without activation
 - simple function-composition example
@@ -259,7 +259,7 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - GELU intuition and why GPT-like models use smooth nonlinear activations
 - do not overclaim that GELU alone guarantees training stability
 
-### 4.4 Build the first MLP
+### 4.4 Build the first MLP 🚧
 
 - `C → 4C → GELU → C`
 - expansion as a larger feature workspace
@@ -1096,9 +1096,10 @@ Step 2   ✅ Complete
 Step 3   ✅ Complete
 Step 4.1 ✅ Complete / taught
 Step 4.2 ✅ Complete
-Step 4.3 🚧 Current
+Step 4.3 ✅ Complete
+Step 4.4 🚧 Current
 ```
 
 Current lesson:
 
-> **Step 4.3 — Non-linearity: ReLU and GELU**
+> **Step 4.4 — Build the first MLP**
