@@ -19,7 +19,8 @@ Step 1   ✅
 Step 2   ✅
 Step 3   ✅
 Step 4.1 ✅
-Step 4.2 🚧 Current
+Step 4.2 ✅
+Step 4.3 🚧 Current
 ```
 
 ## Persistent course documents
