@@ -19,8 +19,9 @@ Step 1   complete
 Step 2   complete
 Step 3   complete
 Step 4.1 complete
-Step 4.2 current / lesson created
-Next after learner finishes: Step 4.3 — Non-linearity, ReLU, GELU
+Step 4.2 complete
+Step 4.3 current / lesson created
+Next after learner finishes: Step 4.4 — Build the first MLP
 ```
 
 ## Non-negotiable teaching constraints
@@ -148,6 +149,6 @@ mlx-minigpt-from-scratch/
 
 Current lesson:
 
-> **Step 4.2 — Parameters, bias, and `nn.Module`**
+> **Step 4.3 — Non-linearity: ReLU and GELU**
 
-After the learner finishes it, continue with Step 4.3 — Non-linearity, ReLU, and GELU. Do not jump ahead to Attention or training loops.
+After the learner finishes it, continue with Step 4.4 — Build the first MLP. Do not jump ahead to Attention or training loops.
