@@ -328,13 +328,13 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - discrete identity vs dense learned representation
 - correct misconception: embedding dimension does not need to exceed vocabulary size
 
-### 6.3 Next-token shift 🚧
+### 6.3 Next-token shift ✅
 
 - input `x`
 - target `y` shifted by one position
 - why each position supplies a training target
 
-### 6.4 Context window / block size
+### 6.4 Context window / block size 🚧
 
 - fixed training windows
 - sequence length `T`
@@ -1107,9 +1107,10 @@ Step 5.4 ✅ Complete
 Step 5.5 ✅ Complete
 Step 6.1 ✅ Complete
 Step 6.2 ✅ Complete
-Step 6.3 🚧 Current
+Step 6.3 ✅ Complete
+Step 6.4 🚧 Current
 ```
 
 Current lesson:
 
-> **Step 6.3 — Next-token shift**
+> **Step 6.4 — Context window / block size**
