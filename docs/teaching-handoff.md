@@ -33,8 +33,9 @@ Step 6.3 complete
 Step 6.4 complete
 Step 6.5 complete
 Step 7.1 complete
-Step 7.2 current / lesson created
-Next after learner finishes: Step 7.3 — Build the (B,T,C) representation
+Step 7.2 complete
+Step 7.3 current / lesson created
+Next after learner finishes: Step 7.4 — Position information
 ```
 
 ## Non-negotiable teaching constraints
@@ -164,6 +165,6 @@ mlx-minigpt-from-scratch/
 
 Current lesson:
 
-> **Step 7.2 — Embedding geometry**
+> **Step 7.3 — Build the `(B,T,C)` representation**
 
-After the learner finishes it, continue with Step 7.3 — Build the (B,T,C) representation. Do not jump ahead to Attention or training loops.
+After the learner finishes it, continue with Step 7.4 — Position information. Do not jump ahead to Attention or training loops.
