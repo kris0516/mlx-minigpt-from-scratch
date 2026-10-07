@@ -73,3 +73,27 @@ so:
 ```text
 wte.weight.shape = (vocab_size, n_embd)
 ```
+
+## Step 07.2 — Embedding Geometry
+
+### Norm and normalization
+
+For a vector x, `||x||_2 = sqrt(sum_i x_i^2)`. Normalizing a nonzero vector with `x_hat = x / ||x||` changes its magnitude to 1 while preserving direction. Zero vectors have no defined direction.
+
+### Euclidean distance
+
+`d(a,b) = ||a-b||_2` measures absolute spatial distance and is sensitive to both direction and magnitude.
+
+### Dot product
+
+`a·b = ||a|| ||b|| cos(theta)`, so dot product depends on both vector norms and angle. It is not automatically cosine similarity.
+
+### Cosine similarity
+
+`cos(a,b) = (a·b) / (||a|| ||b||)` for nonzero vectors. It removes magnitude and compares direction. For normalized vectors, dot product equals cosine similarity.
+
+### Pairwise geometry
+
+If normalized embedding rows form `E_hat` with shape `(V,C)`, then `E_hat @ E_hat.T` has shape `(V,V)` and contains all pairwise cosine similarities.
+
+Embedding geometry should not be over-interpreted: learned vectors optimize the training objective, and human-interpretable semantic clusters are not guaranteed.
