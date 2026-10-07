@@ -95,3 +95,69 @@ dL/dw=-16
 The negative derivative means increasing `w` locally decreases the loss.
 
 This scalar chain-rule view is the mathematical foundation for later backpropagation and automatic differentiation.
+
+
+## Step 05.3 — Gradient and Automatic Differentiation
+
+### From derivative to gradient
+
+For multiple parameters:
+
+```text
+w = [w0, w1, ...]
+```
+
+the gradient is:
+
+```text
+[dL/dw0, dL/dw1, ...]
+```
+
+and follows the parameter structure.
+
+Example:
+
+```text
+prediction = w0*x0 + w1*x1
+loss = (prediction-target)^2
+```
+
+At:
+
+```text
+w=[3,1]
+x=[2,-1]
+target=10
+```
+
+the manual gradient is:
+
+```text
+[-20, 10]
+```
+
+### Reverse-mode intuition
+
+The forward computation forms a graph from parameters to scalar loss.
+
+Reverse-mode automatic differentiation traverses this computation in reverse, using local derivatives and the chain rule to propagate loss sensitivity back to earlier parameters.
+
+It is not finite-difference perturbation.
+
+### MLX
+
+```python
+grad_fn = mx.grad(loss_fn)
+gradient = grad_fn(w)
+```
+
+`mx.grad` transforms a scalar-valued function into a gradient-producing function.
+
+```python
+loss_and_grad_fn = mx.value_and_grad(loss_fn)
+loss, gradient = loss_and_grad_fn(w)
+```
+
+returns both the scalar function value and its gradient.
+
+The module-aware `nn.value_and_grad` used later for full model parameter trees is intentionally deferred to the language-model training step.
