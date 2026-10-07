@@ -34,8 +34,9 @@ Step 6.4 complete
 Step 6.5 complete
 Step 7.1 complete
 Step 7.2 complete
-Step 7.3 current / lesson created
-Next after learner finishes: Step 7.4 — Position information
+Step 7.3 complete
+Step 7.4 current / lesson created
+Next after learner finishes: Step 7.5 — Token + position addition
 ```
 
 ## Non-negotiable teaching constraints
@@ -112,6 +113,7 @@ Avoid repeating these earlier oversimplifications:
 - embedding width does **not** need to be >= vocabulary size;
 - learned embeddings do **not** guarantee neat human-interpretable clusters;
 - dot product is not automatically cosine similarity;
+- unmasked self-attention without positional signals is permutation-equivariant, but a causal mask itself is position-dependent and breaks full arbitrary-permutation symmetry; do not claim causal masking and positional encoding are the same mechanism;
 - attention heads are not literally mapped one-to-one to physical GPU cores;
 - a residual connection helps information/gradient flow but does not mathematically guarantee no information loss;
 - causal masks should not accidentally be registered as trainable parameters;
@@ -165,6 +167,6 @@ mlx-minigpt-from-scratch/
 
 Current lesson:
 
-> **Step 7.3 — Build the `(B,T,C)` representation**
+> **Step 7.4 — Position information**
 
-After the learner finishes it, continue with Step 7.4 — Position information. Do not jump ahead to Attention or training loops.
+After the learner finishes it, continue with Step 7.5 — Token + position addition. Do not jump ahead to Attention or training loops.
