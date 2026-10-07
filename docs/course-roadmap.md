@@ -275,13 +275,13 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 
 **Goal:** see a parameter change because a prediction was wrong.
 
-### 5.1 Prediction, target, and loss 🚧
+### 5.1 Prediction, target, and loss ✅
 
 - model output vs desired output
 - squared error with tiny scalar examples
 - why training needs a single objective value
 
-### 5.2 Minimal calculus for learning
+### 5.2 Minimal calculus for learning 🚧
 
 - derivative as local sensitivity / slope
 - finite-difference intuition
@@ -1098,9 +1098,10 @@ Step 4.1 ✅ Complete / taught
 Step 4.2 ✅ Complete
 Step 4.3 ✅ Complete
 Step 4.4 ✅ Complete
-Step 5.1 🚧 Current
+Step 5.1 ✅ Complete
+Step 5.2 🚧 Current
 ```
 
 Current lesson:
 
-> **Step 5.1 — Prediction, target, and loss**
+> **Step 5.2 — Minimal calculus for learning**
