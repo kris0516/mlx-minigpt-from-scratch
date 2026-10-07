@@ -116,3 +116,84 @@ lookup output: (B,T,C)
 ```
 
 Embedding parameter count is `V*C`.
+
+
+## Step 06.3 — Next-Token Shift
+
+### Autoregressive target construction
+
+For a raw chunk of `T+1` tokens:
+
+```text
+chunk = [t0, t1, t2, ..., tT]
+```
+
+construct:
+
+```text
+X = chunk[:-1] = [t0, ..., t(T-1)]
+Y = chunk[1:]  = [t1, ..., tT]
+```
+
+Both X and Y have length `T`. This is a slice, not a circular roll.
+
+### One block provides T supervision signals
+
+For `hello`:
+
+```text
+X = hell
+Y = ello
+```
+
+a causal model learns:
+
+```text
+h    -> e
+he   -> l
+hel  -> l
+hell -> o
+```
+
+Thus one length-`T` forward pass can supervise all `T` positions.
+
+### Batch shapes
+
+Starting from raw chunks:
+
+```text
+(B,T+1)
+```
+
+shift to:
+
+```text
+X: (B,T)
+Y: (B,T)
+```
+
+Later:
+
+```text
+X IDs            -> embedding -> (B,T,C)
+model logits                  -> (B,T,V)
+targets Y                     -> (B,T)
+```
+
+Y remains integer class labels.
+
+### No label leakage
+
+Targets are used for loss comparison, not fed as the answer to the same position.
+
+However, because `Y[t] == X[t+1]`, a model that can see future X positions could cheat. Therefore causal modeling also requires a causal visibility constraint:
+
+```text
+position t may only use positions <= t
+```
+
+Target shifting defines what to predict; the causal mask defines what information may be used to predict it.
+
+### Teacher forcing
+
+During training, ground-truth previous tokens are available in X. During autoregressive inference, future ground-truth tokens are unavailable, so generated tokens are appended back into the context step by step.
