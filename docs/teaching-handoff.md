@@ -24,8 +24,9 @@ Step 4.3 complete
 Step 4.4 complete
 Step 5.1 complete
 Step 5.2 complete
-Step 5.3 current / lesson created
-Next after learner finishes: Step 5.4 — Gradient descent loop
+Step 5.3 complete
+Step 5.4 current / lesson created
+Next after learner finishes: Step 5.5 — What learning really means
 ```
 
 ## Non-negotiable teaching constraints
@@ -153,6 +154,6 @@ mlx-minigpt-from-scratch/
 
 Current lesson:
 
-> **Step 5.3 — Gradient and automatic differentiation**
+> **Step 5.4 — Gradient descent loop**
 
-After the learner finishes it, continue with Step 5.4 — Gradient descent loop. Do not jump ahead to Attention or training loops.
+After the learner finishes it, continue with Step 5.5 — What learning really means. Do not jump ahead to Attention or training loops.
