@@ -358,13 +358,13 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - embedding weight shape
 - gathering rows by token ID
 
-### 7.2 Embedding geometry 🚧
+### 7.2 Embedding geometry ✅
 
 - vectors, Euclidean distance, dot product, cosine similarity
 - do not assume human-interpretable clusters must emerge
 - embeddings optimize next-token loss, not visualization aesthetics
 
-### 7.3 Build `(B,T,C)`
+### 7.3 Build `(B,T,C)` 🚧
 
 - Batch
 - Time
@@ -1111,9 +1111,10 @@ Step 6.3 ✅ Complete
 Step 6.4 ✅ Complete
 Step 6.5 ✅ Complete
 Step 7.1 ✅ Complete
-Step 7.2 🚧 Current
+Step 7.2 ✅ Complete
+Step 7.3 🚧 Current
 ```
 
 Current lesson:
 
-> **Step 7.2 — Embedding geometry**
+> **Step 7.3 — Build the `(B,T,C)` representation**
