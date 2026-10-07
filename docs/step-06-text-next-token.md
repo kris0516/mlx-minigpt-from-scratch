@@ -62,3 +62,57 @@ decode(encode(text)) == text
 ### Scope
 
 本项目先用 character tokenizer 保持教学透明。现代 LLM 更常使用 byte/subword/BPE 类 tokenizer；这些将在扩展部分讨论。
+
+
+## Step 06.2 — One-Hot vs Learned Embedding
+
+### Token IDs are labels, not numeric features
+
+A token ID is an index/category label. Treating IDs as continuous values creates arbitrary order and distance relationships that depend only on tokenizer numbering.
+
+### One-Hot
+
+For vocabulary size `V`, one-hot vectors live in `V` dimensions:
+
+```text
+token 0 -> [1,0,0,...]
+token 1 -> [0,1,0,...]
+```
+
+This removes fake numeric order, but all tokens remain symmetric and the representation is sparse.
+
+### Learned embedding
+
+Use a trainable table:
+
+```text
+E.shape = (V,C)
+```
+
+Each token ID selects one row.
+
+Mathematically:
+
+```text
+one_hot(id) @ E == E[id]
+```
+
+but practical embedding lookup does not need to materialize one-hot vectors.
+
+### Embedding width
+
+`C` does not need to be greater than or equal to `V`. Vocabulary size and embedding width are independent design quantities.
+
+### Geometry
+
+Embedding vectors are trainable and can develop task-useful geometry. Human-interpretable clusters are not guaranteed; the vectors optimize the training objective.
+
+### Shape bridge
+
+```text
+token IDs: (B,T)
+embedding table: (V,C)
+lookup output: (B,T,C)
+```
+
+Embedding parameter count is `V*C`.
