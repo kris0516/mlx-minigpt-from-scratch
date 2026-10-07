@@ -364,17 +364,18 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - do not assume human-interpretable clusters must emerge
 - embeddings optimize next-token loss, not visualization aesthetics
 
-### 7.3 Build `(B,T,C)` 🚧
+### 7.3 Build `(B,T,C)` ✅
 
 - Batch
 - Time
 - Channel / hidden dimension
 - why `C` is the model width
 
-### 7.4 Position information
+### 7.4 Position information 🚧
 
 - why recurrence naturally encodes order
-- why self-attention alone is permutation-equivariant
+- why unmasked self-attention without positional signals is permutation-equivariant
+- causal-mask caveat: mask itself introduces order-dependent visibility
 - learned positional embedding for this teaching implementation
 
 ### 7.5 Token + position addition
@@ -1112,9 +1113,10 @@ Step 6.4 ✅ Complete
 Step 6.5 ✅ Complete
 Step 7.1 ✅ Complete
 Step 7.2 ✅ Complete
-Step 7.3 🚧 Current
+Step 7.3 ✅ Complete
+Step 7.4 🚧 Current
 ```
 
 Current lesson:
 
-> **Step 7.3 — Build the `(B,T,C)` representation**
+> **Step 7.4 — Position information**
