@@ -35,8 +35,9 @@ Step 6.5 complete
 Step 7.1 complete
 Step 7.2 complete
 Step 7.3 complete
-Step 7.4 current / lesson created
-Next after learner finishes: Step 7.5 — Token + position addition
+Step 7.4 complete
+Step 7.5 current / lesson created
+Next after learner finishes: Step 8.1 — Why ordinary MLPs are awkward for sequences
 ```
 
 ## Non-negotiable teaching constraints
@@ -167,6 +168,6 @@ mlx-minigpt-from-scratch/
 
 Current lesson:
 
-> **Step 7.4 — Position information**
+> **Step 7.5 — Token + position addition**
 
-After the learner finishes it, continue with Step 7.5 — Token + position addition. Do not jump ahead to Attention or training loops.
+After the learner finishes it, Step 7 is complete. Continue with Step 8.1 — Why ordinary MLPs are awkward for sequences. Do not jump ahead to Attention or training loops.
