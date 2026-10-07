@@ -246,3 +246,39 @@ Tokens before the beginning of the current block are unavailable to that forward
 Longer context permits longer-range dependencies but increases memory and compute. Hidden activations grow at least linearly with T; later self-attention introduces pairwise `T x T` interactions.
 
 In this teaching MiniGPT, learned positional embeddings and the causal mask are sized by `block_size`, so `T <= block_size` is a real model limit. During naive generation, contexts longer than this are cropped to the most recent `block_size` tokens.
+
+
+## Step 06.5 — Sampling Batches
+
+### B vs T
+
+```text
+B = number of independent sequence windows processed together
+T = number of token positions per window
+```
+
+Thus X and Y have shape `(B,T)`, and one batch contains `B*T` token-level next-token targets.
+
+### Toy batch sampler
+
+For each batch item: choose a random start, sample `T+1` contiguous tokens, shift into X/Y, then stack B windows into `(B,T)` tensors. The teaching sampler uses random windows with replacement, so windows may overlap or repeat.
+
+### Batch axis semantics
+
+The T axis preserves token order inside one sequence. The B axis is a collection of independent examples; row `b+1` is not the temporal continuation of row `b`.
+
+### Reproducibility
+
+A seeded PRNG reproduces the same sampling sequence when seed and call order match. The seed chooses the start of the pseudorandom sequence; RNG state records the current position. Strict resume therefore requires restoring sampler/RNG state in addition to model, optimizer, step, and configuration state.
+
+### Beyond the toy sampler
+
+Real LLM pipelines may include train/validation isolation, document shuffling, packing/padding, dataset shards, distributed workers, and deterministic cursor/sampler state. Randomness is not the goal; the goal is a useful, efficient, reproducible training stream.
+
+### Step 6 complete
+
+```text
+raw text -> tokenizer -> long token stream -> batch sampling
+-> X/Y shift -> X(B,T) -> embeddings (B,T,C)
+-> model logits (B,T,V) -> loss against Y(B,T)
+```
