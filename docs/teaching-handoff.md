@@ -31,8 +31,9 @@ Step 6.1 complete
 Step 6.2 complete
 Step 6.3 complete
 Step 6.4 complete
-Step 6.5 current / lesson created
-Next after learner finishes: Step 7.1 — nn.Embedding as a learned lookup table
+Step 6.5 complete
+Step 7.1 current / lesson created
+Next after learner finishes: Step 7.2 — Embedding geometry
 ```
 
 ## Non-negotiable teaching constraints
@@ -162,6 +163,6 @@ mlx-minigpt-from-scratch/
 
 Current lesson:
 
-> **Step 6.5 — Sampling batches**
+> **Step 7.1 — `nn.Embedding` as a learned lookup table**
 
-After the learner finishes it, Step 6 is complete. Continue with Step 7.1 — nn.Embedding as a learned lookup table. Do not jump ahead to Attention or training loops.
+After the learner finishes it, continue with Step 7.2 — Embedding geometry. Do not jump ahead to Attention or training loops.
