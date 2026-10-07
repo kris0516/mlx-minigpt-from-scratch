@@ -197,3 +197,52 @@ Target shifting defines what to predict; the causal mask defines what informatio
 ### Teacher forcing
 
 During training, ground-truth previous tokens are available in X. During autoregressive inference, future ground-truth tokens are unavailable, so generated tokens are appended back into the context step by step.
+
+
+## Step 06.4 — Context Window / Block Size
+
+### Core quantities
+
+```text
+N          = total corpus token count
+block_size = maximum sequence length used by this teaching model
+T          = actual current sequence length
+context    = history visible to a particular prediction position
+```
+
+Usually `T <= block_size`; fixed-length training commonly uses `T = block_size`.
+
+### Window construction
+
+To create X/Y of length `T`, sample `T+1` contiguous raw tokens:
+
+```text
+chunk = data[start:start+T+1]
+X = chunk[:-1]
+Y = chunk[1:]
+```
+
+A valid start must leave enough tokens for the full chunk.
+
+### Overlapping windows
+
+Training windows may overlap heavily and can begin at many corpus positions. Window boundaries are sampling/engineering boundaries and do not necessarily align with semantic boundaries.
+
+### Effective causal context
+
+Inside a length-`T` block:
+
+```text
+position 0 -> 1 visible token
+position 1 -> 2 visible tokens
+...
+position t -> t+1 visible tokens
+```
+
+Tokens before the beginning of the current block are unavailable to that forward pass.
+
+### Trade-off
+
+Longer context permits longer-range dependencies but increases memory and compute. Hidden activations grow at least linearly with T; later self-attention introduces pairwise `T x T` interactions.
+
+In this teaching MiniGPT, learned positional embeddings and the causal mask are sized by `block_size`, so `T <= block_size` is a real model limit. During naive generation, contexts longer than this are cropped to the most recent `block_size` tokens.
