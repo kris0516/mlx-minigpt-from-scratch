@@ -97,3 +97,25 @@ For a vector x, `||x||_2 = sqrt(sum_i x_i^2)`. Normalizing a nonzero vector with
 If normalized embedding rows form `E_hat` with shape `(V,C)`, then `E_hat @ E_hat.T` has shape `(V,V)` and contains all pairwise cosine similarities.
 
 Embedding geometry should not be over-interpreted: learned vectors optimize the training objective, and human-interpretable semantic clusters are not guaranteed.
+
+## Step 07.3 — Build the (B,T,C) Representation
+
+### From IDs to hidden states
+
+Token IDs with shape `(B,T)` pass through `nn.Embedding(V,C)` to produce `(B,T,C)`. Each scalar `X[b,t]` is replaced by one C-dimensional embedding row.
+
+### Axis semantics
+
+`B` selects a batch sample, `T` selects a token position, and `C` indexes hidden features. Thus `h[b,t,:]` is one token's complete hidden vector.
+
+### C as model width
+
+`C = n_embd` becomes the shared hidden width used across Transformer blocks. Internal sublayers may temporarily expand or project features, but residual-compatible block outputs normally return to `(B,T,C)`.
+
+### Mixing roles
+
+Linear/MLP layers primarily mix the final C axis independently at each `(b,t)` position. Attention later introduces cross-position mixing along T.
+
+### Memory and position preview
+
+A `(B,T,C)` tensor contains `B*T*C` values, so activation memory scales with all three dimensions. Token embedding lookup preserves token identity but does not itself encode absolute position; explicit position information is introduced next.
