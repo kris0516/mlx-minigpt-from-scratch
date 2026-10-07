@@ -323,12 +323,12 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - `stoi` / `itos`
 - encode / decode
 
-### 6.2 One-hot vs learned embedding 🚧
+### 6.2 One-hot vs learned embedding ✅
 
 - discrete identity vs dense learned representation
 - correct misconception: embedding dimension does not need to exceed vocabulary size
 
-### 6.3 Next-token shift
+### 6.3 Next-token shift 🚧
 
 - input `x`
 - target `y` shifted by one position
@@ -1106,9 +1106,10 @@ Step 5.3 ✅ Complete
 Step 5.4 ✅ Complete
 Step 5.5 ✅ Complete
 Step 6.1 ✅ Complete
-Step 6.2 🚧 Current
+Step 6.2 ✅ Complete
+Step 6.3 🚧 Current
 ```
 
 Current lesson:
 
-> **Step 6.2 — One-hot vs learned embedding**
+> **Step 6.3 — Next-token shift**
