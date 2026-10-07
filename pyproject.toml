@@ -10,4 +10,5 @@ dependencies = [
 [dependency-groups]
 dev = [
     "ipykernel",
+    "matplotlib",
 ]
