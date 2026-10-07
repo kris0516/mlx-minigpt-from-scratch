@@ -271,7 +271,7 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 
 ---
 
-## Step 5 — How a neural network actually learns 🚧
+## Step 5 — How a neural network actually learns ✅
 
 **Goal:** see a parameter change because a prediction was wrong.
 
@@ -302,7 +302,7 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - tiny manual SGD loop
 - verify that loss decreases
 
-### 5.5 What is and is not “learning” 🚧
+### 5.5 What is and is not “learning” ✅
 
 - parameters change; architecture does not
 - data + loss + optimizer define the training signal
@@ -310,11 +310,11 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 
 ---
 
-## Step 6 — From text to a next-token learning problem
+## Step 6 — From text to a next-token learning problem 🚧
 
 **Goal:** convert raw text into a supervised sequence prediction task.
 
-### 6.1 Vocabulary and character tokenizer
+### 6.1 Vocabulary and character tokenizer 🚧
 
 - unique characters
 - token IDs
@@ -1102,9 +1102,10 @@ Step 5.1 ✅ Complete
 Step 5.2 ✅ Complete
 Step 5.3 ✅ Complete
 Step 5.4 ✅ Complete
-Step 5.5 🚧 Current
+Step 5.5 ✅ Complete
+Step 6.1 🚧 Current
 ```
 
 Current lesson:
 
-> **Step 5.5 — What learning really means**
+> **Step 6.1 — Vocabulary and character tokenizer**
