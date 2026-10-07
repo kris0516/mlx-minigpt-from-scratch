@@ -28,8 +28,9 @@ Step 5.3 complete
 Step 5.4 complete
 Step 5.5 complete
 Step 6.1 complete
-Step 6.2 current / lesson created
-Next after learner finishes: Step 6.3 — Next-token shift
+Step 6.2 complete
+Step 6.3 current / lesson created
+Next after learner finishes: Step 6.4 — Context window / block size
 ```
 
 ## Non-negotiable teaching constraints
@@ -159,6 +160,6 @@ mlx-minigpt-from-scratch/
 
 Current lesson:
 
-> **Step 6.2 — One-hot vs learned embedding**
+> **Step 6.3 — Next-token shift**
 
-After the learner finishes it, continue with Step 6.3 — Next-token shift. Do not jump ahead to Attention or training loops.
+After the learner finishes it, continue with Step 6.4 — Context window / block size. Do not jump ahead to Attention or training loops.
