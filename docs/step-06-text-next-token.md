@@ -1,0 +1,64 @@
+# Step 06 — From Text to a Next-Token Learning Problem
+
+目标：把原始文本转换成神经网络可以处理的离散序列，并最终形成 next-token prediction 训练样本。
+
+本 Step 共 5 个小节：
+
+1. **06.1 Vocabulary and Character Tokenizer**
+2. **06.2 One-Hot vs Learned Embedding**
+3. **06.3 Next-Token Shift**
+4. **06.4 Context Window / Block Size**
+5. **06.5 Sampling Batches**
+
+## Step 06.1 — Vocabulary and Character Tokenizer
+
+Character-level tokenizer 将每一个字符视为一个 token。
+
+基本流程：
+
+```text
+text
+-> vocabulary
+-> stoi / itos
+-> encode / decode
+-> integer token IDs
+```
+
+### Vocabulary
+
+```python
+chars = sorted(set(text))
+vocab_size = len(chars)
+```
+
+在 character-level tokenizer 中，空格、换行和标点同样是 token。
+
+### Token IDs
+
+Token ID 只是离散类别编号，不携带“数值大小”或几何距离意义。
+
+真正的连续向量表示将在 learned embedding 阶段获得。
+
+### stoi / itos
+
+```text
+stoi: character -> integer ID
+itos: integer ID -> character
+```
+
+### Encode / decode
+
+```python
+encode(text) -> list[int]
+decode(ids)  -> str
+```
+
+正确实现应该支持 round trip：
+
+```text
+decode(encode(text)) == text
+```
+
+### Scope
+
+本项目先用 character tokenizer 保持教学透明。现代 LLM 更常使用 byte/subword/BPE 类 tokenizer；这些将在扩展部分讨论。
