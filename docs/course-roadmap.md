@@ -281,14 +281,14 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - squared error with tiny scalar examples
 - why training needs a single objective value
 
-### 5.2 Minimal calculus for learning 🚧
+### 5.2 Minimal calculus for learning ✅
 
 - derivative as local sensitivity / slope
 - finite-difference intuition
 - derivative of simple scalar expressions
 - chain rule introduced only as needed
 
-### 5.3 Gradient and automatic differentiation
+### 5.3 Gradient and automatic differentiation 🚧
 
 - scalar loss with many parameters
 - gradient as one derivative per parameter
@@ -1099,9 +1099,10 @@ Step 4.2 ✅ Complete
 Step 4.3 ✅ Complete
 Step 4.4 ✅ Complete
 Step 5.1 ✅ Complete
-Step 5.2 🚧 Current
+Step 5.2 ✅ Complete
+Step 5.3 🚧 Current
 ```
 
 Current lesson:
 
-> **Step 5.2 — Minimal calculus for learning**
+> **Step 5.3 — Gradient and automatic differentiation**
