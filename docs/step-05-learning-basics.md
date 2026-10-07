@@ -218,3 +218,61 @@ Too small can be slow; too large can overshoot, oscillate, or diverge.
 The current fixed tiny example is plain gradient descent. Full-batch GD, stochastic gradient descent, and mini-batch SGD differ in how much training data is used to estimate each gradient.
 
 Adam still uses gradients; it changes how parameter updates are scaled using optimizer state.
+
+
+## Step 05.5 — What Learning Really Means
+
+### What changes during ordinary training?
+
+The architecture normally stays fixed while trainable parameters change.
+
+Example:
+
+```text
+prediction = w*x
+```
+
+may keep exactly the same formula while training changes:
+
+```text
+w: 3 -> approximately 5
+```
+
+### Distinguish three concepts
+
+```text
+architecture  -> network computation structure
+hyperparameter -> settings chosen outside ordinary gradient updates
+parameter     -> trainable numerical state
+```
+
+Examples of hyperparameters include model width, number of heads, number of layers, context length, and learning rate.
+
+### Training system roles
+
+```text
+data
+-> model(parameters)
+-> prediction
+-> loss
+-> autodiff
+-> gradient
+-> optimizer
+-> updated parameters
+```
+
+Data, loss, gradient, and optimizer have different roles and are not interchangeable.
+
+### Training vs inference
+
+Training includes loss, gradient computation, and parameter updates.
+
+Inference normally performs forward computation using fixed trained parameters.
+
+### Generalization
+
+Low training loss alone does not prove that a model learned a useful general rule. Validation data is kept separate from parameter updates to evaluate behavior on unseen examples.
+
+### Step 5 complete
+
+The learner now has the conceptual training loop needed before returning to text and next-token prediction.
