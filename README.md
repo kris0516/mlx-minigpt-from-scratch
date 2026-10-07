@@ -23,7 +23,8 @@ Step 4.2 ✅
 Step 4.3 ✅
 Step 4.4 ✅
 Step 5.1 ✅
-Step 5.2 🚧 Current
+Step 5.2 ✅
+Step 5.3 🚧 Current
 ```
 
 ## Persistent course documents
