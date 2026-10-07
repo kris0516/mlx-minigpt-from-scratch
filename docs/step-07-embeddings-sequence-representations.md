@@ -145,3 +145,29 @@ Learned absolute positions are simple but do not directly encode relative distan
 ### Bridge to addition
 
 Repeated copies of the same token share one token-embedding row but receive different position vectors. The next lesson combines `(B,T,C)` token embeddings with `(T,C)` position embeddings by broadcasting addition.
+
+## Step 07.5 — Token + Position Addition
+
+### Broadcasting
+
+Token embeddings have shape `(B,T,C)` and learned positional embeddings have shape `(T,C)`. Broadcasting treats the latter as `(1,T,C)` and reuses the same position vectors across the batch.
+
+For each location: `h[b,t,:] = token_emb[b,t,:] + pos_emb[t,:]`.
+
+### Same token, different position
+
+Repeated token IDs read the same token-embedding row, but different positions add different position vectors, producing different initial hidden representations.
+
+### Addition vs concatenation
+
+Addition preserves width C. Concatenating two C-dimensional vectors produces width 2C and usually requires a wider downstream network or a projection back to C. Concatenation is not mathematically wrong; addition is a compact architectural choice used by early GPT-style models.
+
+### Information trade-off
+
+The mapping `(e,p) -> e+p` is not uniquely invertible, so addition is not a lossless encoding of two separate C-dimensional vectors. Token embeddings, positional embeddings, and downstream layers are jointly trained so that the combined C-dimensional state is useful for the task.
+
+A useful linear identity is `W(e+p)=We+Wp`, although later nonlinear layers and attention make the full computation more expressive.
+
+### Step 7 complete
+
+The representation path is now: token IDs `(B,T)` -> token embeddings `(B,T,C)`, position IDs `(T,)` -> position embeddings `(T,C)`, broadcasting addition -> initial hidden states `(B,T,C)`.
