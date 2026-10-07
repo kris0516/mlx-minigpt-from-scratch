@@ -25,8 +25,9 @@ Step 4.4 complete
 Step 5.1 complete
 Step 5.2 complete
 Step 5.3 complete
-Step 5.4 current / lesson created
-Next after learner finishes: Step 5.5 — What learning really means
+Step 5.4 complete
+Step 5.5 current / lesson created
+Next after learner finishes: Step 6.1 — Vocabulary and character tokenizer
 ```
 
 ## Non-negotiable teaching constraints
@@ -154,6 +155,6 @@ mlx-minigpt-from-scratch/
 
 Current lesson:
 
-> **Step 5.4 — Gradient descent loop**
+> **Step 5.5 — What learning really means**
 
-After the learner finishes it, continue with Step 5.5 — What learning really means. Do not jump ahead to Attention or training loops.
+After the learner finishes it, Step 5 is complete. Continue with Step 6.1 — Vocabulary and character tokenizer. Do not jump ahead to Attention or training loops.
