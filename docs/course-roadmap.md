@@ -334,13 +334,13 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - target `y` shifted by one position
 - why each position supplies a training target
 
-### 6.4 Context window / block size 🚧
+### 6.4 Context window / block size ✅
 
 - fixed training windows
 - sequence length `T`
 - what context means in an autoregressive model
 
-### 6.5 Sampling batches
+### 6.5 Sampling batches 🚧
 
 - random windows for the teaching model
 - reproducibility with seeds
@@ -1108,9 +1108,10 @@ Step 5.5 ✅ Complete
 Step 6.1 ✅ Complete
 Step 6.2 ✅ Complete
 Step 6.3 ✅ Complete
-Step 6.4 🚧 Current
+Step 6.4 ✅ Complete
+Step 6.5 🚧 Current
 ```
 
 Current lesson:
 
-> **Step 6.4 — Context window / block size**
+> **Step 6.5 — Sampling batches**
