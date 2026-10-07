@@ -371,14 +371,14 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - Channel / hidden dimension
 - why `C` is the model width
 
-### 7.4 Position information 🚧
+### 7.4 Position information ✅
 
 - why recurrence naturally encodes order
 - why unmasked self-attention without positional signals is permutation-equivariant
 - causal-mask caveat: mask itself introduces order-dependent visibility
 - learned positional embedding for this teaching implementation
 
-### 7.5 Token + position addition
+### 7.5 Token + position addition 🚧
 
 - broadcasting `(B,T,C) + (T,C)`
 - why addition is used instead of concatenation in this MiniGPT
@@ -1114,9 +1114,10 @@ Step 6.5 ✅ Complete
 Step 7.1 ✅ Complete
 Step 7.2 ✅ Complete
 Step 7.3 ✅ Complete
-Step 7.4 🚧 Current
+Step 7.4 ✅ Complete
+Step 7.5 🚧 Current
 ```
 
 Current lesson:
 
-> **Step 7.4 — Position information**
+> **Step 7.5 — Token + position addition**
