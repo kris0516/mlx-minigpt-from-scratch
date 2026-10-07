@@ -352,13 +352,13 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 
 **Goal:** turn token IDs into the `(B,T,C)` hidden representation used throughout the model.
 
-### 7.1 `nn.Embedding` as learned lookup table 🚧
+### 7.1 `nn.Embedding` as learned lookup table ✅
 
 - lookup, not matrix multiplication at the API level
 - embedding weight shape
 - gathering rows by token ID
 
-### 7.2 Embedding geometry
+### 7.2 Embedding geometry 🚧
 
 - vectors, Euclidean distance, dot product, cosine similarity
 - do not assume human-interpretable clusters must emerge
@@ -1110,9 +1110,10 @@ Step 6.2 ✅ Complete
 Step 6.3 ✅ Complete
 Step 6.4 ✅ Complete
 Step 6.5 ✅ Complete
-Step 7.1 🚧 Current
+Step 7.1 ✅ Complete
+Step 7.2 🚧 Current
 ```
 
 Current lesson:
 
-> **Step 7.1 — `nn.Embedding` as a learned lookup table**
+> **Step 7.2 — Embedding geometry**
