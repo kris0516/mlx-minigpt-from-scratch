@@ -35,7 +35,8 @@ Step 6.5 ✅
 Step 7.1 ✅
 Step 7.2 ✅
 Step 7.3 ✅
-Step 7.4 🚧 Current
+Step 7.4 ✅
+Step 7.5 🚧 Current
 ```
 
 ## Persistent course documents
