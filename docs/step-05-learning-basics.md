@@ -161,3 +161,60 @@ loss, gradient = loss_and_grad_fn(w)
 returns both the scalar function value and its gradient.
 
 The module-aware `nn.value_and_grad` used later for full model parameter trees is intentionally deferred to the language-model training step.
+
+
+## Step 05.4 — Gradient Descent Loop
+
+Core update:
+
+```text
+parameter_new = parameter_old - learning_rate * gradient
+```
+
+The gradient points toward locally increasing loss, so gradient descent follows the negative gradient.
+
+For the teaching model:
+
+```text
+prediction = w*x
+x=2
+target=10
+loss=(w*x-target)^2
+```
+
+at `w=3`:
+
+```text
+loss=16
+gradient=-16
+```
+
+with `lr=0.1`:
+
+```text
+w_new = 3 - 0.1*(-16) = 4.6
+new_loss = 0.64
+```
+
+Repeated updates form the minimal training loop:
+
+```text
+parameters
+-> forward
+-> loss
+-> gradient
+-> update
+-> repeat
+```
+
+### Learning rate
+
+The learning rate controls step size, not direction.
+
+Too small can be slow; too large can overshoot, oscillate, or diverge.
+
+### Terminology
+
+The current fixed tiny example is plain gradient descent. Full-batch GD, stochastic gradient descent, and mini-batch SGD differ in how much training data is used to estimate each gradient.
+
+Adam still uses gradients; it changes how parameter updates are scaled using optimizer state.
