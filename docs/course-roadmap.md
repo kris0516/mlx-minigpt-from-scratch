@@ -38,8 +38,10 @@ From **Step 4 onward**:
 
 - each Step contains **at most 5 subsections**;
 - each subsection should cover a meaningful cluster of tightly related ideas;
+- the five-subsection cap must never be used to compress away prerequisite reasoning, examples, edge cases, or shape analysis; each subsection must be self-contained enough for the learner to reconstruct the idea later;
 - do not split every API or formula into its own micro-step;
-- each teaching turn should still remain digestible: a small amount of code, the mathematics needed for that code, and why the design exists.
+- each teaching turn should still remain digestible, but depth takes priority over artificial brevity;
+- when geometry, optimization behavior, distributions, embeddings, loss curves, or performance trends are easier to understand visually, include a small plot and explain the plotting technique used.
 
 Step 3 contains 7 historical subsections because it was completed before this pacing rule was adopted.
 
@@ -314,14 +316,14 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 
 **Goal:** convert raw text into a supervised sequence prediction task.
 
-### 6.1 Vocabulary and character tokenizer 🚧
+### 6.1 Vocabulary and character tokenizer ✅
 
 - unique characters
 - token IDs
 - `stoi` / `itos`
 - encode / decode
 
-### 6.2 One-hot vs learned embedding
+### 6.2 One-hot vs learned embedding 🚧
 
 - discrete identity vs dense learned representation
 - correct misconception: embedding dimension does not need to exceed vocabulary size
@@ -1103,9 +1105,10 @@ Step 5.2 ✅ Complete
 Step 5.3 ✅ Complete
 Step 5.4 ✅ Complete
 Step 5.5 ✅ Complete
-Step 6.1 🚧 Current
+Step 6.1 ✅ Complete
+Step 6.2 🚧 Current
 ```
 
 Current lesson:
 
-> **Step 6.1 — Vocabulary and character tokenizer**
+> **Step 6.2 — One-hot vs learned embedding**
