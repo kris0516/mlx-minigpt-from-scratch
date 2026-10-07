@@ -32,8 +32,9 @@ Step 6.2 complete
 Step 6.3 complete
 Step 6.4 complete
 Step 6.5 complete
-Step 7.1 current / lesson created
-Next after learner finishes: Step 7.2 — Embedding geometry
+Step 7.1 complete
+Step 7.2 current / lesson created
+Next after learner finishes: Step 7.3 — Build the (B,T,C) representation
 ```
 
 ## Non-negotiable teaching constraints
@@ -163,6 +164,6 @@ mlx-minigpt-from-scratch/
 
 Current lesson:
 
-> **Step 7.1 — `nn.Embedding` as a learned lookup table**
+> **Step 7.2 — Embedding geometry**
 
-After the learner finishes it, continue with Step 7.2 — Embedding geometry. Do not jump ahead to Attention or training loops.
+After the learner finishes it, continue with Step 7.3 — Build the (B,T,C) representation. Do not jump ahead to Attention or training loops.
