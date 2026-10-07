@@ -312,7 +312,7 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 
 ---
 
-## Step 6 — From text to a next-token learning problem 🚧
+## Step 6 — From text to a next-token learning problem ✅
 
 **Goal:** convert raw text into a supervised sequence prediction task.
 
@@ -340,7 +340,7 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - sequence length `T`
 - what context means in an autoregressive model
 
-### 6.5 Sampling batches 🚧
+### 6.5 Sampling batches ✅
 
 - random windows for the teaching model
 - reproducibility with seeds
@@ -348,11 +348,11 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 
 ---
 
-## Step 7 — Embeddings and sequence representations
+## Step 7 — Embeddings and sequence representations 🚧
 
 **Goal:** turn token IDs into the `(B,T,C)` hidden representation used throughout the model.
 
-### 7.1 `nn.Embedding` as learned lookup table
+### 7.1 `nn.Embedding` as learned lookup table 🚧
 
 - lookup, not matrix multiplication at the API level
 - embedding weight shape
@@ -1109,9 +1109,10 @@ Step 6.1 ✅ Complete
 Step 6.2 ✅ Complete
 Step 6.3 ✅ Complete
 Step 6.4 ✅ Complete
-Step 6.5 🚧 Current
+Step 6.5 ✅ Complete
+Step 7.1 🚧 Current
 ```
 
 Current lesson:
 
-> **Step 6.5 — Sampling batches**
+> **Step 7.1 — `nn.Embedding` as a learned lookup table**
