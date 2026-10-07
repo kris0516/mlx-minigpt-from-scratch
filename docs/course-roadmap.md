@@ -295,14 +295,14 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - reverse-mode intuition
 - first `mx.grad` / `mx.value_and_grad` experiment on a tiny function
 
-### 5.4 Gradient descent loop 🚧
+### 5.4 Gradient descent loop ✅
 
 - learning rate
 - `parameter = parameter - lr * gradient`
 - tiny manual SGD loop
 - verify that loss decreases
 
-### 5.5 What is and is not “learning”
+### 5.5 What is and is not “learning” 🚧
 
 - parameters change; architecture does not
 - data + loss + optimizer define the training signal
@@ -1101,9 +1101,10 @@ Step 4.4 ✅ Complete
 Step 5.1 ✅ Complete
 Step 5.2 ✅ Complete
 Step 5.3 ✅ Complete
-Step 5.4 🚧 Current
+Step 5.4 ✅ Complete
+Step 5.5 🚧 Current
 ```
 
 Current lesson:
 
-> **Step 5.4 — Gradient descent loop**
+> **Step 5.5 — What learning really means**
