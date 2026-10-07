@@ -119,3 +119,29 @@ Linear/MLP layers primarily mix the final C axis independently at each `(b,t)` p
 ### Memory and position preview
 
 A `(B,T,C)` tensor contains `B*T*C` values, so activation memory scales with all three dimensions. Token embedding lookup preserves token identity but does not itself encode absolute position; explicit position information is introduced next.
+
+## Step 07.4 — Position Information
+
+### Token identity vs position identity
+
+Token embedding rows depend on token ID, not where the token appears. Reordering a sequence reorders the same token vectors; the vectors themselves do not gain an absolute-position identity.
+
+### RNN order vs self-attention symmetry
+
+RNN recurrence `h_t=f(x_t,h_{t-1})` is inherently order-sensitive because changing token order changes the computation path.
+
+Unmasked self-attention without positional signals is permutation-equivariant: permuting input rows permutes output rows in the same way. This is not permutation invariance.
+
+### Learned absolute positional embedding
+
+The teaching MiniGPT uses `nn.Embedding(block_size, C)` for positions. For a current sequence length T, `mx.arange(T)` is looked up to produce `(T,C)` positional vectors.
+
+### Causal-mask caveat and limitations
+
+A causal mask itself depends on position indices and therefore breaks full arbitrary-permutation symmetry. It provides an order-dependent visibility structure, while positional representations explicitly encode position features. They serve different roles.
+
+Learned absolute positions are simple but do not directly encode relative distance and do not naturally extrapolate beyond the learned `0...block_size-1` positions.
+
+### Bridge to addition
+
+Repeated copies of the same token share one token-embedding row but receive different position vectors. The next lesson combines `(B,T,C)` token embeddings with `(T,C)` position embeddings by broadcasting addition.
