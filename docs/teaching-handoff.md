@@ -27,8 +27,9 @@ Step 5.2 complete
 Step 5.3 complete
 Step 5.4 complete
 Step 5.5 complete
-Step 6.1 current / lesson created
-Next after learner finishes: Step 6.2 — One-hot vs learned embedding
+Step 6.1 complete
+Step 6.2 current / lesson created
+Next after learner finishes: Step 6.3 — Next-token shift
 ```
 
 ## Non-negotiable teaching constraints
@@ -38,10 +39,12 @@ The learner asked for **small, digestible teaching turns**, but not absurdly fra
 From Step 4 onward:
 
 - maximum 5 subsections per Step;
+- the cap is organizational, not a brevity target: each subsection must be sufficiently complete and deep, including prerequisite reasoning, intuitive examples, shape tracing, and important caveats;
 - each subsection should contain roughly 2x the content of the earliest Step-3 micro-lessons;
 - introduce mathematics only when needed;
 - assume only simple matrix multiplication as the starting mathematical baseline;
 - use small hand-computable examples;
+- use plots where they materially improve intuition (e.g. geometry, distributions, loss curves, optimization, benchmarks), and teach the small plotting technique inline without turning the course into a plotting tutorial;
 - explain theory → meaning/history → code;
 - explain why a design exists, not only how to call an API;
 - explicitly correct oversimplifications when needed;
@@ -156,6 +159,6 @@ mlx-minigpt-from-scratch/
 
 Current lesson:
 
-> **Step 6.1 — Vocabulary and character tokenizer**
+> **Step 6.2 — One-hot vs learned embedding**
 
-After the learner finishes it, continue with Step 6.2 — One-hot vs learned embedding. Do not jump ahead to Attention or training loops.
+After the learner finishes it, continue with Step 6.3 — Next-token shift. Do not jump ahead to Attention or training loops.
