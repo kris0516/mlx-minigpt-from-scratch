@@ -101,3 +101,30 @@ Collecting all states yields `(B,T,H)`; keeping only the final state yields `(B,
 ### Next
 
 Step 8.4 wraps the RNN parameters and one-step update in a real Apple MLX `nn.Module`, exposing the parameter tree while preserving time-shared weights.
+
+
+## Step 08.4 — Small MLX RNN Cell
+
+### Module ownership
+
+`RNNCell(nn.Module)` owns the RNN parameters instead of requiring `W_x`, `W_h`, and `b` to be passed into every function call. Runtime hidden state remains an input/output activation, not a trainable parameter.
+
+### Exact Vanilla RNN implementation
+
+Use `x_proj = nn.Linear(C,H,bias=True)` for `W_x x_t + b` and `h_proj = nn.Linear(H,H,bias=False)` for `W_h h_prev`, then apply `mx.tanh`.
+
+The shape contract is `(B,C)` plus `(B,H)` -> `(B,H)`. Using bias on only one branch preserves the single-bias equation from Step 8.2.
+
+### Parameter tree and count
+
+`cell.parameters()` exposes `x_proj.weight`, `x_proj.bias`, and `h_proj.weight`. Total scalar parameter count is `H*C + H + H*H`. Direct manual computation with those same arrays must match `cell(x_t,h_prev)`.
+
+### Shared cell across time
+
+Instantiate one cell outside the `for t in range(T)` loop and repeatedly call that same object. Creating a fresh cell inside the loop would create distinct parameters per time position and would no longer be the time-shared Vanilla RNN studied here.
+
+### Training readiness
+
+Once parameters are registered in the Module tree, future autodiff can propagate losses through the unrolled recurrent graph back to the same shared parameters. Hidden states are runtime activations; being inside the computation graph does not make them model parameters.
+
+Step 8.5 will consolidate what recurrence solves and its structural costs before Step 9 introduces BPTT, vanishing/exploding gradients, LSTM, and GRU.
