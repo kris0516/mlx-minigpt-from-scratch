@@ -93,12 +93,16 @@ notebooks/work/*_work.ipynb
 
 These are ignored by Git.
 
-Normal user workflow:
+Normal file workflow is master → pull → work copy, but the **interactive shell protocol is strict**:
 
-```bash
-git pull
-cp notebooks/<lesson>.ipynb notebooks/work/<lesson>_work.ipynb
-```
+1. Give exactly one terminal command, normally starting with `git pull`.
+2. Stop and wait for the learner's terminal output.
+3. Verify that output before giving any next command.
+4. Then give exactly one copy command for that lesson.
+5. Stop and wait again.
+6. Never bundle commands in one code block or one turn.
+7. Do not invent recurring setup commands such as `mkdir -p notebooks/work`; the work directory already exists in this repository.
+8. Never overwrite an existing `*_work.ipynb` without first checking with the learner.
 
 Then the learner works only in the `_work.ipynb` copy.
 
