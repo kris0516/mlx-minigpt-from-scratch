@@ -74,3 +74,30 @@ The first coordinate of h1 is nonzero even though the current x1 first coordinat
 One cell has `H*C + H*H + H` trainable scalar parameters, independent of the number of processed time steps T because parameters are shared, although runtime computation and BPTT costs do depend on T.
 
 Step 8.3 will implement the full time loop and `(B,T,C)` to `(B,T,H)` state collection. Step 8.4 will wrap the complete RNN cell as an Apple MLX `nn.Module`; Step 9 covers BPTT and long-range gradient limitations.
+
+
+## Step 08.3 — Time Loop Implementation
+
+### Slicing one time step
+
+For sequence embeddings `X.shape=(B,T,C)`, `X[:,t,:]` selects the t-th position from all B samples and has shape `(B,C)`. A hidden state is maintained separately for each batch row with shape `(B,H)`.
+
+### Full recurrent loop
+
+The same `W_x`, `W_h`, and `b` are reused for every t. Repeatedly compute `h_t = tanh(x_t @ W_x.T + h_(t-1) @ W_h.T + b)`, save each `(B,H)` state, and `mx.stack(states, axis=1)` to obtain `(B,T,H)`.
+
+### Batch parallelism vs time dependency
+
+At a fixed t, matrix multiplication processes the B rows together. Different batch rows share parameters but not hidden-state values. Across T, `h_t` depends on the actual `h_(t-1)`, creating a sequential recurrence chain.
+
+The input projection `X @ W_x.T` can be computed for all T positions at once, but the recurrent `h_prev @ W_h.T` path remains time-dependent.
+
+### Sequence length and state outputs
+
+RNN parameter shapes do not depend on T, so the same cell can process different sequence lengths. Dense batching of samples with different true lengths still needs padding/masking/packing or another batching strategy.
+
+Collecting all states yields `(B,T,H)`; keeping only the final state yields `(B,H)`. These serve different downstream tasks.
+
+### Next
+
+Step 8.4 wraps the RNN parameters and one-step update in a real Apple MLX `nn.Module`, exposing the parameter tree while preserving time-shared weights.
