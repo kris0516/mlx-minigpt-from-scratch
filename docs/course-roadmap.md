@@ -407,13 +407,13 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - history is missing
 - fixed-size input limitation
 
-### 8.2 Vanilla RNN equation 🚧
+### 8.2 Vanilla RNN equation ✅
 
 - `h_t = tanh(W_x x_t + W_h h_{t-1} + b)`
 - tiny hand-calculated example
 - hidden state as evolving sequence memory
 
-### 8.3 Time loop implementation
+### 8.3 Time loop implementation 🚧
 
 - `for t in range(T)`
 - `x[:, t, :]`
@@ -1128,9 +1128,10 @@ Step 7.3 ✅ Complete
 Step 7.4 ✅ Complete
 Step 7.5 ✅ Complete
 Step 8.1 ✅ Complete
-Step 8.2 🚧 Current
+Step 8.2 ✅ Complete
+Step 8.3 🚧 Current
 ```
 
 Current lesson:
 
-> **Step 8.2 — Vanilla RNN equation**
+> **Step 8.3 — Time loop implementation**
