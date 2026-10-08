@@ -43,3 +43,34 @@ Hidden state 不能保证无限精确记忆，长期依赖、BPTT 和 vanishing/
 包含参数量随 T 变化的对照折线图（不作模型性能等价比较）和 Position-wise MLP vs Recurrent-state 计算依赖图，顺手介绍 `ax.plot`、`ax.legend`、`ax.annotate`。
 
 **下一节 8.2**：`h_t = tanh(W_x x_t + W_h h_(t-1) + b)`，逐项解释权重 shape 和手算。
+
+
+## Step 08.2 — Vanilla RNN Equation
+
+### Two learnable paths plus a nonlinearity
+
+Vanilla RNN updates its historical state by `a_t = W_x x_t + W_h h_(t-1) + b`, then `h_t = tanh(a_t)`.
+
+`W_x` maps the new C-dimensional input into H-dimensional hidden-state space; `W_h` propagates/transforms the previous H-dimensional historical state. The hidden state is not automatically the token-probability output.
+
+### Shapes
+
+Column-vector notation: `x_t=(C,1)`, `h_(t-1)=(H,1)`, `W_x=(H,C)`, `W_h=(H,H)`, `b=(H,1)`, `h_t=(H,1)`.
+
+Apple MLX row/batch convention: `x_t=(B,C)`, `h_prev=(B,H)` and `h_t = mx.tanh(x_t @ W_x.T + h_prev @ W_h.T + b)` -> `(B,H)`. `H` need not equal C.
+
+### Two-time-step worked example
+
+For `W_x=I_2`, `W_h=0.5 I_2`, `b=0`, initial state `h_(-1)=0`, and `x0=[1,0]`, `x1=[0,1]`, hand calculation yields `h0≈[0.7616,0]` and `h1≈[0.3634,0.7616]`.
+
+The first coordinate of h1 is nonzero even though the current x1 first coordinate is zero: it carries an effect of x0 through h0.
+
+### Why tanh
+
+`tanh` provides a bounded, sign-sensitive nonlinearity (output in `(-1,1)`), but its saturation may contribute to long-horizon gradient problems. Bounded outputs do not guarantee stable training or lossless long-term memory.
+
+### Time-shared weights and next steps
+
+One cell has `H*C + H*H + H` trainable scalar parameters, independent of the number of processed time steps T because parameters are shared, although runtime computation and BPTT costs do depend on T.
+
+Step 8.3 will implement the full time loop and `(B,T,C)` to `(B,T,H)` state collection. Step 8.4 will wrap the complete RNN cell as an Apple MLX `nn.Module`; Step 9 covers BPTT and long-range gradient limitations.
