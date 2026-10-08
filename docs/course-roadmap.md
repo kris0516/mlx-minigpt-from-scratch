@@ -348,7 +348,7 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 
 ---
 
-## Step 7 — Embeddings and sequence representations 🚧
+## Step 7 — Embeddings and sequence representations ✅
 
 **Goal:** turn token IDs into the `(B,T,C)` hidden representation used throughout the model.
 
@@ -378,7 +378,7 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - causal-mask caveat: mask itself introduces order-dependent visibility
 - learned positional embedding for this teaching implementation
 
-### 7.5 Token + position addition 🚧
+### 7.5 Token + position addition ✅
 
 - broadcasting `(B,T,C) + (T,C)`
 - why addition is used instead of concatenation in this MiniGPT
@@ -386,11 +386,11 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 
 ---
 
-## Step 8 — RNN: the first explicit neural sequence memory
+## Step 8 — RNN: the first explicit neural sequence memory 🚧
 
 **Goal:** understand why recurrent neural networks were invented and what recurrence buys us.
 
-### 8.1 Why ordinary MLPs are awkward for variable-length sequences
+### 8.1 Why ordinary MLPs are awkward for variable-length sequences 🚧
 
 - order matters
 - history is missing
@@ -1115,9 +1115,10 @@ Step 7.1 ✅ Complete
 Step 7.2 ✅ Complete
 Step 7.3 ✅ Complete
 Step 7.4 ✅ Complete
-Step 7.5 🚧 Current
+Step 7.5 ✅ Complete
+Step 8.1 🚧 Current
 ```
 
 Current lesson:
 
-> **Step 7.5 — Token + position addition**
+> **Step 8.1 — Why ordinary MLPs are awkward for variable-length sequences**
