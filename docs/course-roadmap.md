@@ -89,14 +89,14 @@ GitHub master lesson committed
 
 ### Interactive command protocol
 
-When guiding the learner in chat, **never send the `git pull` and `cp` commands together**.
+For the normal post-setup lesson workflow, give the learner the two routine commands **at the beginning of the lesson response, as two separate shell code blocks**:
 
-1. Send exactly **one shell command**.
-2. Wait for the learner to paste the terminal result.
-3. Inspect that result.
-4. Only after it is confirmed successful, send the next single command.
-5. Do not add speculative setup commands such as `mkdir -p notebooks/work` when the directory already exists.
-6. Do not use a different copy command or overwrite an existing work notebook without first resolving that state with the learner.
+1. `git pull`
+2. `cp notebooks/<lesson>.ipynb notebooks/work/<lesson>_work.ipynb`
+
+Do not combine them into one shell block. Normally do **not** require the learner to paste terminal output between these two routine commands. Only switch to one-command-at-a-time troubleshooting if a command fails, Git reports a conflict, the work copy already exists in a way that matters, or another abnormal state appears.
+
+Do not add recurring setup commands such as `mkdir -p notebooks/work`; the directory already exists. Do not replace the normal copy command with `cp -n` or another variant unless troubleshooting requires it.
 
 The learner runs and edits only the `_work.ipynb` copy.
 
