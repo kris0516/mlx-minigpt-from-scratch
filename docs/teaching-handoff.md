@@ -36,8 +36,9 @@ Step 7.1 complete
 Step 7.2 complete
 Step 7.3 complete
 Step 7.4 complete
-Step 7.5 current / lesson created
-Next after learner finishes: Step 8.1 — Why ordinary MLPs are awkward for sequences
+Step 7.5 complete
+Step 8.1 current / lesson created
+Next after learner finishes: Step 8.2 — Vanilla RNN equation
 ```
 
 ## Non-negotiable teaching constraints
@@ -168,6 +169,10 @@ mlx-minigpt-from-scratch/
 
 Current lesson:
 
-> **Step 7.5 — Token + position addition**
+> **Step 8.1 — Why ordinary MLPs are awkward for sequences**
 
-After the learner finishes it, Step 7 is complete. Continue with Step 8.1 — Why ordinary MLPs are awkward for sequences. Do not jump ahead to Attention or training loops.
+After the learner finishes it, continue with Step 8.2 — Vanilla RNN equation. Do not skip the historical RNN → BPTT → LSTM/GRU → Seq2Seq → Attention chain.
+
+## 2026-10-08 continuity re-audit
+
+Before Step 8.1, verified the live main tree, all 26 tracked master Notebooks (01–26), Steps 01–07 documentation, full roadmap, and learner agreements. See `docs/course-continuity-check-2026-10-08.md`. Do not conflate position-wise MLP with a flattened whole-sequence MLP. The former lacks cross-token mixing; the latter can mix tokens but has fixed-length input-width trade-offs.
