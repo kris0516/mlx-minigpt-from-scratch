@@ -390,13 +390,13 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 
 **Goal:** understand why recurrent neural networks were invented and what recurrence buys us.
 
-### 8.1 Why ordinary MLPs are awkward for variable-length sequences 🚧
+### 8.1 Why ordinary MLPs are awkward for variable-length sequences ✅
 
 - order matters
 - history is missing
 - fixed-size input limitation
 
-### 8.2 Vanilla RNN equation
+### 8.2 Vanilla RNN equation 🚧
 
 - `h_t = tanh(W_x x_t + W_h h_{t-1} + b)`
 - tiny hand-calculated example
@@ -1116,9 +1116,10 @@ Step 7.2 ✅ Complete
 Step 7.3 ✅ Complete
 Step 7.4 ✅ Complete
 Step 7.5 ✅ Complete
-Step 8.1 🚧 Current
+Step 8.1 ✅ Complete
+Step 8.2 🚧 Current
 ```
 
 Current lesson:
 
-> **Step 8.1 — Why ordinary MLPs are awkward for variable-length sequences**
+> **Step 8.2 — Vanilla RNN equation**
