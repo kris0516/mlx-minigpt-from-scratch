@@ -39,8 +39,9 @@ Step 7.4 complete
 Step 7.5 complete
 Step 8.1 complete
 Step 8.2 complete
-Step 8.3 current / lesson created
-Next after learner finishes: Step 8.4 — Small MLX RNN cell
+Step 8.3 complete
+Step 8.4 current / lesson created
+Next after learner finishes: Step 8.5 — What RNN solves and what it costs
 ```
 
 ## Non-negotiable teaching constraints
@@ -174,9 +175,9 @@ mlx-minigpt-from-scratch/
 
 Current lesson:
 
-> **Step 8.3 — Time loop implementation**
+> **Step 8.4 — Small MLX RNN cell**
 
-After the learner finishes it, continue with Step 8.4 — Small MLX RNN cell. Preserve the distinction between Batch parallelism and Time recurrence, then continue the historical RNN → BPTT → LSTM/GRU → Seq2Seq → Attention chain.
+After the learner finishes it, continue with Step 8.5 — What RNN solves and what it costs. Preserve the distinctions between shared parameters, independent batch states, and runtime hidden activations before moving to BPTT.
 
 ## 2026-10-08 continuity re-audit
 
