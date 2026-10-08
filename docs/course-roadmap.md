@@ -413,13 +413,13 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - tiny hand-calculated example
 - hidden state as evolving sequence memory
 
-### 8.3 Time loop implementation 🚧
+### 8.3 Time loop implementation ✅
 
 - `for t in range(T)`
 - `x[:, t, :]`
 - Batch parallelism vs Time dependency
 
-### 8.4 Small MLX RNN cell
+### 8.4 Small MLX RNN cell 🚧
 
 - implement a minimal teaching RNN
 - trace `x_t`, `h_{t-1}`, `h_t` shapes
@@ -1129,9 +1129,10 @@ Step 7.4 ✅ Complete
 Step 7.5 ✅ Complete
 Step 8.1 ✅ Complete
 Step 8.2 ✅ Complete
-Step 8.3 🚧 Current
+Step 8.3 ✅ Complete
+Step 8.4 🚧 Current
 ```
 
 Current lesson:
 
-> **Step 8.3 — Time loop implementation**
+> **Step 8.4 — Small MLX RNN cell**
