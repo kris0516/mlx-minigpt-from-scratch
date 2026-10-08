@@ -38,8 +38,9 @@ Step 7.3 complete
 Step 7.4 complete
 Step 7.5 complete
 Step 8.1 complete
-Step 8.2 current / lesson created
-Next after learner finishes: Step 8.3 — Time loop implementation
+Step 8.2 complete
+Step 8.3 current / lesson created
+Next after learner finishes: Step 8.4 — Small MLX RNN cell
 ```
 
 ## Non-negotiable teaching constraints
@@ -173,9 +174,9 @@ mlx-minigpt-from-scratch/
 
 Current lesson:
 
-> **Step 8.2 — Vanilla RNN equation**
+> **Step 8.3 — Time loop implementation**
 
-After the learner finishes it, continue with Step 8.3 — Time loop implementation, using X[:,t,:] and shared RNN weights. Do not skip the historical RNN → BPTT → LSTM/GRU → Seq2Seq → Attention chain.
+After the learner finishes it, continue with Step 8.4 — Small MLX RNN cell. Preserve the distinction between Batch parallelism and Time recurrence, then continue the historical RNN → BPTT → LSTM/GRU → Seq2Seq → Attention chain.
 
 ## 2026-10-08 continuity re-audit
 
