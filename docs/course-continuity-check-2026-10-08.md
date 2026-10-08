@@ -24,7 +24,7 @@ The read confirmed exactly 26 masters, numbered 01–26, concluding with `notebo
 - Apple Silicon, Python 3.12, uv, VS Code, native Apple MLX (not a PyTorch core), conservative laptop resources, avoid unnecessary memory/Swap.
 - Git-tracked `notebooks/*.ipynb` are assistant-maintained unexecuted masters. Learner runs only ignored `notebooks/work/*_work.ipynb` copies.
 - Each new lesson updates notebook, Step note, course roadmap, teaching handoff, and README.
-- Interactive terminal guidance is sequential: **one shell command per assistant turn**, wait for and verify the user's terminal output, then provide the next command. `git pull` and the lesson `cp` command must never be bundled.
+- Normal post-setup lesson delivery gives two routine commands at the beginning of the same response, in **separate shell code blocks**: first `git pull`, then the lesson-specific plain `cp ... notebooks/work/..._work.ipynb`. No intermediate terminal reply is required unless troubleshooting an abnormal state.
 
 ## Technical boundaries to preserve
 
