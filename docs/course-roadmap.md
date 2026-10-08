@@ -78,14 +78,25 @@ notebooks/work/*_work.ipynb
 
 and are ignored by Git.
 
-Typical workflow:
+Typical file workflow is:
 
-```bash
-git pull
-
-cp notebooks/<lesson>.ipynb \
-   notebooks/work/<lesson>_work.ipynb
+```text
+GitHub master lesson committed
+→ git pull
+→ create notebooks/work/<lesson>_work.ipynb
+→ learner runs/edits only the work copy
 ```
+
+### Interactive command protocol
+
+When guiding the learner in chat, **never send the `git pull` and `cp` commands together**.
+
+1. Send exactly **one shell command**.
+2. Wait for the learner to paste the terminal result.
+3. Inspect that result.
+4. Only after it is confirmed successful, send the next single command.
+5. Do not add speculative setup commands such as `mkdir -p notebooks/work` when the directory already exists.
+6. Do not use a different copy command or overwrite an existing work notebook without first resolving that state with the learner.
 
 The learner runs and edits only the `_work.ipynb` copy.
 
