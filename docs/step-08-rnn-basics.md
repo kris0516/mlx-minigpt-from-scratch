@@ -128,3 +128,28 @@ Instantiate one cell outside the `for t in range(T)` loop and repeatedly call th
 Once parameters are registered in the Module tree, future autodiff can propagate losses through the unrolled recurrent graph back to the same shared parameters. Hidden states are runtime activations; being inside the computation graph does not make them model parameters.
 
 Step 8.5 will consolidate what recurrence solves and its structural costs before Step 9 introduces BPTT, vanishing/exploding gradients, LSTM, and GRU.
+
+
+## Step 08.5 — What RNN Solves and What It Costs
+
+### What recurrence solves
+
+RNN recurrence makes sequence order part of the computation graph, reuses one parameter set across time, and naturally supports streaming state updates without flattening an ever-growing history.
+
+### Hidden-state bottleneck
+
+`h_t` is a learned compressed summary rather than a lossless archive of the entire past. Fixed hidden width H is practical for streaming but creates a real long-history representation challenge. A simple recurrence can map different histories to the same final state; trained Vanilla RNNs can do better but still lack explicit gates for deciding what to retain or forget.
+
+### Parameters versus runtime cost
+
+Cell parameter count `H*C + H^2 + H` is independent of T, but forward computation scales roughly as `O(T*B*(C*H + H^2))` for fixed dimensions. Keeping all states costs `(B,T,H)` storage; BPTT training generally retains additional intermediates, so training memory also grows with sequence length.
+
+### Sequential critical path
+
+Batch rows can be processed together, while `h_t` requires the actual previous state `h_(t-1)`. The time axis therefore contains an approximately T-long recurrent dependency chain even though input projections can be partially parallelized.
+
+### Bridge to Step 9
+
+The next question is credit assignment: how does a late loss change parameters reused many steps earlier? Step 9.1 unfolds the recurrent graph and derives Backpropagation Through Time; Step 9.2 then studies vanishing/exploding gradients, followed by LSTM and GRU as gated responses to long-range recurrence problems.
+
+Step 8 is conceptually complete after this lesson.
