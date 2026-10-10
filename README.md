@@ -40,7 +40,8 @@ Step 7.5 ✅
 Step 8.1 ✅
 Step 8.2 ✅
 Step 8.3 ✅
-Step 8.4 🚧 Current
+Step 8.4 ✅
+Step 8.5 🚧 Current
 ```
 
 ## Persistent course documents
