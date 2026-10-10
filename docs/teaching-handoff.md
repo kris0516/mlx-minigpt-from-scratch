@@ -41,8 +41,9 @@ Step 8.1 complete
 Step 8.2 complete
 Step 8.3 complete
 Step 8.4 complete
-Step 8.5 current / lesson created
-Next after learner finishes: Step 9.1 — Backpropagation through time
+Step 8.5 complete
+Step 9.1 current / lesson created
+Next after learner finishes: Step 9.2 — Vanishing and exploding gradients
 ```
 
 ## Non-negotiable teaching constraints
@@ -176,9 +177,9 @@ mlx-minigpt-from-scratch/
 
 Current lesson:
 
-> **Step 8.5 — What RNN solves and what it costs**
+> **Step 9.1 — Backpropagation through time**
 
-After the learner finishes it, Step 8 is complete. Continue with Step 9.1 — Backpropagation through time. Derive the unrolled recurrent graph and chain-rule structure before teaching vanishing/exploding gradients.
+After the learner finishes it, continue with Step 9.2 — Vanishing and exploding gradients. Preserve the distinction between shared-parameter gradient accumulation and temporal derivative/Jacobian products; do not claim all long-range gradients necessarily vanish.
 
 ## 2026-10-08 continuity re-audit
 
