@@ -419,13 +419,13 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - `x[:, t, :]`
 - Batch parallelism vs Time dependency
 
-### 8.4 Small MLX RNN cell 🚧
+### 8.4 Small MLX RNN cell ✅
 
 - implement a minimal teaching RNN
 - trace `x_t`, `h_{t-1}`, `h_t` shapes
 - use shared parameters across time
 
-### 8.5 What RNN solves and what it costs
+### 8.5 What RNN solves and what it costs 🚧
 
 - sequence order becomes natural
 - state carries history
@@ -1130,9 +1130,10 @@ Step 7.5 ✅ Complete
 Step 8.1 ✅ Complete
 Step 8.2 ✅ Complete
 Step 8.3 ✅ Complete
-Step 8.4 🚧 Current
+Step 8.4 ✅ Complete
+Step 8.5 🚧 Current
 ```
 
 Current lesson:
 
-> **Step 8.4 — Small MLX RNN cell**
+> **Step 8.5 — What RNN solves and what it costs**
