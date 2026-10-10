@@ -397,7 +397,7 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 
 ---
 
-## Step 8 — RNN: the first explicit neural sequence memory 🚧
+## Step 8 — RNN: the first explicit neural sequence memory ✅
 
 **Goal:** understand why recurrent neural networks were invented and what recurrence buys us.
 
@@ -425,7 +425,7 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - trace `x_t`, `h_{t-1}`, `h_t` shapes
 - use shared parameters across time
 
-### 8.5 What RNN solves and what it costs 🚧
+### 8.5 What RNN solves and what it costs ✅
 
 - sequence order becomes natural
 - state carries history
@@ -433,11 +433,11 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 
 ---
 
-## Step 9 — BPTT, vanishing gradients, LSTM, and GRU
+## Step 9 — BPTT, vanishing gradients, LSTM, and GRU 🚧
 
 **Goal:** understand why vanilla RNNs struggle with long-range dependency and how gating was introduced.
 
-### 9.1 Backpropagation through time
+### 9.1 Backpropagation through time 🚧
 
 - unfold the recurrent graph
 - chain rule across many time steps
@@ -1131,9 +1131,10 @@ Step 8.1 ✅ Complete
 Step 8.2 ✅ Complete
 Step 8.3 ✅ Complete
 Step 8.4 ✅ Complete
-Step 8.5 🚧 Current
+Step 8.5 ✅ Complete
+Step 9.1 🚧 Current
 ```
 
 Current lesson:
 
-> **Step 8.5 — What RNN solves and what it costs**
+> **Step 9.1 — Backpropagation through time**
