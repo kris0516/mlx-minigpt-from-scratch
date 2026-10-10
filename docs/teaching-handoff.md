@@ -40,8 +40,9 @@ Step 7.5 complete
 Step 8.1 complete
 Step 8.2 complete
 Step 8.3 complete
-Step 8.4 current / lesson created
-Next after learner finishes: Step 8.5 — What RNN solves and what it costs
+Step 8.4 complete
+Step 8.5 current / lesson created
+Next after learner finishes: Step 9.1 — Backpropagation through time
 ```
 
 ## Non-negotiable teaching constraints
@@ -175,9 +176,9 @@ mlx-minigpt-from-scratch/
 
 Current lesson:
 
-> **Step 8.4 — Small MLX RNN cell**
+> **Step 8.5 — What RNN solves and what it costs**
 
-After the learner finishes it, continue with Step 8.5 — What RNN solves and what it costs. Preserve the distinctions between shared parameters, independent batch states, and runtime hidden activations before moving to BPTT.
+After the learner finishes it, Step 8 is complete. Continue with Step 9.1 — Backpropagation through time. Derive the unrolled recurrent graph and chain-rule structure before teaching vanishing/exploding gradients.
 
 ## 2026-10-08 continuity re-audit
 
