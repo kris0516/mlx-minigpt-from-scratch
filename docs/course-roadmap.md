@@ -1100,41 +1100,47 @@ These are not required to declare the MiniGPT project complete.
 
 ---
 
-# Current progress
+# Current course-material status
 
-As of the latest curriculum update:
+> Status here tracks **repository lesson-material preparation**, not learner mastery, exercise completion, or assessment.
+> `✅` = master lesson/material has been prepared in the repository; `🚧` = current prepared lesson/material being used or revised; no icon = future planned lesson.
+> Learner completion must only be recorded when the learner explicitly confirms completion or an agreed assessment has actually been completed.
 
 ```text
-Step 1   ✅ Complete
-Step 2   ✅ Complete
-Step 3   ✅ Complete
-Step 4.1 ✅ Complete / taught
-Step 4.2 ✅ Complete
-Step 4.3 ✅ Complete
-Step 4.4 ✅ Complete
-Step 5.1 ✅ Complete
-Step 5.2 ✅ Complete
-Step 5.3 ✅ Complete
-Step 5.4 ✅ Complete
-Step 5.5 ✅ Complete
-Step 6.1 ✅ Complete
-Step 6.2 ✅ Complete
-Step 6.3 ✅ Complete
-Step 6.4 ✅ Complete
-Step 6.5 ✅ Complete
-Step 7.1 ✅ Complete
-Step 7.2 ✅ Complete
-Step 7.3 ✅ Complete
-Step 7.4 ✅ Complete
-Step 7.5 ✅ Complete
-Step 8.1 ✅ Complete
-Step 8.2 ✅ Complete
-Step 8.3 ✅ Complete
-Step 8.4 ✅ Complete
-Step 8.5 ✅ Complete
-Step 9.1 🚧 Current
+Step 1   ✅ Material prepared
+Step 2   ✅ Material prepared
+Step 3   ✅ Material prepared
+Step 4.1 ✅ Material prepared
+Step 4.2 ✅ Material prepared
+Step 4.3 ✅ Material prepared
+Step 4.4 ✅ Material prepared
+Step 5.1 ✅ Material prepared
+Step 5.2 ✅ Material prepared
+Step 5.3 ✅ Material prepared
+Step 5.4 ✅ Material prepared
+Step 5.5 ✅ Material prepared
+Step 6.1 ✅ Material prepared
+Step 6.2 ✅ Material prepared
+Step 6.3 ✅ Material prepared
+Step 6.4 ✅ Material prepared
+Step 6.5 ✅ Material prepared
+Step 7.1 ✅ Material prepared
+Step 7.2 ✅ Material prepared
+Step 7.3 ✅ Material prepared
+Step 7.4 ✅ Material prepared
+Step 7.5 ✅ Material prepared
+Step 8.1 ✅ Material prepared
+Step 8.2 ✅ Material prepared
+Step 8.3 ✅ Material prepared
+Step 8.4 ✅ Material prepared
+Step 8.5 ✅ Material prepared
+Step 9.1 🚧 Current material prepared / under course-material correction
 ```
 
-Current lesson:
+Current course checkpoint:
 
 > **Step 9.1 — Backpropagation through time**
+
+Learner-status note:
+
+> No statement is made here that Step 9.1 has been mastered, that its work notebook has been completed, or that its exercises have been passed. Do not advance the learner-status checkpoint to Step 9.2 unless the learner explicitly asks to proceed after Step 9.1.
