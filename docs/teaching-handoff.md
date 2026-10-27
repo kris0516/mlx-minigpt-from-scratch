@@ -18,13 +18,14 @@ Repository lesson-material preparation:
 Steps 1–8.5      material prepared
 Steps 9.1–9.5    material prepared; static audit passed
 Steps 10.1–10.5  material prepared; static audit passed
-Step 11.1         current material prepared
-Step 11.2+        planned only; not current
+Step 11.1         material prepared; static audit passed
+Step 11.2         current material prepared
+Step 11.3+        planned only; not current
 ```
 
-**Material status is not learner status.** No claim is made that the learner has completed the Step 11.1 work notebook, completed exercises, or mastered Query/Key/Value role separation.
+**Material status is not learner status.** No claim is made that the learner has completed the Step 11.2 work notebook, completed exercises, or mastered Q/K/V linear projections.
 
-Do not enter Step 11.2 until the learner explicitly asks to proceed beyond Step 11.1.
+Do not enter Step 11.3 until the learner explicitly asks to proceed beyond Step 11.2.
 
 ## Non-negotiable teaching constraints
 
@@ -165,9 +166,9 @@ mlx-minigpt-from-scratch/
 
 Current course-material checkpoint:
 
-> **Step 11.1 — Why separate Query, Key, and Value**
+> **Step 11.2 — Q/K/V Linear projections**
 
-Step 11.1 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 11.2 as current unless the learner explicitly asks to proceed.
+Step 11.2 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 11.3 as current unless the learner explicitly asks to proceed.
 
 ## 2026-10-08 continuity re-audit
 
@@ -270,3 +271,13 @@ Do not claim Q/K/V separation is mathematically mandatory. A tied design can wor
 Make clear that `self` means the base representations for Query/Key/Value come from the same sequence, not that Q/K/V must be numerically equal. Use Cross-Attention as a contrast: Query may come from decoder representations while Key/Value come from encoder representations.
 
 Step 11.1 may mention learned role-specific views conceptually, but must not derive the Q/K/V linear-projection equations, their exact projection shapes, or any Query–Key compatibility matrix. Stop before Step 11.2.
+
+## Step 11.2 accuracy boundary
+
+Teach Q/K/V as three independent trainable linear projections of the same base `X=(B,T,C)`. With the row-vector math convention, use `W_Q/W_K:(C,d_k)` and `W_V:(C,d_v)`, producing Q/K `(B,T,d_k)` and V `(B,T,d_v)`.
+
+Make clear that the projection changes the feature axis and is shared across sequence positions; it does not reduce or aggregate the T axis.
+
+Use a small hand-computable matrix example before the MLX API. For MLX 0.32.2, `nn.Linear(input_dims, output_dims)` stores weight as `(output_dims,input_dims)` and computes `x @ weight.T (+ bias)`.
+
+Do not compute Query–Key compatibility scores, dot products, score matrices, scaling, or softmax during Step 11.2. Stop before Step 11.3.
