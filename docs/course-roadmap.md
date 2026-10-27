@@ -552,12 +552,12 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 
 **Goal:** turn general self-attention into an autoregressive language-model mechanism.
 
-### 12.1 Autoregressive constraint 🚧
+### 12.1 Autoregressive constraint ✅
 
 - predict next token using only present/past context
 - future leakage as cheating
 
-### 12.2 Causal mask
+### 12.2 Causal mask 🚧
 
 - upper triangle
 - `-inf`
@@ -1118,14 +1118,15 @@ Steps 1–8.5      ✅ Material prepared
 Steps 9.1–9.5    ✅ Material prepared / static audit passed
 Steps 10.1–10.5  ✅ Material prepared / static audit passed
 Steps 11.1–11.5  ✅ Material prepared / static audit passed
-Step 12.1         🚧 Current material prepared
-Step 12.2+           Planned only
+Step 12.1         ✅ Material prepared / static audit passed
+Step 12.2         🚧 Current material prepared
+Step 12.3+           Planned only
 ```
 
 Current course-material checkpoint:
 
-> **Step 12.1 — Autoregressive constraint**
+> **Step 12.2 — Causal mask**
 
 Learner-status note:
 
-> Material preparation for Step 12.1 does not assert learner mastery, work-notebook completion, or exercise completion. Do not enter Step 12.2 unless the learner explicitly asks to proceed beyond Step 12.1.
+> Material preparation for Step 12.2 does not assert learner mastery, work-notebook completion, or exercise completion. Do not enter Step 12.3 unless the learner explicitly asks to proceed beyond Step 12.2.
