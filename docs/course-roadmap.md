@@ -616,7 +616,7 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 
 ---
 
-## Step 14 — Transformer Block: residuals, normalization, and MLP 🚧
+## Step 14 — Transformer Block: residuals, normalization, and MLP ✅
 
 **Goal:** assemble the full repeated computation unit used in GPT.
 
@@ -647,7 +647,7 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - per-position computation
 - Attention = cross-position mixing; MLP = within-position feature transformation
 
-### 14.5 Implement and test one Block 🚧
+### 14.5 Implement and test one Block ✅
 
 - shape invariants
 - no sequence-length change
@@ -656,11 +656,11 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 
 ---
 
-## Step 15 — From the original Transformer to GPT / Decoder-Only Transformer
+## Step 15 — From the original Transformer to GPT / Decoder-Only Transformer 🚧
 
 **Goal:** explain exactly what GPT keeps and removes from the 2017 Transformer.
 
-### 15.1 Original Transformer architecture
+### 15.1 Original Transformer architecture 🚧
 
 - encoder stack
 - decoder stack
@@ -1109,8 +1109,8 @@ These are not required to declare the MiniGPT project complete.
 
 # Current course-material status
 
-> Status here tracks **repository lesson-material preparation**, not learner mastery, exercise completion, or assessment.
-> `✅` = master lesson/material has been prepared in the repository; `🚧` = current prepared lesson/material being used or revised; no icon = future planned lesson.
+> Status here tracks **repository lesson-material preparation**, not learner mastery, exercise completion, assessment, or runtime test success.
+> `✅` = master lesson/material has been prepared and its static review status has been confirmed where noted; `🚧` = current prepared lesson/material being used or revised; no icon = future planned lesson.
 > Learner completion must only be recorded when the learner explicitly confirms completion or an agreed assessment has actually been completed.
 
 ```text
@@ -1120,18 +1120,15 @@ Steps 10.1–10.5  ✅ Material prepared / static audit passed
 Steps 11.1–11.5  ✅ Material prepared / static audit passed
 Steps 12.1–12.5  ✅ Material prepared / static audit passed
 Steps 13.1–13.5  ✅ Material prepared / static audit passed
-Step 14.1         ✅ Material prepared / static audit passed
-Step 14.2         ✅ Material prepared / static audit passed
-Step 14.3         ✅ Material prepared / static audit passed
-Step 14.4         ✅ Material prepared / static audit passed
-Step 14.5         🚧 Current material prepared
-Step 15.1+           Planned only
+Steps 14.1–14.5  ✅ Material prepared / static audit passed
+Step 15.1         🚧 Current material prepared
+Step 15.2+           Planned only
 ```
 
 Current course-material checkpoint:
 
-> **Step 14.5 — Implement and test one Block**
+> **Step 15.1 — Original Transformer architecture**
 
 Learner-status note:
 
-> Material preparation for Step 14.5 does not assert learner mastery, work-notebook completion, exercise completion, or runtime test success. Do not enter Step 15.1 unless the learner explicitly asks to proceed beyond Step 14.5.
+> Material preparation for Step 15.1 does not assert learner mastery, work-notebook completion, or exercise completion. Step 14 static-material audit completion does not assert that its runtime tests were executed or passed. Do not enter Step 15.2 unless the learner explicitly asks to proceed beyond Step 15.1.
