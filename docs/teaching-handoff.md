@@ -15,16 +15,16 @@ Before teaching or editing the project, read:
 Repository lesson-material preparation:
 
 ```text
-Steps 1–8.5     material prepared
-Steps 9.1–9.5   material prepared; static audit passed
-Steps 10.1–10.4 material prepared; static audit passed
-Step 10.5        current material prepared
-Step 11.1+       planned only; not current
+Steps 1–8.5      material prepared
+Steps 9.1–9.5    material prepared; static audit passed
+Steps 10.1–10.5  material prepared; static audit passed
+Step 11.1         current material prepared
+Step 11.2+        planned only; not current
 ```
 
-**Material status is not learner status.** No claim is made that the learner has completed the Step 10.5 work notebook, completed exercises, or mastered the historical bridge from recurrent Attention to Transformer.
+**Material status is not learner status.** No claim is made that the learner has completed the Step 11.1 work notebook, completed exercises, or mastered Query/Key/Value role separation.
 
-Do not enter Step 11.1 until the learner explicitly asks to proceed beyond Step 10.5.
+Do not enter Step 11.2 until the learner explicitly asks to proceed beyond Step 11.1.
 
 ## Non-negotiable teaching constraints
 
@@ -165,9 +165,9 @@ mlx-minigpt-from-scratch/
 
 Current course-material checkpoint:
 
-> **Step 10.5 — Historical bridge to Transformer**
+> **Step 11.1 — Why separate Query, Key, and Value**
 
-Step 10.5 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 11.1 as current unless the learner explicitly asks to proceed.
+Step 11.1 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 11.2 as current unless the learner explicitly asks to proceed.
 
 ## 2026-10-08 continuity re-audit
 
@@ -260,3 +260,13 @@ Explain the two structural motivations carefully: shorter conceptual dependency 
 Preserve the inference boundary: autoregressive generation remains token-by-token even when the model architecture has no recurrent state transition.
 
 Modern terminology may distinguish encoder–decoder/cross-attention from self-attention, but Step 10.5 must not derive Q/K/V or Self-Attention score matrices. Stop before Step 11.1.
+
+## Step 11.1 accuracy boundary
+
+Start from `X=(B,T,C)` and explain Q/K/V as functional roles before introducing any projection matrices. Query means what the current position is looking for; Key means how a candidate advertises match-relevant features; Value means what content the candidate contributes if selected.
+
+Do not claim Q/K/V separation is mathematically mandatory. A tied design can work, but it couples asking, matching, and payload roles in one representation space and is therefore more restrictive.
+
+Make clear that `self` means the base representations for Query/Key/Value come from the same sequence, not that Q/K/V must be numerically equal. Use Cross-Attention as a contrast: Query may come from decoder representations while Key/Value come from encoder representations.
+
+Step 11.1 may mention learned role-specific views conceptually, but must not derive the Q/K/V linear-projection equations, their exact projection shapes, or any Query–Key compatibility matrix. Stop before Step 11.2.
