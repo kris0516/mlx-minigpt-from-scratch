@@ -2,7 +2,7 @@
 
 目标：理解 GPT-style Multi-Head Attention 背后的 exact tensor organization，而不是只记最终公式。
 
-本 Step 保留现有 roadmap 的 13.1–13.5 结构。Step 13.1 材料已通过静态审核；当前只准备 **13.2 Fused QKV projection**，不进入 13.3。
+本 Step 保留现有 roadmap 的 13.1–13.5 结构。Step 13.1、13.2 材料已通过静态审核；当前只准备 **13.3 Split channels into heads**，不进入 13.4。
 
 ## Step 13.1 — Why multiple heads
 
@@ -102,3 +102,55 @@ bias=True 时两种写法也都增加总共 `3C` biases。因此 fused QKV 不�
 Fused projection 把三个同源线性映射组织成一次更大的 projection，通常有利于减少调用/dispatch overhead 并使用更大的 matrix multiplication；但真实性能依赖 framework、compiler、hardware 与 shape，不应承诺固定倍数加速。
 
 Step 13.2 材料准备到此停止，不进入 Step 13.3；`C=H×D` 与 channel-to-head reshape 留给下一既有小节。
+
+## Step 13.3 — Split channels into heads
+
+### `C = H × D`
+
+Step 13.2 已得到 `Q/K/V:(B,T,C)`。标准等宽 Multi-Head organization 把 model width C 写成：
+
+```text
+C = H × D
+```
+
+其中 H 是 number of heads，D 是 head dimension。这里的 H 是 head count，不是前面 RNN 章节曾使用的 hidden-width 记号。
+
+因此要求 `C % H == 0`，并定义 `D = C // H`。
+
+### Exact index mapping
+
+把 feature index `c` 写成 `c=hD+d`，于是：
+
+```text
+Q_heads[b,t,h,d] = Q[b,t,hD+d]
+```
+
+K/V 同理。这个 reshape 不做新的 projection、不聚合数值、不新增参数，只把一个 C-dimensional feature axis 逻辑上重新组织成 H×D。
+
+### Shape transformation
+
+```text
+Q : (B,T,C) -> (B,T,H,D)
+K : (B,T,C) -> (B,T,H,D)
+V : (B,T,C) -> (B,T,H,D)
+```
+
+元素数量保持 `B*T*C = B*T*H*D`。
+
+### MLX 0.32.2
+
+MLX 0.32.2 的 `mx.reshape(a, shape)` 在保持元素总数的前提下改变 array shape。本节使用：
+
+```text
+q_heads = mx.reshape(q, (B,T,H,D))
+k_heads = mx.reshape(k, (B,T,H,D))
+v_heads = mx.reshape(v, (B,T,H,D))
+```
+
+本节只讨论 tensor semantics，不承诺 reshape 在底层实现中一定 zero-copy。
+
+### Heads as tensor organization
+
+GPT-style multiple heads 首先体现为 tensor axis organization，而不是必须构造 H 个独立 Python Module 并循环执行。不同 head 对应 Q/K/V output channels 中不同的 learned channel blocks。
+
+Step 13.3 材料准备到此停止，不进入 Step 13.4；`(B,T,H,D)->(B,H,T,D)` transpose 与 batched attention 留给下一既有小节。
