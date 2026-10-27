@@ -362,7 +362,7 @@ Teach matrix inspection with rows as Queries and columns as Keys. Verify the two
 
 Use a deterministic hand-checkable case separately from the actual module. Equal legal logits can produce the exact expected lower-triangular uniform matrix `[1]`, `[1/2,1/2]`, `[1/3,1/3,1/3]`, etc. Make clear this is a designed expectation, not a generic learned-attention pattern.
 
-For the Step 12.4 head, a diagnostic variant may return attention weights in addition to the output. If Q/K parameters are randomly initialized, do not claim exact legal-position values before runtime; only structural properties are predictable in advance.
+For the Step 12.4 head, a diagnostic variant may return attention weights in addition to the output. In the Step 12.5 diagnostic example specifically, the input is all zeros and Q/K/V projections use `bias=False`; therefore Q=K=V=0 regardless of random weights, legal positions are exactly uniform within each causal prefix, future weights are zero, and the output is zero. Treat these as mathematically derived expected values until the notebook is actually executed, not as observed runtime results.
 
 Optional heatmap code may visualize the matrix with Key positions on x and Query positions on y. Do not infer fixed human-semantic meaning from bright attention cells without additional evidence.
 
