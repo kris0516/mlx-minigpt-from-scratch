@@ -15,18 +15,15 @@ Before teaching or editing the project, read:
 Repository lesson-material preparation:
 
 ```text
-Steps 1–8.5  material prepared
-Step 9.1      material prepared; static audit passed
-Step 9.2      material prepared; static audit passed
-Step 9.3      material prepared; static audit passed
-Step 9.4      material prepared; static audit passed
-Step 9.5      current material prepared
-Step 10.1+    planned only; not current
+Steps 1–8.5   material prepared
+Steps 9.1–9.5 material prepared; static audit passed
+Step 10.1      current material prepared
+Step 10.2+     planned only; not current
 ```
 
-**Material status is not learner status.** No claim is made that the learner has completed the Step 9.5 work notebook, completed exercises, or mastered the remaining limitations of LSTM/GRU.
+**Material status is not learner status.** No claim is made that the learner has completed the Step 10.1 work notebook, completed exercises, or mastered encoder–decoder Seq2Seq.
 
-Do not enter Step 10.1 until the learner explicitly asks to proceed beyond Step 9.5.
+Do not enter Step 10.2 until the learner explicitly asks to proceed beyond Step 10.1.
 
 ## Non-negotiable teaching constraints
 
@@ -167,9 +164,9 @@ mlx-minigpt-from-scratch/
 
 Current course-material checkpoint:
 
-> **Step 9.5 — Why LSTM/GRU still did not solve everything**
+> **Step 10.1 — Encoder-decoder Seq2Seq**
 
-Step 9.5 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 10.1 as current unless the learner explicitly asks to proceed.
+Step 10.1 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 10.2 as current unless the learner explicitly asks to proceed.
 
 ## 2026-10-08 continuity re-audit
 
@@ -208,3 +205,13 @@ Do not claim recurrent models are wholly non-parallel: input-side packed project
 Describe fixed-width recurrent state as a practical representation bottleneck, not a dimension-count proof of absolute information impossibility. Gating does not shorten a long recurrent information path to constant length.
 
 Use Step 9.5 only to close the recurrent-family limitations. Do not enter encoder-decoder Seq2Seq / Step 10.1 during this lesson.
+
+## Step 10.1 accuracy boundary
+
+Introduce `T_src/T_tgt`, source/target vocabularies, and `<BOS>/<EOS>` before using them. Teach classic recurrent Seq2Seq as an encoder reading the full source, with its final hidden state used to initialize the decoder.
+
+Explain teacher forcing only as the common training-time choice of feeding the previous ground-truth target token; distinguish it from inference, where the decoder feeds back its own generated token.
+
+Keep the shape bridge explicit: encoder `(B,T_src,C_src)->(B,T_src,H)->(B,H)` context state; decoder training path `(B,T_tgt,C_tgt)->(B,T_tgt,H)->(B,T_tgt,V_tgt)`.
+
+Do not analyze the fixed-vector bottleneck in depth or introduce Attention during Step 10.1; those belong to later existing roadmap subsections.
