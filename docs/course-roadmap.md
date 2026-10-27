@@ -627,7 +627,7 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - gradient highway intuition
 - residual does not mathematically guarantee zero information loss
 
-### 14.2 LayerNorm → RMSNorm historical path 🚧
+### 14.2 LayerNorm → RMSNorm historical path ✅
 
 - activation scale problem
 - RMS calculation
@@ -635,7 +635,7 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - learned scale `gamma`
 - difference from LayerNorm at a high level
 
-### 14.3 Pre-Norm vs Post-Norm
+### 14.3 Pre-Norm vs Post-Norm 🚧
 
 - where normalization sits
 - why modern deep Transformers often use pre-norm variants
@@ -1121,14 +1121,15 @@ Steps 11.1–11.5  ✅ Material prepared / static audit passed
 Steps 12.1–12.5  ✅ Material prepared / static audit passed
 Steps 13.1–13.5  ✅ Material prepared / static audit passed
 Step 14.1         ✅ Material prepared / static audit passed
-Step 14.2         🚧 Current material prepared
-Step 14.3+           Planned only
+Step 14.2         ✅ Material prepared / static audit passed
+Step 14.3         🚧 Current material prepared
+Step 14.4+           Planned only
 ```
 
 Current course-material checkpoint:
 
-> **Step 14.2 — LayerNorm → RMSNorm historical path**
+> **Step 14.3 — Pre-Norm vs Post-Norm**
 
 Learner-status note:
 
-> Material preparation for Step 14.2 does not assert learner mastery, work-notebook completion, or exercise completion. Do not enter Step 14.3 unless the learner explicitly asks to proceed beyond Step 14.2.
+> Material preparation for Step 14.3 does not assert learner mastery, work-notebook completion, or exercise completion. Do not enter Step 14.4 unless the learner explicitly asks to proceed beyond Step 14.3.
