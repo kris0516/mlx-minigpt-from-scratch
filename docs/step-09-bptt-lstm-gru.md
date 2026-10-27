@@ -2,7 +2,7 @@
 
 目标：理解 Vanilla RNN 的长期 credit assignment 为什么困难，以及 gating 为什么被引入。
 
-本 Step 仍保持既有 5 个小节。Step 9.1 材料已通过静态审核；当前只准备 **09.2**，不进入 09.3：
+本 Step 保留既有 9.1–9.5 课纲。Step 9.1、9.2 材料已通过静态审核；当前只准备 **09.3**，不进入 09.4：
 
 1. **09.1 Backpropagation Through Time**
 2. **09.2 Vanishing and Exploding Gradients**
@@ -258,3 +258,49 @@ Gradient clipping 可以缓解 exploding gradient 导致的极端 update magnitu
 Vanishing 描述的常常是远距离 **future-path contribution** 变弱，并不意味着 total hidden-state gradient 或整个 parameter gradient tensor 必然接近零。若 `L=Σ_tℓ_t`，hidden-state total gradient 还包含 local term `∇_(h_(k-1))ℓ_(k-1)`，parameter gradient 也可能包含 local-loss 和多个时间路径的求和贡献。
 
 Step 9.2 只建立这些边界。材料准备到此停止，不进入 Step 9.3。
+
+## Step 09.3 — LSTM Cell State and Gates
+
+### Why a second recurrent state
+
+LSTM 在 `h_t` 之外引入 cell state `c_t`。二者通常都是 `(B,H)`；`c_t` 提供更直接的内部 state-update 路径，`h_t` 是经过 output gate 过滤后的 hidden output。不要把它们机械等同为“长期记忆/短期记忆”。
+
+### Sigmoid gates and element-wise control
+
+`σ(z)=1/(1+e^-z)` 将实数压到 `(0,1)`，因此 gate 是 soft coefficient，不是 binary switch。`⊙` 表示 element-wise/Hadamard multiplication。
+
+标准教学记号：
+
+```text
+i_t = sigmoid(W_xi x_t + W_hi h_(t-1) + b_i)
+f_t = sigmoid(W_xf x_t + W_hf h_(t-1) + b_f)
+g_t = tanh   (W_xg x_t + W_hg h_(t-1) + b_g)
+o_t = sigmoid(W_xo x_t + W_ho h_(t-1) + b_o)
+
+c_t = f_t ⊙ c_(t-1) + i_t ⊙ g_t
+h_t = o_t ⊙ tanh(c_t)
+```
+
+`f/i/o` 是 gates；`g_t` 是 tanh candidate。
+
+### Shapes and packed 4H projection
+
+`x_t=(B,C)`，`h_(t-1)=c_(t-1)=(B,H)`。四组 gate/candidate 输出都是 `(B,H)`。工程实现常把四组 projections 打包成 `(B,4H)`，再 split 成 `i/f/g/o`；对应 packed weights 为 `(4H,C)` 与 `(4H,H)`。
+
+### Tiny numeric update
+
+若 `c_(t-1)=0.80`、`f_t=0.90`、`i_t=0.20`、`g_t=0.50`、`o_t=0.70`，则 retained old state 为 `0.72`，new write 为 `0.10`，所以 `c_t=0.82`，`h_t=0.7*tanh(0.82)≈0.4725`。
+
+### Direct cell-state gradient path
+
+只看 `c_(t-1) -> c_t` 的 direct edge，并在该局部 partial derivative 中把其他输入/gate values 视为给定，则 direct Jacobian contribution 为 `diag(f_t)`；相应 backward contribution 为 `f_t ⊙ g_(c_t)`。`f_t≈1` 可以给某些 coordinates 提供近似 identity 的保留路径，`f_t≈0` 则主动遗忘。
+
+这只是 direct path contribution，不是整个 LSTM total Jacobian。Gates 依赖 `x_t/h_(t-1)`，完整 BPTT 还有其他路径；LSTM 改善长期 credit assignment，但不保证彻底消除 vanishing/exploding，也不是无限无损 memory。
+
+### MLX 0.32.2 mapping
+
+项目固定 `mlx==0.32.2`。该版本提供 `nn.LSTM(input_size, hidden_size, bias=True)`；batched input `(B,T,C)` 可配 initial `hidden/cell=(B,H)`，返回 `all_hidden, all_cell`，二者均为 `(B,T,H)`。
+
+MLX v0.32.2 内部 packed parameters 为 `Wx=(4H,C)`、`Wh=(4H,H)`、`bias=(4H,)`（bias=True），并按 `i,f,g,o` 顺序 split。
+
+Step 9.3 材料准备到此停止，不进入 Step 9.4。
