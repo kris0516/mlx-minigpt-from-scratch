@@ -2,7 +2,7 @@
 
 目标：把 Step 11 的 general self-attention 变成适用于 autoregressive next-token language modeling 的机制。
 
-本 Step 保留现有 roadmap 的 12.1–12.5 结构。Step 12.1 材料已通过静态审核；当前只准备 **12.2 Causal mask**，不进入 12.3。
+本 Step 保留现有 roadmap 的 12.1–12.5 结构。Step 12.1、12.2 材料已通过静态审核；当前只准备 **12.3 Stable attention computation**，不进入 12.4。
 
 ## Step 12.1 — Autoregressive constraint
 
@@ -110,3 +110,43 @@ A = mx.softmax(masked_scores, axis=-1)
 Mask 表示“能不能看”的结构约束；attention weights 表示在合法 positions 中“实际看多少”。
 
 Step 12.2 材料准备到此停止，不进入 Step 12.3；stable-softmax / numerical-stability 专题和完整 causal attention head 留给后续既有小节。
+
+## Step 12.3 — Stable attention computation
+
+### Why naive softmax can overflow
+
+Softmax 数学定义是 `exp(z_i)/sum_j exp(z_j)`，但若 logits 很大，例如 `[1000,999,998]`，直接 exponential 可能在有限精度下 overflow 成 `inf`，继而出现 `inf/inf -> nan`。
+
+### Shift invariance and subtract-max
+
+对同一 row 减去任意常数 c 不改变 softmax：
+
+```text
+softmax(z) = softmax(z - c)
+```
+
+最有用的选择是 `c=max(z)`。这样最大 shifted logit 为 0，其余不大于 0，exponentials 最大只到 1。
+
+例如 `[1000,999,998] -> [0,-1,-2]`，最终 softmax 仍约为 `[0.6652,0.2447,0.0900]`。
+
+### Underflow versus overflow
+
+subtract-max 后很负的 logits 可能使 exponential underflow 到 0；对理论上已极小的 probability，这通常比 positive-exponential overflow 导致 NaN 更可控。这里不把 underflow 说成在所有数值任务里都无害。
+
+### Compatibility with causal -inf masking
+
+如果 masked row 是 `[5,-inf,-inf]`，subtract max 后仍是 `[0,-inf,-inf]`，exponentials 为 `[1,0,0]`。标准 causal mask 保留 diagonal，因此每行至少有一个 finite legal score；避免整行全 `-inf` 后发生 `-inf - (-inf)` 的无效情况。
+
+### What scaling helps with
+
+`1/sqrt(d_k)` 与 subtract-max stable softmax 解决的是不同问题。Scaling 控制 dot-product logits 的典型尺度，减少随 `d_k` 增长而过度进入 saturated/peaked softmax regime 的倾向，并改善 optimization conditions；subtract-max 则直接解决 exponential overflow 风险。
+
+因此不能把 scaling 简化成“只是为了防止梯度消失”。Gradient behavior 与 saturation 有关，但 scaling 更基础的作用是控制 score scale 与 softmax 工作区间。
+
+### MLX 0.32.2
+
+项目固定 `mlx==0.32.2`。该版本 `mx.softmax(a, axis=..., precise=False)` 官方定义为 numerically stable softmax。实际模型代码应直接使用 `mx.softmax`，而不是手写朴素 `exp/sum(exp)`。
+
+`precise=True` 对低精度输入使用 float32 reduction accumulation；这是 API 精度选项，本节不扩展成 mixed-precision 专题。
+
+Step 12.3 材料准备到此停止，不进入 Step 12.4；完整 causal attention head 实现留给后续既有小节。
