@@ -17,13 +17,14 @@ Repository lesson-material preparation:
 ```text
 Steps 1–8.5  material prepared
 Step 9.1      material prepared; static audit passed
-Step 9.2      current material prepared
-Step 9.3+     planned only; not current
+Step 9.2      material prepared; static audit passed
+Step 9.3      current material prepared
+Step 9.4+     planned only; not current
 ```
 
-**Material status is not learner status.** No claim is made that the learner has completed the Step 9.2 work notebook, completed exercises, or mastered vanishing/exploding gradients.
+**Material status is not learner status.** No claim is made that the learner has completed the Step 9.3 work notebook, completed exercises, or mastered LSTM.
 
-Do not enter Step 9.3 until the learner explicitly asks to proceed beyond Step 9.2.
+Do not enter Step 9.4 until the learner explicitly asks to proceed beyond Step 9.3.
 
 ## Non-negotiable teaching constraints
 
@@ -31,10 +32,11 @@ The learner asked for **small, digestible teaching turns**, but not absurdly fra
 
 From Step 4 onward:
 
-- maximum 5 subsections per Step;
-- the cap is organizational, not a brevity target: each subsection must be sufficiently complete and deep, including prerequisite reasoning, intuitive examples, shape tracing, and important caveats;
-- each subsection should contain roughly 2x the content of the earliest Step-3 micro-lessons;
-- introduce mathematics only when needed;
+- a major Step usually has about five subsections, but this is **not** a hard minimum or maximum;
+- choose the natural subdivision for the subject rather than forcing exactly five;
+- advance only one numbered subsection per teaching turn unless the learner explicitly requests otherwise;
+- keep each subsection substantial but digestible: neither artificially brief nor overloaded;
+- introduce mathematics only when needed and explain new notation/API before first use;
 - assume only simple matrix multiplication as the starting mathematical baseline;
 - use small hand-computable examples;
 - use plots where they materially improve intuition (e.g. geometry, distributions, loss curves, optimization, benchmarks), and teach the small plotting technique inline without turning the course into a plotting tutorial;
@@ -156,9 +158,9 @@ mlx-minigpt-from-scratch/
 
 Current course-material checkpoint:
 
-> **Step 9.2 — Vanishing and exploding gradients**
+> **Step 9.3 — LSTM Cell State and Gates**
 
-Step 9.2 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 9.3 as current unless the learner explicitly asks to proceed.
+Step 9.3 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 9.4 as current unless the learner explicitly asks to proceed.
 
 ## 2026-10-08 continuity re-audit
 
@@ -167,3 +169,13 @@ Before Step 8.1, verified the live main tree, all 26 tracked master Notebooks (0
 ## Step 9.2 accuracy boundary
 
 Teach vanishing/exploding gradients from temporal derivative/Jacobian products. Use `0.5^n` and `1.5^n` only as scalar toy intuition; for vector RNNs emphasize state-dependent `D_k`, direction-dependent Jacobian action, transpose/order from the column-gradient convention, and that a single matrix can shrink some directions while growing others. Explain L2/global gradient norm before using MLX 0.32.2 `mlx.optimizers.clip_grad_norm`. Clipping mitigates excessive gradient magnitude but does not repair vanishing credit, tanh saturation, or long recurrent paths. Do not enter LSTM/Step 9.3 during Step 9.2 delivery.
+
+## Step 9.3 accuracy boundary
+
+Introduce sigmoid and Hadamard/element-wise multiplication before using LSTM gates. Use standard course notation `i/f/g/o`; `g_t` is a tanh candidate, not a sigmoid gate. Distinguish `h_t` and `c_t` without claiming a strict short-term/long-term split.
+
+When connecting LSTM to BPTT, `diag(f_t)` describes only the **direct cell-state edge contribution** under the local partial derivative. It is not the complete LSTM total Jacobian. LSTM creates a learnable near-preservation path but does not guarantee zero vanishing/exploding gradients or unlimited memory.
+
+For MLX 0.32.2, `nn.LSTM(input_size, hidden_size, bias=True)` accepts batched `(B,T,C)` input and optional `(B,H)` initial hidden/cell states, returning hidden and cell sequences `(B,T,H)`. Packed parameters use `Wx=(4H,C)`, `Wh=(4H,H)`, optional `bias=(4H,)`, split in `i,f,g,o` order.
+
+Do not enter Step 9.4 during Step 9.3 delivery.
