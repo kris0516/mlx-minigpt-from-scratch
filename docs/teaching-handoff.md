@@ -22,13 +22,14 @@ Steps 11.1–11.5  material prepared; static audit passed
 Steps 12.1–12.5  material prepared; static audit passed
 Steps 13.1–13.5  material prepared; static audit passed
 Step 14.1         material prepared; static audit passed
-Step 14.2         current material prepared
-Step 14.3+        planned only; not current
+Step 14.2         material prepared; static audit passed
+Step 14.3         current material prepared
+Step 14.4+        planned only; not current
 ```
 
-**Material status is not learner status.** No claim is made that the learner has completed the Step 14.2 work notebook, completed exercises, or mastered LayerNorm / RMSNorm.
+**Material status is not learner status.** No claim is made that the learner has completed the Step 14.3 work notebook, completed exercises, or mastered Pre-Norm versus Post-Norm.
 
-Do not enter Step 14.3 until the learner explicitly asks to proceed beyond Step 14.2.
+Do not enter Step 14.4 until the learner explicitly asks to proceed beyond Step 14.3.
 
 ## Non-negotiable teaching constraints
 
@@ -169,9 +170,9 @@ mlx-minigpt-from-scratch/
 
 Current course-material checkpoint:
 
-> **Step 14.2 — LayerNorm → RMSNorm historical path**
+> **Step 14.3 — Pre-Norm vs Post-Norm**
 
-Step 14.2 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 14.3 as current unless the learner explicitly asks to proceed.
+Step 14.3 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 14.4 as current unless the learner explicitly asks to proceed.
 
 ## 2026-10-08 continuity re-audit
 
@@ -452,3 +453,15 @@ Historical framing: LayerNorm (2016) predates and became canonical in the origin
 For MLX 0.32.2: `nn.LayerNorm(dims,eps=1e-5,affine=True,bias=True)` and `nn.RMSNorm(dims,eps=1e-5)`. RMSNorm has learned weight/gamma but no beta in this API.
 
 Stop before Step 14.3. Do not decide whether normalization sits before or after the residual branch, and do not teach Pre-Norm versus Post-Norm yet.
+
+## Step 14.3 accuracy boundary
+
+Use a generic sublayer F and normalization N. Post-Norm is `y=N(x+F(x))`; Pre-Norm is `y=x+F(N(x))`. Both preserve `(B,T,C)`.
+
+Historical framing: the original Transformer uses the classic Add & Norm / Post-Norm pattern, while many later deep Transformer/LLM architectures use Pre-Norm or related variants. Do not claim this makes Pre-Norm universally superior.
+
+For gradient topology, teach `J_pre=I+J_F J_N` and `J_post=J_N(I+J_F)` in the local chain-rule ordering. With column gradients, Pre-Norm retains a direct `g_y` term that bypasses N and F; Post-Norm's path from output back to x still includes the normalization Jacobian.
+
+Treat this as an optimization/gradient-flow motivation, not a guarantee that Pre-Norm cannot vanish/explode or must achieve better final quality.
+
+Use only a generic sublayer in code. Stop before Step 14.4: do not introduce the `C->4C->activation->C` feed-forward MLP or compare Attention-vs-MLP roles yet.
