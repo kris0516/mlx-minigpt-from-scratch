@@ -513,7 +513,7 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 
 ---
 
-## Step 11 — Self-Attention from first principles 🚧
+## Step 11 — Self-Attention from first principles ✅
 
 **Goal:** derive Q/K/V instead of memorizing the final formula.
 
@@ -540,7 +540,7 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - `1/sqrt(d_k)`
 - softmax as normalized positive weights
 
-### 11.5 Weighted Value retrieval 🚧
+### 11.5 Weighted Value retrieval ✅
 
 - `A @ V`
 - each output position becomes a context-dependent representation
@@ -548,11 +548,11 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 
 ---
 
-## Step 12 — Causal self-attention
+## Step 12 — Causal self-attention 🚧
 
 **Goal:** turn general self-attention into an autoregressive language-model mechanism.
 
-### 12.1 Autoregressive constraint
+### 12.1 Autoregressive constraint 🚧
 
 - predict next token using only present/past context
 - future leakage as cheating
@@ -1117,18 +1117,15 @@ These are not required to declare the MiniGPT project complete.
 Steps 1–8.5      ✅ Material prepared
 Steps 9.1–9.5    ✅ Material prepared / static audit passed
 Steps 10.1–10.5  ✅ Material prepared / static audit passed
-Step 11.1         ✅ Material prepared / static audit passed
-Step 11.2         ✅ Material prepared / static audit passed
-Step 11.3         ✅ Material prepared / static audit passed
-Step 11.4         ✅ Material prepared / static audit passed
-Step 11.5         🚧 Current material prepared
-Step 12.1+           Planned only
+Steps 11.1–11.5  ✅ Material prepared / static audit passed
+Step 12.1         🚧 Current material prepared
+Step 12.2+           Planned only
 ```
 
 Current course-material checkpoint:
 
-> **Step 11.5 — Weighted Value retrieval**
+> **Step 12.1 — Autoregressive constraint**
 
 Learner-status note:
 
-> Material preparation for Step 11.5 does not assert learner mastery, work-notebook completion, or exercise completion. Do not enter Step 12.1 unless the learner explicitly asks to proceed beyond Step 11.5.
+> Material preparation for Step 12.1 does not assert learner mastery, work-notebook completion, or exercise completion. Do not enter Step 12.2 unless the learner explicitly asks to proceed beyond Step 12.1.
