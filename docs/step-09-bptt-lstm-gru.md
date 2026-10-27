@@ -2,7 +2,7 @@
 
 目标：理解 Vanilla RNN 的长期 credit assignment 为什么困难，以及 gating 为什么被引入。
 
-本 Step 保留既有 9.1–9.5 课纲。Step 9.1、9.2 材料已通过静态审核；当前只准备 **09.3**，不进入 09.4：
+本 Step 保留既有 9.1–9.5 课纲。Step 9.1、9.2、9.3 材料已通过静态审核；当前只准备 **09.4**，不进入 09.5：
 
 1. **09.1 Backpropagation Through Time**
 2. **09.2 Vanishing and Exploding Gradients**
@@ -304,3 +304,46 @@ h_t = o_t ⊙ tanh(c_t)
 MLX v0.32.2 内部 packed parameters 为 `Wx=(4H,C)`、`Wh=(4H,H)`、`bias=(4H,)`（bias=True），并按 `i,f,g,o` 顺序 split。
 
 Step 9.3 材料准备到此停止，不进入 Step 9.4。
+
+## Step 09.4 — GRU
+
+### Why GRU simplifies gated recurrence
+
+GRU（Gated Recurrent Unit）只维护一个 recurrent hidden state `h_t`，不再维护独立的 LSTM cell state `c_t`。它用 reset gate `r_t`、update gate `z_t` 与 tanh candidate `n_t` 实现门控更新。
+
+GRU 不是必然优于 LSTM 的替代品；它是另一种更紧凑的 gated recurrent architecture。
+
+### Equations and gate semantics
+
+本课程采用与 MLX 0.32.2 一致的约定：
+
+```text
+r_t = sigmoid(W_xr x_t + W_hr h_(t-1) + b_r)
+z_t = sigmoid(W_xz x_t + W_hz h_(t-1) + b_z)
+n_t = tanh(W_xn x_t + b_n + r_t ⊙ (W_hn h_(t-1) + b_hn))
+h_t = (1-z_t) ⊙ n_t + z_t ⊙ h_(t-1)
+```
+
+`r_t` 主要控制上一 hidden projection 参与 candidate 构造的程度；`z_t` 控制最终 state 在旧 `h_(t-1)` 与新 candidate `n_t` 之间的逐元素加权插值。按这一约定，`z_t≈1` 更保留旧 state，`z_t≈0` 更采用 candidate。不同资料可能采用相反的 update-gate 表达，应以具体公式为准。
+
+### Tiny numeric intuition
+
+若 `h_(t-1)=0.8`、`n_t=0.2`，则 `z_t=0.9` 时 `h_t=0.74`，主要保留旧 state；`z_t=0.1` 时 `h_t=0.26`，主要采用 candidate。
+
+Reset gate 不直接决定最终旧 state 保留多少，而是调节 candidate recurrent contribution。例如固定 input term 0.1、recurrent proposal 0.6 时，`r=0.2` 得 candidate preactivation 0.22，`r=0.9` 得 0.64。
+
+### Shapes and direct retain path
+
+`x_t=(B,C)`、`h_(t-1)=(B,H)`；`r_t/z_t/n_t` 都是 `(B,H)`。工程实现将三组 projection 打包为 `Wx=(3H,C)`、`Wh=(3H,H)`，因此 GRU 使用 `3H` packed width，而 LSTM 使用 `4H`。
+
+只看 `h_(t-1) -> h_t` 中直接乘 `z_t` 的 retain edge，并在该局部 partial derivative 中把当前 gate/candidate 当作给定，则 direct Jacobian contribution 为 `diag(z_t)`，direct backward contribution 为 `z_t ⊙ g_(h_t)`。这只是 direct path contribution，不是完整 GRU total Jacobian；`r/z/n` 都依赖上一 hidden state。
+
+### MLX 0.32.2 mapping and LSTM comparison
+
+项目固定 `mlx==0.32.2`。该版本提供 `nn.GRU(input_size, hidden_size, bias=True)`；batched input `(B,T,C)` 可配 initial hidden `(B,H)`，返回 hidden-state sequence `(B,T,H)`。
+
+MLX v0.32.2 packed parameters 为：`Wx=(3H,C)`、`Wh=(3H,H)`、`b=(3H,)` 与 candidate recurrent bias `bhn=(H,)`（bias=True）。
+
+在相同 C/H、bias=True 的 MLX 0.32.2 实现中，GRU 参数量为 `3HC+3H^2+4H`，LSTM 为 `4HC+4H^2+4H`。例如 `C=3,H=4` 时分别为 100 与 128。参数更少不代表效果必然更好。
+
+Step 9.4 材料准备到此停止，不进入 Step 9.5。
