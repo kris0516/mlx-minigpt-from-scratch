@@ -2,7 +2,7 @@
 
 目标：理解 recurrent encoder–decoder Seq2Seq 如何把一个 source sequence 转换成另一个 target sequence，并为后续 fixed-vector bottleneck 与 Attention 的历史动机建立基础。
 
-本 Step 保留现有 roadmap 的 10.1–10.5 结构。Step 10.1、10.2 材料已通过静态审核；当前只准备 **10.3 Bahdanau-style attention intuition**，不进入 10.4。
+本 Step 保留现有 roadmap 的 10.1–10.5 结构。Step 10.1–10.3 材料已通过静态审核；当前只准备 **10.4 Score → softmax → weighted sum**，不进入 10.5。
 
 ## Step 10.1 — Encoder-decoder Seq2Seq
 
@@ -158,3 +158,62 @@ Step 10.3 Notebook 中的 heatmap weights 是人工给定的 intuition example�
 本节只建立这一概念结构。不推导 softmax，也不做 score→softmax→weighted-sum 的精确数值计算；这些属于 Step 10.4。
 
 Step 10.3 材料准备到此停止，不进入 Step 10.4。
+
+## Step 10.4 — Score → softmax → weighted sum
+
+### Raw score to normalized attention weight
+
+固定 decoder step `u` 时，alignment function 为各 source positions 产生 raw scores `e_(u,j)`。Raw score 可以是任意实数，不能直接当作满足非负且和为 1 的 attention distribution。
+
+Softmax 定义为：
+
+```text
+alpha_(u,j) = exp(e_(u,j)) / sum_k exp(e_(u,k))
+```
+
+`exp(x)=e^x` 始终为正，并保持输入大小顺序；除以同一 decoder step 上所有 source positions 的指数和后，得到非负且总和为 1 的 normalized weights。
+
+例如 scores `[2,1,0]`：指数约为 `[7.389,2.718,1]`，总和约 `11.107`，因此 weights 约 `[0.665,0.245,0.090]`。
+
+### Weighted sum of encoder states
+
+若 encoder states 为 `h_j^enc`，attention context 定义为：
+
+```text
+c_u = sum_j alpha_(u,j) * h_j^enc
+```
+
+例如 weights `[0.665,0.245,0.090]` 与 states `[1,0]`、`[0,2]`、`[3,1]` 组合后，context 约为 `[0.935,0.580]`。
+
+因为 weights 非负且和为 1，这可以理解为 encoder states 的 weighted average。
+
+### MLX softmax and broadcasting
+
+MLX 0.32.2 支持 `mx.softmax(scores, axis=-1)`。对 one-decoder-step scores `(B,T_src)`，`axis=-1` 就是 source-position axis，因此每个 batch row 独立归一化，输出 shape 仍为 `(B,T_src)`。
+
+为了把 `(B,T_src)` weights 逐 position 乘到 `(B,T_src,H_enc)` encoder states 上，可用 `weights[...,None]` 将其变为 `(B,T_src,1)`，再通过 broadcasting 得到 `(B,T_src,H_enc)`；最后 `mx.sum(..., axis=1)` reduce source-position axis，得到 context `(B,H_enc)`。
+
+### Complete attention computation
+
+固定 decoder step `u`：
+
+```text
+e_(u,j) = alignment score
+alpha_(u,j) = softmax over j
+c_u = sum_j alpha_(u,j) h_j^enc
+```
+
+shape flow：
+
+```text
+scores  (B,T_src)
+-> softmax over source axis
+weights (B,T_src)
+-> scale encoder states (B,T_src,H_enc)
+-> sum over source axis
+context (B,H_enc)
+```
+
+本节只完成第一次精确 Attention computation。Bahdanau additive scoring network 的内部参数形式和后续 Transformer 历史桥接都不在本节展开。
+
+Step 10.4 材料准备到此停止，不进入 Step 10.5。
