@@ -21,13 +21,14 @@ Steps 10.1–10.5  ✅ Material prepared / static audit passed
 Steps 11.1–11.5  ✅ Material prepared / static audit passed
 Steps 12.1–12.5  ✅ Material prepared / static audit passed
 Step 13.1         ✅ Material prepared / static audit passed
-Step 13.2         🚧 Current material prepared
-Step 13.3+           Planned only
+Step 13.2         ✅ Material prepared / static audit passed
+Step 13.3         🚧 Current material prepared
+Step 13.4+           Planned only
 ```
 
-Current course-material checkpoint: **Step 13.2 — Fused QKV projection**.
+Current course-material checkpoint: **Step 13.3 — Split channels into heads**.
 
-Learner completion/mastery for Step 13.2 is intentionally **not asserted** here.
+Learner completion/mastery for Step 13.3 is intentionally **not asserted** here.
 
 ## Persistent course documents
 
