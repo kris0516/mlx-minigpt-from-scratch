@@ -19,13 +19,14 @@ Steps 1–8.5  material prepared
 Step 9.1      material prepared; static audit passed
 Step 9.2      material prepared; static audit passed
 Step 9.3      material prepared; static audit passed
-Step 9.4      current material prepared
-Step 9.5      planned only; not current
+Step 9.4      material prepared; static audit passed
+Step 9.5      current material prepared
+Step 10.1+    planned only; not current
 ```
 
-**Material status is not learner status.** No claim is made that the learner has completed the Step 9.4 work notebook, completed exercises, or mastered GRU.
+**Material status is not learner status.** No claim is made that the learner has completed the Step 9.5 work notebook, completed exercises, or mastered the remaining limitations of LSTM/GRU.
 
-Do not enter Step 9.5 until the learner explicitly asks to proceed beyond Step 9.4.
+Do not enter Step 10.1 until the learner explicitly asks to proceed beyond Step 9.5.
 
 ## Non-negotiable teaching constraints
 
@@ -166,9 +167,9 @@ mlx-minigpt-from-scratch/
 
 Current course-material checkpoint:
 
-> **Step 9.4 — GRU**
+> **Step 9.5 — Why LSTM/GRU still did not solve everything**
 
-Step 9.4 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 9.5 as current unless the learner explicitly asks to proceed.
+Step 9.5 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 10.1 as current unless the learner explicitly asks to proceed.
 
 ## 2026-10-08 continuity re-audit
 
@@ -197,3 +198,13 @@ Reset gate controls the previous-hidden contribution used to construct the candi
 For MLX 0.32.2, `nn.GRU(input_size, hidden_size, bias=True)` uses packed `Wx=(3H,C)`, `Wh=(3H,H)`, `b=(3H,)`, plus `bhn=(H,)` when bias is enabled, and returns hidden-state sequence `(B,T,H)`.
 
 Do not enter Step 9.5 during Step 9.4 delivery.
+
+## Step 9.5 accuracy boundary
+
+Emphasize that LSTM/GRU gates improve state retention and gradient flow but do not remove recurrence. Distinguish the Time-axis serial dependency from parallelism available across batch rows and within each time step.
+
+Do not claim recurrent models are wholly non-parallel: input-side packed projections can be computed across T, while hidden/cell-dependent state transitions remain sequential.
+
+Describe fixed-width recurrent state as a practical representation bottleneck, not a dimension-count proof of absolute information impossibility. Gating does not shorten a long recurrent information path to constant length.
+
+Use Step 9.5 only to close the recurrent-family limitations. Do not enter encoder-decoder Seq2Seq / Step 10.1 during this lesson.
