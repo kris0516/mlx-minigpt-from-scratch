@@ -20,13 +20,14 @@ Steps 9.1–9.5    material prepared; static audit passed
 Steps 10.1–10.5  material prepared; static audit passed
 Step 11.1         material prepared; static audit passed
 Step 11.2         material prepared; static audit passed
-Step 11.3         current material prepared
-Step 11.4+        planned only; not current
+Step 11.3         material prepared; static audit passed
+Step 11.4         current material prepared
+Step 11.5         planned only; not current
 ```
 
-**Material status is not learner status.** No claim is made that the learner has completed the Step 11.3 work notebook, completed exercises, or mastered Query–Key compatibility scores.
+**Material status is not learner status.** No claim is made that the learner has completed the Step 11.4 work notebook, completed exercises, or mastered scaling and softmax.
 
-Do not enter Step 11.4 until the learner explicitly asks to proceed beyond Step 11.3.
+Do not enter Step 11.5 until the learner explicitly asks to proceed beyond Step 11.4.
 
 ## Non-negotiable teaching constraints
 
@@ -167,9 +168,9 @@ mlx-minigpt-from-scratch/
 
 Current course-material checkpoint:
 
-> **Step 11.3 — `QK^T` as compatibility score**
+> **Step 11.4 — Scaling and softmax**
 
-Step 11.3 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 11.4 as current unless the learner explicitly asks to proceed.
+Step 11.4 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 11.5 as current unless the learner explicitly asks to proceed.
 
 ## 2026-10-08 continuity re-audit
 
@@ -292,3 +293,13 @@ Explicitly distinguish dot product from cosine similarity: cosine divides by bot
 Keep matrix semantics exact: with Q/K `(T,d_k)`, `QK^T` is `(T,T)` and entry `(i,j)` is Query i against Key j. Batch shape is `(B,T,d_k) @ (B,d_k,T) -> (B,T,T)`.
 
 Do not introduce scaling, `1/sqrt(d_k)`, or softmax during Step 11.3. Stop before Step 11.4.
+
+## Step 11.4 accuracy boundary
+
+Explain scaling from a clearly labelled statistical teaching assumption: independent, zero-mean, unit-variance Q/K components imply `Var(q·k)≈d_k` and standard deviation about `sqrt(d_k)`. Do not present this as an exact law for arbitrary trained representations.
+
+Define scaled scores as `QK^T / sqrt(d_k)` and make clear scaling changes magnitude but not `(B,T,T)` shape or score ordering under a positive scalar.
+
+Softmax must normalize each Query row across the Key-position axis. For scores `(B,T,T)`, use `mx.softmax(..., axis=-1)` and interpret `A[b,i,:]` as Query i's distribution over Keys.
+
+Step 11.4 ends with attention weights A. Do not multiply by V, derive the final context/output, or complete the full single-head calculation until Step 11.5.
