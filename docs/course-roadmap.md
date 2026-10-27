@@ -563,13 +563,13 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - `-inf`
 - why softmax maps masked scores to zero
 
-### 12.3 Stable attention computation 🚧
+### 12.3 Stable attention computation ✅
 
 - softmax numerical intuition
 - what scaling helps with
 - avoid simplistic claim that scaling only exists to “prevent gradient disappearance”
 
-### 12.4 Implement a single causal attention head
+### 12.4 Implement a single causal attention head 🚧
 
 - forward pass in MLX
 - shape trace
@@ -1120,14 +1120,15 @@ Steps 10.1–10.5  ✅ Material prepared / static audit passed
 Steps 11.1–11.5  ✅ Material prepared / static audit passed
 Step 12.1         ✅ Material prepared / static audit passed
 Step 12.2         ✅ Material prepared / static audit passed
-Step 12.3         🚧 Current material prepared
-Step 12.4+           Planned only
+Step 12.3         ✅ Material prepared / static audit passed
+Step 12.4         🚧 Current material prepared
+Step 12.5            Planned only
 ```
 
 Current course-material checkpoint:
 
-> **Step 12.3 — Stable attention computation**
+> **Step 12.4 — Implement a single causal attention head**
 
 Learner-status note:
 
-> Material preparation for Step 12.3 does not assert learner mastery, work-notebook completion, or exercise completion. Do not enter Step 12.4 unless the learner explicitly asks to proceed beyond Step 12.3.
+> Material preparation for Step 12.4 does not assert learner mastery, work-notebook completion, or exercise completion. Do not enter Step 12.5 unless the learner explicitly asks to proceed beyond Step 12.4.
