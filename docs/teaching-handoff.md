@@ -16,15 +16,14 @@ Repository lesson-material preparation:
 
 ```text
 Steps 1–8.5  material prepared
-Step 9.1      current material prepared / being corrected
-Step 9.2+     planned only; not current
+Step 9.1      material prepared; static audit passed
+Step 9.2      current material prepared
+Step 9.3+     planned only; not current
 ```
 
-**Do not interpret these material states as learner mastery or exercise completion.** The current learner/course checkpoint remains Step 9.1. No claim is made that the learner has completed the Step 9.1 work notebook, passed an assessment, or mastered BPTT.
+**Material status is not learner status.** No claim is made that the learner has completed the Step 9.2 work notebook, completed exercises, or mastered vanishing/exploding gradients.
 
-Only record learner completion when the learner explicitly confirms it or an agreed completion/assessment event actually occurs. Material creation, GitHub commit status, or a teaching explanation alone is not learner completion.
-
-Do not enter Step 9.2 until the learner explicitly asks to proceed beyond Step 9.1.
+Do not enter Step 9.3 until the learner explicitly asks to proceed beyond Step 9.2.
 
 ## Non-negotiable teaching constraints
 
@@ -155,12 +154,16 @@ mlx-minigpt-from-scratch/
 
 ## Immediate next action
 
-Current course checkpoint:
+Current course-material checkpoint:
 
-> **Step 9.1 — Backpropagation through time**
+> **Step 9.2 — Vanishing and exploding gradients**
 
-Remain at Step 9.1 during material correction. Do not create, teach, or mark Step 9.2 as current unless the learner explicitly asks to proceed. Do not infer Step 9.1 mastery or exercise completion from the existence of the lesson materials.
+Step 9.2 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 9.3 as current unless the learner explicitly asks to proceed.
 
 ## 2026-10-08 continuity re-audit
 
 Before Step 8.1, verified the live main tree, all 26 tracked master Notebooks (01–26), Steps 01–07 documentation, full roadmap, and learner agreements. See `docs/course-continuity-check-2026-10-08.md`. Do not conflate position-wise MLP with a flattened whole-sequence MLP. The former lacks cross-token mixing; the latter can mix tokens but has fixed-length input-width trade-offs.
+
+## Step 9.2 accuracy boundary
+
+Teach vanishing/exploding gradients from temporal derivative/Jacobian products. Use `0.5^n` and `1.5^n` only as scalar toy intuition; for vector RNNs emphasize state-dependent `D_k`, direction-dependent Jacobian action, transpose/order from the column-gradient convention, and that a single matrix can shrink some directions while growing others. Explain L2/global gradient norm before using MLX 0.32.2 `mlx.optimizers.clip_grad_norm`. Clipping mitigates excessive gradient magnitude but does not repair vanishing credit, tanh saturation, or long recurrent paths. Do not enter LSTM/Step 9.3 during Step 9.2 delivery.
