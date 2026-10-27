@@ -20,13 +20,14 @@ Steps 9.1–9.5    material prepared; static audit passed
 Steps 10.1–10.5  material prepared; static audit passed
 Steps 11.1–11.5  material prepared; static audit passed
 Steps 12.1–12.5  material prepared; static audit passed
-Step 13.1         current material prepared
-Step 13.2+        planned only; not current
+Step 13.1         material prepared; static audit passed
+Step 13.2         current material prepared
+Step 13.3+        planned only; not current
 ```
 
-**Material status is not learner status.** No claim is made that the learner has completed the Step 13.1 work notebook, completed exercises, or mastered why Multi-Head Attention uses multiple learned heads.
+**Material status is not learner status.** No claim is made that the learner has completed the Step 13.2 work notebook, completed exercises, or mastered fused QKV projection.
 
-Do not enter Step 13.2 until the learner explicitly asks to proceed beyond Step 13.1.
+Do not enter Step 13.3 until the learner explicitly asks to proceed beyond Step 13.2.
 
 ## Non-negotiable teaching constraints
 
@@ -167,9 +168,9 @@ mlx-minigpt-from-scratch/
 
 Current course-material checkpoint:
 
-> **Step 13.1 — Why multiple heads**
+> **Step 13.2 — Fused QKV projection**
 
-Step 13.1 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 13.2 as current unless the learner explicitly asks to proceed.
+Step 13.2 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 13.3 as current unless the learner explicitly asks to proceed.
 
 ## 2026-10-08 continuity re-audit
 
@@ -376,3 +377,15 @@ Do not preassign human meanings to heads. Examples such as syntax, pronouns, or 
 A hand-designed two-head toy example may show that different projection matrices produce different causal attention patterns. State clearly that the hand-selected projections are for intuition only and real head projections are learned.
 
 Stop before Step 13.2. Do not introduce fused `Linear(C,3C)`, QKV splitting, `C=H×D`, head reshaping/transposition, concatenation, or output projection.
+
+## Step 13.2 accuracy boundary
+
+Start from three already-known full-width projections `W_Q/W_K/W_V:(C,C)`. Explain that horizontally concatenating them gives a mathematical fused matrix `W_QKV:(C,3C)`, so one projection produces `(B,T,3C)`.
+
+For MLX 0.32.2, `nn.Linear(C,3C)` stores weight as `(3C,C)`. Use `mx.split(qkv, indices_or_sections=3, axis=-1)` to recover Q/K/V, each `(B,T,C)`.
+
+Do not claim fusion reduces parameter count: with the same bias choice, three `Linear(C,C)` layers and one `Linear(C,3C)` have identical trainable parameter counts (`3C^2` weights, plus `3C` biases if enabled). Fusion is primarily parameter packing / compute organization.
+
+Do not overpromise a fixed runtime speedup; one larger projection can reduce dispatch/call overhead and organize matrix multiplication efficiently, but actual performance is implementation- and hardware-dependent.
+
+Stop before Step 13.3. Do not split C into `H×D`, reshape to `(B,T,H,D)`, transpose head axes, concatenate heads, or introduce output projection.
