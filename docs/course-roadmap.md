@@ -437,13 +437,13 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 
 **Goal:** understand why vanilla RNNs struggle with long-range dependency and how gating was introduced.
 
-### 9.1 Backpropagation through time 🚧
+### 9.1 Backpropagation through time ✅
 
 - unfold the recurrent graph
 - chain rule across many time steps
 - why products of derivatives appear
 
-### 9.2 Vanishing and exploding gradients
+### 9.2 Vanishing and exploding gradients 🚧
 
 - repeated multiplication examples such as `0.5^n` and `1.5^n`
 - long-range credit assignment
@@ -1107,40 +1107,16 @@ These are not required to declare the MiniGPT project complete.
 > Learner completion must only be recorded when the learner explicitly confirms completion or an agreed assessment has actually been completed.
 
 ```text
-Step 1   ✅ Material prepared
-Step 2   ✅ Material prepared
-Step 3   ✅ Material prepared
-Step 4.1 ✅ Material prepared
-Step 4.2 ✅ Material prepared
-Step 4.3 ✅ Material prepared
-Step 4.4 ✅ Material prepared
-Step 5.1 ✅ Material prepared
-Step 5.2 ✅ Material prepared
-Step 5.3 ✅ Material prepared
-Step 5.4 ✅ Material prepared
-Step 5.5 ✅ Material prepared
-Step 6.1 ✅ Material prepared
-Step 6.2 ✅ Material prepared
-Step 6.3 ✅ Material prepared
-Step 6.4 ✅ Material prepared
-Step 6.5 ✅ Material prepared
-Step 7.1 ✅ Material prepared
-Step 7.2 ✅ Material prepared
-Step 7.3 ✅ Material prepared
-Step 7.4 ✅ Material prepared
-Step 7.5 ✅ Material prepared
-Step 8.1 ✅ Material prepared
-Step 8.2 ✅ Material prepared
-Step 8.3 ✅ Material prepared
-Step 8.4 ✅ Material prepared
-Step 8.5 ✅ Material prepared
-Step 9.1 🚧 Current material prepared / under course-material correction
+Steps 1–8.5  ✅ Material prepared
+Step 9.1      ✅ Material prepared / static audit passed
+Step 9.2      🚧 Current material prepared
+Step 9.3+        Planned only
 ```
 
-Current course checkpoint:
+Current course-material checkpoint:
 
-> **Step 9.1 — Backpropagation through time**
+> **Step 9.2 — Vanishing and exploding gradients**
 
 Learner-status note:
 
-> No statement is made here that Step 9.1 has been mastered, that its work notebook has been completed, or that its exercises have been passed. Do not advance the learner-status checkpoint to Step 9.2 unless the learner explicitly asks to proceed after Step 9.1.
+> Material preparation for Step 9.2 does not assert learner mastery, work-notebook completion, or exercise completion. Do not enter Step 9.3 unless the learner explicitly asks to proceed beyond Step 9.2.
