@@ -20,17 +20,14 @@ Steps 9.1–9.5    ✅ Material prepared / static audit passed
 Steps 10.1–10.5  ✅ Material prepared / static audit passed
 Steps 11.1–11.5  ✅ Material prepared / static audit passed
 Steps 12.1–12.5  ✅ Material prepared / static audit passed
-Step 13.1         ✅ Material prepared / static audit passed
-Step 13.2         ✅ Material prepared / static audit passed
-Step 13.3         ✅ Material prepared / static audit passed
-Step 13.4         ✅ Material prepared / static audit passed
-Step 13.5         🚧 Current material prepared
-Step 14.1+           Planned only
+Steps 13.1–13.5  ✅ Material prepared / static audit passed
+Step 14.1         🚧 Current material prepared
+Step 14.2+           Planned only
 ```
 
-Current course-material checkpoint: **Step 13.5 — Concatenate heads and output projection**.
+Current course-material checkpoint: **Step 14.1 — Residual connection**.
 
-Learner completion/mastery for Step 13.5 is intentionally **not asserted** here.
+Learner completion/mastery for Step 14.1 is intentionally **not asserted** here.
 
 ## Persistent course documents
 
