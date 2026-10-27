@@ -534,13 +534,13 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - distinction from cosine similarity unless vectors are normalized
 - produce the `T × T` score matrix
 
-### 11.4 Scaling and softmax 🚧
+### 11.4 Scaling and softmax ✅
 
 - why dot-product variance grows with head dimension
 - `1/sqrt(d_k)`
 - softmax as normalized positive weights
 
-### 11.5 Weighted Value retrieval
+### 11.5 Weighted Value retrieval 🚧
 
 - `A @ V`
 - each output position becomes a context-dependent representation
@@ -1120,14 +1120,15 @@ Steps 10.1–10.5  ✅ Material prepared / static audit passed
 Step 11.1         ✅ Material prepared / static audit passed
 Step 11.2         ✅ Material prepared / static audit passed
 Step 11.3         ✅ Material prepared / static audit passed
-Step 11.4         🚧 Current material prepared
-Step 11.5            Planned only
+Step 11.4         ✅ Material prepared / static audit passed
+Step 11.5         🚧 Current material prepared
+Step 12.1+           Planned only
 ```
 
 Current course-material checkpoint:
 
-> **Step 11.4 — Scaling and softmax**
+> **Step 11.5 — Weighted Value retrieval**
 
 Learner-status note:
 
-> Material preparation for Step 11.4 does not assert learner mastery, work-notebook completion, or exercise completion. Do not enter Step 11.5 unless the learner explicitly asks to proceed beyond Step 11.4.
+> Material preparation for Step 11.5 does not assert learner mastery, work-notebook completion, or exercise completion. Do not enter Step 12.1 unless the learner explicitly asks to proceed beyond Step 11.5.
