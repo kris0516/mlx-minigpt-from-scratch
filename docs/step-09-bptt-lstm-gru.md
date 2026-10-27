@@ -213,13 +213,39 @@ Scalar tanh RNN 的 local recurrent derivative 为 `w_h*(1-h_k^2)`。因此传�
 
 ### Vector Jacobians and direction dependence
 
-对 column-vector RNN：`J_(k,k-1)=D_k W_h`，其中 `D_k=diag(1-h_k^2)` 是把每个 hidden coordinate 的 tanh derivative 放在对角线上的 `(H,H)` matrix；backward 为 `g_(k-1)=J_(k,k-1)^T g_k = W_h^T D_k g_k`。
+必须先区分 **future-path contribution** 与 **total hidden-state gradient**。
+
+令 `J_(k,k-1)=∂h_k/∂h_(k-1)`。如果 loss 只在末端定义，或者这里只追踪未来 loss 沿 recurrent edge 回传的一条路径贡献，则：
+
+```text
+g_(k-1)^future = J_(k,k-1)^T g_k
+```
+
+其中 future term 表示 `h_(k-1)` 先影响 `h_k`，再影响之后的 losses。
+
+如果 `L=Σ_t ℓ_t` 且每一步都有 local loss，则 total hidden-state gradient 应写成：
+
+```text
+g_(k-1) = ∇_(h_(k-1)) ℓ_(k-1) + J_(k,k-1)^T g_k
+```
+
+第一项是 **local term**：`h_(k-1)` 对当前时间位置 loss 的直接贡献；第二项是 **future term**：经 recurrent chain 从未来传回的贡献。后面的 vanishing/exploding Jacobian 连乘主要分析第二项的 long-range propagation，不能把这条路径贡献自动当成有 local losses 时的总梯度。
+
+对 column-vector Vanilla RNN：`J_(k,k-1)=D_k W_h`，其中 `D_k=diag(1-h_k^2)` 是把每个 hidden coordinate 的 tanh derivative 放在对角线上的 `(H,H)` matrix。因此 future-path contribution 为 `g_(k-1)^future=W_h^T D_k g_k`；若 local loss 存在，再加上 local term。
 
 同一个 Jacobian 可以放大某些 gradient directions、同时缩小另一些 directions。例如 `diag(1.5,0.5)` 对 `[1,0]^T` 产生 `1.5^n` 型增长，对 `[0,1]^T` 产生 `0.5^n` 型衰减。真实 RNN 的 `D_k` 随 state 变化，Jacobian 也随时间变化且矩阵顺序不可交换，因此不能把 scalar toy conclusion 直接套到所有矩阵情形。
 
+在材料第一次使用 `l2_norm` 比较上述方向之前，先定义 **L2 norm（二范数 / Euclidean norm）**：
+
+```text
+||g||_2 = sqrt(Σ_i g_i^2)
+```
+
+它把一个 gradient vector 的大小变成非负 scalar。例如 `g=[3,4]^T` 时，`||g||_2=sqrt(3^2+4^2)=5`。
+
 ### Gradient norm and clipping
 
-L2 norm `||g||_2=sqrt(sum_i g_i^2)` 把 vector magnitude 变成非负 scalar；例如 `[3,4]^T` 的 norm 为 5。Global gradient norm 对整个 gradient tree 的所有元素一起平方求和再开根号。
+在单个向量的 L2 norm 已经定义之后，再扩展到 global gradient norm：对整个 gradient tree 的所有元素一起平方求和再开根号。
 
 Global-norm clipping 在 gradient 太大时用同一比例缩小整个 gradient tree。例如 `[6,8]^T` 的 norm 为 10，若 `max_norm=5`，理想化 scale 为 0.5，得到 `[3,4]^T`。
 
@@ -229,6 +255,6 @@ Global-norm clipping 在 gradient 太大时用同一比例缩小整个 gradient 
 
 Gradient clipping 可以缓解 exploding gradient 导致的极端 update magnitude 与训练震荡风险，但不能恢复已经 vanishing 的 long-range signal，不能消除 tanh saturation，不能缩短 recurrent dependency path，也不能保证长期记忆或训练收敛。
 
-Vanishing 描述的常常是远距离 path contribution 变弱，并不意味着整个 parameter gradient tensor 必然接近零；parameter gradient 还可能包含 local-loss 和多个时间路径的求和贡献。
+Vanishing 描述的常常是远距离 **future-path contribution** 变弱，并不意味着 total hidden-state gradient 或整个 parameter gradient tensor 必然接近零。若 `L=Σ_tℓ_t`，hidden-state total gradient 还包含 local term `∇_(h_(k-1))ℓ_(k-1)`，parameter gradient 也可能包含 local-loss 和多个时间路径的求和贡献。
 
 Step 9.2 只建立这些边界。材料准备到此停止，不进入 Step 9.3。
