@@ -2,7 +2,7 @@
 
 目标：理解 Vanilla RNN 的长期 credit assignment 为什么困难，以及 gating 为什么被引入。
 
-本 Step 仍保持既有 5 个小节；本轮只修正 **09.1**，不进入 09.2：
+本 Step 仍保持既有 5 个小节。Step 9.1 材料已通过静态审核；当前只准备 **09.2**，不进入 09.3：
 
 1. **09.1 Backpropagation Through Time**
 2. **09.2 Vanishing and Exploding Gradients**
@@ -193,6 +193,42 @@ g_t = J_(T-1,t)^T g_(T-1)
 
 每一步 shape 都是 `(H,H)(H,1)->(H,1)`。矩阵乘法不可交换，所以顺序不能任意更改。
 
-### 本轮边界
+### Step 9.1 材料状态
 
-本轮只修正并准备 Step 9.1 母版/文档，不执行 Notebook、不训练、不创建用户工作副本、不进入 Step 9.2，也不据此声明学员已掌握或完成练习。
+Step 9.1 母版已通过静态审核；这只表示材料准备状态，不代表学员已经掌握、完成练习或通过验收。
+
+## Step 09.2 — Vanishing and Exploding Gradients
+
+### Repeated scalar products
+
+若一条长度 n 的教学链每一步都乘相同 scalar factor c，则 long-range sensitivity 为 `c^n`。`0.5^n` 快速衰减，`1.5^n` 快速增长；它们只建立 repeated-product 直觉，不是一般 vector RNN 的完整判据。
+
+从 `h_t` 到 `h_(T-1)` 跨过的 recurrent transition 数是 `(T-1)-t`。
+
+### Tanh saturation and state-dependent local factors
+
+Scalar tanh RNN 的 local recurrent derivative 为 `w_h*(1-h_k^2)`。因此传播强度同时依赖 recurrent weight 与当前 hidden state。`a≈0` 时 tanh derivative 接近 1；`a=1` 时约 0.419974；`a=2` 时约 0.070651。进入 saturation 区会显著压低局部 sensitivity。
+
+即使 `|w_h|>1`，若 tanh 已饱和，local factor 仍可能小于 1；不能只检查 scalar `w_h` 就判断长期 gradient 行为。
+
+### Vector Jacobians and direction dependence
+
+对 column-vector RNN：`J_(k,k-1)=D_k W_h`，其中 `D_k=diag(1-h_k^2)` 是把每个 hidden coordinate 的 tanh derivative 放在对角线上的 `(H,H)` matrix；backward 为 `g_(k-1)=J_(k,k-1)^T g_k = W_h^T D_k g_k`。
+
+同一个 Jacobian 可以放大某些 gradient directions、同时缩小另一些 directions。例如 `diag(1.5,0.5)` 对 `[1,0]^T` 产生 `1.5^n` 型增长，对 `[0,1]^T` 产生 `0.5^n` 型衰减。真实 RNN 的 `D_k` 随 state 变化，Jacobian 也随时间变化且矩阵顺序不可交换，因此不能把 scalar toy conclusion 直接套到所有矩阵情形。
+
+### Gradient norm and clipping
+
+L2 norm `||g||_2=sqrt(sum_i g_i^2)` 把 vector magnitude 变成非负 scalar；例如 `[3,4]^T` 的 norm 为 5。Global gradient norm 对整个 gradient tree 的所有元素一起平方求和再开根号。
+
+Global-norm clipping 在 gradient 太大时用同一比例缩小整个 gradient tree。例如 `[6,8]^T` 的 norm 为 10，若 `max_norm=5`，理想化 scale 为 0.5，得到 `[3,4]^T`。
+
+项目固定 `mlx==0.32.2`。该版本提供 `mlx.optimizers.clip_grad_norm(grads, max_norm)`，返回 `(clipped_grads, total_norm)`；`total_norm` 是 clipping 前计算的 global norm。实现使用 `min(max_norm/(total_norm+1e-6),1)` 作为统一缩放因子。
+
+### What clipping can and cannot solve
+
+Gradient clipping 可以缓解 exploding gradient 导致的极端 update magnitude 与训练震荡风险，但不能恢复已经 vanishing 的 long-range signal，不能消除 tanh saturation，不能缩短 recurrent dependency path，也不能保证长期记忆或训练收敛。
+
+Vanishing 描述的常常是远距离 path contribution 变弱，并不意味着整个 parameter gradient tensor 必然接近零；parameter gradient 还可能包含 local-loss 和多个时间路径的求和贡献。
+
+Step 9.2 只建立这些边界。材料准备到此停止，不进入 Step 9.3。
