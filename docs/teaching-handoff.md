@@ -21,13 +21,14 @@ Steps 10.1–10.5  material prepared; static audit passed
 Steps 11.1–11.5  material prepared; static audit passed
 Step 12.1         material prepared; static audit passed
 Step 12.2         material prepared; static audit passed
-Step 12.3         current material prepared
-Step 12.4+        planned only; not current
+Step 12.3         material prepared; static audit passed
+Step 12.4         current material prepared
+Step 12.5         planned only; not current
 ```
 
-**Material status is not learner status.** No claim is made that the learner has completed the Step 12.3 work notebook, completed exercises, or mastered stable attention computation.
+**Material status is not learner status.** No claim is made that the learner has completed the Step 12.4 work notebook, completed exercises, or mastered the single causal attention head implementation.
 
-Do not enter Step 12.4 until the learner explicitly asks to proceed beyond Step 12.3.
+Do not enter Step 12.5 until the learner explicitly asks to proceed beyond Step 12.4.
 
 ## Non-negotiable teaching constraints
 
@@ -168,9 +169,9 @@ mlx-minigpt-from-scratch/
 
 Current course-material checkpoint:
 
-> **Step 12.3 — Stable attention computation**
+> **Step 12.4 — Implement a single causal attention head**
 
-Step 12.3 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 12.4 as current unless the learner explicitly asks to proceed.
+Step 12.4 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 12.5 as current unless the learner explicitly asks to proceed.
 
 ## 2026-10-08 continuity re-audit
 
@@ -343,3 +344,13 @@ Use a large-logit example such as `[1000,999,998]` to distinguish mathematical c
 Keep causal masking compatible with the stability story: `-inf` entries remain `-inf` after subtracting a finite row maximum; causal diagonal ensures at least one finite allowed score per row.
 
 Do not describe `1/sqrt(d_k)` as existing only to prevent vanishing gradients. Scaling primarily controls dot-product logit scale / softmax saturation and improves optimization conditions; subtract-max addresses exponential overflow. Stop before the complete causal-attention-head implementation in Step 12.4.
+
+## Step 12.4 accuracy boundary
+
+Implement one MLX `nn.Module` that joins the already-taught components in the correct order: Q/K/V projections, `QK^T`, `1/sqrt(d_h)` scaling, causal masking before softmax, stable `mx.softmax(...,axis=-1)`, then weighted Value retrieval.
+
+Use a clear shape trace: input `(B,T,C)`, Q/K/V `(B,T,d_h)`, scores/weights `(B,T,T)`, output `(B,T,d_h)`. This lesson may set `d_k=d_v=d_h` for a minimal single-head implementation.
+
+Treat the causal mask as structural, non-trainable information. The primary lesson implementation should construct it locally in forward so it does not enter the MLX parameter tree. If discussing a cached `self.causal_mask`, note that MLX module array attributes are parameters by default and must be explicitly frozen to stay out of `trainable_parameters()`.
+
+Do not add Multi-Head Attention, concatenation, output projection, residual/normalization, Transformer blocks, or dedicated attention-matrix inspection. Stop before Step 12.5.
