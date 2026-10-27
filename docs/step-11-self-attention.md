@@ -2,7 +2,7 @@
 
 目标：不直接背最终 Attention 公式，而是从信息检索角色出发，逐步推导 Query / Key / Value、compatibility score、scaling、softmax 与 Value retrieval。
 
-本 Step 保留现有 roadmap 的 11.1–11.5 结构。Step 11.1–11.3 材料已通过静态审核；当前只准备 **11.4 Scaling and softmax**，不进入 11.5。
+本 Step 保留现有 roadmap 的 11.1–11.5 结构。Step 11.1–11.4 材料已通过静态审核；当前只准备 **11.5 Weighted Value retrieval**，不进入 12.1。
 
 ## Step 11.1 — Why separate Query, Key, and Value
 
@@ -226,3 +226,72 @@ A = softmax(QK^T / sqrt(d_k))
 本节只得到 A，不执行 Value retrieval。`A @ V` 与完整 single-head output 属于 Step 11.5。
 
 Step 11.4 材料准备到此停止，不进入 Step 11.5。
+
+## Step 11.5 — Weighted Value retrieval
+
+### Attention weights retrieve Value content
+
+Step 11.4 得到 `A:(B,T,T)`，其中 `A[b,i,j]` 表示 Query position i 对 Key position j 的 normalized attention weight。A 只决定“从哪里取多少”；真正被取回的 payload 位于 `V:(B,T,d_v)`。
+
+单个 Query position 的输出是：
+
+```text
+o_i = sum_j A_(i,j) v_j
+```
+
+所有 Query positions 一次性计算就是：
+
+```text
+O = A @ V
+```
+
+shape 为 `(B,T,T) @ (B,T,d_v) -> (B,T,d_v)`。因此输出 width 跟随 `d_v`，而不是 `d_k`。
+
+### Tiny full single-head calculation
+
+Notebook 使用 `T=2,C=2,d_k=d_v=2` 的完整例子，从：
+
+```text
+X
+-> Q/K/V projections
+-> QK^T
+-> divide by sqrt(d_k)
+-> softmax
+-> A
+-> A @ V
+-> O
+```
+
+一路算到底。
+
+教学例子得到：
+
+```text
+A ≈ [[0.5000,0.5000],
+     [0.8044,0.1956]]
+
+O ≈ [[1.0000,2.0000],
+     [1.6088,0.7824]]
+```
+
+第一行 Query 对两个 Keys 等权，因此输出是两个 Values 的平均；第二行 Query 更偏向 Key 0，因此输出更接近 `v_0`。
+
+### Context-dependent representations
+
+`O` 的第 i 行不再只是 position i 自己原来的 Value，而是根据该 Query 自己的 attention distribution 对整条 sequence 的 Values 做 weighted mixture 得到的 context-dependent representation。
+
+### Full single-head formula
+
+到此可以把 Step 11 的 general single-head self-attention 压缩为：
+
+```text
+O = softmax(QK^T / sqrt(d_k)) V
+```
+
+课程没有从最终公式开始背，而是先逐步建立 Q/K/V 角色、linear projections、compatibility score、scaling、softmax 与 Value retrieval 的因果关系。
+
+### Scope boundary
+
+当前仍是 general self-attention，没有 causal mask、autoregressive visibility constraint、Multi-Head Attention、output projection、residual connection 或 Transformer block。
+
+Step 11.5 材料准备到此停止，不进入 Step 12.1。
