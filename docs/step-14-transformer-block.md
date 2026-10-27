@@ -2,7 +2,7 @@
 
 目标：逐步组装 GPT 中反复堆叠的 Transformer computation block。
 
-本 Step 保留现有 roadmap 的 14.1–14.5 结构。Step 14.1 材料已通过静态审核；当前只准备 **14.2 LayerNorm → RMSNorm historical path**，不进入 14.3。
+本 Step 保留现有 roadmap 的 14.1–14.5 结构。Step 14.1、14.2 材料已通过静态审核；当前只准备 **14.3 Pre-Norm vs Post-Norm**，不进入 14.4。
 
 ## Step 14.1 — Residual connection
 
@@ -91,3 +91,53 @@ nn.RMSNorm(dims=C, eps=1e-5)
 LayerNorm 默认 gamma=1、beta=0；RMSNorm 默认 gamma=1。MLX 0.32.2 的 RMSNorm mean-square accumulation 使用 float32 precision。
 
 Step 14.2 材料准备到此停止，不进入 Step 14.3；normalization 位于 residual branch 前还是后，以及 Pre-Norm / Post-Norm，留给下一既有小节。
+
+## Step 14.3 — Pre-Norm vs Post-Norm
+
+### Placement formulas
+
+使用 generic sublayer F 与 normalization N：
+
+```text
+Post-Norm: y = N(x + F(x))
+Pre-Norm : y = x + F(N(x))
+```
+
+两者 shape 都保持 `(B,T,C)`；差别是 normalization 在 computation graph 中的位置。
+
+### Historical framing
+
+原始 Transformer 的经典 Add & Norm 对应 Post-Norm pattern。随着模型变深，大量后续 Transformer / LLM architectures 使用 Pre-Norm 或相关 variants，一个重要动机是改善深层 optimization 与 gradient flow。
+
+这不意味着 Pre-Norm 在任何任务、深度与训练设定下都无条件优于 Post-Norm。
+
+### Gradient-path difference
+
+Pre-Norm：
+
+```text
+J_pre = I + J_F J_N
+g_x = g_y + J_N^T J_F^T g_y
+```
+
+因此存在一个不经过 normalization / sublayer Jacobian 的 direct identity gradient contribution `g_y`。
+
+Post-Norm：
+
+```text
+J_post = J_N (I + J_F)
+g_x = (I + J_F)^T J_N^T g_y
+```
+
+Residual identity contribution 仍存在于 `(I+J_F)`，但最终从 y 回到 x 的 gradient 仍要通过 normalization Jacobian。
+
+### Block skeleton
+
+```text
+pre_norm_step : x + sublayer(norm(x))
+post_norm_step: norm(x + sublayer(x))
+```
+
+本节只使用 generic sublayer F，不实现 Feed-Forward MLP 或完整 Transformer Block。
+
+Step 14.3 材料准备到此停止，不进入 Step 14.4。
