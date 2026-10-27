@@ -21,13 +21,14 @@ Steps 10.1–10.5  ✅ Material prepared / static audit passed
 Steps 11.1–11.5  ✅ Material prepared / static audit passed
 Step 12.1         ✅ Material prepared / static audit passed
 Step 12.2         ✅ Material prepared / static audit passed
-Step 12.3         🚧 Current material prepared
-Step 12.4+           Planned only
+Step 12.3         ✅ Material prepared / static audit passed
+Step 12.4         🚧 Current material prepared
+Step 12.5            Planned only
 ```
 
-Current course-material checkpoint: **Step 12.3 — Stable attention computation**.
+Current course-material checkpoint: **Step 12.4 — Implement a single causal attention head**.
 
-Learner completion/mastery for Step 12.3 is intentionally **not asserted** here.
+Learner completion/mastery for Step 12.4 is intentionally **not asserted** here.
 
 ## Persistent course documents
 
