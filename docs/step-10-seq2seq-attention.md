@@ -2,7 +2,7 @@
 
 目标：理解 recurrent encoder–decoder Seq2Seq 如何把一个 source sequence 转换成另一个 target sequence，并为后续 fixed-vector bottleneck 与 Attention 的历史动机建立基础。
 
-本 Step 保留现有 roadmap 的 10.1–10.5 结构。当前只准备 **10.1 Encoder-decoder Seq2Seq**，不进入 10.2。
+本 Step 保留现有 roadmap 的 10.1–10.5 结构。Step 10.1 材料已通过静态审核；当前只准备 **10.2 Fixed-vector bottleneck**，不进入 10.3。
 
 ## Step 10.1 — Encoder-decoder Seq2Seq
 
@@ -72,3 +72,46 @@ Decoder training path：
 概念上不同样本可以有不同 source/target lengths；同一个 dense batch 仍需要 padding/masks/length bookkeeping 等工程处理。本节不展开 padding 实现。
 
 Step 10.1 材料准备到此停止，不进入 Step 10.2。
+
+## Step 10.2 — Fixed-vector bottleneck
+
+### Interface bottleneck
+
+经典 recurrent Seq2Seq 的 encoder 会产生完整 hidden-state trajectory `(B,T_src,H)`，但 decoder 只通过 final encoder state `s=(B,H)` 接收 source information。因此 bottleneck 发生在 encoder→decoder interface，而不是因为 encoder 本身只有一个 state。
+
+```text
+encoder_states: (B,T_src,H)
+        ↓ take final state only
+s:              (B,H)
+        ↓
+decoder
+```
+
+### Fixed width and practical representation pressure
+
+当 `T_src` 增长时，context width H 不随 source length 增长。更长 source 中更多、分散的任务相关信息需要持续压缩到同一个 H-dimensional final state。
+
+这应理解为 practical representation bottleneck，而不是用 `T_src > H` 做“数学上绝对无法编码历史”的维度计数证明。现实困难来自有限精度、有限容量、连续可训练更新、优化与可恢复性等共同约束。
+
+### Long source-to-target recurrent path
+
+记 source position 为 `j`，decoder position 为 `u`。早期 source information 先经过 `T_src-1-j` 个 encoder recurrent transitions 到 final state，再经过 `u+1` 个 decoder recurrent transitions 到 `h_u^dec`。
+
+因此只计 recurrent transitions：
+
+```text
+path length = (T_src - 1 - j) + (u + 1)
+            = T_src + u - j
+```
+
+这说明 Step 9 的 long-range credit-assignment 问题并未消失，而是跨过 encoder 与 decoder 两段 recurrent chain。
+
+### Teacher forcing is a different issue
+
+Teacher forcing 改变的是 training 时 decoder previous-token input 的来源；它不会改变 `source -> final encoder state -> decoder` 的接口。因此 teacher forcing 不能消除 fixed-vector bottleneck。
+
+### Larger H and stronger gated RNNs
+
+增大 H、使用更强 LSTM/GRU 或改善优化可以提高 bottleneck 的容量与可训练性，但不改变经典结构中 decoder 只通过 final encoder state 访问 source information 的事实。
+
+Step 10.2 到这里提出关键历史问题：encoder 明明已经产生每个 source position 的 hidden states，为什么 decoder 只能依赖最后一个？本节不回答如何选择 source states，不进入 Step 10.3，也不介绍 Attention 的计算机制。
