@@ -15,18 +15,15 @@ MLP → RNN → LSTM/GRU → Seq2Seq → Attention → Transformer → GPT
 `✅` means repository lesson material has been prepared; it does **not** mean learner mastery or exercise completion.
 
 ```text
-Steps 1–8.5  ✅ Material prepared
-Step 9.1      ✅ Material prepared / static audit passed
-Step 9.2      ✅ Material prepared / static audit passed
-Step 9.3      ✅ Material prepared / static audit passed
-Step 9.4      ✅ Material prepared / static audit passed
-Step 9.5      🚧 Current material prepared
-Step 10.1+       Planned only
+Steps 1–8.5   ✅ Material prepared
+Steps 9.1–9.5 ✅ Material prepared / static audit passed
+Step 10.1      🚧 Current material prepared
+Step 10.2+        Planned only
 ```
 
-Current course-material checkpoint: **Step 9.5 — Why LSTM/GRU still did not solve everything**.
+Current course-material checkpoint: **Step 10.1 — Encoder-decoder Seq2Seq**.
 
-Learner completion/mastery for Step 9.5 is intentionally **not asserted** here.
+Learner completion/mastery for Step 10.1 is intentionally **not asserted** here.
 
 ## Persistent course documents
 
