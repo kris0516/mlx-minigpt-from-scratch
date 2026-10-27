@@ -18,13 +18,14 @@ Repository lesson-material preparation:
 Steps 1–8.5    material prepared
 Steps 9.1–9.5  material prepared; static audit passed
 Step 10.1       material prepared; static audit passed
-Step 10.2       current material prepared
-Step 10.3+      planned only; not current
+Step 10.2       material prepared; static audit passed
+Step 10.3       current material prepared
+Step 10.4+      planned only; not current
 ```
 
-**Material status is not learner status.** No claim is made that the learner has completed the Step 10.2 work notebook, completed exercises, or mastered the fixed-vector bottleneck.
+**Material status is not learner status.** No claim is made that the learner has completed the Step 10.3 work notebook, completed exercises, or mastered Bahdanau-style attention intuition.
 
-Do not enter Step 10.3 until the learner explicitly asks to proceed beyond Step 10.2.
+Do not enter Step 10.4 until the learner explicitly asks to proceed beyond Step 10.3.
 
 ## Non-negotiable teaching constraints
 
@@ -165,9 +166,9 @@ mlx-minigpt-from-scratch/
 
 Current course-material checkpoint:
 
-> **Step 10.2 — Fixed-vector bottleneck**
+> **Step 10.3 — Bahdanau-style attention intuition**
 
-Step 10.2 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 10.3 as current unless the learner explicitly asks to proceed.
+Step 10.3 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 10.4 as current unless the learner explicitly asks to proceed.
 
 ## 2026-10-08 continuity re-audit
 
@@ -228,3 +229,13 @@ Make the long path explicit: source position `j` to decoder position `u` crosses
 Teacher forcing does not change this source interface. Larger H or stronger gated RNNs can mitigate capacity/optimization pressure without changing the decoder's access pattern.
 
 Do not introduce Bahdanau Attention mechanics, scoring, weights, or weighted sums during Step 10.2; those belong to later existing roadmap subsections.
+
+## Step 10.3 accuracy boundary
+
+Teach Attention as dynamic access to the full encoder-state trajectory, motivated directly by the fixed-vector bottleneck. At decoder step `u`, use previous decoder state `h_(u-1)^dec` as the target-side context that is compared with each `h_j^enc` through a learned alignment/compatibility function.
+
+Introduce raw alignment score `e_(u,j)` conceptually, then normalized attention weights `α_(u,j)` as a nonnegative source-position distribution summing to 1. Do not present attention weights as guaranteed human explanations.
+
+Emphasize that different decoder steps can produce different source-position distributions and therefore different attention context vectors `c_u`.
+
+Do not derive softmax, compute score→softmax numerically, or perform the weighted-sum arithmetic in Step 10.3; those are reserved for Step 10.4. Do not introduce Q/K/V terminology here.
