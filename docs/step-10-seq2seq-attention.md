@@ -2,7 +2,7 @@
 
 目标：理解 recurrent encoder–decoder Seq2Seq 如何把一个 source sequence 转换成另一个 target sequence，并为后续 fixed-vector bottleneck 与 Attention 的历史动机建立基础。
 
-本 Step 保留现有 roadmap 的 10.1–10.5 结构。Step 10.1–10.3 材料已通过静态审核；当前只准备 **10.4 Score → softmax → weighted sum**，不进入 10.5。
+本 Step 保留现有 roadmap 的 10.1–10.5 结构。Step 10.1–10.4 材料已通过静态审核；当前只准备 **10.5 Historical bridge to Transformer**，不进入 11.1。
 
 ## Step 10.1 — Encoder-decoder Seq2Seq
 
@@ -217,3 +217,49 @@ context (B,H_enc)
 本节只完成第一次精确 Attention computation。Bahdanau additive scoring network 的内部参数形式和后续 Transformer 历史桥接都不在本节展开。
 
 Step 10.4 材料准备到此停止，不进入 Step 10.5。
+
+## Step 10.5 — Historical bridge to Transformer
+
+### Attention initially sat on top of recurrence
+
+Bahdanau-style Attention 解决/缓解了 classic Seq2Seq 的 fixed-vector source-access bottleneck：decoder 每一步可以动态读取整条 encoder-state trajectory，而不再只能依赖一个 final encoder state。
+
+但这个历史阶段的 encoder 与 decoder 本身仍然可以是 recurrent models。Attention 改变 source retrieval，并不会自动删除 `state_t <- state_(t-1)` 的 Time-axis dependency。
+
+### Direct content-based retrieval changes the question
+
+Attention 展示了一个重要事实：一个 representation 可以根据当前内容需要，直接从一组其他 representations 中选择并混合相关信息，而不必让所有信息都沿 recurrent chain 一步步传递。
+
+这自然引出新的问题：如果 decoder 可以直接访问任意 encoder positions，同一 sequence 内的 positions 是否也可以直接进行 content-based interaction，而不是主要依赖 recurrence 传播信息？
+
+这就是 Self-Attention 的历史动机。本节只提出这个概念问题，不推导 Self-Attention 计算。
+
+### Path length and parallelism motivation
+
+普通 recurrence 中，远距离位置之间的信息必须经过许多 temporal transitions。允许 positions 直接交互，可以显著缩短 conceptual dependency path。
+
+同时，如果一个 layer 不再要求 position `t` 必须等待 recurrent state `t-1` 才能更新，那么训练阶段多个 sequence positions 就更适合映射到并行矩阵计算。
+
+这并不意味着 autoregressive generation 失去顺序：生成第 `t+1` 个 token 仍然依赖已经生成的前文。Transformer 去掉的是 layer 内传统 recurrent state transition，不是取消 autoregressive task 的因果顺序。
+
+### Cross-attention vs self-attention terminology
+
+用现代术语描述，decoder 读取 encoder representations 常称为 encoder–decoder attention / cross-attention；Self-Attention 则研究同一 sequence 内 positions 之间的 attention interaction。
+
+本节只做角色区分，不进入 Q/K/V、Self-Attention score matrix 或后续数学。
+
+### Historical map
+
+更准确的历史逻辑是：
+
+```text
+RNN Seq2Seq
+-> RNN Seq2Seq + Attention
+-> direct content-based retrieval becomes central
+-> recurrence itself is questioned
+-> Self-Attention / Transformer motivation
+```
+
+2017 Transformer 的重要转折不是第一次发明 Attention，而是把 Attention 推进为核心序列建模机制，并去掉传统 recurrent state transition。
+
+Step 10.5 材料准备到此停止，不进入 Step 11.1。
