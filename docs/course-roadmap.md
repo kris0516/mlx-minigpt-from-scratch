@@ -45,6 +45,13 @@ From **Step 4 onward**:
 
 Step 3 retains its historical seven-subsection structure; later Steps may naturally vary around the usual five-subsection scale.
 
+### Material review rule
+
+- each lesson/subsection gets at most **two correction rounds** after its first prepared version;
+- review focuses on substantive correctness, obvious prerequisite gaps, basic usability, and whether the material was actually published to the repository;
+- do not spend extra correction rounds on minor formatting, wording, or stylistic preferences once the material is otherwise usable;
+- a static audit or correction limit describes material quality control only; it never implies learner mastery or exercise completion.
+
 ### Required teaching pattern
 
 For each subsection:
@@ -449,7 +456,7 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - long-range credit assignment
 - gradient clipping as a partial engineering remedy
 
-### 9.3 LSTM cell state and gates 🚧
+### 9.3 LSTM cell state and gates ✅
 
 - forget gate
 - input gate
@@ -457,7 +464,7 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - cell state as a more direct memory path
 - tiny numeric update example
 
-### 9.4 GRU
+### 9.4 GRU 🚧
 
 - merge/simplify LSTM gating
 - fewer states and parameters
@@ -1110,14 +1117,15 @@ These are not required to declare the MiniGPT project complete.
 Steps 1–8.5  ✅ Material prepared
 Step 9.1      ✅ Material prepared / static audit passed
 Step 9.2      ✅ Material prepared / static audit passed
-Step 9.3      🚧 Current material prepared
-Step 9.4+        Planned only
+Step 9.3      ✅ Material prepared / static audit passed
+Step 9.4      🚧 Current material prepared
+Step 9.5         Planned only
 ```
 
 Current course-material checkpoint:
 
-> **Step 9.3 — LSTM Cell State and Gates**
+> **Step 9.4 — GRU**
 
 Learner-status note:
 
-> Material preparation for Step 9.3 does not assert learner mastery, work-notebook completion, or exercise completion. Do not enter Step 9.4 unless the learner explicitly asks to proceed beyond Step 9.3.
+> Material preparation for Step 9.4 does not assert learner mastery, work-notebook completion, or exercise completion. Do not enter Step 9.5 unless the learner explicitly asks to proceed beyond Step 9.4.
