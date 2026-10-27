@@ -2,7 +2,7 @@
 
 目标：理解 Vanilla RNN 的长期 credit assignment 为什么困难，以及 gating 为什么被引入。
 
-本 Step 保留既有 9.1–9.5 课纲。Step 9.1、9.2、9.3 材料已通过静态审核；当前只准备 **09.4**，不进入 09.5：
+本 Step 保留既有 9.1–9.5 课纲。Step 9.1–9.4 材料已通过静态审核；当前只准备 **09.5**，不进入 10.1：
 
 1. **09.1 Backpropagation Through Time**
 2. **09.2 Vanishing and Exploding Gradients**
@@ -347,3 +347,39 @@ MLX v0.32.2 packed parameters 为：`Wx=(3H,C)`、`Wh=(3H,H)`、`b=(3H,)` 与 ca
 在相同 C/H、bias=True 的 MLX 0.32.2 实现中，GRU 参数量为 `3HC+3H^2+4H`，LSTM 为 `4HC+4H^2+4H`。例如 `C=3,H=4` 时分别为 100 与 128。参数更少不代表效果必然更好。
 
 Step 9.4 材料准备到此停止，不进入 Step 9.5。
+
+## Step 09.5 — Why LSTM/GRU Still Did Not Solve Everything
+
+### What gates fixed — and what they did not
+
+LSTM / GRU 通过可学习 gates 改善了长期 information / gradient retention，但没有改变 recurrence 的基本依赖图。LSTM 仍满足 `(h_t,c_t)=F(x_t,h_(t-1),c_(t-1))`，GRU 仍满足 `h_t=G(x_t,h_(t-1))`。
+
+因此 gates 改善的是 **state update / gradient flow**，不是删除时间递推。
+
+### Time-step serial dependency
+
+长度为 T 的 recurrent sequence 仍形成 `state_(t-1) -> state_t` 的依赖链。Batch 内多个 samples 可以并行，但同一 sequence 的后一步 state 必须等待前一步 state；因此 recurrent critical path 的依赖深度随 T 同阶增长。
+
+`O(T)` 在这里表示 dependency steps 随 sequence length 同阶增长，不等同于具体 wall-clock 秒数。
+
+### Partial parallelism
+
+不能把“时间递推串行”夸大成“RNN 所有运算都不能并行”。例如 LSTM 的 `X @ Wx.T -> (B,T,4H)`、GRU 的 `X @ Wx.T -> (B,T,3H)` input-side packed projections 只依赖 X，可以跨多个 t 批量计算。
+
+真正限制 Time-axis parallelism 的是 hidden/cell-dependent recurrent transition，因为它需要真实的 previous state。
+
+### Fixed-width recurrent-state bottleneck and long paths
+
+GRU 向前传递固定 width H 的 hidden state；LSTM 向前传递固定 width H 的 hidden 与 cell states。无论已经处理多少 token，recurrent state width 不随 T 增长。
+
+这在 streaming 上很高效，但形成实际的 fixed-width representation bottleneck：模型要不断决定哪些过去信息值得保留。这里不能只凭维度计数宣称数学上绝对无法编码长历史；现实瓶颈来自有限精度、有限 H/参数、连续可训练更新、噪声与优化，以及需要可用地恢复任务相关信息等共同约束。
+
+Gating 改善局部传递条件，但一个早期 token 对很晚 output 的影响仍要穿过许多 recurrent transitions；信息路径长度并没有从 O(T) 变成常数。
+
+### Hardware consequence and Step 9 close
+
+GPU 能高度并行一个时间步内部的 batch rows、hidden coordinates 与 packed matrix operations，但不能绕过 `state_(t-1) -> state_t` 的真实依赖。长 sequence 因此同时增加总 recurrent updates，并拉长 sequential critical path。
+
+Step 9 的因果链到此闭合：Vanilla RNN -> BPTT -> vanishing/exploding risk -> LSTM/GRU gates -> 更可控的 retention，但 recurrence、长路径、固定宽度状态压缩与 Time-axis serial dependency 仍然存在。
+
+Step 9.5 材料准备到此停止，不进入 Step 10.1。
