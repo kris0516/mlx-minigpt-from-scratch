@@ -19,17 +19,14 @@ Steps 1–8.5      material prepared
 Steps 9.1–9.5    material prepared; static audit passed
 Steps 10.1–10.5  material prepared; static audit passed
 Steps 11.1–11.5  material prepared; static audit passed
-Step 12.1         material prepared; static audit passed
-Step 12.2         material prepared; static audit passed
-Step 12.3         material prepared; static audit passed
-Step 12.4         material prepared; static audit passed
-Step 12.5         current material prepared
-Step 13.1+        planned only; not current
+Steps 12.1–12.5  material prepared; static audit passed
+Step 13.1         current material prepared
+Step 13.2+        planned only; not current
 ```
 
-**Material status is not learner status.** No claim is made that the learner has completed the Step 12.5 work notebook, completed exercises, or mastered causal attention-matrix inspection.
+**Material status is not learner status.** No claim is made that the learner has completed the Step 13.1 work notebook, completed exercises, or mastered why Multi-Head Attention uses multiple learned heads.
 
-Do not enter Step 13.1 until the learner explicitly asks to proceed beyond Step 12.5.
+Do not enter Step 13.2 until the learner explicitly asks to proceed beyond Step 13.1.
 
 ## Non-negotiable teaching constraints
 
@@ -170,9 +167,9 @@ mlx-minigpt-from-scratch/
 
 Current course-material checkpoint:
 
-> **Step 12.5 — Inspect an attention matrix**
+> **Step 13.1 — Why multiple heads**
 
-Step 12.5 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 13.1 as current unless the learner explicitly asks to proceed.
+Step 13.1 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 13.2 as current unless the learner explicitly asks to proceed.
 
 ## 2026-10-08 continuity re-audit
 
@@ -367,3 +364,15 @@ For the Step 12.4 head, a diagnostic variant may return attention weights in add
 Optional heatmap code may visualize the matrix with Key positions on x and Query positions on y. Do not infer fixed human-semantic meaning from bright attention cells without additional evidence.
 
 Stop after Step 12.5. Do not motivate, teach, or implement Multi-Head Attention / Step 13.1 in this lesson.
+
+## Step 13.1 accuracy boundary
+
+Start from the completed single causal head. Explain that one head owns one learned Q/K/V projection set, while multiple heads provide multiple independently learned interaction subspaces / feature views.
+
+Do not claim a single head is mathematically incapable of representing multiple relations; frame multiple heads as increasing representational flexibility and reducing pressure on one shared projection space.
+
+Do not preassign human meanings to heads. Examples such as syntax, pronouns, or position may only be discussed as possible observed behaviors with evidence, never as architectural identities.
+
+A hand-designed two-head toy example may show that different projection matrices produce different causal attention patterns. State clearly that the hand-selected projections are for intuition only and real head projections are learned.
+
+Stop before Step 13.2. Do not introduce fused `Linear(C,3C)`, QKV splitting, `C=H×D`, head reshaping/transposition, concatenation, or output projection.
