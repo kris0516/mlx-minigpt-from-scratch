@@ -21,13 +21,14 @@ Steps 10.1–10.5  material prepared; static audit passed
 Step 11.1         material prepared; static audit passed
 Step 11.2         material prepared; static audit passed
 Step 11.3         material prepared; static audit passed
-Step 11.4         current material prepared
-Step 11.5         planned only; not current
+Step 11.4         material prepared; static audit passed
+Step 11.5         current material prepared
+Step 12.1+        planned only; not current
 ```
 
-**Material status is not learner status.** No claim is made that the learner has completed the Step 11.4 work notebook, completed exercises, or mastered scaling and softmax.
+**Material status is not learner status.** No claim is made that the learner has completed the Step 11.5 work notebook, completed exercises, or mastered weighted Value retrieval / full tiny single-head self-attention.
 
-Do not enter Step 11.5 until the learner explicitly asks to proceed beyond Step 11.4.
+Do not enter Step 12.1 until the learner explicitly asks to proceed beyond Step 11.5.
 
 ## Non-negotiable teaching constraints
 
@@ -168,9 +169,9 @@ mlx-minigpt-from-scratch/
 
 Current course-material checkpoint:
 
-> **Step 11.4 — Scaling and softmax**
+> **Step 11.5 — Weighted Value retrieval**
 
-Step 11.4 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 11.5 as current unless the learner explicitly asks to proceed.
+Step 11.5 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 12.1 as current unless the learner explicitly asks to proceed.
 
 ## 2026-10-08 continuity re-audit
 
@@ -303,3 +304,13 @@ Define scaled scores as `QK^T / sqrt(d_k)` and make clear scaling changes magnit
 Softmax must normalize each Query row across the Key-position axis. For scores `(B,T,T)`, use `mx.softmax(..., axis=-1)` and interpret `A[b,i,:]` as Query i's distribution over Keys.
 
 Step 11.4 ends with attention weights A. Do not multiply by V, derive the final context/output, or complete the full single-head calculation until Step 11.5.
+
+## Step 11.5 accuracy boundary
+
+Start from attention weights `A:(B,T,T)` and Values `V:(B,T,d_v)`. Explain `o_i=sum_j A_(i,j)v_j` before matrix `O=A@V`, and keep the output width tied to `d_v` rather than `d_k`.
+
+Complete one tiny single-head calculation end-to-end from X through Q/K/V, raw scores, scaling, softmax, A, and finally O. Keep the numbers small enough to hand-check.
+
+Emphasize the semantic split: Q/K determine where/how strongly to retrieve; V carries the payload that is actually mixed into each output representation.
+
+Step 11.5 must stop at general self-attention. Do not introduce causal masking, autoregressive visibility rules, Multi-Head Attention, output projection, residual connections, or Transformer blocks. Stop before Step 12.1.
