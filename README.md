@@ -12,7 +12,7 @@ MLP → RNN → LSTM/GRU → Seq2Seq → Attention → Transformer → GPT
 
 ## Course-material status
 
-`✅` means repository lesson material has been prepared; it does **not** mean learner mastery or exercise completion.
+`✅` means repository lesson material has been prepared; it does **not** mean learner mastery, exercise completion, or runtime test success.
 
 ```text
 Steps 1–8.5      ✅ Material prepared
@@ -21,17 +21,14 @@ Steps 10.1–10.5  ✅ Material prepared / static audit passed
 Steps 11.1–11.5  ✅ Material prepared / static audit passed
 Steps 12.1–12.5  ✅ Material prepared / static audit passed
 Steps 13.1–13.5  ✅ Material prepared / static audit passed
-Step 14.1         ✅ Material prepared / static audit passed
-Step 14.2         ✅ Material prepared / static audit passed
-Step 14.3         ✅ Material prepared / static audit passed
-Step 14.4         ✅ Material prepared / static audit passed
-Step 14.5         🚧 Current material prepared
-Step 15.1+           Planned only
+Steps 14.1–14.5  ✅ Material prepared / static audit passed
+Step 15.1         🚧 Current material prepared
+Step 15.2+           Planned only
 ```
 
-Current course-material checkpoint: **Step 14.5 — Implement and test one Block**.
+Current course-material checkpoint: **Step 15.1 — Original Transformer architecture**.
 
-Learner completion/mastery and runtime test success for Step 14.5 are intentionally **not asserted** here.
+Learner completion/mastery for Step 15.1 is intentionally **not asserted** here. Step 14 runtime-test success is also **not asserted**.
 
 ## Persistent course documents
 
