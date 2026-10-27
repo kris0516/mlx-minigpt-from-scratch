@@ -18,13 +18,14 @@ Repository lesson-material preparation:
 Steps 1–8.5  material prepared
 Step 9.1      material prepared; static audit passed
 Step 9.2      material prepared; static audit passed
-Step 9.3      current material prepared
-Step 9.4+     planned only; not current
+Step 9.3      material prepared; static audit passed
+Step 9.4      current material prepared
+Step 9.5      planned only; not current
 ```
 
-**Material status is not learner status.** No claim is made that the learner has completed the Step 9.3 work notebook, completed exercises, or mastered LSTM.
+**Material status is not learner status.** No claim is made that the learner has completed the Step 9.4 work notebook, completed exercises, or mastered GRU.
 
-Do not enter Step 9.4 until the learner explicitly asks to proceed beyond Step 9.3.
+Do not enter Step 9.5 until the learner explicitly asks to proceed beyond Step 9.4.
 
 ## Non-negotiable teaching constraints
 
@@ -44,6 +45,13 @@ From Step 4 onward:
 - explain why a design exists, not only how to call an API;
 - explicitly correct oversimplifications when needed;
 - avoid dumping an entire architecture in one reply.
+
+Review/audit policy:
+
+- each lesson/subsection receives at most **two correction rounds** after its initial prepared version;
+- corrections focus on major content correctness, obvious prerequisite discontinuities, basic material usability, and actual repository publication;
+- do not keep revising small formatting, wording, or style issues once the lesson is materially usable;
+- static audit status never implies learner mastery or exercise completion.
 
 Primary language: Chinese, with important English technical terms included.
 
@@ -158,9 +166,9 @@ mlx-minigpt-from-scratch/
 
 Current course-material checkpoint:
 
-> **Step 9.3 — LSTM Cell State and Gates**
+> **Step 9.4 — GRU**
 
-Step 9.3 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 9.4 as current unless the learner explicitly asks to proceed.
+Step 9.4 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 9.5 as current unless the learner explicitly asks to proceed.
 
 ## 2026-10-08 continuity re-audit
 
@@ -179,3 +187,13 @@ When connecting LSTM to BPTT, `diag(f_t)` describes only the **direct cell-state
 For MLX 0.32.2, `nn.LSTM(input_size, hidden_size, bias=True)` accepts batched `(B,T,C)` input and optional `(B,H)` initial hidden/cell states, returning hidden and cell sequences `(B,T,H)`. Packed parameters use `Wx=(4H,C)`, `Wh=(4H,H)`, optional `bias=(4H,)`, split in `i,f,g,o` order.
 
 Do not enter Step 9.4 during Step 9.3 delivery.
+
+## Step 9.4 accuracy boundary
+
+Teach GRU as a gated recurrent alternative with one hidden state, not as a guaranteed-better LSTM. Use the MLX 0.32.2 convention `r/z/n` and make the update-gate direction explicit: `z≈1` retains old hidden state, `z≈0` favors the new candidate.
+
+Reset gate controls the previous-hidden contribution used to construct the candidate; it does not directly erase the hidden state. For BPTT intuition, `diag(z_t)` is only the direct retain-edge contribution, not the full GRU Jacobian.
+
+For MLX 0.32.2, `nn.GRU(input_size, hidden_size, bias=True)` uses packed `Wx=(3H,C)`, `Wh=(3H,H)`, `b=(3H,)`, plus `bhn=(H,)` when bias is enabled, and returns hidden-state sequence `(B,T,H)`.
+
+Do not enter Step 9.5 during Step 9.4 delivery.
