@@ -21,13 +21,14 @@ Steps 10.1–10.5  material prepared; static audit passed
 Steps 11.1–11.5  material prepared; static audit passed
 Steps 12.1–12.5  material prepared; static audit passed
 Steps 13.1–13.5  material prepared; static audit passed
-Step 14.1         current material prepared
-Step 14.2+        planned only; not current
+Step 14.1         material prepared; static audit passed
+Step 14.2         current material prepared
+Step 14.3+        planned only; not current
 ```
 
-**Material status is not learner status.** No claim is made that the learner has completed the Step 14.1 work notebook, completed exercises, or mastered residual connections.
+**Material status is not learner status.** No claim is made that the learner has completed the Step 14.2 work notebook, completed exercises, or mastered LayerNorm / RMSNorm.
 
-Do not enter Step 14.2 until the learner explicitly asks to proceed beyond Step 14.1.
+Do not enter Step 14.3 until the learner explicitly asks to proceed beyond Step 14.2.
 
 ## Non-negotiable teaching constraints
 
@@ -168,9 +169,9 @@ mlx-minigpt-from-scratch/
 
 Current course-material checkpoint:
 
-> **Step 14.1 — Residual connection**
+> **Step 14.2 — LayerNorm → RMSNorm historical path**
 
-Step 14.1 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 14.2 as current unless the learner explicitly asks to proceed.
+Step 14.2 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 14.3 as current unless the learner explicitly asks to proceed.
 
 ## 2026-10-08 continuity re-audit
 
@@ -437,3 +438,17 @@ For gradients, use the local Jacobian identity `J_y=I+J_F` and column-gradient c
 Do not turn that intuition into a guarantee. The counterexample `F(x)=-x` gives `y=0` and `J_y=0`, so residual connections do not mathematically guarantee non-vanishing gradients, invertibility, or zero information loss. Across many blocks, products of `(I+J_F)` can still have difficult behavior.
 
 Residual addition itself has no trainable parameters. Stop before Step 14.2: do not teach LayerNorm/RMSNorm, RMS, epsilon, learned gamma, or normalization placement.
+
+## Step 14.2 accuracy boundary
+
+Normalize each Transformer token independently across its last feature axis C. Do not describe LayerNorm/RMSNorm as computing statistics across the batch or across sequence positions.
+
+LayerNorm uses feature mean and population variance: `(x-mu)/sqrt(var+eps)`, then learned per-feature gamma and optionally beta. RMSNorm uses `x/sqrt(mean(x^2)+eps)` times learned gamma and does not mean-center.
+
+Teach epsilon as a fixed positive numerical-stability constant, not a learned parameter or noise term. Teach gamma as learned per-feature scale that restores feature-specific amplitude after normalization.
+
+Historical framing: LayerNorm (2016) predates and became canonical in the original Transformer era; RMSNorm (2019) simplifies the normalization by removing re-centering while retaining re-scaling. Do not claim RMSNorm is universally superior or mathematically equivalent to LayerNorm.
+
+For MLX 0.32.2: `nn.LayerNorm(dims,eps=1e-5,affine=True,bias=True)` and `nn.RMSNorm(dims,eps=1e-5)`. RMSNorm has learned weight/gamma but no beta in this API.
+
+Stop before Step 14.3. Do not decide whether normalization sits before or after the residual branch, and do not teach Pre-Norm versus Post-Norm yet.
