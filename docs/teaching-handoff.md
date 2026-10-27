@@ -22,13 +22,14 @@ Steps 11.1–11.5  material prepared; static audit passed
 Step 12.1         material prepared; static audit passed
 Step 12.2         material prepared; static audit passed
 Step 12.3         material prepared; static audit passed
-Step 12.4         current material prepared
-Step 12.5         planned only; not current
+Step 12.4         material prepared; static audit passed
+Step 12.5         current material prepared
+Step 13.1+        planned only; not current
 ```
 
-**Material status is not learner status.** No claim is made that the learner has completed the Step 12.4 work notebook, completed exercises, or mastered the single causal attention head implementation.
+**Material status is not learner status.** No claim is made that the learner has completed the Step 12.5 work notebook, completed exercises, or mastered causal attention-matrix inspection.
 
-Do not enter Step 12.5 until the learner explicitly asks to proceed beyond Step 12.4.
+Do not enter Step 13.1 until the learner explicitly asks to proceed beyond Step 12.5.
 
 ## Non-negotiable teaching constraints
 
@@ -169,9 +170,9 @@ mlx-minigpt-from-scratch/
 
 Current course-material checkpoint:
 
-> **Step 12.4 — Implement a single causal attention head**
+> **Step 12.5 — Inspect an attention matrix**
 
-Step 12.4 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 12.5 as current unless the learner explicitly asks to proceed.
+Step 12.5 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 13.1 as current unless the learner explicitly asks to proceed.
 
 ## 2026-10-08 continuity re-audit
 
@@ -354,3 +355,15 @@ Use a clear shape trace: input `(B,T,C)`, Q/K/V `(B,T,d_h)`, scores/weights `(B,
 Treat the causal mask as structural, non-trainable information. The primary lesson implementation should construct it locally in forward so it does not enter the MLX parameter tree. If discussing a cached `self.causal_mask`, note that MLX module array attributes are parameters by default and must be explicitly frozen to stay out of `trainable_parameters()`.
 
 Do not add Multi-Head Attention, concatenation, output projection, residual/normalization, Transformer blocks, or dedicated attention-matrix inspection. Stop before Step 12.5.
+
+## Step 12.5 accuracy boundary
+
+Teach matrix inspection with rows as Queries and columns as Keys. Verify the two causal invariants: each Query row sums to 1, and all strict-upper-triangle entries `j>i` are zero.
+
+Use a deterministic hand-checkable case separately from the actual module. Equal legal logits can produce the exact expected lower-triangular uniform matrix `[1]`, `[1/2,1/2]`, `[1/3,1/3,1/3]`, etc. Make clear this is a designed expectation, not a generic learned-attention pattern.
+
+For the Step 12.4 head, a diagnostic variant may return attention weights in addition to the output. If Q/K parameters are randomly initialized, do not claim exact legal-position values before runtime; only structural properties are predictable in advance.
+
+Optional heatmap code may visualize the matrix with Key positions on x and Query positions on y. Do not infer fixed human-semantic meaning from bright attention cells without additional evidence.
+
+Stop after Step 12.5. Do not motivate, teach, or implement Multi-Head Attention / Step 13.1 in this lesson.
