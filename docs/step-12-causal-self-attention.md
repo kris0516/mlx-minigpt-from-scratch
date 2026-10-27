@@ -2,7 +2,7 @@
 
 目标：把 Step 11 的 general self-attention 变成适用于 autoregressive next-token language modeling 的机制。
 
-本 Step 保留现有 roadmap 的 12.1–12.5 结构。Step 11 材料已通过静态审核；当前只准备 **12.1 Autoregressive constraint**，不进入 12.2。
+本 Step 保留现有 roadmap 的 12.1–12.5 结构。Step 12.1 材料已通过静态审核；当前只准备 **12.2 Causal mask**，不进入 12.3。
 
 ## Step 12.1 — Autoregressive constraint
 
@@ -57,3 +57,56 @@ target: I     love coffee <EOS>
 Step 12.1 只建立 autoregressive visibility requirement。怎样把 `j<=i` 真正编码进 attention scores，属于 Step 12.2 causal mask。
 
 Step 12.1 材料准备到此停止，不进入 Step 12.2。
+
+## Step 12.2 — Causal mask
+
+### Strict upper triangle corresponds to future positions
+
+Step 12.1 已定义 row `i` 为 Query position、column `j` 为 Key position，并要求 `j<=i`。因此 future positions `j>i` 正好位于 `T×T` score matrix 的 strict upper triangle；主对角线 `j=i` 保留，因为 current token 是预测下一个 token 的合法上下文。
+
+### Additive causal mask
+
+定义：
+
+```text
+M_(i,j) = 0      if j <= i
+M_(i,j) = -inf   if j > i
+```
+
+然后把它加到 scaled scores：
+
+```text
+S_masked = S_scaled + M
+```
+
+合法位置保持原 score，future positions 被强制变成 `-inf`。
+
+### Why softmax produces zero future weight
+
+对 masked position，数学上 `exp(-inf)=0`，所以 softmax numerator 为 0；只要该 Query row 至少有一个合法 finite score，该未来位置最终 attention weight 就是 0。
+
+Causal mask 保留 diagonal，因此每一行至少有当前 position 可用，不会出现整行全部被屏蔽的情况。
+
+### MLX 0.32.2 construction
+
+MLX 0.32.2 支持 `mx.triu(x,k=1)` 与 `mx.where(condition,x,y)`。Notebook 使用：
+
+```text
+future_upper = mx.triu(mx.ones((T,T)), k=1)
+causal_mask = mx.where(future_upper > 0, -inf, 0.0)
+```
+
+然后：
+
+```text
+masked_scores = scaled_scores + causal_mask
+A = mx.softmax(masked_scores, axis=-1)
+```
+
+### Shape and semantics
+
+`scaled_scores:(B,T,T)`、`causal_mask:(T,T)`，通过 broadcasting 得到 `(B,T,T)` masked scores，再沿 Key axis softmax。
+
+Mask 表示“能不能看”的结构约束；attention weights 表示在合法 positions 中“实际看多少”。
+
+Step 12.2 材料准备到此停止，不进入 Step 12.3；stable-softmax / numerical-stability 专题和完整 causal attention head 留给后续既有小节。
