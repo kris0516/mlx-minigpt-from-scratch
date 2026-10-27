@@ -15,18 +15,16 @@ Before teaching or editing the project, read:
 Repository lesson-material preparation:
 
 ```text
-Steps 1–8.5    material prepared
-Steps 9.1–9.5  material prepared; static audit passed
-Step 10.1       material prepared; static audit passed
-Step 10.2       material prepared; static audit passed
-Step 10.3       material prepared; static audit passed
-Step 10.4       current material prepared
-Step 10.5       planned only; not current
+Steps 1–8.5     material prepared
+Steps 9.1–9.5   material prepared; static audit passed
+Steps 10.1–10.4 material prepared; static audit passed
+Step 10.5        current material prepared
+Step 11.1+       planned only; not current
 ```
 
-**Material status is not learner status.** No claim is made that the learner has completed the Step 10.4 work notebook, completed exercises, or mastered score→softmax→weighted-sum attention.
+**Material status is not learner status.** No claim is made that the learner has completed the Step 10.5 work notebook, completed exercises, or mastered the historical bridge from recurrent Attention to Transformer.
 
-Do not enter Step 10.5 until the learner explicitly asks to proceed beyond Step 10.4.
+Do not enter Step 11.1 until the learner explicitly asks to proceed beyond Step 10.5.
 
 ## Non-negotiable teaching constraints
 
@@ -167,9 +165,9 @@ mlx-minigpt-from-scratch/
 
 Current course-material checkpoint:
 
-> **Step 10.4 — Score → softmax → weighted sum**
+> **Step 10.5 — Historical bridge to Transformer**
 
-Step 10.4 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 10.5 as current unless the learner explicitly asks to proceed.
+Step 10.5 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 11.1 as current unless the learner explicitly asks to proceed.
 
 ## 2026-10-08 continuity re-audit
 
@@ -250,3 +248,15 @@ Use the tiny scores `[2,1,0]` example to obtain approximately `[0.665,0.245,0.09
 Keep shape logic explicit: one-step scores/weights `(B,T_src)`, encoder states `(B,T_src,H_enc)`, `weights[...,None]` -> `(B,T_src,1)`, weighted states `(B,T_src,H_enc)`, sum over source axis -> context `(B,H_enc)`.
 
 MLX 0.32.2 supports `mx.softmax(scores, axis=-1)`. Do not introduce Q/K/V terminology or the Transformer historical bridge during Step 10.4; those belong to later roadmap material.
+
+## Step 10.5 accuracy boundary
+
+Teach the historical bridge without jumping into Self-Attention mathematics. Bahdanau-style Attention still sits on recurrent encoder/decoder states; it improves source access but does not itself remove recurrence.
+
+Use Attention's direct content-based retrieval as the conceptual motivation for asking whether positions inside the same sequence can interact directly instead of relying mainly on recurrent propagation.
+
+Explain the two structural motivations carefully: shorter conceptual dependency paths and better training-time parallelism across sequence positions when recurrent state transitions are removed.
+
+Preserve the inference boundary: autoregressive generation remains token-by-token even when the model architecture has no recurrent state transition.
+
+Modern terminology may distinguish encoder–decoder/cross-attention from self-attention, but Step 10.5 must not derive Q/K/V or Self-Attention score matrices. Stop before Step 11.1.
