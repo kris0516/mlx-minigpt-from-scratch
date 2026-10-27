@@ -2,7 +2,7 @@
 
 目标：理解 GPT-style Multi-Head Attention 背后的 exact tensor organization，而不是只记最终公式。
 
-本 Step 保留现有 roadmap 的 13.1–13.5 结构。Step 13.1–13.3 材料已通过静态审核；当前只准备 **13.4 Transpose for batched attention**，不进入 13.5。
+本 Step 保留现有 roadmap 的 13.1–13.5 结构。Step 13.1–13.4 材料已通过静态审核；当前只准备 **13.5 Concatenate heads and output projection**，不进入 14.1。
 
 ## Step 13.1 — Why multiple heads
 
@@ -194,3 +194,52 @@ Head-wise attention score computation 中，每个 head 只使用自己的 Q/K D
 但 H 个 logical heads 不对应 H 个固定 GPU cores。MLX/compiler/kernel 会把整个 batched tensor operation 调度到硬件执行资源；具体 physical mapping 不是由 head index 决定的。
 
 Step 13.4 材料准备到此停止，不进入 Step 13.5；head outputs 的 transpose-back、reshape/concatenation 与 output projection 留给下一既有小节。
+
+## Step 13.5 — Concatenate heads and output projection
+
+### Transpose head outputs back
+
+Step 13.4 的 head-wise outputs 为 `(B,H,T,D)`。先交换 H/T axes：
+
+```text
+(B,H,T,D) -> (B,T,H,D)
+```
+
+精确索引关系是 `O_BTHD[b,t,h,d] = O_BHTD[b,h,t,d]`。
+
+### Concatenate heads
+
+因为 `C=H×D`，将最后两个 axes `(H,D)` 合并回 C：
+
+```text
+(B,T,H,D) -> (B,T,C)
+```
+
+索引关系：
+
+```text
+O_cat[b,t,hD+d] = O_BTHD[b,t,h,d]
+```
+
+这一步只是 layout merge / concatenation，不做 head 求和、平均，也没有 learned parameters。
+
+### Output projection / `c_proj`
+
+Concatenation 只是把不同 head blocks 并排恢复到 model width C。为了让输出 features 学习性地混合不同 head channels，再使用：
+
+```text
+Y = O_cat W_O
+W_O : (C,C)
+```
+
+GPT-style 命名中常称这个 learned output projection 为 `c_proj`。它保持 `(B,T,C)->(B,T,C)`，但每个输出 channel 可以依赖全部 C 个 concatenated input channels。
+
+### Tiny mixing example
+
+Notebook 使用 `H=2,D=2,C=4` 的手算例子：concatenated token `[1,2,10,20]` 经过一个人工 `W_O` 后得到 `[11,22,-9,-18]`，直接展示 output projection 可以组合两个 head blocks。该矩阵只用于教学，真实 `c_proj` 权重由训练学习。
+
+### Parameter count
+
+bias=False 时 fused QKV projection 有 `3C^2` weights，output projection 再增加 `C^2`，合计 `4C^2` weights。若二者都带 bias，则总计 `4C^2+4C`。
+
+Step 13.5 材料准备到此停止，不进入 Step 14.1；residual connection、normalization、MLP 与完整 Transformer block 留给下一大 Step。
