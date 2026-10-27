@@ -528,13 +528,13 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - shapes
 - small hand-computable matrices
 
-### 11.3 `QK^T` as compatibility score 🚧
+### 11.3 `QK^T` as compatibility score ✅
 
 - dot product
 - distinction from cosine similarity unless vectors are normalized
 - produce the `T × T` score matrix
 
-### 11.4 Scaling and softmax
+### 11.4 Scaling and softmax 🚧
 
 - why dot-product variance grows with head dimension
 - `1/sqrt(d_k)`
@@ -1119,14 +1119,15 @@ Steps 9.1–9.5    ✅ Material prepared / static audit passed
 Steps 10.1–10.5  ✅ Material prepared / static audit passed
 Step 11.1         ✅ Material prepared / static audit passed
 Step 11.2         ✅ Material prepared / static audit passed
-Step 11.3         🚧 Current material prepared
-Step 11.4+           Planned only
+Step 11.3         ✅ Material prepared / static audit passed
+Step 11.4         🚧 Current material prepared
+Step 11.5            Planned only
 ```
 
 Current course-material checkpoint:
 
-> **Step 11.3 — `QK^T` as compatibility score**
+> **Step 11.4 — Scaling and softmax**
 
 Learner-status note:
 
-> Material preparation for Step 11.3 does not assert learner mastery, work-notebook completion, or exercise completion. Do not enter Step 11.4 unless the learner explicitly asks to proceed beyond Step 11.3.
+> Material preparation for Step 11.4 does not assert learner mastery, work-notebook completion, or exercise completion. Do not enter Step 11.5 unless the learner explicitly asks to proceed beyond Step 11.4.
