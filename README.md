@@ -23,13 +23,14 @@ Steps 12.1–12.5  ✅ Material prepared / static audit passed
 Step 13.1         ✅ Material prepared / static audit passed
 Step 13.2         ✅ Material prepared / static audit passed
 Step 13.3         ✅ Material prepared / static audit passed
-Step 13.4         🚧 Current material prepared
-Step 13.5            Planned only
+Step 13.4         ✅ Material prepared / static audit passed
+Step 13.5         🚧 Current material prepared
+Step 14.1+           Planned only
 ```
 
-Current course-material checkpoint: **Step 13.4 — Transpose for batched attention**.
+Current course-material checkpoint: **Step 13.5 — Concatenate heads and output projection**.
 
-Learner completion/mastery for Step 13.4 is intentionally **not asserted** here.
+Learner completion/mastery for Step 13.5 is intentionally **not asserted** here.
 
 ## Persistent course documents
 
