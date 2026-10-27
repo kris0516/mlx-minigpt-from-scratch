@@ -569,13 +569,13 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - what scaling helps with
 - avoid simplistic claim that scaling only exists to “prevent gradient disappearance”
 
-### 12.4 Implement a single causal attention head 🚧
+### 12.4 Implement a single causal attention head ✅
 
 - forward pass in MLX
 - shape trace
 - mask as non-trainable state / constant
 
-### 12.5 Inspect an attention matrix
+### 12.5 Inspect an attention matrix 🚧
 
 - print a tiny `T×T` example
 - verify future positions receive zero probability
@@ -1121,14 +1121,15 @@ Steps 11.1–11.5  ✅ Material prepared / static audit passed
 Step 12.1         ✅ Material prepared / static audit passed
 Step 12.2         ✅ Material prepared / static audit passed
 Step 12.3         ✅ Material prepared / static audit passed
-Step 12.4         🚧 Current material prepared
-Step 12.5            Planned only
+Step 12.4         ✅ Material prepared / static audit passed
+Step 12.5         🚧 Current material prepared
+Step 13.1+           Planned only
 ```
 
 Current course-material checkpoint:
 
-> **Step 12.4 — Implement a single causal attention head**
+> **Step 12.5 — Inspect an attention matrix**
 
 Learner-status note:
 
-> Material preparation for Step 12.4 does not assert learner mastery, work-notebook completion, or exercise completion. Do not enter Step 12.5 unless the learner explicitly asks to proceed beyond Step 12.4.
+> Material preparation for Step 12.5 does not assert learner mastery, work-notebook completion, or exercise completion. Do not enter Step 13.1 unless the learner explicitly asks to proceed beyond Step 12.5.
