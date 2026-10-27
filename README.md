@@ -17,13 +17,14 @@ MLP → RNN → LSTM/GRU → Seq2Seq → Attention → Transformer → GPT
 ```text
 Steps 1–8.5  ✅ Material prepared
 Step 9.1      ✅ Material prepared / static audit passed
-Step 9.2      🚧 Current material prepared
-Step 9.3+        Planned only
+Step 9.2      ✅ Material prepared / static audit passed
+Step 9.3      🚧 Current material prepared
+Step 9.4+        Planned only
 ```
 
-Current course-material checkpoint: **Step 9.2 — Vanishing and Exploding Gradients**.
+Current course-material checkpoint: **Step 9.3 — LSTM Cell State and Gates**.
 
-Learner completion/mastery for Step 9.2 is intentionally **not asserted** here.
+Learner completion/mastery for Step 9.3 is intentionally **not asserted** here.
 
 ## Persistent course documents
 
