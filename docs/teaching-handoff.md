@@ -12,39 +12,19 @@ Before teaching or editing the project, read:
 
 ## Current state
 
-Current teaching progress:
+Repository lesson-material preparation:
 
 ```text
-Step 1   complete
-Step 2   complete
-Step 3   complete
-Step 4.1 complete
-Step 4.2 complete
-Step 4.3 complete
-Step 4.4 complete
-Step 5.1 complete
-Step 5.2 complete
-Step 5.3 complete
-Step 5.4 complete
-Step 5.5 complete
-Step 6.1 complete
-Step 6.2 complete
-Step 6.3 complete
-Step 6.4 complete
-Step 6.5 complete
-Step 7.1 complete
-Step 7.2 complete
-Step 7.3 complete
-Step 7.4 complete
-Step 7.5 complete
-Step 8.1 complete
-Step 8.2 complete
-Step 8.3 complete
-Step 8.4 complete
-Step 8.5 complete
-Step 9.1 current / lesson created
-Next after learner finishes: Step 9.2 — Vanishing and exploding gradients
+Steps 1–8.5  material prepared
+Step 9.1      current material prepared / being corrected
+Step 9.2+     planned only; not current
 ```
+
+**Do not interpret these material states as learner mastery or exercise completion.** The current learner/course checkpoint remains Step 9.1. No claim is made that the learner has completed the Step 9.1 work notebook, passed an assessment, or mastered BPTT.
+
+Only record learner completion when the learner explicitly confirms it or an agreed completion/assessment event actually occurs. Material creation, GitHub commit status, or a teaching explanation alone is not learner completion.
+
+Do not enter Step 9.2 until the learner explicitly asks to proceed beyond Step 9.1.
 
 ## Non-negotiable teaching constraints
 
@@ -175,11 +155,11 @@ mlx-minigpt-from-scratch/
 
 ## Immediate next action
 
-Current lesson:
+Current course checkpoint:
 
 > **Step 9.1 — Backpropagation through time**
 
-After the learner finishes it, continue with Step 9.2 — Vanishing and exploding gradients. Preserve the distinction between shared-parameter gradient accumulation and temporal derivative/Jacobian products; do not claim all long-range gradients necessarily vanish.
+Remain at Step 9.1 during material correction. Do not create, teach, or mark Step 9.2 as current unless the learner explicitly asks to proceed. Do not infer Step 9.1 mastery or exercise completion from the existence of the lesson materials.
 
 ## 2026-10-08 continuity re-audit
 
