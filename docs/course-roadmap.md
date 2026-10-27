@@ -641,13 +641,13 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - why modern deep Transformers often use pre-norm variants
 - connect directly to our Block code
 
-### 14.4 Feed-forward MLP inside the Block 🚧
+### 14.4 Feed-forward MLP inside the Block ✅
 
 - revisit `C → 4C → activation → C`
 - per-position computation
 - Attention = cross-position mixing; MLP = within-position feature transformation
 
-### 14.5 Implement and test one Block
+### 14.5 Implement and test one Block 🚧
 
 - shape invariants
 - no sequence-length change
@@ -1123,14 +1123,15 @@ Steps 13.1–13.5  ✅ Material prepared / static audit passed
 Step 14.1         ✅ Material prepared / static audit passed
 Step 14.2         ✅ Material prepared / static audit passed
 Step 14.3         ✅ Material prepared / static audit passed
-Step 14.4         🚧 Current material prepared
-Step 14.5            Planned only
+Step 14.4         ✅ Material prepared / static audit passed
+Step 14.5         🚧 Current material prepared
+Step 15.1+           Planned only
 ```
 
 Current course-material checkpoint:
 
-> **Step 14.4 — Feed-forward MLP inside the Block**
+> **Step 14.5 — Implement and test one Block**
 
 Learner-status note:
 
-> Material preparation for Step 14.4 does not assert learner mastery, work-notebook completion, or exercise completion. Do not enter Step 14.5 unless the learner explicitly asks to proceed beyond Step 14.4.
+> Material preparation for Step 14.5 does not assert learner mastery, work-notebook completion, exercise completion, or runtime test success. Do not enter Step 15.1 unless the learner explicitly asks to proceed beyond Step 14.5.
