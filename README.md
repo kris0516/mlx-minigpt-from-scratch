@@ -20,13 +20,14 @@ Steps 9.1–9.5    ✅ Material prepared / static audit passed
 Steps 10.1–10.5  ✅ Material prepared / static audit passed
 Step 11.1         ✅ Material prepared / static audit passed
 Step 11.2         ✅ Material prepared / static audit passed
-Step 11.3         🚧 Current material prepared
-Step 11.4+           Planned only
+Step 11.3         ✅ Material prepared / static audit passed
+Step 11.4         🚧 Current material prepared
+Step 11.5            Planned only
 ```
 
-Current course-material checkpoint: **Step 11.3 — `QK^T` as compatibility score**.
+Current course-material checkpoint: **Step 11.4 — Scaling and softmax**.
 
-Learner completion/mastery for Step 11.3 is intentionally **not asserted** here.
+Learner completion/mastery for Step 11.4 is intentionally **not asserted** here.
 
 ## Persistent course documents
 
