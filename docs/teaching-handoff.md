@@ -20,17 +20,14 @@ Steps 9.1–9.5    material prepared; static audit passed
 Steps 10.1–10.5  material prepared; static audit passed
 Steps 11.1–11.5  material prepared; static audit passed
 Steps 12.1–12.5  material prepared; static audit passed
-Step 13.1         material prepared; static audit passed
-Step 13.2         material prepared; static audit passed
-Step 13.3         material prepared; static audit passed
-Step 13.4         material prepared; static audit passed
-Step 13.5         current material prepared
-Step 14.1+        planned only; not current
+Steps 13.1–13.5  material prepared; static audit passed
+Step 14.1         current material prepared
+Step 14.2+        planned only; not current
 ```
 
-**Material status is not learner status.** No claim is made that the learner has completed the Step 13.5 work notebook, completed exercises, or mastered head concatenation / output projection.
+**Material status is not learner status.** No claim is made that the learner has completed the Step 14.1 work notebook, completed exercises, or mastered residual connections.
 
-Do not enter Step 14.1 until the learner explicitly asks to proceed beyond Step 13.5.
+Do not enter Step 14.2 until the learner explicitly asks to proceed beyond Step 14.1.
 
 ## Non-negotiable teaching constraints
 
@@ -171,9 +168,9 @@ mlx-minigpt-from-scratch/
 
 Current course-material checkpoint:
 
-> **Step 13.5 — Concatenate heads and output projection**
+> **Step 14.1 — Residual connection**
 
-Step 13.5 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 14.1 as current unless the learner explicitly asks to proceed.
+Step 14.1 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 14.2 as current unless the learner explicitly asks to proceed.
 
 ## 2026-10-08 continuity re-audit
 
@@ -428,3 +425,15 @@ Use a small hand-designed W_O example to demonstrate cross-head mixing, but labe
 Parameter note: with bias disabled, fused QKV contributes `3C^2` weights and output projection contributes `C^2`, totaling `4C^2` for the attention projections. With biases on both, total is `4C^2+4C`.
 
 Stop before Step 14.1. Do not introduce residual addition, normalization, feed-forward MLP, or a full Transformer Block.
+
+## Step 14.1 accuracy boundary
+
+Start from the shape-preserving Attention result: both x and F(x) are `(B,T,C)`, so the Transformer residual is same-shape element-wise `y=x+F(x)`. Do not rely on broadcasting as the conceptual mechanism.
+
+Teach update-as-correction as an intuition: x is a baseline representation and F(x) is a learned correction. Do not claim F(x) must remain small.
+
+For gradients, use the local Jacobian identity `J_y=I+J_F` and column-gradient convention `g_x=g_y+J_F^T g_y`. The direct `g_y` term motivates the gradient-highway intuition.
+
+Do not turn that intuition into a guarantee. The counterexample `F(x)=-x` gives `y=0` and `J_y=0`, so residual connections do not mathematically guarantee non-vanishing gradients, invertibility, or zero information loss. Across many blocks, products of `(I+J_F)` can still have difficult behavior.
+
+Residual addition itself has no trainable parameters. Stop before Step 14.2: do not teach LayerNorm/RMSNorm, RMS, epsilon, learned gamma, or normalization placement.
