@@ -2,7 +2,7 @@
 
 目标：理解 GPT-style Multi-Head Attention 背后的 exact tensor organization，而不是只记最终公式。
 
-本 Step 保留现有 roadmap 的 13.1–13.5 结构。Step 13.1、13.2 材料已通过静态审核；当前只准备 **13.3 Split channels into heads**，不进入 13.4。
+本 Step 保留现有 roadmap 的 13.1–13.5 结构。Step 13.1–13.3 材料已通过静态审核；当前只准备 **13.4 Transpose for batched attention**，不进入 13.5。
 
 ## Step 13.1 — Why multiple heads
 
@@ -154,3 +154,43 @@ v_heads = mx.reshape(v, (B,T,H,D))
 GPT-style multiple heads 首先体现为 tensor axis organization，而不是必须构造 H 个独立 Python Module 并循环执行。不同 head 对应 Q/K/V output channels 中不同的 learned channel blocks。
 
 Step 13.3 材料准备到此停止，不进入 Step 13.4；`(B,T,H,D)->(B,H,T,D)` transpose 与 batched attention 留给下一既有小节。
+
+## Step 13.4 — Transpose for batched attention
+
+### `(B,T,H,D) -> (B,H,T,D)`
+
+Step 13.3 已得到 Q/K/V `(B,T,H,D)`。为了让每个 head 的最后两个 axes 变成 `(T,D)`，交换 T 与 H：
+
+```text
+(B,T,H,D) -> (B,H,T,D)
+```
+
+精确索引关系：
+
+```text
+Q_BHTD[b,h,t,d] = Q_BTHD[b,t,h,d]
+```
+
+MLX 0.32.2 使用 `mx.swapaxes(a,1,2)`。
+
+### Batched matrix multiplication
+
+对 Q/K 都得到 `(B,H,T,D)` 后，再把 K 的最后两个 axes 交换成 `(B,H,D,T)`。MLX `mx.matmul` 会用最后两个 axes 做矩阵乘法，并把更前面的 axes 作为 batch/broadcast dimensions：
+
+```text
+(B,H,T,D) @ (B,H,D,T) -> (B,H,T,T)
+```
+
+因此 `scores[b,h,:,:]` 就是 sample b、head h 自己的 T×T compatibility matrix。
+
+### Causal mask broadcasting
+
+causal mask 仍可保持 `(T,T)`，通过 broadcasting 作用到 `(B,H,T,T)` scores；同一个 visibility pattern 服务所有 batch samples 和 heads，而具体 scores 仍是 head-specific。
+
+### Logical head independence versus hardware mapping
+
+Head-wise attention score computation 中，每个 head 只使用自己的 Q/K D-dimensional channels，不做 cross-head Q/K dot products。这是 logical head independence。
+
+但 H 个 logical heads 不对应 H 个固定 GPU cores。MLX/compiler/kernel 会把整个 batched tensor operation 调度到硬件执行资源；具体 physical mapping 不是由 head index 决定的。
+
+Step 13.4 材料准备到此停止，不进入 Step 13.5；head outputs 的 transpose-back、reshape/concatenation 与 output projection 留给下一既有小节。
