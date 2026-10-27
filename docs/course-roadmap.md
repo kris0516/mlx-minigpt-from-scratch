@@ -464,13 +464,13 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - cell state as a more direct memory path
 - tiny numeric update example
 
-### 9.4 GRU 🚧
+### 9.4 GRU ✅
 
 - merge/simplify LSTM gating
 - fewer states and parameters
 - conceptual comparison, not a full industrial implementation
 
-### 9.5 Why LSTM/GRU still did not solve everything
+### 9.5 Why LSTM/GRU still did not solve everything 🚧
 
 - time-step serial dependency remains
 - long information paths remain
@@ -1118,14 +1118,15 @@ Steps 1–8.5  ✅ Material prepared
 Step 9.1      ✅ Material prepared / static audit passed
 Step 9.2      ✅ Material prepared / static audit passed
 Step 9.3      ✅ Material prepared / static audit passed
-Step 9.4      🚧 Current material prepared
-Step 9.5         Planned only
+Step 9.4      ✅ Material prepared / static audit passed
+Step 9.5      🚧 Current material prepared
+Step 10.1+       Planned only
 ```
 
 Current course-material checkpoint:
 
-> **Step 9.4 — GRU**
+> **Step 9.5 — Why LSTM/GRU still did not solve everything**
 
 Learner-status note:
 
-> Material preparation for Step 9.4 does not assert learner mastery, work-notebook completion, or exercise completion. Do not enter Step 9.5 unless the learner explicitly asks to proceed beyond Step 9.4.
+> Material preparation for Step 9.5 does not assert learner mastery, work-notebook completion, or exercise completion. Do not enter Step 10.1 unless the learner explicitly asks to proceed beyond Step 9.5.
