@@ -489,12 +489,12 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - decoder state
 - variable-length input/output
 
-### 10.2 Fixed-vector bottleneck 🚧
+### 10.2 Fixed-vector bottleneck ✅
 
 - compressing a long source into one final state
 - why this becomes difficult for long sequences
 
-### 10.3 Bahdanau-style attention intuition
+### 10.3 Bahdanau-style attention intuition 🚧
 
 - decoder state asks which encoder states matter now
 - content-based lookup
@@ -1117,14 +1117,15 @@ These are not required to declare the MiniGPT project complete.
 Steps 1–8.5    ✅ Material prepared
 Steps 9.1–9.5  ✅ Material prepared / static audit passed
 Step 10.1       ✅ Material prepared / static audit passed
-Step 10.2       🚧 Current material prepared
-Step 10.3+         Planned only
+Step 10.2       ✅ Material prepared / static audit passed
+Step 10.3       🚧 Current material prepared
+Step 10.4+         Planned only
 ```
 
 Current course-material checkpoint:
 
-> **Step 10.2 — Fixed-vector bottleneck**
+> **Step 10.3 — Bahdanau-style attention intuition**
 
 Learner-status note:
 
-> Material preparation for Step 10.2 does not assert learner mastery, work-notebook completion, or exercise completion. Do not enter Step 10.3 unless the learner explicitly asks to proceed beyond Step 10.2.
+> Material preparation for Step 10.3 does not assert learner mastery, work-notebook completion, or exercise completion. Do not enter Step 10.4 unless the learner explicitly asks to proceed beyond Step 10.3.
