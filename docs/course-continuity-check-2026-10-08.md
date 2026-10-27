@@ -24,6 +24,7 @@ The read confirmed exactly 26 masters, numbered 01–26, concluding with `notebo
 - Apple Silicon, Python 3.12, uv, VS Code, native Apple MLX (not a PyTorch core), conservative laptop resources, avoid unnecessary memory/Swap.
 - Git-tracked `notebooks/*.ipynb` are assistant-maintained unexecuted masters. Learner runs only ignored `notebooks/work/*_work.ipynb` copies.
 - Each new lesson updates notebook, Step note, course roadmap, teaching handoff, and README.
+- Repository/material status and learner status are separate. A committed master notebook or `✅` material marker must never be interpreted as proof that the learner completed exercises or mastered the lesson. Learner completion is recorded only after explicit learner confirmation or an agreed assessment/completion event.
 - Normal post-setup lesson delivery gives two routine commands at the beginning of the same response, in **separate shell code blocks**: first `git pull`, then the lesson-specific plain `cp ... notebooks/work/..._work.ipynb`. No intermediate terminal reply is required unless troubleshooting an abnormal state.
 
 ## Technical boundaries to preserve
@@ -37,3 +38,7 @@ The read confirmed exactly 26 masters, numbered 01–26, concluding with `notebo
 ## Next
 
 Step 8.1 new master: `notebooks/27_step08_1_why_mlp_is_awkward_for_sequences.ipynb`; after learner finishes, continue Step 8.2 **without skipping the RNN equation and hand calculations**.
+
+## Status semantics correction — 2026-10-27
+
+The active checkpoint is Step 9.1. Existing repository completion-style markers were clarified to mean **material prepared**, not learner mastery. Step 9.2 remains planned only and must not become current during this correction round.
