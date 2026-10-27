@@ -440,7 +440,7 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 
 ---
 
-## Step 9 — BPTT, vanishing gradients, LSTM, and GRU 🚧
+## Step 9 — BPTT, vanishing gradients, LSTM, and GRU ✅
 
 **Goal:** understand why vanilla RNNs struggle with long-range dependency and how gating was introduced.
 
@@ -470,7 +470,7 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - fewer states and parameters
 - conceptual comparison, not a full industrial implementation
 
-### 9.5 Why LSTM/GRU still did not solve everything 🚧
+### 9.5 Why LSTM/GRU still did not solve everything ✅
 
 - time-step serial dependency remains
 - long information paths remain
@@ -478,11 +478,11 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 
 ---
 
-## Step 10 — Seq2Seq and the birth of Attention
+## Step 10 — Seq2Seq and the birth of Attention 🚧
 
 **Goal:** see Attention emerge as a solution to a real encoder-decoder bottleneck.
 
-### 10.1 Encoder-decoder Seq2Seq
+### 10.1 Encoder-decoder Seq2Seq 🚧
 
 - source sequence
 - encoder state
@@ -1114,19 +1114,16 @@ These are not required to declare the MiniGPT project complete.
 > Learner completion must only be recorded when the learner explicitly confirms completion or an agreed assessment has actually been completed.
 
 ```text
-Steps 1–8.5  ✅ Material prepared
-Step 9.1      ✅ Material prepared / static audit passed
-Step 9.2      ✅ Material prepared / static audit passed
-Step 9.3      ✅ Material prepared / static audit passed
-Step 9.4      ✅ Material prepared / static audit passed
-Step 9.5      🚧 Current material prepared
-Step 10.1+       Planned only
+Steps 1–8.5   ✅ Material prepared
+Steps 9.1–9.5 ✅ Material prepared / static audit passed
+Step 10.1      🚧 Current material prepared
+Step 10.2+        Planned only
 ```
 
 Current course-material checkpoint:
 
-> **Step 9.5 — Why LSTM/GRU still did not solve everything**
+> **Step 10.1 — Encoder-decoder Seq2Seq**
 
 Learner-status note:
 
-> Material preparation for Step 9.5 does not assert learner mastery, work-notebook completion, or exercise completion. Do not enter Step 10.1 unless the learner explicitly asks to proceed beyond Step 9.5.
+> Material preparation for Step 10.1 does not assert learner mastery, work-notebook completion, or exercise completion. Do not enter Step 10.2 unless the learner explicitly asks to proceed beyond Step 10.1.
