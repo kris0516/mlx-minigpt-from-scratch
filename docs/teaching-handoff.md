@@ -15,15 +15,16 @@ Before teaching or editing the project, read:
 Repository lesson-material preparation:
 
 ```text
-Steps 1–8.5   material prepared
-Steps 9.1–9.5 material prepared; static audit passed
-Step 10.1      current material prepared
-Step 10.2+     planned only; not current
+Steps 1–8.5    material prepared
+Steps 9.1–9.5  material prepared; static audit passed
+Step 10.1       material prepared; static audit passed
+Step 10.2       current material prepared
+Step 10.3+      planned only; not current
 ```
 
-**Material status is not learner status.** No claim is made that the learner has completed the Step 10.1 work notebook, completed exercises, or mastered encoder–decoder Seq2Seq.
+**Material status is not learner status.** No claim is made that the learner has completed the Step 10.2 work notebook, completed exercises, or mastered the fixed-vector bottleneck.
 
-Do not enter Step 10.2 until the learner explicitly asks to proceed beyond Step 10.1.
+Do not enter Step 10.3 until the learner explicitly asks to proceed beyond Step 10.2.
 
 ## Non-negotiable teaching constraints
 
@@ -164,9 +165,9 @@ mlx-minigpt-from-scratch/
 
 Current course-material checkpoint:
 
-> **Step 10.1 — Encoder-decoder Seq2Seq**
+> **Step 10.2 — Fixed-vector bottleneck**
 
-Step 10.1 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 10.2 as current unless the learner explicitly asks to proceed.
+Step 10.2 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 10.3 as current unless the learner explicitly asks to proceed.
 
 ## 2026-10-08 continuity re-audit
 
@@ -215,3 +216,15 @@ Explain teacher forcing only as the common training-time choice of feeding the p
 Keep the shape bridge explicit: encoder `(B,T_src,C_src)->(B,T_src,H)->(B,H)` context state; decoder training path `(B,T_tgt,C_tgt)->(B,T_tgt,H)->(B,T_tgt,V_tgt)`.
 
 Do not analyze the fixed-vector bottleneck in depth or introduce Attention during Step 10.1; those belong to later existing roadmap subsections.
+
+## Step 10.2 accuracy boundary
+
+Define the fixed-vector bottleneck as an encoder→decoder interface bottleneck: the encoder may produce `(B,T_src,H)` states, while classic Seq2Seq exposes only the final `(B,H)` state to the decoder.
+
+Treat fixed H as a practical representation bottleneck, not a dimension-count proof that long histories are mathematically impossible to encode.
+
+Make the long path explicit: source position `j` to decoder position `u` crosses `(T_src-1-j)+(u+1)=T_src+u-j` recurrent transitions in the classic final-state bridge.
+
+Teacher forcing does not change this source interface. Larger H or stronger gated RNNs can mitigate capacity/optimization pressure without changing the decoder's access pattern.
+
+Do not introduce Bahdanau Attention mechanics, scoring, weights, or weighted sums during Step 10.2; those belong to later existing roadmap subsections.
