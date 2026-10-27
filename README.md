@@ -19,13 +19,14 @@ Steps 1–8.5      ✅ Material prepared
 Steps 9.1–9.5    ✅ Material prepared / static audit passed
 Steps 10.1–10.5  ✅ Material prepared / static audit passed
 Steps 11.1–11.5  ✅ Material prepared / static audit passed
-Step 12.1         🚧 Current material prepared
-Step 12.2+           Planned only
+Step 12.1         ✅ Material prepared / static audit passed
+Step 12.2         🚧 Current material prepared
+Step 12.3+           Planned only
 ```
 
-Current course-material checkpoint: **Step 12.1 — Autoregressive constraint**.
+Current course-material checkpoint: **Step 12.2 — Causal mask**.
 
-Learner completion/mastery for Step 12.1 is intentionally **not asserted** here.
+Learner completion/mastery for Step 12.2 is intentionally **not asserted** here.
 
 ## Persistent course documents
 
