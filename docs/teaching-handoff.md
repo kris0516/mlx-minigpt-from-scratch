@@ -23,13 +23,14 @@ Steps 12.1–12.5  material prepared; static audit passed
 Step 13.1         material prepared; static audit passed
 Step 13.2         material prepared; static audit passed
 Step 13.3         material prepared; static audit passed
-Step 13.4         current material prepared
-Step 13.5         planned only; not current
+Step 13.4         material prepared; static audit passed
+Step 13.5         current material prepared
+Step 14.1+        planned only; not current
 ```
 
-**Material status is not learner status.** No claim is made that the learner has completed the Step 13.4 work notebook, completed exercises, or mastered batched multi-head attention layout.
+**Material status is not learner status.** No claim is made that the learner has completed the Step 13.5 work notebook, completed exercises, or mastered head concatenation / output projection.
 
-Do not enter Step 13.5 until the learner explicitly asks to proceed beyond Step 13.4.
+Do not enter Step 14.1 until the learner explicitly asks to proceed beyond Step 13.5.
 
 ## Non-negotiable teaching constraints
 
@@ -170,9 +171,9 @@ mlx-minigpt-from-scratch/
 
 Current course-material checkpoint:
 
-> **Step 13.4 — Transpose for batched attention**
+> **Step 13.5 — Concatenate heads and output projection**
 
-Step 13.4 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 13.5 as current unless the learner explicitly asks to proceed.
+Step 13.5 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 14.1 as current unless the learner explicitly asks to proceed.
 
 ## 2026-10-08 continuity re-audit
 
@@ -415,3 +416,15 @@ Explain that the leading `(B,H)` axes behave as batch dimensions for matmul, so 
 Logical head independence means each head's score matrix uses only its own D-dimensional Q/K channels and has no cross-head Q/K dot products. Do not equate this with one physical GPU core per head; hardware scheduling is implementation-dependent.
 
 A `(T,T)` causal mask may broadcast over `(B,H,T,T)`. Stop before Step 13.5: do not transpose head outputs back, concatenate/reshape them to `(B,T,C)`, or add output projection.
+
+## Step 13.5 accuracy boundary
+
+Start from head-wise outputs `(B,H,T,D)`. Swap H/T back to `(B,T,H,D)`, then merge `(H,D)` into `C=H×D` to recover `(B,T,C)`. Teach the exact index relation `O_cat[b,t,hD+d] = O_heads[b,h,t,d]`.
+
+Make clear that concatenating heads is a layout operation: it does not sum or average heads and has no learned parameters. The subsequent output projection `c_proj / W_O:(C,C)` is the learned operation that can mix channels originating from different heads.
+
+Use a small hand-designed W_O example to demonstrate cross-head mixing, but label it as deterministic teaching arithmetic rather than learned runtime output. MLX `nn.Linear(C,C)` may be shown for the real API; do not claim its random initialized values in advance.
+
+Parameter note: with bias disabled, fused QKV contributes `3C^2` weights and output projection contributes `C^2`, totaling `4C^2` for the attention projections. With biases on both, total is `4C^2+4C`.
+
+Stop before Step 14.1. Do not introduce residual addition, normalization, feed-forward MLP, or a full Transformer Block.
