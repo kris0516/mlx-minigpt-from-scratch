@@ -18,17 +18,14 @@ MLP → RNN → LSTM/GRU → Seq2Seq → Attention → Transformer → GPT
 Steps 1–8.5      ✅ Material prepared
 Steps 9.1–9.5    ✅ Material prepared / static audit passed
 Steps 10.1–10.5  ✅ Material prepared / static audit passed
-Step 11.1         ✅ Material prepared / static audit passed
-Step 11.2         ✅ Material prepared / static audit passed
-Step 11.3         ✅ Material prepared / static audit passed
-Step 11.4         ✅ Material prepared / static audit passed
-Step 11.5         🚧 Current material prepared
-Step 12.1+           Planned only
+Steps 11.1–11.5  ✅ Material prepared / static audit passed
+Step 12.1         🚧 Current material prepared
+Step 12.2+           Planned only
 ```
 
-Current course-material checkpoint: **Step 11.5 — Weighted Value retrieval**.
+Current course-material checkpoint: **Step 12.1 — Autoregressive constraint**.
 
-Learner completion/mastery for Step 11.5 is intentionally **not asserted** here.
+Learner completion/mastery for Step 12.1 is intentionally **not asserted** here.
 
 ## Persistent course documents
 
