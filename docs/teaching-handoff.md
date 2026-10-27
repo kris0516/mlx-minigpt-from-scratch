@@ -24,13 +24,14 @@ Steps 13.1–13.5  material prepared; static audit passed
 Step 14.1         material prepared; static audit passed
 Step 14.2         material prepared; static audit passed
 Step 14.3         material prepared; static audit passed
-Step 14.4         current material prepared
-Step 14.5         planned only; not current
+Step 14.4         material prepared; static audit passed
+Step 14.5         current material prepared
+Step 15.1+        planned only; not current
 ```
 
-**Material status is not learner status.** No claim is made that the learner has completed the Step 14.4 work notebook, completed exercises, or mastered the Transformer feed-forward MLP.
+**Material status is not learner status.** No claim is made that the learner has completed the Step 14.5 work notebook, completed exercises, mastered the Block, or run/passed its tests.
 
-Do not enter Step 14.5 until the learner explicitly asks to proceed beyond Step 14.4.
+Do not enter Step 15.1 until the learner explicitly asks to proceed beyond Step 14.5.
 
 ## Non-negotiable teaching constraints
 
@@ -171,9 +172,9 @@ mlx-minigpt-from-scratch/
 
 Current course-material checkpoint:
 
-> **Step 14.4 — Feed-forward MLP inside the Block**
+> **Step 14.5 — Implement and test one Block**
 
-Step 14.4 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 14.5 as current unless the learner explicitly asks to proceed.
+Step 14.5 material is prepared only. Do not infer learner mastery, exercise completion, or runtime test success, and do not create, teach, or mark Step 15.1 as current unless the learner explicitly asks to proceed.
 
 ## 2026-10-08 continuity re-audit
 
@@ -480,3 +481,19 @@ MLX `nn.Linear` acts on the last feature axis, so `(B,T,C)` can be processed dir
 Parameter count for the lesson's `bias=True` MLP is `8C^2+5C`; with both biases disabled it is `8C^2`. The output returns to `(B,T,C)`, making residual addition shape-compatible.
 
 Connect the MLP only as a concrete instance of the generic F from Step 14.3. Stop before Step 14.5: do not assemble the complete Transformer Block, compute total Block parameters, or perform Block-level numerical sanity tests.
+
+## Step 14.5 accuracy boundary
+
+Implement one minimal Pre-Norm Transformer Block using two independent RMSNorm modules: `x1=x+Attn(norm1(x))`, then `y=x1+MLP(norm2(x1))`. Attention must reuse the already-taught causal multi-head tensor path and MLP must reuse `C->4C->GELU->C`.
+
+Keep the Block shape invariant `(B,T,C)->(B,T,C)` and explicitly test that sequence length T does not change.
+
+For this lesson's exact parameter convention, QKV/c_proj have no bias, MLP fc1/fc2 use bias, and each RMSNorm contributes C learned gamma values. The expected Block count is `12C^2+7C`.
+
+Prepare but do not run tests for shape invariants, parameter-count equality, finite outputs, and causal invariance under editing only a future final token. Do not state or imply that any test passed during static preparation.
+
+The causal test should only require earlier outputs to remain unchanged when the last future token changes. Do not require the changed token's own output to differ.
+
+Passing these tests later would not establish correct training, gradients, convergence, language-model quality, or complete GPT correctness.
+
+Stop before Step 15.1. Do not add embeddings, positional path, multiple-block stacking, GPT model classes, or language-model heads.
