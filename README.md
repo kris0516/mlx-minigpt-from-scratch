@@ -12,17 +12,18 @@ MLP → RNN → LSTM/GRU → Seq2Seq → Attention → Transformer → GPT
 
 ## Course-material status
 
-`✅` below means the repository lesson material has been prepared. It does **not** mean the learner has mastered the topic or completed its exercises.
+`✅` means repository lesson material has been prepared; it does **not** mean learner mastery or exercise completion.
 
 ```text
 Steps 1–8.5  ✅ Material prepared
-Step 9.1      🚧 Current material prepared / under correction
-Step 9.2+        Planned only
+Step 9.1      ✅ Material prepared / static audit passed
+Step 9.2      🚧 Current material prepared
+Step 9.3+        Planned only
 ```
 
-Current course checkpoint: **Step 9.1 — Backpropagation Through Time**.
+Current course-material checkpoint: **Step 9.2 — Vanishing and Exploding Gradients**.
 
-Learner completion/mastery for Step 9.1 is intentionally **not asserted** here.
+Learner completion/mastery for Step 9.2 is intentionally **not asserted** here.
 
 ## Persistent course documents
 
