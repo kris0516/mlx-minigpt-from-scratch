@@ -18,17 +18,14 @@ Repository lesson-material preparation:
 Steps 1–8.5      material prepared
 Steps 9.1–9.5    material prepared; static audit passed
 Steps 10.1–10.5  material prepared; static audit passed
-Step 11.1         material prepared; static audit passed
-Step 11.2         material prepared; static audit passed
-Step 11.3         material prepared; static audit passed
-Step 11.4         material prepared; static audit passed
-Step 11.5         current material prepared
-Step 12.1+        planned only; not current
+Steps 11.1–11.5  material prepared; static audit passed
+Step 12.1         current material prepared
+Step 12.2+        planned only; not current
 ```
 
-**Material status is not learner status.** No claim is made that the learner has completed the Step 11.5 work notebook, completed exercises, or mastered weighted Value retrieval / full tiny single-head self-attention.
+**Material status is not learner status.** No claim is made that the learner has completed the Step 12.1 work notebook, completed exercises, or mastered the autoregressive visibility constraint.
 
-Do not enter Step 12.1 until the learner explicitly asks to proceed beyond Step 11.5.
+Do not enter Step 12.2 until the learner explicitly asks to proceed beyond Step 12.1.
 
 ## Non-negotiable teaching constraints
 
@@ -169,9 +166,9 @@ mlx-minigpt-from-scratch/
 
 Current course-material checkpoint:
 
-> **Step 11.5 — Weighted Value retrieval**
+> **Step 12.1 — Autoregressive constraint**
 
-Step 11.5 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 12.1 as current unless the learner explicitly asks to proceed.
+Step 12.1 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 12.2 as current unless the learner explicitly asks to proceed.
 
 ## 2026-10-08 continuity re-audit
 
@@ -314,3 +311,13 @@ Complete one tiny single-head calculation end-to-end from X through Q/K/V, raw s
 Emphasize the semantic split: Q/K determine where/how strongly to retrieve; V carries the payload that is actually mixed into each output representation.
 
 Step 11.5 must stop at general self-attention. Do not introduce causal masking, autoregressive visibility rules, Multi-Head Attention, output projection, residual connections, or Transformer blocks. Stop before Step 12.1.
+
+## Step 12.1 accuracy boundary
+
+Use shifted next-token indexing consistently: input position `t` uses `x_0...x_t` to predict `x_(t+1)`, so the current input token is legal context. Do not mix this with the alternate convention of predicting `x_t` from `x_<t` without explaining the shift.
+
+Define autoregressive modeling as conditioning each predicted token only on its prefix. This is an information/probability constraint, not a requirement to use an RNN.
+
+For self-attention, rows are Query positions and columns are Key positions. The causal visibility rule is `j<=i`; future `j>i` is disallowed. Explain future leakage as training-time cheating that exposes information unavailable during real generation.
+
+Step 12.1 may illustrate allowed prefix positions, but must not construct the causal mask tensor, introduce upper-triangle `-inf`, or explain masked softmax. Stop before Step 12.2.
