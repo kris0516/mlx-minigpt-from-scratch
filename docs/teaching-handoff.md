@@ -22,13 +22,14 @@ Steps 11.1–11.5  material prepared; static audit passed
 Steps 12.1–12.5  material prepared; static audit passed
 Step 13.1         material prepared; static audit passed
 Step 13.2         material prepared; static audit passed
-Step 13.3         current material prepared
-Step 13.4+        planned only; not current
+Step 13.3         material prepared; static audit passed
+Step 13.4         current material prepared
+Step 13.5         planned only; not current
 ```
 
-**Material status is not learner status.** No claim is made that the learner has completed the Step 13.3 work notebook, completed exercises, or mastered channel-to-head reshaping.
+**Material status is not learner status.** No claim is made that the learner has completed the Step 13.4 work notebook, completed exercises, or mastered batched multi-head attention layout.
 
-Do not enter Step 13.4 until the learner explicitly asks to proceed beyond Step 13.3.
+Do not enter Step 13.5 until the learner explicitly asks to proceed beyond Step 13.4.
 
 ## Non-negotiable teaching constraints
 
@@ -169,9 +170,9 @@ mlx-minigpt-from-scratch/
 
 Current course-material checkpoint:
 
-> **Step 13.3 — Split channels into heads**
+> **Step 13.4 — Transpose for batched attention**
 
-Step 13.3 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 13.4 as current unless the learner explicitly asks to proceed.
+Step 13.4 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 13.5 as current unless the learner explicitly asks to proceed.
 
 ## 2026-10-08 continuity re-audit
 
@@ -402,3 +403,15 @@ Use MLX 0.32.2 `mx.reshape(q,(B,T,H,D))` for Q/K/V. Do not claim the operation i
 Explain that GPT-style heads are represented as a tensor axis rather than requiring H separate Python modules. The learned head-specific freedom comes from different Q/K/V output channel blocks.
 
 Stop before Step 13.4. Do not transpose to `(B,H,T,D)`, compute batched head-wise QK^T, discuss GPU-core mapping, concatenate heads, or introduce output projection.
+
+## Step 13.4 accuracy boundary
+
+Start from Q/K/V `(B,T,H,D)` and swap the T/H axes to `(B,H,T,D)`. Teach the exact mapping `Q_BHTD[b,h,t,d] = Q_BTHD[b,t,h,d]`; this is axis reordering, not another learned projection.
+
+Use MLX 0.32.2 `mx.swapaxes(a,1,2)`. For scores, swap K's last two axes to `(B,H,D,T)` and use batched `mx.matmul`: `(B,H,T,D) @ (B,H,D,T) -> (B,H,T,T)`.
+
+Explain that the leading `(B,H)` axes behave as batch dimensions for matmul, so each `(b,h)` obtains its own T×T score matrix without a Python loop.
+
+Logical head independence means each head's score matrix uses only its own D-dimensional Q/K channels and has no cross-head Q/K dot products. Do not equate this with one physical GPU core per head; hardware scheduling is implementation-dependent.
+
+A `(T,T)` causal mask may broadcast over `(B,H,T,T)`. Stop before Step 13.5: do not transpose head outputs back, concatenate/reshape them to `(B,T,C)`, or add output projection.
