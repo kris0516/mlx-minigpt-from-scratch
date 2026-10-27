@@ -20,13 +20,14 @@ Steps 9.1–9.5    material prepared; static audit passed
 Steps 10.1–10.5  material prepared; static audit passed
 Steps 11.1–11.5  material prepared; static audit passed
 Step 12.1         material prepared; static audit passed
-Step 12.2         current material prepared
-Step 12.3+        planned only; not current
+Step 12.2         material prepared; static audit passed
+Step 12.3         current material prepared
+Step 12.4+        planned only; not current
 ```
 
-**Material status is not learner status.** No claim is made that the learner has completed the Step 12.2 work notebook, completed exercises, or mastered causal masking.
+**Material status is not learner status.** No claim is made that the learner has completed the Step 12.3 work notebook, completed exercises, or mastered stable attention computation.
 
-Do not enter Step 12.3 until the learner explicitly asks to proceed beyond Step 12.2.
+Do not enter Step 12.4 until the learner explicitly asks to proceed beyond Step 12.3.
 
 ## Non-negotiable teaching constraints
 
@@ -167,9 +168,9 @@ mlx-minigpt-from-scratch/
 
 Current course-material checkpoint:
 
-> **Step 12.2 — Causal mask**
+> **Step 12.3 — Stable attention computation**
 
-Step 12.2 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 12.3 as current unless the learner explicitly asks to proceed.
+Step 12.3 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 12.4 as current unless the learner explicitly asks to proceed.
 
 ## 2026-10-08 continuity re-audit
 
@@ -332,3 +333,13 @@ Teach additive masking as `0` for allowed entries and `-inf` for future entries,
 MLX 0.32.2 supports `mx.triu(x,k=1)` and `mx.where(condition,x,y)`; a `(T,T)` causal mask can broadcast over `(B,T,T)` scores.
 
 Do not turn Step 12.2 into the later stability lesson or full-head implementation. Stable-softmax details, numerical-stability analysis, complete causal attention forward pass, and matrix inspection belong to Steps 12.3–12.5.
+
+## Step 12.3 accuracy boundary
+
+Teach stable softmax from its shift invariance: subtracting the same constant from all logits in a row leaves probabilities unchanged. Choose the row maximum so shifted logits are <=0 and exponentials are <=1.
+
+Use a large-logit example such as `[1000,999,998]` to distinguish mathematical correctness from finite-precision overflow. Explain why very negative shifted logits underflowing toward zero is usually more manageable in softmax than positive overflow producing inf/NaN.
+
+Keep causal masking compatible with the stability story: `-inf` entries remain `-inf` after subtracting a finite row maximum; causal diagonal ensures at least one finite allowed score per row.
+
+Do not describe `1/sqrt(d_k)` as existing only to prevent vanishing gradients. Scaling primarily controls dot-product logit scale / softmax saturation and improves optimization conditions; subtract-max addresses exponential overflow. Stop before the complete causal-attention-head implementation in Step 12.4.
