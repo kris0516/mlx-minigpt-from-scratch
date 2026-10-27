@@ -18,13 +18,14 @@ MLP → RNN → LSTM/GRU → Seq2Seq → Attention → Transformer → GPT
 Steps 1–8.5    ✅ Material prepared
 Steps 9.1–9.5  ✅ Material prepared / static audit passed
 Step 10.1       ✅ Material prepared / static audit passed
-Step 10.2       🚧 Current material prepared
-Step 10.3+         Planned only
+Step 10.2       ✅ Material prepared / static audit passed
+Step 10.3       🚧 Current material prepared
+Step 10.4+         Planned only
 ```
 
-Current course-material checkpoint: **Step 10.2 — Fixed-vector bottleneck**.
+Current course-material checkpoint: **Step 10.3 — Bahdanau-style attention intuition**.
 
-Learner completion/mastery for Step 10.2 is intentionally **not asserted** here.
+Learner completion/mastery for Step 10.3 is intentionally **not asserted** here.
 
 ## Persistent course documents
 
