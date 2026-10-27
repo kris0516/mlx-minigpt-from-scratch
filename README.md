@@ -23,13 +23,14 @@ Steps 12.1–12.5  ✅ Material prepared / static audit passed
 Steps 13.1–13.5  ✅ Material prepared / static audit passed
 Step 14.1         ✅ Material prepared / static audit passed
 Step 14.2         ✅ Material prepared / static audit passed
-Step 14.3         🚧 Current material prepared
-Step 14.4+           Planned only
+Step 14.3         ✅ Material prepared / static audit passed
+Step 14.4         🚧 Current material prepared
+Step 14.5            Planned only
 ```
 
-Current course-material checkpoint: **Step 14.3 — Pre-Norm vs Post-Norm**.
+Current course-material checkpoint: **Step 14.4 — Feed-forward MLP inside the Block**.
 
-Learner completion/mastery for Step 14.3 is intentionally **not asserted** here.
+Learner completion/mastery for Step 14.4 is intentionally **not asserted** here.
 
 ## Persistent course documents
 
