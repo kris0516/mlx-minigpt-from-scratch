@@ -522,13 +522,13 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - one representation serving three roles is restrictive
 - learned projections create task-specific lookup spaces
 
-### 11.2 Q/K/V Linear projections 🚧
+### 11.2 Q/K/V Linear projections ✅
 
 - `X W_Q`, `X W_K`, `X W_V`
 - shapes
 - small hand-computable matrices
 
-### 11.3 `QK^T` as compatibility score
+### 11.3 `QK^T` as compatibility score 🚧
 
 - dot product
 - distinction from cosine similarity unless vectors are normalized
@@ -1118,14 +1118,15 @@ Steps 1–8.5      ✅ Material prepared
 Steps 9.1–9.5    ✅ Material prepared / static audit passed
 Steps 10.1–10.5  ✅ Material prepared / static audit passed
 Step 11.1         ✅ Material prepared / static audit passed
-Step 11.2         🚧 Current material prepared
-Step 11.3+           Planned only
+Step 11.2         ✅ Material prepared / static audit passed
+Step 11.3         🚧 Current material prepared
+Step 11.4+           Planned only
 ```
 
 Current course-material checkpoint:
 
-> **Step 11.2 — Q/K/V Linear projections**
+> **Step 11.3 — `QK^T` as compatibility score**
 
 Learner-status note:
 
-> Material preparation for Step 11.2 does not assert learner mastery, work-notebook completion, or exercise completion. Do not enter Step 11.3 unless the learner explicitly asks to proceed beyond Step 11.2.
+> Material preparation for Step 11.3 does not assert learner mastery, work-notebook completion, or exercise completion. Do not enter Step 11.4 unless the learner explicitly asks to proceed beyond Step 11.3.
