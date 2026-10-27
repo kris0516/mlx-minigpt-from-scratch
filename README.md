@@ -10,40 +10,19 @@
 MLP → RNN → LSTM/GRU → Seq2Seq → Attention → Transformer → GPT
 ```
 
-## Course status
+## Course-material status
 
-当前进度：
+`✅` below means the repository lesson material has been prepared. It does **not** mean the learner has mastered the topic or completed its exercises.
 
 ```text
-Step 1   ✅
-Step 2   ✅
-Step 3   ✅
-Step 4.1 ✅
-Step 4.2 ✅
-Step 4.3 ✅
-Step 4.4 ✅
-Step 5.1 ✅
-Step 5.2 ✅
-Step 5.3 ✅
-Step 5.4 ✅
-Step 5.5 ✅
-Step 6.1 ✅
-Step 6.2 ✅
-Step 6.3 ✅
-Step 6.4 ✅
-Step 6.5 ✅
-Step 7.1 ✅
-Step 7.2 ✅
-Step 7.3 ✅
-Step 7.4 ✅
-Step 7.5 ✅
-Step 8.1 ✅
-Step 8.2 ✅
-Step 8.3 ✅
-Step 8.4 ✅
-Step 8.5 ✅
-Step 9.1 🚧 Current
+Steps 1–8.5  ✅ Material prepared
+Step 9.1      🚧 Current material prepared / under correction
+Step 9.2+        Planned only
 ```
+
+Current course checkpoint: **Step 9.1 — Backpropagation Through Time**.
+
+Learner completion/mastery for Step 9.1 is intentionally **not asserted** here.
 
 ## Persistent course documents
 
