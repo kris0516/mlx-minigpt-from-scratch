@@ -21,17 +21,14 @@ Steps 10.1–10.5  material prepared; static audit passed
 Steps 11.1–11.5  material prepared; static audit passed
 Steps 12.1–12.5  material prepared; static audit passed
 Steps 13.1–13.5  material prepared; static audit passed
-Step 14.1         material prepared; static audit passed
-Step 14.2         material prepared; static audit passed
-Step 14.3         material prepared; static audit passed
-Step 14.4         material prepared; static audit passed
-Step 14.5         current material prepared
-Step 15.1+        planned only; not current
+Steps 14.1–14.5  material prepared; static audit passed
+Step 15.1         current material prepared
+Step 15.2+        planned only; not current
 ```
 
-**Material status is not learner status.** No claim is made that the learner has completed the Step 14.5 work notebook, completed exercises, mastered the Block, or run/passed its tests.
+**Material status is not learner status.** Step 14 static audit completion does not imply that its prepared runtime tests were executed or passed. No claim is made that the learner has completed the Step 15.1 work notebook, exercises, or mastered the original Transformer architecture.
 
-Do not enter Step 15.1 until the learner explicitly asks to proceed beyond Step 14.5.
+Do not enter Step 15.2 until the learner explicitly asks to proceed beyond Step 15.1.
 
 ## Non-negotiable teaching constraints
 
@@ -172,9 +169,9 @@ mlx-minigpt-from-scratch/
 
 Current course-material checkpoint:
 
-> **Step 14.5 — Implement and test one Block**
+> **Step 15.1 — Original Transformer architecture**
 
-Step 14.5 material is prepared only. Do not infer learner mastery, exercise completion, or runtime test success, and do not create, teach, or mark Step 15.1 as current unless the learner explicitly asks to proceed.
+Step 15.1 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 15.2 as current unless the learner explicitly asks to proceed. Step 14's completed static audit still does not imply runtime tests were executed or passed.
 
 ## 2026-10-08 continuity re-audit
 
@@ -497,3 +494,17 @@ The causal test should only require earlier outputs to remain unchanged when the
 Passing these tests later would not establish correct training, gradients, convergence, language-model quality, or complete GPT correctness.
 
 Stop before Step 15.1. Do not add embeddings, positional path, multiple-block stacking, GPT model classes, or language-model heads.
+
+## Step 15.1 accuracy boundary
+
+Frame the 2017 Original Transformer as an encoder–decoder Seq2Seq model, not as decoder-only GPT. Connect it explicitly to the earlier recurrent Seq2Seq history: the encoder/decoder task roles remain while recurrent state transitions are replaced by attention-based stacks.
+
+Encoder self-attention uses source representations as Q/K/V and is not decoder-style causal attention (apart from padding or other masks). Decoder masked self-attention is causal over the target stream.
+
+Cross-attention uses decoder-side Q and encoder-memory K/V. With target length `T_tgt` and source length `T_src`, the score matrix is rectangular `(B,H,T_tgt,T_src)` in the multi-head case.
+
+Preserve the shifted-target training story: decoder target input is shifted right and masked self-attention prevents future-target leakage; cross-attention may use the complete source memory.
+
+Do not confuse the Step 14.5 modernized teaching Block with the 2017 decoder layer. The original Transformer is classically encoder+decoder, Post-Norm / LayerNorm, ReLU FFN, and decoder cross-attention; Step 14.5 used Pre-Norm / RMSNorm / GELU and no cross-attention.
+
+Stop before Step 15.2. Do not explain the decoder-only sufficiency argument, delete the encoder, or implement GPT / MiniGPT top-level modules.
