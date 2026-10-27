@@ -2,7 +2,7 @@
 
 目标：理解 recurrent encoder–decoder Seq2Seq 如何把一个 source sequence 转换成另一个 target sequence，并为后续 fixed-vector bottleneck 与 Attention 的历史动机建立基础。
 
-本 Step 保留现有 roadmap 的 10.1–10.5 结构。Step 10.1 材料已通过静态审核；当前只准备 **10.2 Fixed-vector bottleneck**，不进入 10.3。
+本 Step 保留现有 roadmap 的 10.1–10.5 结构。Step 10.1、10.2 材料已通过静态审核；当前只准备 **10.3 Bahdanau-style attention intuition**，不进入 10.4。
 
 ## Step 10.1 — Encoder-decoder Seq2Seq
 
@@ -115,3 +115,46 @@ Teacher forcing 改变的是 training 时 decoder previous-token input 的来源
 增大 H、使用更强 LSTM/GRU 或改善优化可以提高 bottleneck 的容量与可训练性，但不改变经典结构中 decoder 只通过 final encoder state 访问 source information 的事实。
 
 Step 10.2 到这里提出关键历史问题：encoder 明明已经产生每个 source position 的 hidden states，为什么 decoder 只能依赖最后一个？本节不回答如何选择 source states，不进入 Step 10.3，也不介绍 Attention 的计算机制。
+
+## Step 10.3 — Bahdanau-style attention intuition
+
+### From one fixed context to all encoder states
+
+经典 fixed-vector Seq2Seq 虽然产生 `(B,T_src,H)` 的 encoder state trajectory，但 decoder 主要只接收 final encoder state。Attention 的核心结构变化是：decoder 每个生成步骤都可以重新利用整条 encoder state trajectory，而不是永远只依赖同一个固定 source summary。
+
+### Decoder state as the current information need
+
+在 decoder step `u`，previous decoder state `h_(u-1)^dec` 表示当前 target-side context。一个 learned alignment / compatibility function 将它与每个 source-side encoder state `h_j^enc` 比较，得到 raw alignment score：
+
+```text
+e_(u,j) = a(h_(u-1)^dec, h_j^enc)
+```
+
+这是一种 content-based lookup：相关性由当前 decoder state 与 encoder representation 的内容共同决定，而不是硬编码 target/source 位置对应关系。本节不展开 alignment function 的具体网络形式。
+
+### Attention weights as a distribution
+
+每个 decoder step 对所有 source positions 得到一组 normalized attention weights `α_(u,j)`，满足：
+
+```text
+α_(u,j) >= 0
+sum_j α_(u,j) = 1
+```
+
+因此 `α_u` 可视为 source positions 上的 attention distribution。它不要求 one-hot，可以同时关注多个 positions；也不应自动解释为人类语义上的真实概率或绝对可靠解释。
+
+### Dynamic focus across decoder steps
+
+不同 decoder steps 的 previous decoder state 不同，因此可以产生不同 attention distributions。对一个样本，把各 step 的 weights 堆叠后可形成 `(T_tgt,T_src)` 的矩阵；每一行表示一个 target/decoder step 对 source positions 的相对关注。
+
+Step 10.3 Notebook 中的 heatmap weights 是人工给定的 intuition example，不是模型 score 计算结果。
+
+### Attention context vector
+
+对 step `u`，encoder states 为 `(B,T_src,H_enc)`，attention weights 为 `(B,T_src)`；Attention 利用它们形成 step-specific context vector `c_u=(B,H_enc)`。
+
+与 fixed-vector Seq2Seq 的同一个 source summary 不同，Attention 可以产生 `c_0,c_1,c_2,...` 等随 decoder step 改变的 source summaries。
+
+本节只建立这一概念结构。不推导 softmax，也不做 score→softmax→weighted-sum 的精确数值计算；这些属于 Step 10.4。
+
+Step 10.3 材料准备到此停止，不进入 Step 10.4。
