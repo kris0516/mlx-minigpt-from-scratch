@@ -557,13 +557,13 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - predict next token using only present/past context
 - future leakage as cheating
 
-### 12.2 Causal mask 🚧
+### 12.2 Causal mask ✅
 
 - upper triangle
 - `-inf`
 - why softmax maps masked scores to zero
 
-### 12.3 Stable attention computation
+### 12.3 Stable attention computation 🚧
 
 - softmax numerical intuition
 - what scaling helps with
@@ -1119,14 +1119,15 @@ Steps 9.1–9.5    ✅ Material prepared / static audit passed
 Steps 10.1–10.5  ✅ Material prepared / static audit passed
 Steps 11.1–11.5  ✅ Material prepared / static audit passed
 Step 12.1         ✅ Material prepared / static audit passed
-Step 12.2         🚧 Current material prepared
-Step 12.3+           Planned only
+Step 12.2         ✅ Material prepared / static audit passed
+Step 12.3         🚧 Current material prepared
+Step 12.4+           Planned only
 ```
 
 Current course-material checkpoint:
 
-> **Step 12.2 — Causal mask**
+> **Step 12.3 — Stable attention computation**
 
 Learner-status note:
 
-> Material preparation for Step 12.2 does not assert learner mastery, work-notebook completion, or exercise completion. Do not enter Step 12.3 unless the learner explicitly asks to proceed beyond Step 12.2.
+> Material preparation for Step 12.3 does not assert learner mastery, work-notebook completion, or exercise completion. Do not enter Step 12.4 unless the learner explicitly asks to proceed beyond Step 12.3.
