@@ -23,13 +23,14 @@ Steps 12.1–12.5  material prepared; static audit passed
 Steps 13.1–13.5  material prepared; static audit passed
 Step 14.1         material prepared; static audit passed
 Step 14.2         material prepared; static audit passed
-Step 14.3         current material prepared
-Step 14.4+        planned only; not current
+Step 14.3         material prepared; static audit passed
+Step 14.4         current material prepared
+Step 14.5         planned only; not current
 ```
 
-**Material status is not learner status.** No claim is made that the learner has completed the Step 14.3 work notebook, completed exercises, or mastered Pre-Norm versus Post-Norm.
+**Material status is not learner status.** No claim is made that the learner has completed the Step 14.4 work notebook, completed exercises, or mastered the Transformer feed-forward MLP.
 
-Do not enter Step 14.4 until the learner explicitly asks to proceed beyond Step 14.3.
+Do not enter Step 14.5 until the learner explicitly asks to proceed beyond Step 14.4.
 
 ## Non-negotiable teaching constraints
 
@@ -170,9 +171,9 @@ mlx-minigpt-from-scratch/
 
 Current course-material checkpoint:
 
-> **Step 14.3 — Pre-Norm vs Post-Norm**
+> **Step 14.4 — Feed-forward MLP inside the Block**
 
-Step 14.3 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 14.4 as current unless the learner explicitly asks to proceed.
+Step 14.4 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 14.5 as current unless the learner explicitly asks to proceed.
 
 ## 2026-10-08 continuity re-audit
 
@@ -465,3 +466,17 @@ For gradient topology, teach `J_pre=I+J_F J_N` and `J_post=J_N(I+J_F)` in the lo
 Treat this as an optimization/gradient-flow motivation, not a guarantee that Pre-Norm cannot vanish/explode or must achieve better final quality.
 
 Use only a generic sublayer in code. Stop before Step 14.4: do not introduce the `C->4C->activation->C` feed-forward MLP or compare Attention-vs-MLP roles yet.
+
+## Step 14.4 accuracy boundary
+
+Teach the Transformer feed-forward network as a shared position-wise function: each `(b,t)` token vector is transformed independently by the same parameters. Do not say the MLP itself performs cross-token mixing; Attention supplies that role.
+
+Use the classic teaching path `C->4C->activation->C`, while stating that 4× is a common design choice rather than a mathematical requirement.
+
+Explain why the nonlinear activation matters: without it, stacked affine/linear maps collapse to another affine/linear map. Use MLX 0.32.2 `nn.GELU()` for this lesson.
+
+MLX `nn.Linear` acts on the last feature axis, so `(B,T,C)` can be processed directly with shared weights across positions; no Python token loop is required.
+
+Parameter count for the lesson's `bias=True` MLP is `8C^2+5C`; with both biases disabled it is `8C^2`. The output returns to `(B,T,C)`, making residual addition shape-compatible.
+
+Connect the MLP only as a concrete instance of the generic F from Step 14.3. Stop before Step 14.5: do not assemble the complete Transformer Block, compute total Block parameters, or perform Block-level numerical sanity tests.
