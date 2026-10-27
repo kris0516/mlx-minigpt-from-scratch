@@ -478,7 +478,7 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 
 ---
 
-## Step 10 — Seq2Seq and the birth of Attention 🚧
+## Step 10 — Seq2Seq and the birth of Attention ✅
 
 **Goal:** see Attention emerge as a solution to a real encoder-decoder bottleneck.
 
@@ -506,18 +506,18 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - weighted combination of values
 - first precise attention computation without Q/K/V terminology
 
-### 10.5 Historical bridge to Transformer 🚧
+### 10.5 Historical bridge to Transformer ✅
 
 - Attention initially sat on top of RNNs
 - question: if direct retrieval works, why keep recurrence everywhere?
 
 ---
 
-## Step 11 — Self-Attention from first principles
+## Step 11 — Self-Attention from first principles 🚧
 
 **Goal:** derive Q/K/V instead of memorizing the final formula.
 
-### 11.1 Why separate Query, Key, and Value
+### 11.1 Why separate Query, Key, and Value 🚧
 
 - one representation serving three roles is restrictive
 - learned projections create task-specific lookup spaces
@@ -1114,17 +1114,17 @@ These are not required to declare the MiniGPT project complete.
 > Learner completion must only be recorded when the learner explicitly confirms completion or an agreed assessment has actually been completed.
 
 ```text
-Steps 1–8.5    ✅ Material prepared
-Steps 9.1–9.5  ✅ Material prepared / static audit passed
-Steps 10.1–10.4 ✅ Material prepared / static audit passed
-Step 10.5       🚧 Current material prepared
-Step 11.1+         Planned only
+Steps 1–8.5      ✅ Material prepared
+Steps 9.1–9.5    ✅ Material prepared / static audit passed
+Steps 10.1–10.5  ✅ Material prepared / static audit passed
+Step 11.1         🚧 Current material prepared
+Step 11.2+           Planned only
 ```
 
 Current course-material checkpoint:
 
-> **Step 10.5 — Historical bridge to Transformer**
+> **Step 11.1 — Why separate Query, Key, and Value**
 
 Learner-status note:
 
-> Material preparation for Step 10.5 does not assert learner mastery, work-notebook completion, or exercise completion. Do not enter Step 11.1 unless the learner explicitly asks to proceed beyond Step 10.5.
+> Material preparation for Step 11.1 does not assert learner mastery, work-notebook completion, or exercise completion. Do not enter Step 11.2 unless the learner explicitly asks to proceed beyond Step 11.1.
