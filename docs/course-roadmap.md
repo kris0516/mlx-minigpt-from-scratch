@@ -482,14 +482,14 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 
 **Goal:** see Attention emerge as a solution to a real encoder-decoder bottleneck.
 
-### 10.1 Encoder-decoder Seq2Seq 🚧
+### 10.1 Encoder-decoder Seq2Seq ✅
 
 - source sequence
 - encoder state
 - decoder state
 - variable-length input/output
 
-### 10.2 Fixed-vector bottleneck
+### 10.2 Fixed-vector bottleneck 🚧
 
 - compressing a long source into one final state
 - why this becomes difficult for long sequences
@@ -1114,16 +1114,17 @@ These are not required to declare the MiniGPT project complete.
 > Learner completion must only be recorded when the learner explicitly confirms completion or an agreed assessment has actually been completed.
 
 ```text
-Steps 1–8.5   ✅ Material prepared
-Steps 9.1–9.5 ✅ Material prepared / static audit passed
-Step 10.1      🚧 Current material prepared
-Step 10.2+        Planned only
+Steps 1–8.5    ✅ Material prepared
+Steps 9.1–9.5  ✅ Material prepared / static audit passed
+Step 10.1       ✅ Material prepared / static audit passed
+Step 10.2       🚧 Current material prepared
+Step 10.3+         Planned only
 ```
 
 Current course-material checkpoint:
 
-> **Step 10.1 — Encoder-decoder Seq2Seq**
+> **Step 10.2 — Fixed-vector bottleneck**
 
 Learner-status note:
 
-> Material preparation for Step 10.1 does not assert learner mastery, work-notebook completion, or exercise completion. Do not enter Step 10.2 unless the learner explicitly asks to proceed beyond Step 10.1.
+> Material preparation for Step 10.2 does not assert learner mastery, work-notebook completion, or exercise completion. Do not enter Step 10.3 unless the learner explicitly asks to proceed beyond Step 10.2.
