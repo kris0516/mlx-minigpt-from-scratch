@@ -19,13 +19,14 @@ Steps 1–8.5    material prepared
 Steps 9.1–9.5  material prepared; static audit passed
 Step 10.1       material prepared; static audit passed
 Step 10.2       material prepared; static audit passed
-Step 10.3       current material prepared
-Step 10.4+      planned only; not current
+Step 10.3       material prepared; static audit passed
+Step 10.4       current material prepared
+Step 10.5       planned only; not current
 ```
 
-**Material status is not learner status.** No claim is made that the learner has completed the Step 10.3 work notebook, completed exercises, or mastered Bahdanau-style attention intuition.
+**Material status is not learner status.** No claim is made that the learner has completed the Step 10.4 work notebook, completed exercises, or mastered score→softmax→weighted-sum attention.
 
-Do not enter Step 10.4 until the learner explicitly asks to proceed beyond Step 10.3.
+Do not enter Step 10.5 until the learner explicitly asks to proceed beyond Step 10.4.
 
 ## Non-negotiable teaching constraints
 
@@ -166,9 +167,9 @@ mlx-minigpt-from-scratch/
 
 Current course-material checkpoint:
 
-> **Step 10.3 — Bahdanau-style attention intuition**
+> **Step 10.4 — Score → softmax → weighted sum**
 
-Step 10.3 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 10.4 as current unless the learner explicitly asks to proceed.
+Step 10.4 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 10.5 as current unless the learner explicitly asks to proceed.
 
 ## 2026-10-08 continuity re-audit
 
@@ -239,3 +240,13 @@ Introduce raw alignment score `e_(u,j)` conceptually, then normalized attention 
 Emphasize that different decoder steps can produce different source-position distributions and therefore different attention context vectors `c_u`.
 
 Do not derive softmax, compute score→softmax numerically, or perform the weighted-sum arithmetic in Step 10.3; those are reserved for Step 10.4. Do not introduce Q/K/V terminology here.
+
+## Step 10.4 accuracy boundary
+
+Start from the already-introduced raw alignment scores `e_(u,j)`. Define softmax before using `mx.softmax`, explain exponential positivity and normalization, and make clear that softmax runs across source positions for each decoder step.
+
+Use the tiny scores `[2,1,0]` example to obtain approximately `[0.665,0.245,0.090]`, then combine those weights with simple 2D encoder states to obtain a concrete context vector.
+
+Keep shape logic explicit: one-step scores/weights `(B,T_src)`, encoder states `(B,T_src,H_enc)`, `weights[...,None]` -> `(B,T_src,1)`, weighted states `(B,T_src,H_enc)`, sum over source axis -> context `(B,H_enc)`.
+
+MLX 0.32.2 supports `mx.softmax(scores, axis=-1)`. Do not introduce Q/K/V terminology or the Transformer historical bridge during Step 10.4; those belong to later roadmap material.
