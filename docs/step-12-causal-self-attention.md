@@ -2,7 +2,7 @@
 
 目标：把 Step 11 的 general self-attention 变成适用于 autoregressive next-token language modeling 的机制。
 
-本 Step 保留现有 roadmap 的 12.1–12.5 结构。Step 12.1–12.3 材料已通过静态审核；当前只准备 **12.4 Implement a single causal attention head**，不进入 12.5。
+本 Step 保留现有 roadmap 的 12.1–12.5 结构。Step 12.1–12.4 材料已通过静态审核；当前只准备 **12.5 Inspect an attention matrix**，不进入 13.1。
 
 ## Step 12.1 — Autoregressive constraint
 
@@ -194,3 +194,52 @@ MLX `nn.Module` 会把直接存放在 module 上的 `mx.array` attributes 收入
 本节得到的是 single causal self-attention head。没有 Multi-Head Attention、head concatenation、output projection、residual/normalization/feed-forward，也不做 Step 12.5 的专门 attention-matrix inspection。
 
 Step 12.4 材料准备到此停止，不进入 Step 12.5。
+
+## Step 12.5 — Inspect an attention matrix
+
+### Read rows as Queries and columns as Keys
+
+对单个 sample，attention matrix 是 `A:(T,T)`。第 i 行表示 Query position i 对所有 Key positions 的 attention distribution；第 j 列对应 Key position j。
+
+Causal self-attention 需要满足两个结构不变量：
+
+```text
+sum_j A_(i,j) = 1
+A_(i,j) = 0 for j > i
+```
+
+也就是每个 Query row 的合法权重和为 1，strict upper triangle 的 future weights 全部为 0。
+
+### Hand-computed expected matrix
+
+Notebook 使用全零 scaled scores 作为 deterministic teaching case。加入 causal mask 后，每一行所有合法 logits 相等，所以 softmax 在合法 positions 上均匀分配：
+
+```text
+[[1,   0,   0,   0],
+ [1/2, 1/2, 0,   0],
+ [1/3, 1/3, 1/3, 0],
+ [1/4, 1/4, 1/4, 1/4]]
+```
+
+这个 uniform pattern 是人工等-logit案例的手算预期，不代表真实训练后的 attention 通常均匀。
+
+### Structural checks
+
+Notebook 准备两类检查：
+
+```text
+row_sums = sum(A, axis=-1)
+future_weights = triu(A, k=1)
+```
+
+预期 row sums 约为 1，strict-upper-triangle future weights 的最大绝对值为 0。
+
+### Diagnostic head versus runtime results
+
+Step 12.4 的 head 正常只返回 output。Step 12.5 提供 diagnostic variant，额外返回 attention weights，方便执行时打印与可视化。
+
+由于 diagnostic head 的 Q/K projection 默认随机初始化，合法位置的具体 attention values 只能在实际执行 Notebook 后看到。本轮只准备未执行母版，因此不把这些未知数值声称为 runtime result。
+
+Notebook 还提供一个 heatmap cell：横轴 Key position、纵轴 Query position，用于执行时观察 causal lower-triangular structure；attention weight 不能自动被解释为确定的人类语义关系。
+
+Step 12.5 材料准备到此停止，不进入 Step 13.1，也不讨论或实现 Multi-Head Attention。
