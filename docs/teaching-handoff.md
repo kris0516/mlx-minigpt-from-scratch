@@ -21,13 +21,14 @@ Steps 10.1–10.5  material prepared; static audit passed
 Steps 11.1–11.5  material prepared; static audit passed
 Steps 12.1–12.5  material prepared; static audit passed
 Step 13.1         material prepared; static audit passed
-Step 13.2         current material prepared
-Step 13.3+        planned only; not current
+Step 13.2         material prepared; static audit passed
+Step 13.3         current material prepared
+Step 13.4+        planned only; not current
 ```
 
-**Material status is not learner status.** No claim is made that the learner has completed the Step 13.2 work notebook, completed exercises, or mastered fused QKV projection.
+**Material status is not learner status.** No claim is made that the learner has completed the Step 13.3 work notebook, completed exercises, or mastered channel-to-head reshaping.
 
-Do not enter Step 13.3 until the learner explicitly asks to proceed beyond Step 13.2.
+Do not enter Step 13.4 until the learner explicitly asks to proceed beyond Step 13.3.
 
 ## Non-negotiable teaching constraints
 
@@ -168,9 +169,9 @@ mlx-minigpt-from-scratch/
 
 Current course-material checkpoint:
 
-> **Step 13.2 — Fused QKV projection**
+> **Step 13.3 — Split channels into heads**
 
-Step 13.2 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 13.3 as current unless the learner explicitly asks to proceed.
+Step 13.3 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 13.4 as current unless the learner explicitly asks to proceed.
 
 ## 2026-10-08 continuity re-audit
 
@@ -389,3 +390,15 @@ Do not claim fusion reduces parameter count: with the same bias choice, three `L
 Do not overpromise a fixed runtime speedup; one larger projection can reduce dispatch/call overhead and organize matrix multiplication efficiently, but actual performance is implementation- and hardware-dependent.
 
 Stop before Step 13.3. Do not split C into `H×D`, reshape to `(B,T,H,D)`, transpose head axes, concatenate heads, or introduce output projection.
+
+## Step 13.3 accuracy boundary
+
+Start from full-width Q/K/V tensors `(B,T,C)`. For equal-width heads define `C=H×D`, require `C % H == 0`, and set `D=C//H`. Clarify locally that H means number of heads, not the earlier RNN hidden-width notation.
+
+Teach the exact index interpretation `Q_heads[b,t,h,d] = Q[b,t,hD+d]` before code. The reshape to `(B,T,H,D)` reorganizes channels; it does not add parameters, perform another learned projection, average values, or create extra elements.
+
+Use MLX 0.32.2 `mx.reshape(q,(B,T,H,D))` for Q/K/V. Do not claim the operation is guaranteed to be physically zero-copy; teach only the logical tensor semantics.
+
+Explain that GPT-style heads are represented as a tensor axis rather than requiring H separate Python modules. The learned head-specific freedom comes from different Q/K/V output channel blocks.
+
+Stop before Step 13.4. Do not transpose to `(B,H,T,D)`, compute batched head-wise QK^T, discuss GPU-core mapping, concatenate heads, or introduce output projection.
