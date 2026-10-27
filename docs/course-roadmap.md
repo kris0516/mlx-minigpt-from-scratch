@@ -517,12 +517,12 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 
 **Goal:** derive Q/K/V instead of memorizing the final formula.
 
-### 11.1 Why separate Query, Key, and Value 🚧
+### 11.1 Why separate Query, Key, and Value ✅
 
 - one representation serving three roles is restrictive
 - learned projections create task-specific lookup spaces
 
-### 11.2 Q/K/V Linear projections
+### 11.2 Q/K/V Linear projections 🚧
 
 - `X W_Q`, `X W_K`, `X W_V`
 - shapes
@@ -1117,14 +1117,15 @@ These are not required to declare the MiniGPT project complete.
 Steps 1–8.5      ✅ Material prepared
 Steps 9.1–9.5    ✅ Material prepared / static audit passed
 Steps 10.1–10.5  ✅ Material prepared / static audit passed
-Step 11.1         🚧 Current material prepared
-Step 11.2+           Planned only
+Step 11.1         ✅ Material prepared / static audit passed
+Step 11.2         🚧 Current material prepared
+Step 11.3+           Planned only
 ```
 
 Current course-material checkpoint:
 
-> **Step 11.1 — Why separate Query, Key, and Value**
+> **Step 11.2 — Q/K/V Linear projections**
 
 Learner-status note:
 
-> Material preparation for Step 11.1 does not assert learner mastery, work-notebook completion, or exercise completion. Do not enter Step 11.2 unless the learner explicitly asks to proceed beyond Step 11.1.
+> Material preparation for Step 11.2 does not assert learner mastery, work-notebook completion, or exercise completion. Do not enter Step 11.3 unless the learner explicitly asks to proceed beyond Step 11.2.
