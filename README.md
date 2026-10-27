@@ -18,13 +18,14 @@ MLP → RNN → LSTM/GRU → Seq2Seq → Attention → Transformer → GPT
 Steps 1–8.5      ✅ Material prepared
 Steps 9.1–9.5    ✅ Material prepared / static audit passed
 Steps 10.1–10.5  ✅ Material prepared / static audit passed
-Step 11.1         🚧 Current material prepared
-Step 11.2+           Planned only
+Step 11.1         ✅ Material prepared / static audit passed
+Step 11.2         🚧 Current material prepared
+Step 11.3+           Planned only
 ```
 
-Current course-material checkpoint: **Step 11.1 — Why separate Query, Key, and Value**.
+Current course-material checkpoint: **Step 11.2 — Q/K/V Linear projections**.
 
-Learner completion/mastery for Step 11.1 is intentionally **not asserted** here.
+Learner completion/mastery for Step 11.2 is intentionally **not asserted** here.
 
 ## Persistent course documents
 
