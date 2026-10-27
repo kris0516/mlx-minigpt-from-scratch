@@ -19,13 +19,14 @@ Steps 1–8.5  ✅ Material prepared
 Step 9.1      ✅ Material prepared / static audit passed
 Step 9.2      ✅ Material prepared / static audit passed
 Step 9.3      ✅ Material prepared / static audit passed
-Step 9.4      🚧 Current material prepared
-Step 9.5         Planned only
+Step 9.4      ✅ Material prepared / static audit passed
+Step 9.5      🚧 Current material prepared
+Step 10.1+       Planned only
 ```
 
-Current course-material checkpoint: **Step 9.4 — GRU**.
+Current course-material checkpoint: **Step 9.5 — Why LSTM/GRU still did not solve everything**.
 
-Learner completion/mastery for Step 9.4 is intentionally **not asserted** here.
+Learner completion/mastery for Step 9.5 is intentionally **not asserted** here.
 
 ## Persistent course documents
 
