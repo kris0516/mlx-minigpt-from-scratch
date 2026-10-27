@@ -24,13 +24,14 @@ Steps 13.1–13.5  ✅ Material prepared / static audit passed
 Step 14.1         ✅ Material prepared / static audit passed
 Step 14.2         ✅ Material prepared / static audit passed
 Step 14.3         ✅ Material prepared / static audit passed
-Step 14.4         🚧 Current material prepared
-Step 14.5            Planned only
+Step 14.4         ✅ Material prepared / static audit passed
+Step 14.5         🚧 Current material prepared
+Step 15.1+           Planned only
 ```
 
-Current course-material checkpoint: **Step 14.4 — Feed-forward MLP inside the Block**.
+Current course-material checkpoint: **Step 14.5 — Implement and test one Block**.
 
-Learner completion/mastery for Step 14.4 is intentionally **not asserted** here.
+Learner completion/mastery and runtime test success for Step 14.5 are intentionally **not asserted** here.
 
 ## Persistent course documents
 
