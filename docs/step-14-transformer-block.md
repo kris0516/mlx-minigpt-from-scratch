@@ -2,7 +2,7 @@
 
 目标：逐步组装 GPT 中反复堆叠的 Transformer computation block。
 
-本 Step 保留现有 roadmap 的 14.1–14.5 结构。Step 14.1–14.3 材料已通过静态审核；当前只准备 **14.4 Feed-Forward MLP inside the Block**，不进入 14.5。
+本 Step 保留现有 roadmap 的 14.1–14.5 结构。Step 14.1–14.4 材料已通过静态审核；当前只准备 **14.5 Implement and test one Block**，不进入 15.1。
 
 ## Step 14.1 — Residual connection
 
@@ -197,3 +197,66 @@ total  : 8C^2 + 5C
 Step 14.3 的 generic `F` 现在可以具体取为 MLP，例如概念上的 `x_new = x + MLP(N(x))`。本节只说明 MLP 能作为 sublayer F，不把 Attention branch、MLP branch、两套 normalization 与 residual 全部组装。
 
 Step 14.4 材料准备到此停止，不进入 Step 14.5；完整 Block implementation、shape invariants、Block parameter count 与 numerical sanity checks 留给下一既有小节。
+
+## Step 14.5 — Implement and test one Block
+
+### Minimal Pre-Norm Block
+
+本节把已学组件组装为一个最小 Pre-Norm Transformer Block：
+
+```text
+x
+-> RMSNorm
+-> causal Multi-Head Attention
+-> residual add
+-> RMSNorm
+-> Feed-Forward MLP
+-> residual add
+-> y
+```
+
+公式：
+
+```text
+x1 = x + Attn(N1(x))
+y  = x1 + MLP(N2(x1))
+```
+
+Attention 完整复用 Step 13 的 fused QKV、head split、batched causal attention、head merge 与 output projection；MLP 完整复用 Step 14.4 的 `C->4C->GELU->C`。
+
+### Shape invariants
+
+Block 输入/输出均保持 `(B,T,C)`，因此 batch size、sequence length T 与 model width C 都不改变。
+
+### Parameter count
+
+本节约定：Attention fused QKV / c_proj 使用 `bias=False`；MLP 两层沿用 14.4 的 `bias=True`；两套 RMSNorm 各有 C 个 learned gamma。
+
+因此：
+
+```text
+Attention : 4C^2
+MLP       : 8C^2 + 5C
+2 RMSNorm : 2C
+Total     : 12C^2 + 7C
+```
+
+例如 `C=8` 时为 824 parameters。本计数只覆盖这个 Block，不包括 embedding、LM head、final norm 或其他模块。
+
+### Prepared tests only
+
+Notebook 准备但不执行以下教学测试：
+
+```text
+shape invariants
+sequence-length unchanged
+parameter-count equality
+finite-value sanity check
+future-token causal-invariance check
+```
+
+causal-invariance test 只修改最后一个 future token，并比较更早 positions 的 Block outputs；因为 RMSNorm 是 per-token、Attention 是 causal、MLP 是 position-wise，earlier outputs 理论上应保持一致。
+
+这些测试在本轮均未执行，因此不能写成 tests passed。即使用户之后执行通过，也只能支持对应 invariant / sanity property，不等于训练、优化或模型质量已经正确。
+
+Step 14.5 材料准备到此停止，不进入 Step 15.1；Transformer-to-GPT assembly、Block stacking、embedding / positional path 与 GPT model implementation 留给下一大 Step。
