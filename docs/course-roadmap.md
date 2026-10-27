@@ -500,13 +500,13 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - content-based lookup
 - attention weights as a distribution
 
-### 10.4 Score → softmax → weighted sum 🚧
+### 10.4 Score → softmax → weighted sum ✅
 
 - tiny numeric example
 - weighted combination of values
 - first precise attention computation without Q/K/V terminology
 
-### 10.5 Historical bridge to Transformer
+### 10.5 Historical bridge to Transformer 🚧
 
 - Attention initially sat on top of RNNs
 - question: if direct retrieval works, why keep recurrence everywhere?
@@ -1116,17 +1116,15 @@ These are not required to declare the MiniGPT project complete.
 ```text
 Steps 1–8.5    ✅ Material prepared
 Steps 9.1–9.5  ✅ Material prepared / static audit passed
-Step 10.1       ✅ Material prepared / static audit passed
-Step 10.2       ✅ Material prepared / static audit passed
-Step 10.3       ✅ Material prepared / static audit passed
-Step 10.4       🚧 Current material prepared
-Step 10.5          Planned only
+Steps 10.1–10.4 ✅ Material prepared / static audit passed
+Step 10.5       🚧 Current material prepared
+Step 11.1+         Planned only
 ```
 
 Current course-material checkpoint:
 
-> **Step 10.4 — Score → softmax → weighted sum**
+> **Step 10.5 — Historical bridge to Transformer**
 
 Learner-status note:
 
-> Material preparation for Step 10.4 does not assert learner mastery, work-notebook completion, or exercise completion. Do not enter Step 10.5 unless the learner explicitly asks to proceed beyond Step 10.4.
+> Material preparation for Step 10.5 does not assert learner mastery, work-notebook completion, or exercise completion. Do not enter Step 11.1 unless the learner explicitly asks to proceed beyond Step 10.5.
