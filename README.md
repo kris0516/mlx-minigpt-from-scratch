@@ -19,13 +19,14 @@ Steps 1–8.5      ✅ Material prepared
 Steps 9.1–9.5    ✅ Material prepared / static audit passed
 Steps 10.1–10.5  ✅ Material prepared / static audit passed
 Step 11.1         ✅ Material prepared / static audit passed
-Step 11.2         🚧 Current material prepared
-Step 11.3+           Planned only
+Step 11.2         ✅ Material prepared / static audit passed
+Step 11.3         🚧 Current material prepared
+Step 11.4+           Planned only
 ```
 
-Current course-material checkpoint: **Step 11.2 — Q/K/V Linear projections**.
+Current course-material checkpoint: **Step 11.3 — `QK^T` as compatibility score**.
 
-Learner completion/mastery for Step 11.2 is intentionally **not asserted** here.
+Learner completion/mastery for Step 11.3 is intentionally **not asserted** here.
 
 ## Persistent course documents
 
