@@ -635,13 +635,13 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - learned scale `gamma`
 - difference from LayerNorm at a high level
 
-### 14.3 Pre-Norm vs Post-Norm 🚧
+### 14.3 Pre-Norm vs Post-Norm ✅
 
 - where normalization sits
 - why modern deep Transformers often use pre-norm variants
 - connect directly to our Block code
 
-### 14.4 Feed-forward MLP inside the Block
+### 14.4 Feed-forward MLP inside the Block 🚧
 
 - revisit `C → 4C → activation → C`
 - per-position computation
@@ -1122,14 +1122,15 @@ Steps 12.1–12.5  ✅ Material prepared / static audit passed
 Steps 13.1–13.5  ✅ Material prepared / static audit passed
 Step 14.1         ✅ Material prepared / static audit passed
 Step 14.2         ✅ Material prepared / static audit passed
-Step 14.3         🚧 Current material prepared
-Step 14.4+           Planned only
+Step 14.3         ✅ Material prepared / static audit passed
+Step 14.4         🚧 Current material prepared
+Step 14.5            Planned only
 ```
 
 Current course-material checkpoint:
 
-> **Step 14.3 — Pre-Norm vs Post-Norm**
+> **Step 14.4 — Feed-forward MLP inside the Block**
 
 Learner-status note:
 
-> Material preparation for Step 14.3 does not assert learner mastery, work-notebook completion, or exercise completion. Do not enter Step 14.4 unless the learner explicitly asks to proceed beyond Step 14.3.
+> Material preparation for Step 14.4 does not assert learner mastery, work-notebook completion, or exercise completion. Do not enter Step 14.5 unless the learner explicitly asks to proceed beyond Step 14.4.
