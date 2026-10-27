@@ -597,12 +597,12 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - split Q/K/V
 - parameter and shape advantages
 
-### 13.3 Split channels into heads 🚧
+### 13.3 Split channels into heads ✅
 
 - `C = H × D`
 - `(B,T,C) → (B,T,H,D)`
 
-### 13.4 Transpose for batched attention
+### 13.4 Transpose for batched attention 🚧
 
 - `(B,T,H,D) → (B,H,T,D)`
 - batched matrix multiplication
@@ -1121,14 +1121,15 @@ Steps 11.1–11.5  ✅ Material prepared / static audit passed
 Steps 12.1–12.5  ✅ Material prepared / static audit passed
 Step 13.1         ✅ Material prepared / static audit passed
 Step 13.2         ✅ Material prepared / static audit passed
-Step 13.3         🚧 Current material prepared
-Step 13.4+           Planned only
+Step 13.3         ✅ Material prepared / static audit passed
+Step 13.4         🚧 Current material prepared
+Step 13.5            Planned only
 ```
 
 Current course-material checkpoint:
 
-> **Step 13.3 — Split channels into heads**
+> **Step 13.4 — Transpose for batched attention**
 
 Learner-status note:
 
-> Material preparation for Step 13.3 does not assert learner mastery, work-notebook completion, or exercise completion. Do not enter Step 13.4 unless the learner explicitly asks to proceed beyond Step 13.3.
+> Material preparation for Step 13.4 does not assert learner mastery, work-notebook completion, or exercise completion. Do not enter Step 13.5 unless the learner explicitly asks to proceed beyond Step 13.4.
