@@ -238,7 +238,7 @@ future_weights = triu(A, k=1)
 
 Step 12.4 的 head 正常只返回 output。Step 12.5 提供 diagnostic variant，额外返回 attention weights，方便执行时打印与可视化。
 
-由于 diagnostic head 的 Q/K projection 默认随机初始化，合法位置的具体 attention values 只能在实际执行 Notebook 后看到。本轮只准备未执行母版，因此不把这些未知数值声称为 runtime result。
+该 diagnostic example 特意使用全零输入 `x=0`，且 Q/K/V 三个 Linear 都设为 `bias=False`。因此无论 projection weights 如何随机初始化，都有 `Q=K=V=0`：合法位置的 pre-softmax scores 全为 0，causal softmax 会在每行合法 prefix 上均匀分配，future weights 为 0，且 `out=A@V=0`。这些具体数值可以在运行前数学推导；由于母版未执行，它们应称为 expected values，而不是已经观测到的 runtime results。
 
 Notebook 还提供一个 heatmap cell：横轴 Key position、纵轴 Query position，用于执行时观察 causal lower-triangular structure；attention weight 不能自动被解释为确定的人类语义关系。
 
