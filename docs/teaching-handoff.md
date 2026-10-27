@@ -19,13 +19,14 @@ Steps 1–8.5      material prepared
 Steps 9.1–9.5    material prepared; static audit passed
 Steps 10.1–10.5  material prepared; static audit passed
 Step 11.1         material prepared; static audit passed
-Step 11.2         current material prepared
-Step 11.3+        planned only; not current
+Step 11.2         material prepared; static audit passed
+Step 11.3         current material prepared
+Step 11.4+        planned only; not current
 ```
 
-**Material status is not learner status.** No claim is made that the learner has completed the Step 11.2 work notebook, completed exercises, or mastered Q/K/V linear projections.
+**Material status is not learner status.** No claim is made that the learner has completed the Step 11.3 work notebook, completed exercises, or mastered Query–Key compatibility scores.
 
-Do not enter Step 11.3 until the learner explicitly asks to proceed beyond Step 11.2.
+Do not enter Step 11.4 until the learner explicitly asks to proceed beyond Step 11.3.
 
 ## Non-negotiable teaching constraints
 
@@ -166,9 +167,9 @@ mlx-minigpt-from-scratch/
 
 Current course-material checkpoint:
 
-> **Step 11.2 — Q/K/V Linear projections**
+> **Step 11.3 — `QK^T` as compatibility score**
 
-Step 11.2 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 11.3 as current unless the learner explicitly asks to proceed.
+Step 11.3 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 11.4 as current unless the learner explicitly asks to proceed.
 
 ## 2026-10-08 continuity re-audit
 
@@ -281,3 +282,13 @@ Make clear that the projection changes the feature axis and is shared across seq
 Use a small hand-computable matrix example before the MLX API. For MLX 0.32.2, `nn.Linear(input_dims, output_dims)` stores weight as `(output_dims,input_dims)` and computes `x @ weight.T (+ bias)`.
 
 Do not compute Query–Key compatibility scores, dot products, score matrices, scaling, or softmax during Step 11.2. Stop before Step 11.3.
+
+## Step 11.3 accuracy boundary
+
+Introduce dot product before matrix `QK^T`. For `q_i,k_j∈R^(d_k)`, define `s_(i,j)=q_i·k_j`, and make clear this is a raw compatibility score rather than a probability.
+
+Explicitly distinguish dot product from cosine similarity: cosine divides by both vector norms, while raw dot product is sensitive to magnitude as well as direction. They are numerically equal only for unit-normalized vectors.
+
+Keep matrix semantics exact: with Q/K `(T,d_k)`, `QK^T` is `(T,T)` and entry `(i,j)` is Query i against Key j. Batch shape is `(B,T,d_k) @ (B,d_k,T) -> (B,T,T)`.
+
+Do not introduce scaling, `1/sqrt(d_k)`, or softmax during Step 11.3. Stop before Step 11.4.
