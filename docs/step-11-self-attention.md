@@ -2,7 +2,7 @@
 
 目标：不直接背最终 Attention 公式，而是从信息检索角色出发，逐步推导 Query / Key / Value、compatibility score、scaling、softmax 与 Value retrieval。
 
-本 Step 保留现有 roadmap 的 11.1–11.5 结构。Step 11.1、11.2 材料已通过静态审核；当前只准备 **11.3 `QK^T` as compatibility score**，不进入 11.4。
+本 Step 保留现有 roadmap 的 11.1–11.5 结构。Step 11.1–11.3 材料已通过静态审核；当前只准备 **11.4 Scaling and softmax**，不进入 11.5。
 
 ## Step 11.1 — Why separate Query, Key, and Value
 
@@ -166,3 +166,63 @@ Q @ K_transposed -> (B,T,T)
 本节只建立 unscaled raw compatibility scores。Scaling、`1/sqrt(d_k)` 与 softmax 属于 Step 11.4，不在本节展开。
 
 Step 11.3 材料准备到此停止，不进入 Step 11.4。
+
+## Step 11.4 — Scaling and softmax
+
+### Why dot-product scale grows with d_k
+
+对单个 raw score `s=q·k=sum_m q_m k_m`，若用独立、零均值、单位方差的教学假设理解各分量，则每个乘积项的方差约为 1，`d_k` 项相加后：
+
+```text
+Var(s) ≈ d_k
+Std(s) ≈ sqrt(d_k)
+```
+
+这解释了为什么 feature width 增大时 raw dot-product scores 的典型幅度容易一起增大。这个推导是 scaling 的经典统计动机，不是对训练后相关 Q/K components 的绝对定律。
+
+### Scaling by sqrt(d_k)
+
+定义 scaled score：
+
+```text
+scaled_scores = QK^T / sqrt(d_k)
+```
+
+在上述教学假设下，除以 `sqrt(d_k)` 会把 score variance 的典型量级拉回约 1。Scaling 不改变 score matrix shape，也不会直接把 scores 变成概率。
+
+较大的 raw logits 容易让 softmax 变得非常 peaked；scaling 控制进入 softmax 前的典型数值幅度，使 optimization 通常更温和。
+
+### Tiny softmax comparison
+
+例如 raw scores `[4,2,0]`、`d_k=4`，scaling 后是 `[2,1,0]`。
+
+```text
+softmax([4,2,0]) ≈ [0.867,0.117,0.016]
+softmax([2,1,0]) ≈ [0.665,0.245,0.090]
+```
+
+两者保持同样的相对排序，但 scaled version 没那么尖锐。
+
+### Softmax axis and attention-weight shape
+
+Step 11.3 已定义 `(B,T,T)` score matrix 的 rows=Query positions、columns=Key positions。因此每个 Query row 应沿 Key axis 归一化。
+
+MLX 中：
+
+```text
+A = mx.softmax(scaled_scores, axis=-1)
+```
+
+输出 shape 仍为 `(B,T,T)`，并且 `A[b,i,:]` 是 sample b 中 Query position i 对所有 Key positions 的非负、和为 1 的 attention distribution。
+
+### Complete weight formula
+
+到本节为止，Attention weight computation 已成为：
+
+```text
+A = softmax(QK^T / sqrt(d_k))
+```
+
+本节只得到 A，不执行 Value retrieval。`A @ V` 与完整 single-head output 属于 Step 11.5。
+
+Step 11.4 材料准备到此停止，不进入 Step 11.5。
