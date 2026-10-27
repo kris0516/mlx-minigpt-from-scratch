@@ -2,7 +2,7 @@
 
 目标：把 Step 11 的 general self-attention 变成适用于 autoregressive next-token language modeling 的机制。
 
-本 Step 保留现有 roadmap 的 12.1–12.5 结构。Step 12.1、12.2 材料已通过静态审核；当前只准备 **12.3 Stable attention computation**，不进入 12.4。
+本 Step 保留现有 roadmap 的 12.1–12.5 结构。Step 12.1–12.3 材料已通过静态审核；当前只准备 **12.4 Implement a single causal attention head**，不进入 12.5。
 
 ## Step 12.1 — Autoregressive constraint
 
@@ -150,3 +150,47 @@ subtract-max 后很负的 logits 可能使 exponential underflow 到 0；对理�
 `precise=True` 对低精度输入使用 float32 reduction accumulation；这是 API 精度选项，本节不扩展成 mixed-precision 专题。
 
 Step 12.3 材料准备到此停止，不进入 Step 12.4；完整 causal attention head 实现留给后续既有小节。
+
+## Step 12.4 — Implement a single causal attention head
+
+### Minimal trainable structure
+
+本节把已学组件封装成一个 MLX `nn.Module`。输入 `X:(B,T,C)`，单头 width 记作 `d_h`，教学实现令 `d_k=d_v=d_h`。
+
+Trainable parts 只有三套 Q/K/V projections：
+
+```text
+q_proj : C -> d_h
+k_proj : C -> d_h
+v_proj : C -> d_h
+```
+
+Scaling factor `1/sqrt(d_h)` 与 causal visibility rule 都属于结构常量，不需要训练。
+
+### Forward order and shapes
+
+```text
+X                  (B,T,C)
+-> Q/K/V           (B,T,d_h)
+-> Q @ K^T         (B,T,T)
+-> * 1/sqrt(d_h)   (B,T,T)
+-> + causal mask   (B,T,T)
+-> softmax(-1)     (B,T,T)
+-> weights @ V     (B,T,d_h)
+```
+
+Mask 必须在 softmax 前作用到 scaled scores；softmax 沿 Key axis `axis=-1`。
+
+### Non-trainable mask handling in MLX 0.32.2
+
+MLX `nn.Module` 会把直接存放在 module 上的 `mx.array` attributes 收入 `parameters()`；arrays 默认 trainable，除非显式 `freeze`。
+
+因此本节主实现不把 mask 存成 `self.causal_mask`，而是根据当前 T 在 `__call__` 内局部构造 `(T,T)` causal mask。这样它不会进入 parameter tree，也自然适配不同 T。
+
+如果未来为了性能缓存 mask 到 module state，则应显式 freeze 对应 key，使其保留在 state/parameters 中但不进入 `trainable_parameters()`。
+
+### Scope boundary
+
+本节得到的是 single causal self-attention head。没有 Multi-Head Attention、head concatenation、output projection、residual/normalization/feed-forward，也不做 Step 12.5 的专门 attention-matrix inspection。
+
+Step 12.4 材料准备到此停止，不进入 Step 12.5。
