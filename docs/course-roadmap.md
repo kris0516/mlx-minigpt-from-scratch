@@ -36,14 +36,14 @@ Assume the learner:
 
 From **Step 4 onward**:
 
-- each Step contains **at most 5 subsections**;
-- each subsection should cover a meaningful cluster of tightly related ideas;
-- the five-subsection cap must never be used to compress away prerequisite reasoning, examples, edge cases, or shape analysis; each subsection must be self-contained enough for the learner to reconstruct the idea later;
-- do not split every API or formula into its own micro-step;
-- each teaching turn should still remain digestible, but depth takes priority over artificial brevity;
+- a major Step will **usually contain about five subsections**, but this is a pacing convention rather than a hard minimum or maximum;
+- the assistant chooses the natural grouping needed by the subject instead of forcing content into exactly five pieces;
+- advance only **one numbered subsection per teaching turn** unless the learner explicitly asks for a different cadence;
+- each subsection should be neither artificially short nor overloaded: include enough motivation, prerequisite reasoning, examples, shapes, caveats, and code to make the idea reconstructable later;
+- do not split every API or formula into its own micro-step, and do not compress prerequisite explanation merely to satisfy a target count;
 - when geometry, optimization behavior, distributions, embeddings, loss curves, or performance trends are easier to understand visually, include a small plot and explain the plotting technique used.
 
-Step 3 contains 7 historical subsections because it was completed before this pacing rule was adopted.
+Step 3 retains its historical seven-subsection structure; later Steps may naturally vary around the usual five-subsection scale.
 
 ### Required teaching pattern
 
@@ -443,13 +443,13 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - chain rule across many time steps
 - why products of derivatives appear
 
-### 9.2 Vanishing and exploding gradients 🚧
+### 9.2 Vanishing and exploding gradients ✅
 
 - repeated multiplication examples such as `0.5^n` and `1.5^n`
 - long-range credit assignment
 - gradient clipping as a partial engineering remedy
 
-### 9.3 LSTM cell state and gates
+### 9.3 LSTM cell state and gates 🚧
 
 - forget gate
 - input gate
@@ -1109,14 +1109,15 @@ These are not required to declare the MiniGPT project complete.
 ```text
 Steps 1–8.5  ✅ Material prepared
 Step 9.1      ✅ Material prepared / static audit passed
-Step 9.2      🚧 Current material prepared
-Step 9.3+        Planned only
+Step 9.2      ✅ Material prepared / static audit passed
+Step 9.3      🚧 Current material prepared
+Step 9.4+        Planned only
 ```
 
 Current course-material checkpoint:
 
-> **Step 9.2 — Vanishing and exploding gradients**
+> **Step 9.3 — LSTM Cell State and Gates**
 
 Learner-status note:
 
-> Material preparation for Step 9.2 does not assert learner mastery, work-notebook completion, or exercise completion. Do not enter Step 9.3 unless the learner explicitly asks to proceed beyond Step 9.2.
+> Material preparation for Step 9.3 does not assert learner mastery, work-notebook completion, or exercise completion. Do not enter Step 9.4 unless the learner explicitly asks to proceed beyond Step 9.3.
