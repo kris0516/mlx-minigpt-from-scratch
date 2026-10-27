@@ -19,13 +19,14 @@ Steps 1–8.5      material prepared
 Steps 9.1–9.5    material prepared; static audit passed
 Steps 10.1–10.5  material prepared; static audit passed
 Steps 11.1–11.5  material prepared; static audit passed
-Step 12.1         current material prepared
-Step 12.2+        planned only; not current
+Step 12.1         material prepared; static audit passed
+Step 12.2         current material prepared
+Step 12.3+        planned only; not current
 ```
 
-**Material status is not learner status.** No claim is made that the learner has completed the Step 12.1 work notebook, completed exercises, or mastered the autoregressive visibility constraint.
+**Material status is not learner status.** No claim is made that the learner has completed the Step 12.2 work notebook, completed exercises, or mastered causal masking.
 
-Do not enter Step 12.2 until the learner explicitly asks to proceed beyond Step 12.1.
+Do not enter Step 12.3 until the learner explicitly asks to proceed beyond Step 12.2.
 
 ## Non-negotiable teaching constraints
 
@@ -166,9 +167,9 @@ mlx-minigpt-from-scratch/
 
 Current course-material checkpoint:
 
-> **Step 12.1 — Autoregressive constraint**
+> **Step 12.2 — Causal mask**
 
-Step 12.1 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 12.2 as current unless the learner explicitly asks to proceed.
+Step 12.2 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 12.3 as current unless the learner explicitly asks to proceed.
 
 ## 2026-10-08 continuity re-audit
 
@@ -321,3 +322,13 @@ Define autoregressive modeling as conditioning each predicted token only on its 
 For self-attention, rows are Query positions and columns are Key positions. The causal visibility rule is `j<=i`; future `j>i` is disallowed. Explain future leakage as training-time cheating that exposes information unavailable during real generation.
 
 Step 12.1 may illustrate allowed prefix positions, but must not construct the causal mask tensor, introduce upper-triangle `-inf`, or explain masked softmax. Stop before Step 12.2.
+
+## Step 12.2 accuracy boundary
+
+Map the Step 12.1 rule `j<=i` onto the score matrix: future positions `j>i` are the strict upper triangle, while diagonal `j=i` remains legal.
+
+Teach additive masking as `0` for allowed entries and `-inf` for future entries, added to scaled scores before softmax. Explain `exp(-inf)=0` as the reason future attention weights become zero.
+
+MLX 0.32.2 supports `mx.triu(x,k=1)` and `mx.where(condition,x,y)`; a `(T,T)` causal mask can broadcast over `(B,T,T)` scores.
+
+Do not turn Step 12.2 into the later stability lesson or full-head implementation. Stable-softmax details, numerical-stability analysis, complete causal attention forward pass, and matrix inspection belong to Steps 12.3–12.5.
