@@ -1,8 +1,8 @@
 # Step 18 — MLX Execution Model
 
-沿用既有roadmap，本轮只准备并发布 **18.4 Mutable training state under compile**，初始实际修正计数 **0/2**；完成即停，不进入18.5。当前母版：[80_step18_4_mutable_training_state.ipynb](../notebooks/80_step18_4_mutable_training_state.ipynb)。
+沿用既有roadmap，本轮只准备并发布 **18.5 Memory instrumentation**，初始实际修正计数 **0/2**；完成即停在18.5／大Step18，不进入Step19。当前母版：[81_step18_5_memory_instrumentation.ipynb](../notebooks/81_step18_5_memory_instrumentation.ipynb)。
 
-材料审核方已独立核验18.3真实五文件提交 `18ced2600e0b6465701b6d30e40b206c56db61ee`、官方MLX v0.32.2源码和完整教学回复，核心静态PASS、实际修正0/2。大Step16、17及18.1至18.3已通过材料保留，不返工；这是材料验收，不是学员掌握或运行反馈。18.4只登记当前初始材料编写发布，不继承前节外部验收结论。
+材料审核方已独立核验18.4完整教学回复与真实五文件提交 `b3993d819c47c1a3dccf9bd71022db12bafcf7b0`，核心静态PASS、实际修正0/2。大Step16、17及18.1至18.4已通过材料保留，不返工；这是材料验收，不是学员掌握或运行验证。18.5只登记当前初始材料编写发布，不继承前节外部验收结论。
 
 ## Step 18.1 — Lazy evaluation
 
@@ -817,7 +817,7 @@ mx.eval(score_new_values, score_new_shape, score_new_dtype)
 
 ## Step 18.4 — Mutable training state under compile
 
-母版：[80_step18_4_mutable_training_state.ipynb](../notebooks/80_step18_4_mutable_training_state.ipynb)。本节承接17.5与18.3，准备模型／优化器数组状态的动态输入和输出捕获，以及参数版本与外侧求值边界。初始实际修正 **0/2**；全部单元未执行、无输出，完成即停在18.4。
+母版：[80_step18_4_mutable_training_state.ipynb](../notebooks/80_step18_4_mutable_training_state.ipynb)。18.4完整教学回复与真实五文件提交 `b3993d819c47c1a3dccf9bd71022db12bafcf7b0` 已由材料审核方独立核心静态验收PASS，实际修正 **0/2**。下文保留已通过的教学及18.4当轮边界，不返工该节。它承接17.5与18.3，准备模型／优化器数组状态的动态输入和输出捕获，以及参数版本与外侧求值边界；全部单元未执行、无输出。
 
 ### 0. 新Work Copy：完整恢复依赖，不借用旧kernel
 
@@ -1167,7 +1167,7 @@ $$
 
 如果以后再次使用调用单元，会继续推进模型与Adam历史，不能再套用初始首步的手算；本节没有要求这样做，也没有恢复或多步训练实验。
 
-18.3的独立材料验收保持 **0/2**；18.4当前仅为初始材料编写发布。累计实际修正：16.1=**1/2**、16.2=**1/2**（含已记录的超时后完整回复补齐），16.3至16.5、17.1至17.5及18.1至18.3各**0/2**，18.4初始生成=**0/2**。每节最多两次实际修正，跨轮和换对话不重置。
+18.4当轮只进行初始材料编写发布，随后已获独立材料核心静态PASS，实际修正保持 **0/2**；18.3验收同样保持 **0/2**。当轮记录的累计实际修正：16.1=**1/2**、16.2=**1/2**（含已记录的超时后完整回复补齐），16.3至16.5、17.1至17.5及18.1至18.3各**0/2**，18.4初始生成=**0/2**。每节最多两次实际修正，跨轮和换对话不重置。
 
 本轮没有运行Notebook、代码测试、训练、实验、采样或用户work副本，没有读取／下载语料，没有代答练习。不声称学员掌握、运行验证或编译必然提速，不返工已合格课节。
 
@@ -1183,3 +1183,449 @@ $$
 - [MLX v0.32.2 compile.cpp](https://github.com/ml-explore/mlx/blob/v0.32.2/mlx/compile.cpp)：真实输入替换、常量关系与图复用；[固定编译指南](https://github.com/ml-explore/mlx/blob/v0.32.2/docs/src/usage/compile.rst)：模型／优化器双向状态捕获模式。
 - [官方mx.compile接口](https://ml-explore.github.io/mlx/build/html/python/_autosummary/mlx.core.compile.html)。在线文档可能更新，本课程接口与行为以 **v0.32.2真实源码** 为准。
 - [Roadmap](https://github.com/kris0516/mlx-minigpt-from-scratch/blob/main/docs/course-roadmap.md)与[teaching handoff](https://github.com/kris0516/mlx-minigpt-from-scratch/blob/main/docs/teaching-handoff.md)：当前材料状态、累计修正与18.4停止边界。
+
+
+## Step 18.5 — Memory instrumentation
+
+母版：[81_step18_5_memory_instrumentation.ipynb](../notebooks/81_step18_5_memory_instrumentation.ipynb)。本节承接求值边界与训练状态，只准备active／peak／cache的口径及两种模式的小运行比较流程；初始实际修正 **0/2**。所有测量／比较单元均未执行、无输出，完成即停在大Step18。
+
+### 0. 新工作副本：依赖、设备与单选模式
+
+使用项目原有Python3.12 / `.venv` kernel，依赖仍是 `pyproject.toml` 固定的 `mlx==0.32.2`。本节完整提供三个导入、小模型、常量数据、loss、求导函数、Adam、状态捕获、计数函数与比较代码；不需要旧kernel、`%run`旧Notebook、语料、sampler或新依赖。
+
+`import ... as ...` 为模块取短名：mx用于数组、求值与内存API，nn用于Module和loss／梯度变换，optim用于Adam。`mx.gpu` 是设备类型；`mx.set_default_device(mx.gpu)` 指定未另外指定设备的运算使用GPU。本节沿课程Apple Silicon + Metal、正常启用编译的环境解释；不把这些Metal分配器细节当作所有后端的承诺。
+
+`MODE` 是本节自定义字符串，先选 `"uncompiled"`；以后另一轮实践才在**重新启动的kernel**中改为 `"compiled"` 并从头恢复全部对象。`MEASURED_STEPS = 3` 约定测量窗口内三次更新，窗口前另有一次预备更新。大写只是本节配置名的书写习惯，不让Python自动禁止修改。
+
+`MIB = 2**20` 中 `**` 表示乘方：1 MiB = 1,048,576 bytes。它只是后面显示单位的换算系数，不分配MLX数组。这里只给未来使用的配置，当前不运行。
+
+固定接口依据：[v0.32.2 device.cpp](https://github.com/ml-explore/mlx/blob/v0.32.2/python/src/device.cpp)。
+
+```python
+import mlx.core as mx
+import mlx.nn as nn
+import mlx.optimizers as optim
+
+# PREPARED ONLY — no cell in this master has been executed.
+mx.set_default_device(mx.gpu)
+
+MODE = "uncompiled"  # Future alternative: "compiled", in a NEW kernel.
+MEASURED_STEPS = 3
+MIB = 2**20
+```
+
+### 1. 先从Shape算逻辑数据量，再看分配器
+
+**Byte（字节）** 是这里的计量单位。一个float32元素有32位，即4 bytes。**Logical payload（逻辑元素数据量）** 只根据元素数和每个元素的大小计算：
+
+$$
+\text{logical bytes}=\text{元素个数}\times\text{每元素字节数}.
+$$
+
+例如shape `(2,3)` 的float32数组，逻辑上有 \(2\times3=6\) 个元素，数据量为 \(6\times4=24\) bytes。后面恢复的toy模型更直接：
+
+| 对象 | Shape | dtype | 逻辑元素数据量 |
+|---|---|---|---:|
+| 参数head.bias | `(3,)` | float32 | 3×4 = 12 bytes |
+| Adam一阶矩m | `(3,)` | float32 | 12 bytes |
+| Adam二阶原始矩v | `(3,)` | float32 | 12 bytes |
+
+三者合计36 bytes，是这三片数组的**手算逻辑量**。它尚未包括输入、loss、梯度、临时结果、step和learning rate；也不预测内存API一定返回36或增加36。
+
+**Buffer（缓冲区）** 是实际承载数据的一块存储；**allocator（分配器）** 负责取得、记账、复用和释放这些存储。逻辑数组与实际buffer不是必然一一对应：view／切片可能共享底层存储，broadcast可以表达更多逻辑位置而不复制所有元素，分配器也可能按对齐后的长度或复用buffer的实际长度记账。
+
+因此本节的 `X/Y` 切片不能简单相加成两块独立物理内存；`(2,2,3)` logits虽然逻辑上有12个float32元素，也不能据此断言broadcast必定新申请48 bytes。代码shape解释数学布局，内存计数解释具体实现保留的buffer，两者需要联系但不能互相替代。
+
+显示时使用 \(\text{MiB}=\text{bytes}/2^{20}\)。MiB是二进制单位，不把除以 \(2^{20}\) 的结果标成十进制MB。小toy若只显示少数小数位，可能显示为0.000 MiB，不能据此说零内存；保留原始bytes。
+
+### 2. Active、Cache、Peak分别回答什么问题？
+
+固定v0.32.2的Python接口使用顶层 `mx.*`，不使用已弃用的旧 `mx.metal.get_*` 别名。下面三个getter都不需要参数，返回普通Python整数，单位均为 **bytes**。
+
+| 名称／API | 回答的问题 | 不包含的含义 |
+|---|---|---|
+| **Active memory**：`mx.get_active_memory()` | 当前仍处于使用中的MLX分配器buffer有多少？ | 不是当前模型独占量，不含空闲buffer cache |
+| **Cache memory**：`mx.get_cache_memory()` | 已不在使用、但留在分配器中等待复用的buffer有多少？ | 不是仍在使用的参数，也不是18.3的编译图缓存 |
+| **Peak memory**：`mx.get_peak_memory()` | 进程开始或最近一次重置以来，记录到的active高点是多少？ | 不是当前量，不是active+cache的历史峰值 |
+
+用 \(A\) 表示当前active、\(C\) 表示当前cache。只考虑一个实际记账长度为 \(q\) bytes的buffer，可以这样理解其生命周期；这张表是记账关系，不是虚构的测量数据：
+
+| 事件 | Active的变化 | Cache的变化 |
+|---|---|---|
+| 从空闲cache复用这个buffer | \(A\to A+q\) | \(C\to C-q\) |
+| 使用结束后将这个buffer放回cache | \(A\to A-q\) | \(C\to C+q\) |
+
+所以active下降、cache上升可以来自正常回收复用，不能仅据此判定泄漏；active上升也不等于本次向系统新申请了相同数量的内存。峰值记录的是active的高水位（**high-water mark**），不是把所有历史分配累加起来。
+
+同一观察点的 \(A+C\) 可以作为这两类**已记账buffer**的当前合计；不要再把peak加进去，也不要把“历史peak + 终点cache”称为总内存峰值，因为它们可能来自不同时间。
+
+依据：[v0.32.2 Python内存绑定](https://github.com/ml-explore/mlx/blob/v0.32.2/python/src/memory.cpp)、[Metal分配器的分配／回收](https://github.com/ml-explore/mlx/blob/v0.32.2/mlx/backend/metal/allocator.cpp)及[旧别名的弃用提示](https://github.com/ml-explore/mlx/blob/v0.32.2/python/src/metal.cpp)。Metal实现按buffer长度增加／减少active，在相应分配时更新peak。
+
+#### 统计范围：MLX计数器、整机内存与Swap
+
+本节的三个计数属于**当前Python进程使用的MLX分配器账本**。同一kernel中其他仍存活的MLX数组也可能计入；API没有传入model名称或Notebook单元号来筛选某一对象组。
+
+Apple Silicon的 **unified memory（统一内存）** 允许CPU和GPU访问同一内存池。这里的统计不能简单叫作独立显卡的专用VRAM，更不能把所谓CPU份和GPU份重复相加。
+
+| 口径 | 本节怎样使用 |
+|---|---|
+| MLX active／cache／peak | 当前进程中该分配器按自身规则记录的buffer用量与高点 |
+| 进程内存、整机已用RAM | 还涉及Python对象、图结构、编译／驱动资源、系统和其他程序等；不能由三个MLX计数完整还原 |
+| macOS Cached Files | 系统文件缓存，含义不同于MLX的buffer cache |
+| **Swap Used** | 操作系统在启动盘上用于与RAM换入换出的空间，不是MLX cache |
+
+这些buffer计数也不保证等于实际物理驻留量。即使算出active+cache，也不能据此得出“整机剩余多少内存”“没有发生Swap”或“Swap应下降多少”。以后若记录Activity Monitor的Memory Pressure／Swap，应单列系统层观察，不与MLX字节计数混成一列；本轮不读取任何系统测量值。
+
+固定统一内存依据：[v0.32.2 unified_memory.rst](https://github.com/ml-explore/mlx/blob/v0.32.2/docs/src/usage/unified_memory.rst)。系统指标定义：[Apple Activity Monitor官方说明](https://support.apple.com/guide/activity-monitor/view-memory-usage-actmntr1004/mac)。
+
+### 3. 读取函数、求值边界与Peak重置
+
+`def memory_snapshot():` 定义一个普通Python函数，暂不调用；`return` 返回一个dict（字典），把字符串字段名与对应读数配对。以后可用 `snapshot["active_bytes"]` 按键取值。
+
+下面的三个API只是读取计数，**不会替你执行尚未求值的训练计算**。本节自定义的snapshot也只是依次读取三个值，不是一个同时冻结所有状态的原子快照。比较准备限定在没有其他并行MLX工作的干净kernel中。
+
+`to_mib(byte_count)` 只对普通Python数值做除法，返回显示用的浮点数，不创建张量。定义这两个函数本身不读取内存；真正调用在后面的显式求值边界之后。
+
+```python
+def memory_snapshot():
+    return {
+        "active_bytes": mx.get_active_memory(),
+        "cache_bytes": mx.get_cache_memory(),
+        "raw_peak_bytes": mx.get_peak_memory(),
+    }
+
+
+def to_mib(byte_count):
+    return byte_count / MIB
+
+
+# Function definitions only. Counter reads will follow explicit mx.eval calls.
+```
+
+#### Reset是重置峰值记录，不是重置内存或训练
+
+`mx.reset_peak_memory()` 返回None，把peak计数设置为 **0**。固定v0.32.2的Metal源码确实写的是 `peak_memory_ = 0`，不是把peak设置为当前active。它不释放已有参数／Adam数组，不清buffer cache，也不把optimizer.step变回0。
+
+这意味着：刚重置时active可能仍大于0；如果后面没有发生会更新峰值的分配，raw peak甚至可以仍为0。不能直接把这个0解释为“窗口内一直没有内存”。
+
+为包括窗口起点已经存在的active，本节先保存起点读数，再重置peak。用下标start表示窗口起点，end表示终点，raw表示API原样读数：
+
+$$
+P_{\text{window}}
+=\max\!\left(A_{\text{start}},P_{\text{raw after reset}}\right).
+$$
+
+这里的max取两者中较大值。\(P_{\text{window}}\) 是**将起点纳入的推导区间高点**；保留raw peak字段，不把推导值伪装成API原始返回值。该推导使用本节无其他并行分配、一次reset划定整个窗口的条件。
+
+还可记录：
+
+$$
+\Delta A=A_{\text{end}}-A_{\text{start}},
+\qquad
+H=P_{\text{window}}-A_{\text{start}}.
+$$
+
+\(\Delta A\) 是两个观察点的active差，可以为负；\(H\) 是相对起点active的额外高点。它们都不是“本步独占内存”“新申请总字节数”或“所有激活数组之和”。不要用两个累计peak读数相减来求窗口峰值。
+
+固定依据：[v0.32.2 allocator.h中的getter与reset](https://github.com/ml-explore/mlx/blob/v0.32.2/mlx/backend/metal/allocator.h)及[allocator.cpp中的peak更新](https://github.com/ml-explore/mlx/blob/v0.32.2/mlx/backend/metal/allocator.cpp)。
+
+### 4. 完整恢复同一个小训练问题
+
+下面恢复18.4的 **SharedLogitModel**，不换模型、不扩大尺寸。`class ... (nn.Module)` 创建Module子类；`super().__init__()` 初始化基类；`self.head` 保存参数字典，`"bias"`是它的数组叶子。`__call__` 让模型实例可以像函数一样调用。
+
+模型把同一个shape `(3,)` 的float32向量broadcast为 `(B,T,V)` logits。这个toy只读取X.shape，不使用token内容或上下文；它用来解释接口和测量准备，不是完整MiniGPT，也不是零初始化训练方案。
+
+数据完全写在本节：`toy_chunks` 是shape `(2,3)` 的int32 token ID数组。切片 `[:, :-1]` 保留每行最后一项之前的输入，`[:, 1:]` 取每行从第二项开始的target，得到B=2、T=2。Y已经shift过，不再移动一次。没有随机初始化、采样或外部语料。
+
+```python
+class SharedLogitModel(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.head = {
+            "bias": mx.array([0.0, 0.0, 0.0], dtype=mx.float32),
+        }
+
+    def __call__(self, X):
+        B, T = X.shape
+        V = self.head["bias"].shape[0]
+        return mx.broadcast_to(self.head["bias"], (B, T, V))
+
+
+toy_chunks = mx.array([[0, 2, 1], [1, 0, 2]], dtype=mx.int32)
+X = toy_chunks[:, :-1]  # [[0, 2], [1, 0]], shape (2, 2)
+Y = toy_chunks[:, 1:]   # [[2, 1], [0, 2]], shape (2, 2), already shifted
+
+# Complete local definitions and explicit data; prepared only, not executed.
+```
+
+#### Scalar Loss与全部Shape
+
+仍然用raw logits与整数target计算逐位置交叉熵，再对四个位置取mean。令N=B×T=4；两侧按同一顺序reshape，保证每一行logits仍对应正确target。
+
+| 对象 | Shape／含义 |
+|---|---|
+| X、Y | 各 `(2,2)`；Y展平为[2,1,0,2] |
+| 模型logits | `(2,2,3)`，类别轴V=3 |
+| flat_logits／flat_targets | `(4,3)`／`(4,)` |
+| token_losses | `(4,)`，四个监督位置 |
+| mean loss | `()`，一个scalar MLX array |
+| 参数梯度、Adam m/v | 各与bias对应，`(3,)` |
+
+`nn.losses.cross_entropy(..., axis=-1, reduction="none")` 在最后类别轴上处理raw logits，保留四项loss；`mx.mean` 将它们等权平均。函数返回MLX数组，不在里面调用item、打印数值或求值。这只是恢复已通过的17.1至17.3定义。
+
+```python
+def loss_fn(model, X, Y):
+    logits = model(X)
+    B, T, V = logits.shape
+    N = B * T
+
+    flat_logits = mx.reshape(logits, (N, V))
+    flat_targets = mx.reshape(Y, (N,))
+    token_losses = nn.losses.cross_entropy(
+        flat_logits,
+        flat_targets,
+        axis=-1,
+        reduction="none",
+    )
+    return mx.mean(token_losses)
+```
+
+#### 同一组Model、梯度函数、Adam和原状态容器
+
+`nn.value_and_grad(model, loss_fn)` 创建绑定本model的求导函数；以后仍调用 `loss_and_grad_fn(model, X, Y)`，返回scalar loss和参数梯度树。被绑定与被传入的model是同一个对象。
+
+Adam的学习率为0.001，betas为[0.9,0.999]，epsilon为 \(10^{-8}\)。`bias_correction=True` 是沿用课程的显式选择，固定MLX v0.32.2默认是False。`optimizer.init(model.trainable_parameters())` 在全新对象上先建立m/v等数组状态；初始化不是一次学习更新，也不保证这些数组已经求值。
+
+`training_state = [model.state, optimizer.state]` 保存两个原状态容器的引用，不是冻结副本。模型bias与m/v均为 `(3,)` float32；optimizer的step和learning_rate数组均为scalar `()`。状态包含参数和优化器历史，不能只取参数而遗漏m/v与step。不要用以前保存的 `model.parameters()` 筛选树代替这里的原模型容器。
+
+这些对象只建立一次，放在更新函数外。固定依据：[v0.32.2 nn.utils](https://github.com/ml-explore/mlx/blob/v0.32.2/python/mlx/nn/utils.py)、[Module.state](https://github.com/ml-explore/mlx/blob/v0.32.2/python/mlx/nn/layers/base.py)和[Optimizer／Adam](https://github.com/ml-explore/mlx/blob/v0.32.2/python/mlx/optimizers/optimizers.py)。
+
+```python
+model = SharedLogitModel()
+loss_and_grad_fn = nn.value_and_grad(model, loss_fn)
+
+optimizer = optim.Adam(
+    learning_rate=1e-3,
+    betas=[0.9, 0.999],
+    eps=1e-8,
+    bias_correction=True,  # Explicit course choice; MLX default is False.
+)
+optimizer.init(model.trainable_parameters())
+training_state = [model.state, optimizer.state]
+
+# One matched setup group; initial optimizer step is 0.
+```
+
+### 5. 只改变是否Compile，保持单步定义与边界一致
+
+`step_graph(X, Y)` 调用一次梯度函数，取得更新前loss和梯度，再让 `optimizer.update(model, grads)` 安装新参数、推进Adam状态。update返回None，不把它赋给model。该函数没有内存读取、打印或eval；这些动作都在外面。
+
+本节用同一个graph body准备两种模式。未编译模式直接将函数对象 `step_graph` 赋给 `selected_step`，没有括号，因此这一步不调用训练。编译模式把同一函数交给 `mx.compile`，创建一个callable（可调用对象）：
+
+- `inputs=training_state`：每次读入当前模型／Adam数组值。
+- `outputs=training_state`：把本次新状态数组回填原容器。
+- `shapeless=False`：沿用固定版本默认设置。
+
+`if / elif / else` 按条件选择一个分支；`==` 比较MODE字符串是否相等。若拼成其他字符串，`raise ValueError(...)` 以明确错误停止，而不是悄悄改成另一个模式。
+
+这里恢复18.4的双向捕获，不直接编译17.5中含内部eval的原train_step，也不编辑任何已验收母版。状态写回不等于数值已经完成，下一部分仍有独立求值边界。
+
+```python
+def step_graph(X, Y):
+    loss_before_update, grads = loss_and_grad_fn(model, X, Y)
+    optimizer.update(model, grads)
+    return loss_before_update
+
+
+if MODE == "uncompiled":
+    selected_step = step_graph
+elif MODE == "compiled":
+    selected_step = mx.compile(
+        step_graph,
+        inputs=training_state,
+        outputs=training_state,
+        shapeless=False,
+    )
+else:
+    raise ValueError("MODE must be 'uncompiled' or 'compiled'")
+
+# Only the selected callable is prepared. No update is called in this cell.
+```
+
+### 6. 怎样准备可比较的两个小运行？
+
+一次只选择一种模式，在同一工作副本的**独立新kernel**中从头恢复；以后记录完一个模式的普通数值，再重启kernel并更换MODE。只清空Notebook显示输出不等于重启Python进程。
+
+因为内存计数不是每个model独享，不在同一个kernel同时保留两套model／Adam／compiled callable后把读数当成各自用量。重启能减少旧对象、旧图和分配器缓存的残留混入；它不承诺整机其他程序、系统或驱动状态完全一样。
+
+| 比较条件 | 两种模式的共同约定 |
+|---|---|
+| 环境 | 同一机器、Python3.12、MLX0.32.2、Metal GPU，编译正常启用 |
+| 数据／shape／dtype | 本节相同X/Y；B=2、T=2、V=3；相同int32／float32 |
+| 初始对象 | bias全零、全新Adam、相同超参数与已初始化状态树 |
+| 单步 | 同一step_graph，外侧完成loss与新training_state |
+| 预备调用 | 各一次warm-up更新，随后完整eval |
+| 测量窗口 | 各三次更新，每次eval后读取；只在窗口开始重置一次peak |
+| 缓存策略 | 保留预备调用后的buffer cache，不clear、不改limit |
+| 记录 | 起点、逐步终点、raw peak与推导区间高点；原始bytes保留 |
+
+**Warm-up（预备调用／预热）** 是这里约定的一次先行调用。编译路径可在其中经历首次trace／图优化和求值时需要的后端准备，所以随后窗口不覆盖首次调用的全部准备过程。这也不保证一次就达到了任何“稳态”。
+
+预备调用不是只排练而不学习：两边都从 \(\theta_0,O_0\) 更新到 \(\theta_1,O_1\)。之后三次测量更新依次到 \(\theta_2,O_2\)、\(\theta_3,O_3\)、\(\theta_4,O_4\)。这里 \(\theta_k\) 是第k次更新后的参数，\(O_k\) 是对应Adam历史；两种模式遵守相同数学步骤，不承诺浮点结果逐位相等。
+
+这是“一次预备更新之后的小窗口”比较方案，不是冷启动总内存、计时基准或完整MiniGPT容量测试。即使将来出现不同baseline，也应如实保留：编译路径可能持有不同的常量／数组引用，不能为了让起点相等而删掉某一方必需对象。
+
+#### 先完成初始状态，再完成预备更新
+
+`mx.eval(X, Y, training_state)` 先要求本节输入及初始化状态完成，避免把尚未完成的初始化混入后续窗口。eval可接收数组及list／dict数组树，返回None。
+
+随后调用所选单步，再用 `mx.eval(loss_before_update, training_state)` 同时要求返回的loss与新模型／Adam状态及必要依赖完成。仅eval loss不足以保证新参数、m/v和step也作为本次结果完成；内存getter也不能补上这一步。
+
+求值不改变参数版本：这次预备调用返回的是 \(L(\theta_0;X,Y)\)，状态已经推进到 \(\theta_1,O_1\)。以下代码没有数值显示，也不计算额外一次更新后的loss。
+
+本节只考虑这个干净kernel中的选定工作；不要把eval说成等待所有进程的所有无关GPU任务。下面仍然只是未来实践的材料，本轮不执行。
+
+```python
+# PREPARATION UPDATE — written for later practice, NOT executed here.
+mx.eval(X, Y, training_state)
+
+loss_before_update = selected_step(X, Y)
+mx.eval(loss_before_update, training_state)
+
+# Same variable will be reused below: do not accumulate loss arrays in a list.
+# State is now mathematically theta_1 / O_1 if this is later run as prescribed.
+```
+
+#### 划定窗口：保存起点、清零Peak、三次“更新→求值→读数”
+
+先读 `baseline`，其中active/cache是预备调用后的起点值；baseline里的raw peak仍包括此前初始化／预备调用，不作为新窗口峰值。随后只调用一次 `mx.reset_peak_memory()`，划定本节三个更新共同的统计窗口。
+
+`records = []` 创建普通Python列表。`range(1, MEASURED_STEPS + 1)` 产生1、2、3三个序号；`for` 对每个序号执行一次缩进内的代码。`measured_index` 是窗口内序号，不是optimizer.step：第一次测量更新是整个对象组的第二次更新。
+
+每次先更新，再eval完整结果，然后调用memory_snapshot。`snapshot["measured_index"] = measured_index` 为字典增加普通整数标签；`records.append(snapshot)` 保存这个字典。字典只含Python整数，**不保存历史loss、参数或梯度数组**。否则记录动作本身可能额外保留许多live buffer。
+
+`loss_before_update` 在每次赋值时改为本次返回的数组。起点保留预备调用的loss，终点保留最后一次的loss；都只保留这个当前名字，不建loss历史。原model／optimizer状态容器持续前进，不能在循环里重建它们。
+
+逐步raw peak是从这次reset以来的**累计高点**，不是每个单步各自重置后的峰值；终点active/cache又是当时读数，可能看不到步内已释放的临时高点。记录代码在图体外，避免编译追踪把Python读取误当每次GPU计算的统计。
+
+```python
+# MEASUREMENT WINDOW — prepared only, NOT executed.
+baseline = memory_snapshot()
+mx.reset_peak_memory()
+
+records = []
+for measured_index in range(1, MEASURED_STEPS + 1):
+    loss_before_update = selected_step(X, Y)
+    mx.eval(loss_before_update, training_state)
+
+    snapshot = memory_snapshot()
+    snapshot["measured_index"] = measured_index
+    records.append(snapshot)
+
+# No array-valued history, no per-step clear_cache, and no timing code.
+```
+
+### 7. 输出哪些字段，才能如实解释？
+
+`records[-1]` 取列表最后一项；因为本节固定三次更新，该项是第三次测量更新完成后的记录。`max(a,b)` 返回两个普通数值中较大者，按前面的公式把起点active纳入区间高点。
+
+下列summary保留bytes原值，再用to_mib给出显示换算。打印发生在全部窗口更新及读数之后；打印的是Python字符串／数字／字典，不读取MLX数组元素，不额外做forward。`summary.items()` 逐个提供字典的键和值，`for name, byte_count` 分别接住二者。
+
+| 记录字段 | 含义 |
+|---|---|
+| baseline_active／baseline_cache | 预备调用后、窗口开始时的当前用量 |
+| end_active／end_cache | 三次更新全部求值后的当前用量 |
+| raw_peak_after_reset | reset之后分配器原样记录的active高点 |
+| window_peak_active | max(起点active, raw peak)，明确标作推导值 |
+| end_minus_start_active | 终点active减起点active，不是峰值 |
+| high_water_above_start | 区间高点减起点active，不是独占分配总量 |
+
+最后一次loss仍属于 \(\theta_3\)，而当前模型／Adam状态是 \(\theta_4,O_4\)。本节不输出这个loss的数值，也不据此检验两种模式的训练效果。起点／终点对象生命周期一致，只说明比较准备一致，不保证两边读数相等。
+
+```python
+# FORMAT EXISTING COUNTER RECORDS — prepared only, NOT executed.
+end = records[-1]
+window_peak_active_bytes = max(
+    baseline["active_bytes"],
+    end["raw_peak_bytes"],
+)
+
+summary = {
+    "baseline_active_bytes": baseline["active_bytes"],
+    "baseline_cache_bytes": baseline["cache_bytes"],
+    "end_active_bytes": end["active_bytes"],
+    "end_cache_bytes": end["cache_bytes"],
+    "raw_peak_after_reset_bytes": end["raw_peak_bytes"],
+    "window_peak_active_bytes": window_peak_active_bytes,
+    "end_minus_start_active_bytes": (
+        end["active_bytes"] - baseline["active_bytes"]
+    ),
+    "high_water_above_start_bytes": (
+        window_peak_active_bytes - baseline["active_bytes"]
+    ),
+}
+
+print("MODE:", MODE)
+print("Preparation updates:", 1, "Measured updates:", MEASURED_STEPS)
+print("Per-step counter snapshots (bytes):", records)
+for name, byte_count in summary.items():
+    print(name, "=", byte_count, "bytes;", to_mib(byte_count), "MiB")
+
+# No recorded output. These fields are a reporting plan, not measurements.
+```
+
+#### Cache操作与结论边界
+
+`mx.clear_cache()` 是固定版本存在的缓存管理API，返回None；它清理分配器中闲置可复用的buffer。它不删除仍被使用的参数／Adam数组，不重置训练历史，不重置peak，也不是清除18.3编译图缓存的API，更不保证系统RSS或Swap立即下降。它在本节Metal实现中不是求值边界。
+
+本节主流程**没有调用clear_cache**，也不调整memory／cache／wired limit。预备调用后再清buffer cache会改变比较问题；若只给一方清缓存，读数也不再符合共同策略。这里理解清理的含义即可，不另加实验分支。
+
+未来解释结果时，区分以下几种可能；现在不选择其中任何一种作为“实测结论”：
+
+- 终点active相近，仍可能有不同的区间active峰值，因为某些临时buffer在终点前已经回收。
+- cache增加可能意味着保留了可复用buffer；不能仅凭这一项断定泄漏，也不能直接称为参数增多。
+- 编译可能改变融合、临时buffer生命周期和保留引用，也有自身准备与持有资源。它**不保证**active、peak或cache都降低，更不保证提速。
+- 三参数toy的读数可能主要体现分配粒度与实现开销；不能把它外推成完整MiniGPT的内存预算或硬件容量结论。
+
+依据：[v0.32.2 memory.cpp的clear_cache接口](https://github.com/ml-explore/mlx/blob/v0.32.2/python/src/memory.cpp)与[Metal clear_cache／free实现](https://github.com/ml-explore/mlx/blob/v0.32.2/mlx/backend/metal/allocator.cpp)。本节没有已测得的内存优势、无Swap结论或性能数据。
+
+### 未来工作副本的使用顺序与空记录表
+
+本轮只准备材料。以后自行安排练习时，再按这个顺序使用新副本：
+
+1. 在仓库根目录先git pull，再以时间戳新名字和 `cp -n` 将81母版复制到已有 `notebooks/work/`；只改工作副本。
+2. 使用项目Python3.12 / `.venv`，新启动kernel。选MODE，从imports开始依次取得全部定义和数据，不依赖旧Notebook变量。
+3. 恢复同一组model、value-and-grad helper、Adam、training_state与selected_step；先完成初始化状态和一次预备更新，再进入三次更新的窗口。
+4. 把报告中的普通数值保存到自己的笔记。重启kernel后改另一个MODE，并从头恢复全部内容。重新使用同一个测量单元而不重建对象，会继续推进参数／Adam历史，不是新起点。
+5. 两种模式保持相同配置、输入、求值边界与缓存策略，同时记下实际机器、macOS、Python／MLX版本和是否有其他并行工作。独立kernel不是整机状态绝对相同的证明。
+
+下面是待填写的记录结构，**“未测量”不是0**。本轮没有填写或代答。
+
+| 项目 | uncompiled | compiled |
+|---|---|---|
+| 机器／macOS／Python／MLX | 未记录 | 未记录 |
+| kernel从头恢复、相同配置 | 待自行确认 | 待自行确认 |
+| 起点active／cache，bytes | 未测量 | 未测量 |
+| 终点active／cache，bytes | 未测量 | 未测量 |
+| reset后raw peak，bytes | 未测量 | 未测量 |
+| 含起点的window peak active，bytes | 未计算 | 未计算 |
+| MLX计数与系统层观察分开记录 | 待记录 | 待记录 |
+
+本节没有计时、数值相等测试、OOM压力测试、长训练、语料读取／下载、采样或系统内存操作。母版全部执行计数为null、输出为空；材料准备不表示学员掌握或运行验证。
+
+累计实际修正：16.1=**1/2**、16.2=**1/2**（含已记录的超时后完整回复补齐），16.3至16.5、17.1至17.5及18.1至18.4各**0/2**，18.5初始生成=**0/2**。每节最多两次实际修正，跨轮与换对话不重置。
+
+**完成即停在18.5／大Step18，不进入Step19。** 后续只按明确请求逐小节准备，至大Step20全部完成后停止。
+
+### 固定版本依据与课程链接
+
+- [18.4已验收母版](https://github.com/kris0516/mlx-minigpt-from-scratch/blob/b3993d819c47c1a3dccf9bd71022db12bafcf7b0/notebooks/80_step18_4_mutable_training_state.ipynb)：同一toy、双向状态捕获、旧loss／新状态及外侧求值边界。
+- [17.5已验收母版](https://github.com/kris0516/mlx-minigpt-from-scratch/blob/b3993d819c47c1a3dccf9bd71022db12bafcf7b0/notebooks/76_step17_5_uncompiled_training_step.ipynb)：未编译单步、scalar loss、梯度树和Adam。
+- [MLX v0.32.2 Python memory绑定](https://github.com/ml-explore/mlx/blob/v0.32.2/python/src/memory.cpp)：三个getter、bytes单位、reset与clear_cache；[Metal allocator.h](https://github.com/ml-explore/mlx/blob/v0.32.2/mlx/backend/metal/allocator.h)：getter与peak置0；[Metal allocator.cpp](https://github.com/ml-explore/mlx/blob/v0.32.2/mlx/backend/metal/allocator.cpp)：buffer长度记账、回收、峰值与清cache。
+- [v0.32.2 device.cpp](https://github.com/ml-explore/mlx/blob/v0.32.2/python/src/device.cpp)与[统一内存指南](https://github.com/ml-explore/mlx/blob/v0.32.2/docs/src/usage/unified_memory.rst)：默认设备设置与Apple Silicon统一内存。
+- [v0.32.2 Python transforms](https://github.com/ml-explore/mlx/blob/v0.32.2/python/src/transforms.cpp)：compile状态捕获／eval接口；[C++ transforms](https://github.com/ml-explore/mlx/blob/v0.32.2/mlx/transforms.cpp)：所选结果求值与等待。
+- [v0.32.2 nn.utils](https://github.com/ml-explore/mlx/blob/v0.32.2/python/mlx/nn/utils.py)、[Module](https://github.com/ml-explore/mlx/blob/v0.32.2/python/mlx/nn/layers/base.py)、[Optimizer／Adam](https://github.com/ml-explore/mlx/blob/v0.32.2/python/mlx/optimizers/optimizers.py)：本节恢复的梯度函数、原状态容器、初始化和更新。
+- [Apple Activity Monitor官方内存说明](https://support.apple.com/guide/activity-monitor/view-memory-usage-actmntr1004/mac)：系统Memory Pressure、Memory Used、Cached Files与Swap的不同口径。
+- [Roadmap](https://github.com/kris0516/mlx-minigpt-from-scratch/blob/main/docs/course-roadmap.md)与[teaching handoff](https://github.com/kris0516/mlx-minigpt-from-scratch/blob/main/docs/teaching-handoff.md)：当前材料状态、修正计数与大Step18停止点。
+
+在线MLX文档可能随发布更新；本节接口与实现语义以 **v0.32.2真实源码** 为准。以上源码核对不是运行测试，外部文档中的示例或性能数值也不是本项目的测量结果。
