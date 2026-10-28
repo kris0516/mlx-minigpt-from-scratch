@@ -25,13 +25,14 @@ Steps 14.1–14.5  material prepared; static audit passed
 Step 15.1         material prepared; static audit passed
 Step 15.2         material prepared; static audit passed
 Step 15.3         material prepared; static audit passed
-Step 15.4         current material prepared
-Step 15.5         planned only; not current
+Step 15.4         material prepared; static audit passed
+Step 15.5         current material prepared
+Step 16           planned only; not current
 ```
 
-**Material status is not learner status.** No claim is made that the learner has completed the Step 15.4 work notebook, exercises, or mastered the MiniGPT implementation. No runtime validation is asserted.
+**Material status is not learner status.** No claim is made that the learner has completed the Step 15.5 work notebook, exercises, or mastered the full MiniGPT trace. No runtime validation is asserted.
 
-Do not enter Step 15.5 until the learner explicitly asks to proceed beyond Step 15.4.
+Do not enter Step 16 until the learner explicitly asks to proceed beyond Step 15.5.
 
 ## Non-negotiable teaching constraints
 
@@ -172,9 +173,9 @@ mlx-minigpt-from-scratch/
 
 Current course-material checkpoint:
 
-> **Step 15.4 — Implement `MiniGPT`**
+> **Step 15.5 — Full forward shape trace**
 
-Step 15.4 material is prepared only. Do not infer learner mastery, exercise completion, or runtime validation, and do not create, teach, or mark Step 15.5 as current unless the learner explicitly asks to proceed. Step 14's completed static audit still does not imply runtime tests were executed or passed.
+Step 15.5 material is prepared only. Do not infer learner mastery, exercise completion, or runtime validation, and do not create or teach Step 16 unless the learner explicitly asks to proceed. Step 14's completed static audit still does not imply runtime tests were executed or passed.
 
 ## 2026-10-08 continuity re-audit
 
@@ -559,3 +560,19 @@ If a structural array is cached in the future, explain that it must be explicitl
 Use Python scalar metadata for head_dim, scale, max_seq_len, etc. Do not introduce weight tying in this lesson; token embedding and LM-head weights remain separate.
 
 Stop before Step 15.5. Do not compute the entire MiniGPT parameter count or provide the full line-by-line historical forward trace yet.
+
+## Step 15.5 accuracy boundary
+
+Trace the exact Step 15.4 implementation from token IDs `(B,T)` through token/position embeddings, every Block internal tensor shape, final RMSNorm, and LM-head logits `(B,T,V)`.
+
+Use the exact parameter convention already fixed by the implementation. Total trainable parameters must be `P = 2VC + T_max*C + N(12C^2+7C) + C = 12NC^2 + C(2V+T_max+7N+1)`.
+
+For `V=32,C=16,H=4,N=2,T_max=16`, the hand-derived parameter total is 7664. Token embedding and LM head are not tied, so both VC terms count independently. Learned position embeddings count the full `T_max*C` table, not current T.
+
+In the current fixed-C full-width QKV design, H does not change parameter count; it changes D=C/H and tensor layout, with divisibility required.
+
+Do not count causal masks, position IDs, current sequence length, head_dim, scale constants, or other forward-local/Python metadata as trainable parameters.
+
+Prepare a `tree_flatten(model.trainable_parameters())` count helper and a detailed forward shape trace helper, but do not run them or claim their assertions/results passed.
+
+Connect each component back to its historical purpose across the course. Stop before Step 16: do not create/download Tiny Shakespeare data, tokenizer/data pipeline, batching, loss, optimizer, or training workflow.
