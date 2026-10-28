@@ -1,8 +1,8 @@
 # Step 18 — MLX Execution Model
 
-沿用既有roadmap，本轮只准备并发布 **18.3 mx.compile**，初始实际修正计数 **0/2**；完成即停，不进入18.4。当前母版：[79_step18_3_mx_compile.ipynb](../notebooks/79_step18_3_mx_compile.ipynb)。
+沿用既有roadmap，本轮只准备并发布 **18.4 Mutable training state under compile**，初始实际修正计数 **0/2**；完成即停，不进入18.5。当前母版：[80_step18_4_mutable_training_state.ipynb](../notebooks/80_step18_4_mutable_training_state.ipynb)。
 
-材料审核方已独立核验18.2实际六文件提交 `e3656db90239437cc0d50c24730920f1f783e59c`、固定MLX接口和完整教学回复，核心静态PASS、实际修正0/2。大Step16、17及18.1、18.2已通过材料保留，不返工；这是材料验收，不是学员掌握或运行反馈。18.3只登记当前初始材料编写发布，不继承前节外部验收结论。
+材料审核方已独立核验18.3真实五文件提交 `18ced2600e0b6465701b6d30e40b206c56db61ee`、官方MLX v0.32.2源码和完整教学回复，核心静态PASS、实际修正0/2。大Step16、17及18.1至18.3已通过材料保留，不返工；这是材料验收，不是学员掌握或运行反馈。18.4只登记当前初始材料编写发布，不继承前节外部验收结论。
 
 ## Step 18.1 — Lazy evaluation
 
@@ -527,7 +527,7 @@ for k in range(3):
 
 ## Step 18.3 — mx.compile
 
-母版：[79_step18_3_mx_compile.ipynb](../notebooks/79_step18_3_mx_compile.ipynb)。本节承接18.1／18.2，准备tracing与编译、优化和fusion直觉、首次使用成本及shape／dtype相关缓存。初始实际修正 **0/2**；全部单元未执行、无输出，完成即停在18.3。
+母版：[79_step18_3_mx_compile.ipynb](../notebooks/79_step18_3_mx_compile.ipynb)。18.3真实五文件提交 `18ced2600e0b6465701b6d30e40b206c56db61ee`、官方MLX v0.32.2源码及完整教学回复已由材料审核方独立确认核心静态PASS，实际修正 **0/2**。下文保留已通过的教学及18.3当轮边界，不返工该节。它承接18.1／18.2，说明tracing与编译、优化和fusion直觉、首次使用成本及shape／dtype相关缓存；全部单元未执行、无输出。
 
 ### 0. 新Work Copy：导入、函数和输入全部在本节
 
@@ -800,7 +800,7 @@ mx.eval(score_new_values, score_new_shape, score_new_dtype)
 
 以上是副本依赖恢复顺序，不是本轮运行记录或执行要求。全部代码单元保持未执行与空输出，没有运行Notebook、代码测试、训练、实验、采样或用户work副本，没有读取／下载语料，也没有代答练习。不声称学员掌握、运行通过或测得性能。
 
-18.2的独立材料验收保持 **0/2**，18.3当前仅为初始材料编写发布。累计实际修正：16.1=**1/2**、16.2=**1/2**（含已记录的超时后完整回复补齐），16.3至16.5、17.1至17.5、18.1及18.2各**0/2**，18.3初始生成=**0/2**。每节最多两次实际修正，跨轮和换对话不重置。
+18.3当轮只进行初始材料编写发布，随后已获独立材料核心静态PASS，实际修正保持 **0/2**；18.2验收同样保持 **0/2**。当轮记录的累计实际修正：16.1=**1/2**、16.2=**1/2**（含已记录的超时后完整回复补齐），16.3至16.5、17.1至17.5、18.1及18.2各**0/2**，18.3初始生成=**0/2**。每节最多两次实际修正，跨轮和换对话不重置。
 
 **完成即停在18.3，不进入18.4。** 后续仅按请求逐小节准备，至大Step20全部完成后停止。
 
@@ -814,3 +814,372 @@ mx.eval(score_new_values, score_new_shape, score_new_dtype)
 - [MLX v0.32.2 ops.cpp](https://github.com/ml-explore/mlx/blob/v0.32.2/mlx/ops.cpp)：原小函数中的逐元素操作与mean语义。
 - [官方mx.compile接口](https://ml-explore.github.io/mlx/build/html/python/_autosummary/mlx.core.compile.html)。在线文档可能更新，本课程行为以 **v0.32.2真实源码** 为准。
 - [Roadmap](https://github.com/kris0516/mlx-minigpt-from-scratch/blob/main/docs/course-roadmap.md)与[teaching handoff](https://github.com/kris0516/mlx-minigpt-from-scratch/blob/main/docs/teaching-handoff.md)：当前材料状态、累计修正与18.3停止边界。
+
+## Step 18.4 — Mutable training state under compile
+
+母版：[80_step18_4_mutable_training_state.ipynb](../notebooks/80_step18_4_mutable_training_state.ipynb)。本节承接17.5与18.3，准备模型／优化器数组状态的动态输入和输出捕获，以及参数版本与外侧求值边界。初始实际修正 **0/2**；全部单元未执行、无输出，完成即停在18.4。
+
+### 0. 新Work Copy：完整恢复依赖，不借用旧kernel
+
+沿用项目Python 3.12 / `.venv` kernel，以及 `pyproject.toml` 固定的 `mlx==0.32.2`。本节需要三个模块：`mlx.core`提供数组与compile/eval，`mlx.nn`提供Module、交叉熵及参数求导，`mlx.optimizers`提供Adam。`as`给它们分别取短名mx、nn、optim。
+
+新副本完整提供toy类、手写X/Y、loss函数、模型与优化器对象、状态容器和编译单步。以后使用时，从本节imports开始按顺序取得定义即可；无需运行76或79，不需要旧kernel变量、`%run`、语料或sampler。本轮只写材料，不执行其中任何单元。
+
+本例没有随机操作，所有数据直接写出。下面按支持编译、且未显式禁用编译的正常课程环境解释状态接口，不加入环境切换或性能测量代码。
+
+```python
+import mlx.core as mx
+import mlx.nn as nn
+import mlx.optimizers as optim
+
+# Self-contained imports. Every code cell in this master is unexecuted.
+```
+
+### 1. Mutable State：下一次调用要接着使用当前值
+
+**State（状态）** 是调用之间需要保留的信息。**Mutable state（可变状态）** 表示这些信息的当前内容会被更新。本节主要通过“容器中的数组叶子被替换”理解可变性，不把它等同于某种底层内存原地修改。
+
+用k表示第几次更新，\(M_{k-1}\)表示本步开始的模型状态，\(O_{k-1}\)表示Adam状态。模型参数统称为\(\theta_{k-1}\)。本节单步的数学关系是：
+
+$$
+(X,Y,M_{k-1},O_{k-1})
+\longmapsto
+\bigl(L(\theta_{k-1};X,Y),M_k,O_k\bigr).
+$$
+
+箭头表示本次计算怎样由输入和旧状态得到loss及新状态，不是设备时间线。返回的loss属于更新前参数；新状态则供下一次调用继续使用。这正是17.5已有的版本关系。
+
+**Dynamic（动态）** 在这里表示每次应读入当前数组值，不表示shape必须变化。参数可以始终是 `(3,)`，数值却从\(\theta_0\)更新到\(\theta_1\)。Adam的m、v和step也必须继续，而不能反复使用初始值。
+
+#### 一个纸面小例子：只改外部变量，不会自动改写缓存图
+
+先用两个shape均为 `()` 的标量数组说明直觉，数学函数写为 \(f(x;w)=x+w\)。分号只强调w是我们关心的状态，不是新的Python语法。
+
+| 本次应使用的值 | 数学结果 |
+|---|---|
+| x=2，当前w=1 | 3 |
+| x=2，后来当前w=5 | 7 |
+
+如果编译图只把x当动态输入，而把外部w保留为首次追踪时的常量关系，后来替换Python容器里的w，并不会自动改写已缓存图中的w。缓存复用也不承诺每次重跑原Python函数体、重新读取所有外部名字。
+
+因此，变化的数组必须通过明确的输入通道进入图。可以作为普通实参传入，也可以使用本节的 **captured inputs（捕获输入）**。当函数还要更新外部状态时，则需要相应的 **captured outputs（捕获输出）** 将新数组交回原容器。此处只有纸面解释，不准备错误示例或失败实验。
+
+固定依据：[v0.32.2 compile_replace](https://github.com/ml-explore/mlx/blob/v0.32.2/mlx/compile.cpp)与[固定版本编译指南的状态输入说明](https://github.com/ml-explore/mlx/blob/v0.32.2/docs/src/usage/compile.rst)。
+
+### 2. 恢复17.5的完整Toy：先取得模型、数据与标量Loss
+
+继续使用能手算的 `SharedLogitModel`，必要含义简要恢复：
+
+- `class ... (nn.Module)`定义模型类，`super().__init__()`初始化父类，`self`表示当前实例。
+- `self.head`是dict，`["bias"]`访问其中的数组叶子；本例公开参数只有这个长度3的向量。
+- `__call__`定义 `model(X)`的forward。`B, T = X.shape`取出两个维度，`mx.broadcast_to`把共享向量 `(V,)`用于每个位置，输出 `(B,T,V)`。
+- `mx.array(..., dtype=mx.float32)`构造浮点参数；`mx.int32`用于整数token IDs。切片 `[:, :-1]`取输入，`[:, 1:]`取得已经右移一个位置的targets。
+
+这个toy只读取X的shape，不读取token内容或上下文；它用于说明状态接口，不是MiniGPT，也不是对MiniGPT的零初始化建议。下面直接恢复全部定义和两行数据：
+
+```python
+class SharedLogitModel(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.head = {
+            "bias": mx.array([0.0, 0.0, 0.0], dtype=mx.float32),
+        }
+
+    def __call__(self, X):
+        B, T = X.shape
+        V = self.head["bias"].shape[0]
+        return mx.broadcast_to(self.head["bias"], (B, T, V))
+
+
+# EXPLICIT TOY DATA — prepared only, NOT executed.
+toy_chunks = mx.array([[0, 2, 1], [1, 0, 2]], dtype=mx.int32)
+X = toy_chunks[:, :-1]  # [[0, 2], [1, 0]], shape (2, 2)
+Y = toy_chunks[:, 1:]   # [[2, 1], [0, 2]], shape (2, 2), already shifted
+
+# B=2, T=2, V=3. No corpus, sampling, or random initialization.
+```
+
+#### 逐位置交叉熵仍然得到同一个Scalar Loss
+
+`def`创建普通Python函数，调用时才执行函数体；`return`交还结果对象。`loss_fn(model, X, Y)`内部调用当前model，再配对展平logits和targets：
+
+| 对象／操作 | 本例shape |
+|---|---|
+| X、已shift的Y | `(2,2)`、`(2,2)` |
+| raw logits | `(2,2,3)` |
+| N=B×T=4，配对reshape | logits `(4,3)`；targets `(4,)` |
+| `cross_entropy(..., axis=-1, reduction="none")` | 四项位置loss，`(4,)` |
+| `mx.mean(token_losses)` | scalar MLX loss，`()` |
+
+`mx.reshape`按同一位置顺序整理两侧，Y展平为 `[2,1,0,2]`；不再shift。交叉熵直接接收raw logits和整数targets，最后一轴是类别轴。mean对四项等权平均，梯度中已经包含这次平均，不在优化器处再除以4。
+
+返回MLX数组，不在loss里使用 `.item()`、`float(...)`或求值调用。这里恢复17.1至17.3的已通过定义，不新增损失或求导规则。
+
+```python
+def loss_fn(model, X, Y):
+    logits = model(X)
+    B, T, V = logits.shape
+    N = B * T
+
+    flat_logits = mx.reshape(logits, (N, V))
+    flat_targets = mx.reshape(Y, (N,))
+    token_losses = nn.losses.cross_entropy(
+        flat_logits,
+        flat_targets,
+        axis=-1,
+        reduction="none",
+    )
+    return mx.mean(token_losses)
+
+
+# Definition only. Keep forward and scalar MLX loss inside this function.
+```
+
+#### 创建同一组Model、求导函数与Adam，再预先建立状态
+
+`SharedLogitModel()`创建模型实例。`nn.value_and_grad(model, loss_fn)`返回一个可调用的求导函数，针对该model的可训练参数，同时给出loss和梯度树。调用形式仍是 `loss_and_grad_fn(model, X, Y)`；被绑定和被传入的model保持为同一实例。
+
+Adam保持17.5的配置：学习率 `1e-3`即0.001，两个矩系数为 `[0.9, 0.999]`，epsilon为 `1e-8`。`bias_correction=True`是课程显式选择；固定v0.32.2默认仍为False，不把本节选择说成默认行为。
+
+**Initialization（初始化）** 在这里先建立优化器需要的数组状态。`model.trainable_parameters()`取得可训练参数树；对全新Adam调用 `optimizer.init(...)`，会建立相应的零初始m/v，step仍为0，不进行学习更新，也不是求值完成保证。
+
+这样，后面注册状态捕获时，所需树结构已经齐备；本节不用在首次追踪中同时解释m/v结构的首次创建。所有对象的构造和初始化都放在单步之外，不在每次更新时重建Adam。
+
+固定依据：[nn.value_and_grad实现](https://github.com/ml-explore/mlx/blob/v0.32.2/python/mlx/nn/utils.py)与[Adam、Optimizer.init及state](https://github.com/ml-explore/mlx/blob/v0.32.2/python/mlx/optimizers/optimizers.py)。
+
+```python
+# ONE MATCHED SETUP GROUP — prepared only, NOT executed.
+model = SharedLogitModel()
+loss_and_grad_fn = nn.value_and_grad(model, loss_fn)
+
+optimizer = optim.Adam(
+    learning_rate=1e-3,
+    betas=[0.9, 0.999],
+    eps=1e-8,
+    bias_correction=True,  # Explicit lesson choice; MLX default is False.
+)
+optimizer.init(model.trainable_parameters())
+
+# State structure is ready before capture; no learning update has been called.
+```
+
+### 3. Model State与Optimizer State：需要连到原容器
+
+先区分Python的 **property（属性）** 和方法调用：`model.state`、`optimizer.state`是不带括号的属性访问；`model.parameters()`则调用方法。
+
+固定v0.32.2中，Module是dict的子类，`model.state`返回原模型状态字典的引用。**Reference（引用）** 表示通过这个对象继续访问同一个容器，不是另外复制一份模型。`optimizer.state`返回该优化器原有的状态字典。
+
+| 表达式 | 容器关系 | 本节用途 |
+|---|---|---|
+| `model.state` | 原模型状态字典的引用 | 当前模型数组的双向捕获 |
+| `model.parameters()` | 新建的筛选参数树，叶子引用当时的数组 | 即时取得当前参数，例如17.5边界处的读取 |
+| `model.trainable_parameters()` | 新建的可训练参数筛选树 | 参数求导目标与Adam初始化 |
+| `optimizer.state` | 原优化器状态字典的引用 | 当前Adam数组的双向捕获 |
+
+`parameters()`不是深拷贝参数数值，但也不是会自动跟随未来叶子替换的原容器。假如先保存它返回的树，模型随后把 `head.bias`换成另一个数组，先前保存的树不会因此自动换成新叶子。
+
+所以17.5即时写 `mx.eval(model.parameters(), ...)`仍然正确：它当时取得的就是当前参数；而本节要长期读入、回填原模型状态，使用 `model.state`。
+
+接下来用 **list（列表）** 把两个原状态字典组织在一起。列表保存这两个对象的引用，不复制整组数组，也不是把它们stack成一个数值张量。`training_state`只是本节自定义名字；列表的第0项是模型状态，第1项是优化器状态。
+
+固定依据：[Module.state、parameters与update](https://github.com/ml-explore/mlx/blob/v0.32.2/python/mlx/nn/layers/base.py)及[Optimizer.state](https://github.com/ml-explore/mlx/blob/v0.32.2/python/mlx/optimizers/optimizers.py)。
+
+```python
+# References to the original containers, after optimizer.init(...).
+training_state = [model.state, optimizer.state]
+
+# This is an array tree, not a copy of model/optimizer and not a tensor.
+```
+
+#### 状态树里的路径与Shape
+
+**Array tree（数组树）** 是用list／dict组织的嵌套结构，最末端的数组称为leaf。对本例，重要数组位置为：
+
+| 访问路径 | 含义 | Shape |
+|---|---|---|
+| `training_state[0]["head"]["bias"]` | 模型当前参数，与 `model.head["bias"]`访问同一容器位置 | `(3,)` |
+| `training_state[1]["head"]["bias"]["m"]` | Adam当前一阶矩 | `(3,)` |
+| `training_state[1]["head"]["bias"]["v"]` | Adam当前二阶原始矩 | `(3,)` |
+| `training_state[1]["step"]` | 已建立的更新次数 | `()` |
+| `training_state[1]["learning_rate"]` | 学习率数组，本例数值固定为0.001 | `()` |
+
+前面三类参数／矩数组为float32；step是计数数组，不是普通Python计数变量。模型参数和m/v的shape保持一致，但它们有不同含义，不能只捕获模型参数而漏掉Adam历史。
+
+Adam的betas、eps、bias_correction是本例固定的Python配置，不在这张表里当作动态数组。状态捕获只处理数组叶子，不能由此推出所有Python属性都自动成为动态输入。本例保持树结构和配置稳定，也没有额外随机状态。
+
+### 4. Captured Inputs／Outputs：读当前状态，交回新状态
+
+18.3已经核对固定接口，本节开始使用其中两个可选参数：
+
+```text
+mx.compile(fun, inputs=None, outputs=None, shapeless=False) -> callable
+```
+
+这是接口说明，不是执行语句。`inputs`与`outputs`默认均为None，可以接收list／dict组织的数组树，非数组叶子被忽略。`shapeless=False`仍保持固定版本默认值。
+
+- **Captured inputs（捕获输入）**：每次调用时，把所给容器里当前的数组叶子读作本次图输入。
+- **Captured outputs（捕获输出）**：把函数中形成的新状态数组纳入图输出，并在调用后回填到所给原容器。
+
+本例既读取当前模型／Adam状态，也更新这些状态，所以同一个 `training_state`同时用于两个方向。**同一容器不等于同一数值版本**：输入读的是本步旧状态，输出回填的是本步新状态。
+
+| 通道 | 本例内容 |
+|---|---|
+| 普通显式输入 | 调用 `compiled_step(X, Y)`时传入的X、Y |
+| `inputs=training_state` | 当前模型参数、Adam的m/v/step等数组 |
+| 普通Python返回值 | `loss_before_update`，更新前参数对应的scalar loss |
+| `outputs=training_state` | 更新后的模型参数与Adam状态数组 |
+
+因此，`outputs`不是把返回的loss又写一次，也不会把state作为额外的普通返回值强行交给左侧变量。它注册的是外部容器中需要回填的数组位置。
+
+只注册inputs不能保证新状态正确写回；只注册outputs也不会自动让当前旧状态成为动态输入。具体遗漏的表现可能依函数而异，本节不安排失败示例。补一个eval也不能修复缺失的数据流：求值完成的是已经建立的计算关系。
+
+固定依据：[v0.32.2 Python compile接口和PyCompiledFun](https://github.com/ml-explore/mlx/blob/v0.32.2/python/src/transforms.cpp)及[数组树回填实现](https://github.com/ml-explore/mlx/blob/v0.32.2/python/src/trees.cpp)。
+
+#### 本节新定义step_graph，保留17.5母版
+
+17.5原来的 `train_step`把 `mx.eval`写在普通函数内部，并显式接收model、optimizer和求导函数对象。本节不把它原封不动交给compile，也不修改已通过的76母版。
+
+新的 `step_graph(X, Y)`只把X/Y作为显式实参，函数体引用本节同一组model、loss_and_grad_fn和optimizer。其数组状态通过刚才的捕获树进入和退出编译图；这些外侧Python对象本身不作为新的调用实参传给compile包装器。
+
+`loss_before_update, grads = ...`把求导函数的两个返回值分别绑定给两个名字。一次调用已经包含forward、scalar loss和reverse-mode autodiff，不另做一次forward。`optimizer.update(model, grads)`安装新参数并推进Adam状态，返回None，所以不把它赋给model。
+
+函数体只建立loss／梯度／更新关系并返回loss，不包含 `mx.eval`、数组值打印或 `.item()`。求值在后面独立写出，避免在占位追踪时索取元素数值。
+
+```python
+def step_graph(X, Y):
+    loss_before_update, grads = loss_and_grad_fn(model, X, Y)
+    optimizer.update(model, grads)
+    return loss_before_update
+
+
+# Definition only. No mx.eval or array-value display inside the traced body.
+```
+
+#### 显式创建一个带状态捕获的Callable
+
+`step_graph`不带括号时是函数对象；把它交给 `mx.compile`，得到可调用对象 `compiled_step`。`name=value`是关键字实参：下面明确给出捕获的输入树、输出树以及默认的shape设置，不需要新增装饰器语法。
+
+此时创建的是包装器，没有进行训练更新，也没有保证状态数组数值已经完成。包装器保留的是此处注册的容器对象，不是一个以后会反复解释的变量名字符串。
+
+```python
+compiled_step = mx.compile(
+    step_graph,
+    inputs=training_state,
+    outputs=training_state,
+    shapeless=False,
+)
+
+# Callable setup only. Keep this wrapper and its registered containers together.
+```
+
+#### 缓存命中时，为什么仍能更新外部对象？
+
+从固定v0.32.2源码看，包装器每次都会读取捕获输入树中的当前数组。首次需要追踪时，用相应占位输入走过原函数，记录loss和状态更新的计算关系，并把捕获输出也纳入图输出。
+
+后续缓存命中时可以复用这些关系，用本次输入和当前状态产生本次输出数组。包装器每次都会将捕获输出回填到注册容器，包括缓存命中的调用。因此，本例不依赖“每次都重新执行Python函数体里的所有赋值”来推进状态。
+
+| 层面 | 本节的作用 |
+|---|---|
+| 计算图的数据流 | 由当前参数与Adam历史形成loss、新参数、新历史 |
+| 捕获输出的回填 | 让原model／optimizer状态容器持有本次输出数组 |
+| 后续显式求值 | 要求选定数组的数值完成 |
+
+这不是对任意Python副作用的自动重放。普通打印、改普通Python计数器等行为不能据此当作每次缓存命中都会执行；本节不加入这些探针。
+
+参数数值改变、shape不变，并不要求每步重新创建编译对象。我们保持同一组对象、状态树结构、配置与输入规格，让当前数组经动态输入通道进入；具体缓存规则沿用18.3，不在本节做命中或速度实验。
+
+固定依据：[PyCompiledFun::call_impl中每次读入和回填的路径](https://github.com/ml-explore/mlx/blob/v0.32.2/python/src/transforms.cpp)。
+
+### 5. 外侧Evaluation Boundary：旧Loss与新状态一起完成
+
+接下来只准备一次 `compiled_step(X, Y)`调用。返回后，普通返回值是本次更新前loss，状态容器则持有本次新参数与新Adam状态的数组对象。**回填数组对象，不等于其数值已完成。**
+
+沿18.2的契约，`mx.eval(loss_before_update, training_state)`明确要求选定loss和树中数组及其必要依赖完成，等待这些结果可用后返回None。这里不用重新列出 `model.parameters()`，因为training_state已经引用原model和optimizer的状态树。
+
+只求值loss，不能保证所有新参数与新Adam状态也已完成；它们是更新关系中的输出。完整边界选中两类结果：
+
+```mermaid
+flowchart TD
+    S["当前模型与Adam状态"] --> G["本次单步计算关系"]
+    D["本次X、Y"] --> G
+    G --> L["更新前loss数组"]
+    G --> N["新模型与Adam状态数组"]
+    L --> E["mx.eval选定结果"]
+    N --> E
+```
+
+图只表达依赖与选择范围，不是GPU执行时间线。若前端不渲染图，可直接读下表：
+
+| 边界选中什么 | 数学版本 |
+|---|---|
+| 返回的 `loss_before_update` | \(L(\theta_{k-1};X,Y)\) |
+| `training_state[0]`中的模型数组 | 更新后的\(M_k\)，本例参数为\(\theta_k\) |
+| `training_state[1]`中的Adam数组 | 更新后的\(O_k\)，含m、v、step等 |
+
+新参数写回同一个模型，不会将已建立的loss改为新参数处的loss。eval同样不改变loss的数学版本，也不会再进行一次优化器更新。本节不追加更新后forward或第二次训练调用。
+
+```python
+# ONE PREPARED CALL — NOT executed during material preparation.
+loss_before_update = compiled_step(X, Y)
+
+# Complete the returned old-parameter loss and the newly written state arrays.
+mx.eval(loss_before_update, training_state)
+
+# No second call, logging, numerical assertion, timing, or recorded output.
+```
+
+#### 首步小手算：确认状态版本，而不是报告运行结果
+
+只针对本节全新对象组：初始参数\(\theta_0=[0,0,0]\)，Adam的m/v为零，step为0。共享的三个logits全为0，所以每个类别概率为1/3；四个targets为 `[2,1,0,2]`。
+
+四个位置的类别频率是 `[1/4,1/4,1/2]`，沿17.3的mean交叉熵梯度，\(g_1=[1/3,1/3,1/3]-[1/4,1/4,1/2]=[1/12,1/12,-1/6]\)。这里下标1表示第一次参数更新使用的梯度，不是token位置。
+
+| 对象 | 首步实数手算 | Shape |
+|---|---|---|
+| 返回的更新前loss | \(\ln3\)，ln为自然对数 | `()` |
+| 本次参数梯度\(g_1\) | `[1/12, 1/12, -1/6]` | `(3,)` |
+| 回填的新一阶矩\(m_1\) | `[1/120, 1/120, -1/60]` | `(3,)` |
+| 回填的新二阶矩\(v_1\) | `[1/144000, 1/144000, 1/36000]` | `(3,)` |
+| 回填的新step | 1 | `()` |
+
+沿17.4的带偏差修正首步公式，新参数的实数表达式为：
+
+$$
+\theta_1=-0.001\,
+\frac{[1/12,\ 1/12,\ -1/6]}
+{[1/12,\ 1/12,\ 1/6]+10^{-8}}.
+$$
+
+分式按向量对应分量运算。仅为看尺度而暂时忽略极小epsilon，可近似写作 `[-0.001,-0.001,+0.001]`；准备代码保留epsilon，并有浮点舍入。参数shape仍为 `(3,)`。
+
+这张表连接的是旧loss与新状态的数学版本，没有执行编译单步，没有观测缓存、速度或内存，没有计算新参数处的loss，更不是loss下降证据。
+
+### 工作副本依赖顺序、对象组与停止点
+
+以后使用本节新副本时：
+
+1. 在仓库根目录先 `git pull`，再用时间戳新文件名与 `cp -n`将80母版复制到已有 `notebooks/work/`，只打开新副本。
+2. 选择项目Python3.12 / `.venv` kernel，从三项imports开始，取得本节完整toy类、X/Y和loss_fn。
+3. 创建同一组model、loss_and_grad_fn和Adam；先执行定义所规定的初始化步骤，再建立training_state引用。这里给的是使用顺序，本轮没有执行。
+4. 取得本节step_graph定义，再创建捕获该training_state的compiled_step；末尾只准备一次调用和外侧求值边界。
+
+同一对象的数组叶子更新，与把变量名重新绑定到另一对象不同。若后来另建model／optimizer，或替换整个optimizer.state字典，不应混用原来的helper、捕获树和编译包装；应从setup开始把model、求导函数、optimizer、training_state、step_graph及compiled_step作为同一组重新建立。只把 `training_state`名字赋成一个新列表，不会让旧包装自动改绑。
+
+如果以后再次使用调用单元，会继续推进模型与Adam历史，不能再套用初始首步的手算；本节没有要求这样做，也没有恢复或多步训练实验。
+
+18.3的独立材料验收保持 **0/2**；18.4当前仅为初始材料编写发布。累计实际修正：16.1=**1/2**、16.2=**1/2**（含已记录的超时后完整回复补齐），16.3至16.5、17.1至17.5及18.1至18.3各**0/2**，18.4初始生成=**0/2**。每节最多两次实际修正，跨轮和换对话不重置。
+
+本轮没有运行Notebook、代码测试、训练、实验、采样或用户work副本，没有读取／下载语料，没有代答练习。不声称学员掌握、运行验证或编译必然提速，不返工已合格课节。
+
+**完成即停在18.4，不进入18.5。** 后续仅按请求逐小节准备，至大Step20全部完成后停止。
+
+### 固定版本依据与课程链接
+
+- [17.5已验收母版](https://github.com/kris0516/mlx-minigpt-from-scratch/blob/18ced2600e0b6465701b6d30e40b206c56db61ee/notebooks/76_step17_5_uncompiled_training_step.ipynb)：完整toy、mean交叉熵、同一模型求导组、Adam配置与参数版本。
+- [18.3已验收母版](https://github.com/kris0516/mlx-minigpt-from-scratch/blob/18ced2600e0b6465701b6d30e40b206c56db61ee/notebooks/79_step18_3_mx_compile.ipynb)：compile callable、tracing、缓存与外侧eval的区别。
+- [MLX v0.32.2 Module源码](https://github.com/ml-explore/mlx/blob/v0.32.2/python/mlx/nn/layers/base.py)：state原容器引用、parameters筛选树、叶子更新。
+- [MLX v0.32.2 Optimizer与Adam](https://github.com/ml-explore/mlx/blob/v0.32.2/python/mlx/optimizers/optimizers.py)：init、state、step、m/v与update；[nn.utils](https://github.com/ml-explore/mlx/blob/v0.32.2/python/mlx/nn/utils.py)：当前模型参数的value_and_grad变换。
+- [MLX v0.32.2 Python transforms](https://github.com/ml-explore/mlx/blob/v0.32.2/python/src/transforms.cpp)与[trees.cpp](https://github.com/ml-explore/mlx/blob/v0.32.2/python/src/trees.cpp)：状态捕获接口、每次输入读取、输出回填及数组树处理。
+- [MLX v0.32.2 compile.cpp](https://github.com/ml-explore/mlx/blob/v0.32.2/mlx/compile.cpp)：真实输入替换、常量关系与图复用；[固定编译指南](https://github.com/ml-explore/mlx/blob/v0.32.2/docs/src/usage/compile.rst)：模型／优化器双向状态捕获模式。
+- [官方mx.compile接口](https://ml-explore.github.io/mlx/build/html/python/_autosummary/mlx.core.compile.html)。在线文档可能更新，本课程接口与行为以 **v0.32.2真实源码** 为准。
+- [Roadmap](https://github.com/kris0516/mlx-minigpt-from-scratch/blob/main/docs/course-roadmap.md)与[teaching handoff](https://github.com/kris0516/mlx-minigpt-from-scratch/blob/main/docs/teaching-handoff.md)：当前材料状态、累计修正与18.4停止边界。

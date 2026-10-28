@@ -789,14 +789,14 @@ All five subsection masters, documents, and full replies have independently pass
 - iterative graph growth if state is never evaluated
 - why this matters for memory
 
-### 18.3 `mx.compile` 🚧
+### 18.3 `mx.compile` ✅
 
 - trace/compile graph
 - optimization and fusion intuition
 - first-call compile cost
 - shape/dtype-dependent cache behavior
 
-### 18.4 Mutable training state under compile
+### 18.4 Mutable training state under compile 🚧
 
 - model state
 - optimizer state
@@ -1137,20 +1137,21 @@ Step 17.4         ✅ Material reviewer independently confirmed core static PASS
 Step 17.5         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
 Step 18.1         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
 Step 18.2         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
-Step 18.3         🚧 Current initial material prepared / corrections 0/2
-Step 18.4+          Planned only
+Step 18.3         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
+Step 18.4         🚧 Current initial material prepared / corrections 0/2
+Step 18.5+          Planned only
 ```
 
 Current course-material checkpoint:
 
-> **Step 18.3 — `mx.compile`**
+> **Step 18.4 — Mutable training state under compile**
 
-Current master: [79_step18_3_mx_compile.ipynb](../notebooks/79_step18_3_mx_compile.ipynb). Current Step document: [Step 18 — MLX execution model](step-18-mlx-execution-model.md).
+Current master: [80_step18_4_mutable_training_state.ipynb](../notebooks/80_step18_4_mutable_training_state.ipynb). Current Step document: [Step 18 — MLX execution model](step-18-mlx-execution-model.md).
 
 Learner-status note:
 
-> All major Step 16 and Step 17 materials, and Steps 18.1 and 18.2, have independently passed the material reviewer's core static review. The latest acceptance includes Step 18.2's actual six-file commit `e3656db90239437cc0d50c24730920f1f783e59c`, fixed MLX v0.32.2 interfaces, and full teaching reply, with actual corrections **0/2**. This is material acceptance, not learner learning or execution feedback. Step 18.3 restores a complete ordinary build_score(arr) function, explicitly supplied small arrays, and all imports. It explains tracing and compiling an array dependency graph, optimization and fusion intuition, first-use preparation costs, and default shape/dtype-related cache behavior. It distinguishes the callable returned by mx.compile, a call to that callable, and an explicit mx.eval boundary; compilation is not a numerical-completion guarantee. Cache reuse concerns a computation plan for compatible inputs, not a previously computed answer. The examples are unexecuted reading material with hand-derived values, not timing, cache-hit, or performance experiments. No old kernel, corpus, sampler, model, optimizer, or new dependency is needed. This turn stops at Step 18.3, before 18.4. Earlier independent acceptance does not imply acceptance of 18.3, learner completion, mastery, experiments, or runtime validation. Mutable training state under compilation and performance/memory experiments remain outside the current subsection.
+> All major Step 16 and Step 17 materials, and Steps 18.1 through 18.3, have independently passed the material reviewer's core static review. The latest acceptance includes Step 18.3's actual five-file commit `18ced2600e0b6465701b6d30e40b206c56db61ee`, official MLX v0.32.2 source, and full teaching reply, with actual corrections **0/2**. This is material acceptance, not learner learning or execution feedback. Step 18.4 restores the complete small model, explicit shifted-token data, scalar loss, gradient function, and initialized Adam from 17.5 in a new self-contained master. It explains model and optimizer state, live container references, and the inputs/outputs state-capture contract of mx.compile. Current state values enter each call, and newly computed array leaves are filled back into the captured containers even when the compiled graph is reused. The prepared graph body returns the pre-update loss while advancing model and optimizer state; an explicit mx.eval outside the compiled call requests that loss and the new state to complete. Only one unexecuted compiled-step call is supplied. All imports, definitions, and data are included; no old kernel, corpus, sampler, or additional dependency is needed. This turn stops at Step 18.4, before 18.5. Earlier independent acceptance does not imply acceptance of 18.4, learner completion, mastery, experiments, or runtime validation. Performance and memory experiments remain outside the current subsection; compilation is not a speedup claim.
 
-Actual correction ledger: Step 16.1 **1/2**, Step 16.2 **1/2**, Step 16.3 **0/2**, Step 16.4 **0/2**, Step 16.5 **0/2**, Step 17.1 **0/2**, Step 17.2 **0/2**, Step 17.3 **0/2**, Step 17.4 **0/2**, Step 17.5 **0/2**, Step 18.1 **0/2**, Step 18.2 **0/2**, Step 18.3 initial version **0/2**. Step 16.2 includes the previously recorded reply completion after a timeout. Preserve the passed lessons and all accumulated counts across turns and conversations.
+Actual correction ledger: Step 16.1 **1/2**, Step 16.2 **1/2**, Step 16.3 **0/2**, Step 16.4 **0/2**, Step 16.5 **0/2**, Step 17.1 **0/2**, Step 17.2 **0/2**, Step 17.3 **0/2**, Step 17.4 **0/2**, Step 17.5 **0/2**, Step 18.1 **0/2**, Step 18.2 **0/2**, Step 18.3 **0/2**, Step 18.4 initial version **0/2**. Step 16.2 includes the previously recorded reply completion after a timeout. Preserve the passed lessons and all accumulated counts across turns and conversations.
 
 Active continuation boundary: subsequent requests proceed one subsection at a time through major **Step 20**, then stop. The existing Step 21–25 roadmap remains a future curriculum plan; this boundary does not authorize automatic or batch preparation of later lessons.
