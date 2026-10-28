@@ -667,12 +667,12 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - self-attention
 - cross-attention
 
-### 15.2 Why autoregressive GPT can be decoder-only 🚧
+### 15.2 Why autoregressive GPT can be decoder-only ✅
 
 - no separate source encoder
 - causal self-attention over the same token stream
 
-### 15.3 MiniGPT top-level architecture
+### 15.3 MiniGPT top-level architecture 🚧
 
 - token embedding
 - position embedding
@@ -1109,7 +1109,7 @@ These are not required to declare the MiniGPT project complete.
 
 # Current course-material status
 
-> Status here tracks **repository lesson-material preparation**, not learner mastery, exercise completion, assessment, or runtime test success.
+> Status here tracks **repository lesson-material preparation**, not learner mastery, exercise completion, assessment, or runtime validation.
 > `✅` = master lesson/material has been prepared and its static review status has been confirmed where noted; `🚧` = current prepared lesson/material being used or revised; no icon = future planned lesson.
 > Learner completion must only be recorded when the learner explicitly confirms completion or an agreed assessment has actually been completed.
 
@@ -1122,14 +1122,15 @@ Steps 12.1–12.5  ✅ Material prepared / static audit passed
 Steps 13.1–13.5  ✅ Material prepared / static audit passed
 Steps 14.1–14.5  ✅ Material prepared / static audit passed
 Step 15.1         ✅ Material prepared / static audit passed
-Step 15.2         🚧 Current material prepared
-Step 15.3+           Planned only
+Step 15.2         ✅ Material prepared / static audit passed
+Step 15.3         🚧 Current material prepared
+Step 15.4+           Planned only
 ```
 
 Current course-material checkpoint:
 
-> **Step 15.2 — Why autoregressive GPT can be decoder-only**
+> **Step 15.3 — MiniGPT top-level architecture**
 
 Learner-status note:
 
-> Material preparation for Step 15.2 does not assert learner mastery, work-notebook completion, exercise completion, or runtime validation. Do not enter Step 15.3 unless the learner explicitly asks to proceed beyond Step 15.2.
+> Material preparation for Step 15.3 does not assert learner mastery, work-notebook completion, exercise completion, or runtime validation. Do not enter Step 15.4 unless the learner explicitly asks to proceed beyond Step 15.3.
