@@ -22,13 +22,14 @@ Steps 11.1–11.5  material prepared; static audit passed
 Steps 12.1–12.5  material prepared; static audit passed
 Steps 13.1–13.5  material prepared; static audit passed
 Steps 14.1–14.5  material prepared; static audit passed
-Step 15.1         current material prepared
-Step 15.2+        planned only; not current
+Step 15.1         material prepared; static audit passed
+Step 15.2         current material prepared
+Step 15.3+        planned only; not current
 ```
 
-**Material status is not learner status.** Step 14 static audit completion does not imply that its prepared runtime tests were executed or passed. No claim is made that the learner has completed the Step 15.1 work notebook, exercises, or mastered the original Transformer architecture.
+**Material status is not learner status.** No claim is made that the learner has completed the Step 15.2 work notebook, exercises, or mastered why autoregressive GPT can be decoder-only. No runtime validation is asserted.
 
-Do not enter Step 15.2 until the learner explicitly asks to proceed beyond Step 15.1.
+Do not enter Step 15.3 until the learner explicitly asks to proceed beyond Step 15.2.
 
 ## Non-negotiable teaching constraints
 
@@ -169,9 +170,9 @@ mlx-minigpt-from-scratch/
 
 Current course-material checkpoint:
 
-> **Step 15.1 — Original Transformer architecture**
+> **Step 15.2 — Why autoregressive GPT can be decoder-only**
 
-Step 15.1 material is prepared only. Do not infer learner mastery or exercise completion, and do not create, teach, or mark Step 15.2 as current unless the learner explicitly asks to proceed. Step 14's completed static audit still does not imply runtime tests were executed or passed.
+Step 15.2 material is prepared only. Do not infer learner mastery, exercise completion, or runtime validation, and do not create, teach, or mark Step 15.3 as current unless the learner explicitly asks to proceed. Step 14's completed static audit still does not imply runtime tests were executed or passed.
 
 ## 2026-10-08 continuity re-audit
 
@@ -508,3 +509,19 @@ Preserve the shifted-target training story: decoder target input is shifted righ
 Do not confuse the Step 14.5 modernized teaching Block with the 2017 decoder layer. The original Transformer is classically encoder+decoder, Post-Norm / LayerNorm, ReLU FFN, and decoder cross-attention; Step 14.5 used Pre-Norm / RMSNorm / GELU and no cross-attention.
 
 Stop before Step 15.2. Do not explain the decoder-only sufficiency argument, delete the encoder, or implement GPT / MiniGPT top-level modules.
+
+## Step 15.2 accuracy boundary
+
+Anchor the explanation in autoregressive factorization: one token stream is modeled as `p(x_0,...,x_T)=prod_t p(x_t|x_<t)`. The needed conditioning information is the already-existing prefix in that same stream.
+
+Do not confuse shifted training input/labels with Original Transformer source/target streams. They are two shifted supervision views of the same underlying sequence, not separate encoder/decoder architectural inputs.
+
+Explain that causal self-attention over the same stream gives position i access to `x_0...x_i` while predicting `x_(i+1)`. With no independent source memory, the encoder stack and encoder–decoder cross-attention can be removed.
+
+Decoder-only is a historical/architectural lineage term, not a literal copy of the full 2017 decoder layer: GPT-style blocks keep causal self-attention and FFN-style processing but remove cross-attention.
+
+Prompt-conditioned tasks may serialize prompt/source before the continuation so response tokens can attend to the full prompt as causal past. Do not claim this makes encoder–decoder models universally obsolete or inferior.
+
+Preserve the training/inference distinction: training can compute positions in parallel under the mask; autoregressive inference remains token-by-token.
+
+Stop before Step 15.3. Do not enumerate or implement the MiniGPT top-level token embedding, position embedding, Block × N, final norm, or LM head.
