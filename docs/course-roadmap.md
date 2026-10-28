@@ -751,13 +751,13 @@ All five subsection masters, documents, and full replies have independently pass
 - `(B,T) → (B*T)`
 - one training step contains many token-level targets
 
-### 17.3 MLX `nn.value_and_grad` 🚧
+### 17.3 MLX `nn.value_and_grad` ✅
 
 - Module parameter tree
 - loss + gradients as a function transformation
 - contrast with a simplistic “gradient attached to every parameter” mental model
 
-### 17.4 Adam optimizer
+### 17.4 Adam optimizer 🚧
 
 - first moment
 - second moment
@@ -1132,20 +1132,21 @@ Step 16.4         ✅ Material reviewer independently confirmed core static PASS
 Step 16.5         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
 Step 17.1         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
 Step 17.2         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
-Step 17.3         🚧 Current initial material prepared / corrections 0/2
-Step 17.4+          Planned only
+Step 17.3         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
+Step 17.4         🚧 Current initial material prepared / corrections 0/2
+Step 17.5+          Planned only
 ```
 
 Current course-material checkpoint:
 
-> **Step 17.3 — MLX nn.value_and_grad**
+> **Step 17.4 — Adam optimizer**
 
-Current master: [74_step17_3_nn_value_and_grad.ipynb](../notebooks/74_step17_3_nn_value_and_grad.ipynb).
+Current master: [75_step17_4_adam_optimizer.ipynb](../notebooks/75_step17_4_adam_optimizer.ipynb).
 
 Learner-status note:
 
-> All major Step 16 masters, documents, and full replies have independently passed the material reviewer's core static review. Step 17.1's actual master, documentation, fixed-version MLX API contract, and full reply, plus Step 17.2's actual master, documentation, and full reply, have also independently received core static PASS. This is material acceptance, not learner learning or execution feedback. Step 17.3 supplies a self-contained toy Module, already-shifted targets, and a scalar loss function to explain a trainable parameter tree and the loss/gradient function transformation. The prepared example needs no corpus or MiniGPT dependencies and performs no parameter learning update; all lesson code remains unexecuted. Its preparation does not assert mastery, work-notebook completion, experiments, or runtime validation. This turn stops at Step 17.3; do not enter Step 17.4.
+> All major Step 16 masters, documents, and full replies have independently passed the material reviewer's core static review. Step 17.1's actual master, documentation, fixed-version MLX API contract, and full reply; Step 17.2's actual master, documentation, and full reply; and Step 17.3's actual master, documentation, MLX v0.32.2 API, and full reply have also independently received core static PASS. This is material acceptance, not learner learning or execution feedback. Step 17.4 supplies explicit parameter and gradient trees to explain Adam's first and second moments, bias correction, state, and memory cost. It distinguishes fixed-version defaults from the lesson's explicit settings and prepares one isolated optimizer API example, without assembling a training step. No corpus, old kernel, model forward, or new dependency is needed; all lesson code remains unexecuted. Its preparation does not assert mastery, work-notebook completion, experiments, or runtime validation. This turn stops at Step 17.4; do not enter Step 17.5.
 
-Actual correction ledger: Step 16.1 **1/2**, Step 16.2 **1/2** (including the learner-confirmed reply completion after a timeout), Step 16.3 **0/2**, Step 16.4 **0/2**, Step 16.5 **0/2**, Step 17.1 **0/2**, Step 17.2 **0/2**, Step 17.3 initial version **0/2**. Preserve the passed lessons and all accumulated counts across turns and conversations.
+Actual correction ledger: Step 16.1 **1/2**, Step 16.2 **1/2** (including the learner-confirmed reply completion after a timeout), Step 16.3 **0/2**, Step 16.4 **0/2**, Step 16.5 **0/2**, Step 17.1 **0/2**, Step 17.2 **0/2**, Step 17.3 **0/2**, Step 17.4 initial version **0/2**. Preserve the passed lessons and all accumulated counts across turns and conversations.
 
 Active continuation boundary: subsequent requests proceed one subsection at a time through major **Step 20**, then stop. The existing Step 21–25 roadmap remains a future curriculum plan; this boundary does not authorize automatic or batch preparation of later lessons.
