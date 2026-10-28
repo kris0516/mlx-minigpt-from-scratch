@@ -2,7 +2,7 @@
 
 目标：解释 2017 Transformer 的 encoder–decoder architecture，以及 GPT 后续究竟保留、删除和重组了什么。
 
-本 Step 保留现有 roadmap 的 15.1–15.5 结构。Step 15.1–15.3 材料已通过静态审核；当前只准备 **15.4 Implement `MiniGPT`**，不进入 15.5。
+本 Step 保留现有 roadmap 的 15.1–15.5 结构。Step 15.1–15.4 材料已通过静态审核；当前只准备 **15.5 Full forward shape trace**，不进入 Step 16。
 
 ## Step 15.1 — Original Transformer architecture
 
@@ -191,3 +191,66 @@ MLX Module 中直接保存的 `mx.array` 会被 `parameters()` 递归收集，�
 本节只实现干净的 `MiniGPT(nn.Module)` 与必要 shape constraints。不计算完整 MiniGPT 参数总数，不做完整逐行 forward shape trace，也不进入 loss / training。
 
 Step 15.4 材料准备到此停止，不进入 Step 15.5。
+
+## Step 15.5 — Full forward shape trace
+
+### Complete forward shapes
+
+完整顶层主线：
+
+```text
+token_ids                (B,T)
+token embedding          (B,T,C)
+position embedding       (T,C)
+initial hidden           (B,T,C)
+Block × N                (B,T,C)
+final RMSNorm            (B,T,C)
+LM head                  (B,T,V)
+```
+
+每个 Block 内部继续追踪 fused QKV `(B,T,3C)`、head reshape `(B,T,H,D)`、batched layout `(B,H,T,D)`、attention scores / weights `(B,H,T,T)`、MLP hidden `(B,T,4C)`，最后恢复 `(B,T,C)`。
+
+### Exact parameter count for the current implementation
+
+沿用 Step 15.4 已固定的设置：token embedding 与 LM head 不 weight-tie；QKV/c_proj `bias=False`；MLP 两层 `bias=True`；每个 Block 两套 RMSNorm；顶层 final RMSNorm；learned absolute position table。
+
+因此：
+
+```text
+token embedding          VC
+position embedding       T_max*C
+N Blocks                 N(12C^2 + 7C)
+final RMSNorm            C
+LM head                  VC
+```
+
+总参数：
+
+```text
+P = 2VC + T_max*C + N(12C^2+7C) + C
+  = 12NC^2 + C(2V + T_max + 7N + 1)
+```
+
+示例 `V=32,C=16,H=4,N=2,T_max=16`：
+
+```text
+P = 7664
+```
+
+在当前 fixed-C full-width QKV design 中，H 不改变 projection 参数总数，只改变 `D=C/H` 与 tensor organization，并要求 `C % H == 0`。
+
+### Counting boundaries
+
+Position embedding 按完整 learned table `T_max*C` 计数，而不是当前 batch 的 `T*C`。Token embedding 与 LM head 独立，所以两个 `VC` 都计入。
+
+Causal mask、position IDs、sequence length、head_dim、scale 等 forward-local / Python metadata 不属于 trainable parameter total。
+
+### Prepared trace/count code only
+
+Notebook 提供 `trace_forward_shapes(...)` 与基于 `model.trainable_parameters()` / `tree_flatten` 的 parameter-tree count code，但本轮均未执行，因此不声称 actual shape trace、parameter-count assertion 或其他 runtime validation passed。
+
+### Historical purpose map
+
+本节把最终代码重新连接到课程历史：embedding 处理离散输入；position signal 补回无 recurrence 的位置信息；causal self-attention 实现 prefix-only direct interaction；multi-head 提供多个 learned subspaces；residual / RMSNorm 支持深层 repeated computation；MLP 做 position-wise nonlinear processing；LM head 将 hidden features 映射到 vocabulary logits。
+
+Step 15.5 材料准备到此停止，不进入 Step 16；不开始 Tiny Shakespeare 数据、tokenizer、batching 或训练流程。
