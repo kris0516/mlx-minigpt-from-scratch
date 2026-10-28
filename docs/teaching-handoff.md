@@ -576,3 +576,15 @@ Do not count causal masks, position IDs, current sequence length, head_dim, scal
 Prepare a `tree_flatten(model.trainable_parameters())` count helper and a detailed forward shape trace helper, but do not run them or claim their assertions/results passed.
 
 Connect each component back to its historical purpose across the course. Stop before Step 16: do not create/download Tiny Shakespeare data, tokenizer/data pipeline, batching, loss, optimizer, or training workflow.
+
+## Step 15.5 correction 1/2
+
+Minimal dependency repair only. Do not reopen the already-passed formula, 7,664 example, shape trace, or historical explanation.
+
+The Step 15.5 notebook must be self-contained before helper/usage cells: explicitly import `mlx.core as mx`, then reuse the Step 15.4 definition-only cells for `CausalMultiHeadAttention`, `FeedForwardMLP`, `TransformerBlock`, and `MiniGPT`.
+
+Keep definition cells separate from usage/assertion cells. Do not use the Step 15.4 usage cell as a mechanism for loading definitions, and do not `%run` the whole Step 15.4 notebook because that would execute example/assertion code.
+
+Operational order in a 15.5 work copy: run definition-only cells first; then helper definitions; then, only when the learner chooses, run explicitly marked usage/assertion cells.
+
+Correction count: 1/2. No runtime execution or Step 16 work is implied.
