@@ -2,7 +2,9 @@
 
 目标：把 Step 15 已经完成的 MiniGPT 从 toy token tensors 接到一份真实、可重复获取的小型 character-level language-model corpus。
 
-本 Step 保留现有 roadmap 的 16.1–16.5 结构。Step 16.1、16.2 的材料与核心教学均已通过，各实际修正 **1/2**；16.3 母版及完整回复核心内容已由用户独立核验 PASS，实际修正保持 **0/2**。当前只准备并发布 **16.4 Reproducibility** 初版，实际修正 **0/2**，完成后停在本节，不进入16.5。
+本 Step 保留现有 roadmap 的 16.1–16.5 结构。Step 16.1、16.2 的材料与核心教学均已通过，各实际修正 **1/2**；16.3 已独立核验核心 PASS，实际修正 **0/2**。材料审核方已独立核验16.4的完整回复、母版和本 Step 文档，核心静态 PASS，实际修正仍为 **0/2**；这是材料验收，不是学员学习或运行反馈。当前只准备并发布 **16.5 Toy sampling vs industrial input pipelines** 初版，实际修正 **0/2**。
+
+大 Step 16 的五个小节材料现已准备，16.5仍是当前初版，不写成全部小节均已独立验收。本轮完成后停在大 Step 16，不进入 Step 17。
 
 16.2 的一次实际修正为用户确认的超时后完整回复补齐，已补记，不因从 mlx-chap1 转到 mlx-chap2 而重置。材料状态不代表用户运行或掌握情况。后续仍按请求逐小节推进，至大 Step 20 全部完成后停止。
 
@@ -343,8 +345,141 @@ MLX状态的实际保存/恢复API、模型与optimizer落盘、加载顺序和�
 
 以后使用新work副本时：依赖定义 → 既有缓存路径确认 → 本地bootstrap → 阅读seed/state与API → fresh-run setup → 按需采样 → 保存内存快照 → 恢复该快照后继续。恢复分支不重复fresh-run setup；每次重复sampling cell都会继续消耗对应RNG，顺序属于复现条件。
 
-本轮只准备和发布16.4，停在本节，不进入16.5。没有下载或读取语料，没有执行Notebook、测试、采样、复现实验、训练或用户work副本，没有代答练习。材料完成不等于学员掌握或运行验证。
+16.4 原课节范围止于 reproducibility，工业输入管线留给16.5。材料审核方已独立核验本节完整回复、母版和 Step 16 文档，核心静态 PASS；这不代表学员掌握或运行验证。原材料准备没有下载或读取语料，没有执行Notebook、测试、采样、复现实验、训练或用户work副本，没有代答练习。
 
-累计实际修正：16.1=**1/2**，16.2=**1/2**，16.3=**0/2**（已独立核验核心PASS），16.4初版=**0/2**。后续继续逐小节，至大Step20完成后停止。
+截至16.4的累计实际修正：16.1=**1/2**，16.2=**1/2**，16.3=**0/2**，16.4=**0/2**。已通过课节不返工，计数不因换轮或换对话重置。
 
 参考：[Python 3.12 random：seed、getstate、setstate与复现说明](https://docs.python.org/3.12/library/random.html)、[MLX random.seed](https://ml-explore.github.io/mlx/build/html/python/_autosummary/mlx.core.random.seed.html)、[MLX 0.32.2 random binding source](https://github.com/ml-explore/mlx/blob/v0.32.2/python/src/random.cpp)。
+
+## Step 16.5 — Toy sampling vs industrial input pipelines
+
+母版：[71_step16_5_toy_vs_industrial_input_pipelines.ipynb](../notebooks/71_step16_5_toy_vs_industrial_input_pipelines.ipynb)。本节依照既定 roadmap，将 random windows、shuffling、token packing、distributed shards、deterministic cursor/state 连成一组对照：数据规模增加后，除了得到 `(B,T)`，还需要说明样本顺序、组织方式、分配关系与继续位置。
+
+### Self-contained work copy
+
+本节采用可手算的 **toy inputs（人为构造的小输入）**。新母版自带 `random`、`mlx.core` 导入、16.3原样的四参数 `get_batch` 定义，以及本节所需的小 helper 和输入定义，不读取16.1的语料缓存，不依赖旧Notebook变量，也不 `%run` 旧课。
+
+之后实际使用时，先安全复制为新的 `notebooks/work/*_work.ipynb`，选择项目 Python 3.12 / `.venv` kernel，再按母版顺序执行依赖定义与所需 usage。没有前节kernel状态时，也能从本节定义建立这些示意对象。项目仍使用 MLX 0.32.2，不增加第三方数据加载框架。
+
+本轮只准备这些代码，不执行它们；下面的具体数值是手工构造或推导，不是采样运行输出。
+
+### 1. Random windows: simple sampling does not promise coverage
+
+沿用 `get_batch(data,B,T,rng)`：在一条已选定 split 内，每行从合法起点取T+1个连续token，构造长度T的X/Y。示意输入为ID 0至11，`B=2,T=4`，因此 `N_split-T=8`，起点范围为0至7，输出 `X/Y:(2,4)`。
+
+当前起点采用 **sampling with replacement（有放回采样）**：某个窗口可能重复，另一个可能一直未抽到。行内文本顺序保持不变，但采样次数增加不等于所有候选窗口都恰好出现一次。
+
+**Epoch（一轮遍历）** 要先明确遍历对象和规则。若目标是一份有限候选样本列表各访问一次，需要建立并遍历这份列表；16.3的随机窗口sampler本身没有提供这个保证。即使每个窗口ID只访问一次，重叠窗口仍可包含相同token位置。
+
+### 2. Shuffling: reorder sample IDs, preserve sequence order
+
+**Shuffling（打乱顺序）** 在此作用于文档、样本或窗口ID的顺序，不是把语言模型输入行内部的tokens打散。`rng.shuffle(order)` 在原list上修改顺序并返回 `None`，因此不能把它的返回值当成新的顺序列表。
+
+对有限候选ID列表，保存其一个 **permutation（排列）** 并完整遍历，才能说这些候选ID各被访问一次。若中途停止、丢弃尾部或使用其他抽样规则，覆盖范围也要相应说明。列表顺序改变后，取出的每条序列仍保持原来连续的token顺序与shift关系。
+
+数据规模很大或通过stream读取时，可能使用 **shuffle buffer（打乱缓冲区）**：只暂存有限数量样本，在缓冲区中随机选择并补入新样本。这种局部混排不等于把全部数据放进内存后做一次完整全局排列；buffer内容也可能成为恢复所需状态。
+
+### 3. Token packing: fill rows and make boundary policy explicit
+
+**Token packing（token打包）** 将较短序列组织成模型所需的较长行，以减少未利用位置。Packing仍需要决定文档边界如何影响输入可见性和监督目标，并不只有reshape或补齐shape的问题。
+
+本节只用一个明确的连续流策略作示意：
+
+```text
+toy_docs = [[10,11,12], [20,21], [30,31,32,33]]
+toy EOS = 99
+```
+
+**EOS（End Of Sequence，序列结束标记）** 在每份toy文档末尾追加一次，得到长度12的stream：
+
+```text
+[10,11,12,99,20,21,99,30,31,32,33,99]
+```
+
+99只是本节的synthetic token约定，没有加入Tiny Shakespeare的真实字符词表，也不送入当前MiniGPT。真实模型若采用特殊token，需要相应的词表、ID与embedding配置支持。
+
+令T=4，每行读取T+1=5个token，并将起点推进T。这样前一行的最后target成为下一行的第一个input，连续相邻的next-token配对不会因行边界被漏掉。
+
+| 行 | 读取的T+1 chunk | X | Y |
+|---|---|---|---|
+| 0 | `[10,11,12,99,20]` | `[10,11,12,99]` | `[11,12,99,20]` |
+| 1 | `[20,21,99,30,31]` | `[20,21,99,30]` | `[21,99,30,31]` |
+
+两行形成 `X/Y:(2,4)`。剩余 **carry（保留到后续继续处理的尾部）** 为 `[31,32,33,99]`：包含上一行末target的31，并保留之后三个尚未组成完整行的相邻配对。当前tail不足T+1，所以示例返回carry，等待更多token；不默默padding、绕回开头或丢掉这部分。
+
+本toy策略接受跨文档target，例如99之后预测下一篇首token20；同一packed row中的后文也可在causal规则下看到前文。EOS标记边界，**不会自动屏蔽attention，也不会自动取消跨文档target**。若任务要求文档相互独立，就需要document/segment metadata，并明确可见性和目标规则。本节只说明其职责，不改变当前模型、不实现新的mask或loss，也不进入Step17。Train/validation仍需保持各自数据边界。
+
+### 4. Distributed shards: storage and rank allocation are different layers
+
+先区分几个术语：
+
+| 术语 | 本节含义 |
+|---|---|
+| Storage shard | 数据在存储上的分片，例如不同文件或分块 |
+| Rank | 分布式任务中某个进程的编号 |
+| World size | 参与相应分布式任务的进程总数 |
+| Loader worker | 为某个进程准备输入的工作单元，不自动等于rank |
+| Local batch | 一个rank本次取得的batch |
+
+存储上有多个shards，不自动保证不同rank不会读到重复样本。需要明确样本到rank的分配计划；它与train/validation用途划分也不同。
+
+本节只准备一份纯Python计划，不启动分布式进程。给定手工指定的共享sample-ID顺序：
+
+```text
+order = [7,2,9,4,0,6,1,8,3,5]
+world_size = 2
+local_batch_size = 2
+```
+
+每个逻辑global batch有4个sample IDs；在这4个中按rank分给每个rank连续2个。**Sample ID（样本编号）** 用来查找一条record，与record内部的 **token IDs** 是不同层次。本节另备每个ID对应T+1个toy tokens的records，以展示ID查找如何最终得到X/Y。
+
+| 逻辑batch | Rank 0 | Rank 1 |
+|---|---|---|
+| 0 | `[7,2]` | `[9,4]` |
+| 1 | `[0,6]` | `[1,8]` |
+
+这里明确采用 **drop tail（丢弃不足完整global batch的尾部）**：只使用前8个ID，剩余 `[3,5]` 本轮不消费。这样每rank都有两个完整local batches，但不能再声称本轮完整覆盖全部10个样本。补齐会可能引入重复，保留不等长尾部则要另行处理各rank工作量；规则必须显式选择。
+
+每rank的 `X/Y:(2,T)`，对应的逻辑global shape为 `(4,T)`。这只是样本分配与shape关系，不涉及通信、梯度累积或真实分布式训练。
+
+### 5. Deterministic cursor/state: position depends on a plan
+
+**Cursor（游标）** 必须说明指向哪个顺序、哪个位置。本节的 `next_batch_index` 指向当前rank计划中“下一批”的下标，不是原语料token偏移，也不是训练update step。以上例，值为1时，rank 0下一批sample IDs是 `[0,6]`，rank 1对应 `[1,8]`。
+
+内存plan snapshot保存完整 `tuple(order)`、epoch、rank/world_size、local batch size、T、tail policy、声明的toy data identity label及 `next_batch_index`。在toy records与runtime保持不变时，按同一配置重建计划，再由cursor定位下一批。该label是用于说明前提的元信息，不是内容完整性校验。
+
+当当前epoch的完整order已经固定保存、后续没有额外随机变换时，定位这个epoch内的下一批不需要再次随机抽取。之后若要产生新排列、继续随机变换或进行其他随机操作，仍需要16.4所讲的相应RNG state。World size改变会改变local assignment，不能直接照搬旧local cursor。
+
+真实input pipeline还可能需要：
+
+| 状态 | 所描述的当前位置或条件 |
+|---|---|
+| Shard manifest / order | 有哪些数据分片、按什么次序读取 |
+| Reader positions | 每个读取者读到分片中的哪里 |
+| RNG states | 后续随机动作的当前位置 |
+| Shuffle buffer | 已进入缓冲区但还没有交付的样本 |
+| Packing carry及文档边界信息 | 已读入但尚未组成完整行的tokens及其语义 |
+| Consumed position与prefetch pending | 下游已消费到哪里，还有什么已准备但未交付 |
+| Topology / software metadata | rank/worker分配与版本等解释状态的条件 |
+
+**Prefetch（预取）** 会使读取进度领先于实际消费进度。例如reader读到第12项、下游只消费到第8项，若仅保存reader位置，恢复后从第13项开始就会跳过第9至12项。需要保存未消费队列，或从明确的已消费边界确定性重建相应数据。
+
+本节的内存plan snapshot不声称保存packing流、真实loader、模型/optimizer、待处理训练batch或完整训练状态，也不写磁盘文件。持久化和实际训练恢复仍留给Step20。
+
+### Step 16 material boundary and correction ledger
+
+本轮只准备并发布16.5，至此大Step16的五小节材料均已准备，16.5仍是当前初版，不写成全部独立验收。停止在大Step16，不进入Step17。
+
+累计实际修正保持：16.1=**1/2**、16.2=**1/2**、16.3=**0/2**、16.4=**0/2**、16.5初始生成=**0/2**。每小节最多两次实际修正，跨轮、换对话不重置。后续继续按请求逐小节至大Step20全部完成后停止。
+
+没有读取或下载语料，没有执行Notebook、测试、训练、实验、采样或用户work副本，没有代答练习。材料完成、手算示意与静态审阅均不代表学员掌握或运行验证。
+
+参考：
+
+- [Python 3.12 random.shuffle](https://docs.python.org/3.12/library/random.html#random.shuffle)：原地重排API。
+- [Hugging Face Datasets streaming](https://huggingface.co/docs/datasets/en/stream)：有限shuffle buffer、流式状态与恢复限制。
+- [Hugging Face Datasets distributed说明](https://huggingface.co/docs/datasets/en/use_with_pytorch#distributed)：共享顺序与rank分配的关系。
+- [NVIDIA Megatron-LM GPT dataset](https://github.com/NVIDIA/Megatron-LM/blob/main/megatron/core/datasets/gpt_dataset.py)：attention边界和目标处理分别配置的官方实现依据。
+- [MLX Data Buffers, Streams and Samples](https://ml-explore.github.io/mlx-data/build/html/buffers_streams_samples.html)：数据访问与预取次序。
+
+这些工业文档仅用于理解机制对照，本节不安装或调用其数据框架，也不增加项目依赖。

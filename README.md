@@ -26,17 +26,20 @@ Steps 15.1–15.5  ✅ Material prepared / static audit passed (15.5 correction 
 Step 16.1         ✅ Material prepared / static audit passed (correction 1/2)
 Step 16.2         ✅ Material prepared / static audit passed (correction 1/2)
 Step 16.3         ✅ Material and full-reply core independently passed / corrections 0/2
-Step 16.4         🚧 Current initial material prepared / corrections 0/2
-Step 16.5+           Planned only
+Step 16.4         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
+Step 16.5         🚧 Current initial material prepared / corrections 0/2
+Step 17+            Planned only
 ```
 
-Current course-material checkpoint: **Step 16.4 — Reproducibility**.
+Current course-material checkpoint: **Step 16.5 — Toy sampling vs industrial input pipelines**.
 
-Current master: [70_step16_4_reproducibility.ipynb](notebooks/70_step16_4_reproducibility.ipynb).
+Current master: [71_step16_5_toy_vs_industrial_input_pipelines.ipynb](notebooks/71_step16_5_toy_vs_industrial_input_pipelines.ipynb).
 
-Actual correction counts persist across conversations: Step 16.1 **1/2**, Step 16.2 **1/2**, Step 16.3 **0/2**, Step 16.4 initial version **0/2**. Step 16.2's count includes the learner-confirmed completion of a reply after a timeout. The learner independently confirmed that the Step 16.3 master and full reply pass the core-content review; the passed lesson is not reworked.
+Actual correction counts persist across conversations: Step 16.1 **1/2**, Step 16.2 **1/2**, Step 16.3 **0/2**, Step 16.4 **0/2**, Step 16.5 initial version **0/2**. Step 16.2's count includes the learner-confirmed completion of a reply after a timeout. Step 16.3's accepted status is retained. The material reviewer independently confirmed core static PASS for the Step 16.4 full reply, master, and Step 16 documentation; this is material acceptance, not learner feedback. Passed lessons are not reworked.
 
-Learner completion/mastery, local-cache availability, sampling results, reproducibility experiments, Notebook execution, and runtime validation for Step 16.4 are intentionally **not asserted** here. Material preparation stops at Step 16.4 for this turn, before Step 16.5. Subsequent requests continue one subsection at a time through major Step 20, then stop.
+All five subsections of major Step 16 now have prepared material; Step 16.5 is the current initial version, not a claim that every lesson has independently passed acceptance. This turn stops at the end of major **Step 16** and does not enter Step 17.
+
+Learner completion/mastery, local-cache availability, sampling or experiment results, Notebook execution, and runtime validation are intentionally **not asserted** here. Step 16.5 uses self-contained toy inputs and requires no corpus read. Subsequent requests continue one subsection at a time through major Step 20, then stop.
 
 ## Persistent course documents
 

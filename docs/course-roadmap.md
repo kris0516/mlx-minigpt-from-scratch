@@ -695,9 +695,11 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 
 ---
 
-## Step 16 — Tiny Shakespeare data pipeline 🚧
+## Step 16 — Tiny Shakespeare data pipeline ✅
 
 **Goal:** replace toy tensors with a real small language-model corpus.
+
+All five subsection materials are prepared. Step 16.5 is the current initial version; this heading does not assert independent acceptance of that new lesson, learner completion, or runtime validation. This turn ends at major Step 16, before Step 17.
 
 ### 16.1 Acquire and inspect Tiny Shakespeare ✅
 
@@ -716,13 +718,13 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - shifted targets
 - output shapes
 
-### 16.4 Reproducibility 🚧
+### 16.4 Reproducibility ✅
 
 - random seeds
 - deterministic sampling expectations
 - what must be saved for resume
 
-### 16.5 Toy sampling vs industrial input pipelines
+### 16.5 Toy sampling vs industrial input pipelines 🚧
 
 - random windows
 - shuffling
@@ -1126,20 +1128,21 @@ Steps 15.1–15.5  ✅ Material prepared / static audit passed (15.5 correction 
 Step 16.1         ✅ Material prepared / static audit passed (correction 1/2)
 Step 16.2         ✅ Material prepared / static audit passed (correction 1/2)
 Step 16.3         ✅ Material and full-reply core independently passed / corrections 0/2
-Step 16.4         🚧 Current initial material prepared / corrections 0/2
-Step 16.5+           Planned only
+Step 16.4         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
+Step 16.5         🚧 Current initial material prepared / corrections 0/2
+Step 17+            Planned only
 ```
 
 Current course-material checkpoint:
 
-> **Step 16.4 — Reproducibility**
+> **Step 16.5 — Toy sampling vs industrial input pipelines**
 
-Current master: [70_step16_4_reproducibility.ipynb](../notebooks/70_step16_4_reproducibility.ipynb).
+Current master: [71_step16_5_toy_vs_industrial_input_pipelines.ipynb](../notebooks/71_step16_5_toy_vs_industrial_input_pipelines.ipynb).
 
 Learner-status note:
 
-> Material preparation for Step 16.4 does not assert learner mastery, work-notebook completion, local cache availability, sampled batches, reproducibility experiments, or runtime validation. This turn stops at Step 16.4; do not enter Step 16.5.
+> Material preparation for Step 16.5 does not assert learner mastery, work-notebook completion, sampled batches, experiments, or runtime validation. Its examples use self-contained toy data and require no corpus access. All five Step 16 subsection materials are prepared, with 16.5 still the current initial version. This turn stops at major Step 16; do not enter Step 17.
 
-Actual correction ledger: Step 16.1 **1/2**, Step 16.2 **1/2** (including the learner-confirmed reply completion after a timeout), Step 16.3 **0/2**, Step 16.4 initial version **0/2**. The learner independently confirmed that the Step 16.3 master and full reply pass the core-content review. Preserve the passed lessons and all accumulated counts across turns and conversations.
+Actual correction ledger: Step 16.1 **1/2**, Step 16.2 **1/2** (including the learner-confirmed reply completion after a timeout), Step 16.3 **0/2**, Step 16.4 **0/2**, Step 16.5 initial version **0/2**. Preserve Step 16.3's accepted status. The material reviewer independently confirmed core static PASS for the Step 16.4 full reply, master, and Step 16 documentation; this is material acceptance, not learner learning or execution feedback. Preserve the passed lessons and all accumulated counts across turns and conversations.
 
 Active continuation boundary: subsequent requests proceed one subsection at a time through major **Step 20**, then stop. The existing Step 21–25 roadmap remains a future curriculum plan; this boundary does not authorize automatic or batch preparation of later lessons.

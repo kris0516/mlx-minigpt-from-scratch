@@ -26,22 +26,24 @@ Steps 15.1–15.5  material prepared; static audit passed (15.5 correction 1/2)
 Step 16.1         material prepared; static audit passed (correction 1/2)
 Step 16.2         material prepared; static audit passed (correction 1/2)
 Step 16.3         material and full-reply core independently passed; corrections 0/2
-Step 16.4         current initial material prepared; corrections 0/2
-Step 16.5+        planned only; not current
+Step 16.4         material reviewer independently confirmed core static PASS; corrections 0/2
+Step 16.5         current initial material prepared; corrections 0/2
+Step 17+         planned only; not current
 ```
 
-**Material status is not learner status.** No claim is made that the learner has a local corpus cache, executed the Step 16.4 code, sampled batches, performed reproducibility experiments, completed exercises, or mastered reproducibility. No runtime validation is asserted.
+**Material status is not learner status.** Step 16.4 acceptance came from the material reviewer, not learner learning or execution feedback. No claim is made that the learner has a local corpus cache, executed Step 16.5 code, sampled batches, performed experiments, completed exercises, or mastered input pipelines. No runtime validation is asserted.
 
-This turn prepares and publishes only Step 16.4, then stops before Step 16.5.
+All five major Step 16 subsection materials are prepared; Step 16.5 remains the current initial version, not an independently accepted lesson. This turn prepares and publishes only Step 16.5, then stops at the end of major Step 16, before Step 17.
 
 ### mlx-chap2 continuation ledger
 
 - Step 16.1 material/core teaching passed; actual corrections **1/2**.
 - Step 16.2 material/core teaching passed; actual corrections **1/2**. The learner confirmed one completion of the full reply after a timeout; this previously unrecorded correction is now included.
 - Step 16.3 master and full-reply core independently confirmed PASS by the learner; actual corrections **0/2**. Do not reopen the passed lesson.
-- Step 16.4 initial preparation; actual corrections **0/2**.
+- Step 16.4 full reply, master, and Step 16 documentation independently confirmed core static PASS by the material reviewer; actual corrections **0/2**. This is material acceptance, not learner feedback. Do not reopen the passed lesson.
+- Step 16.5 initial preparation; actual corrections **0/2**.
 - Earlier notebook wording about an initial count is historical; this cumulative ledger does not reset when conversations change.
-- Subsequent requests continue one subsection at a time through major **Step 20**, then stop. Do not prepare Step 16.5 or any later lesson during this turn, and do not infer authorization for automatic batch preparation. Keep the wider Step 21–25 curriculum as a future plan.
+- Subsequent requests continue one subsection at a time through major **Step 20**, then stop. This turn ends at major Step 16; do not prepare Step 17 or any later lesson during this turn, and do not infer authorization for automatic batch preparation. Keep the wider Step 21–25 curriculum as a future plan.
 
 ## Non-negotiable teaching constraints
 
@@ -183,9 +185,9 @@ mlx-minigpt-from-scratch/
 
 Current course-material checkpoint:
 
-> **Step 16.4 — Reproducibility**
+> **Step 16.5 — Toy sampling vs industrial input pipelines**
 
-Step 16.4 initial material is prepared and published only. Do not infer learner mastery, sampled batches, local-cache availability, completed reproducibility experiments, exercise completion, or runtime validation. Stop before Step 16.5 in this turn. Step 14's completed static audit still does not imply runtime tests were executed or passed.
+Step 16.5 initial material is prepared and published only. Major Step 16's five subsection materials are now prepared; this does not make the new 16.5 version independently accepted or imply learner completion. Do not infer learner mastery, sampled batches, completed experiments, exercise completion, or runtime validation. Stop at major Step 16, before Step 17. Step 14's completed static audit still does not imply runtime tests were executed or passed.
 
 ## 2026-10-08 continuity re-audit
 
@@ -659,7 +661,7 @@ The historical scope of the Step 16.3 lesson stops before seed/state restoration
 
 ## Step 16.4 accuracy boundary
 
-Current master: `notebooks/70_step16_4_reproducibility.ipynb`. Initial preparation count: **0/2**. Carry forward Step 16.1=1/2, Step 16.2=1/2, and the independently passed Step 16.3=0/2 without resetting or reworking them.
+Lesson master: `notebooks/70_step16_4_reproducibility.ipynb`. The material reviewer independently confirmed core static PASS for its full reply, master, and Step 16 documentation; actual correction count remains **0/2**. This is not learner learning or execution feedback. Carry forward Step 16.1=1/2, Step 16.2=1/2, and the independently passed Step 16.3=0/2 without resetting or reworking them. Preserve the passed master.
 
 The new work copy is self-contained: include the same Path/random/MLX imports, root/cache/split helpers, and four-argument `get_batch` definition from Step 16.3. Separate definitions, cache-path selection, local bootstrap, RNG setup, sampling usage, and state restoration. The learner can select the existing cache by absolute path; missing cache fails clearly. Do not assume shared kernel state or execute a previous notebook wholesale.
 
@@ -677,4 +679,24 @@ Keep the same data/split/vocabulary and sampler definition during this in-memory
 
 The future resume checklist may name exact data identity (filename and length alone are insufficient), vocabulary/split, sampler and B/T configuration, Python RNG states, progress, software/device/dtype, and future model weights, optimizer state, training step, and MLX RNG state. Explain only their roles here. Leave checkpoint serialization, optimizer internals, compiled state handling, and resume verification to their existing Steps 17/18/20; do not introduce Step 16.5 industrial input pipelines.
 
-Prepare and publish only. Do not read/download corpus, run Notebook cells, tests, sampling, reproducibility experiments, training, or a user work copy; do not answer exercises or imply learner mastery/runtime verification. Stop at Step 16.4, before Step 16.5.
+The historical scope of the Step 16.4 lesson stops before industrial input pipelines; current progression is recorded above. Material preparation/publication does not imply learner mastery or runtime verification.
+
+## Step 16.5 accuracy boundary
+
+Current master: `notebooks/71_step16_5_toy_vs_industrial_input_pipelines.ipynb`. Initial preparation count: **0/2**. Carry forward 16.1=1/2, 16.2=1/2, 16.3=0/2, and the material-reviewer-accepted 16.4=0/2. Do not reset counts or rework passed masters.
+
+Follow the existing five roadmap topics: random windows, shuffling, token packing, distributed shards, and deterministic cursor/state. Use Chinese explanations with English terms introduced before use. The new work copy is self-contained: random/MLX imports, the unchanged four-argument Step 16.3 get_batch definition, small lesson-specific helper definitions, and literal toy inputs. It needs no corpus cache, previous kernel variables, network access, or execution of another notebook. Separate definitions from prepared usage. Do not add third-party data-loading dependencies.
+
+Explain that the existing random-window sampler samples starts with replacement and may repeat or omit windows; it does not establish a full-coverage epoch. A toy stream of IDs 0 through 11 with B=2, T=4 has starts 0 through 7 and preserves X/Y:(2,4). Shuffling should reorder finite sample/window IDs, not tokens inside a language-model sequence. Explain that rng.shuffle(order) mutates the list in place and returns None before using it. Visiting each candidate ID once requires a full traversal of that permutation; overlapping candidate windows may still share tokens. A bounded streaming shuffle buffer is not the same as a global permutation.
+
+Packing uses a clearly separate synthetic convention: toy_docs=[[10,11,12],[20,21],[30,31,32,33]], toy EOS ID 99 appended after every document. EOS=99 is not inserted into Tiny Shakespeare's real vocabulary and is not passed to the course model. The resulting length-12 stream produces T+1 chunks with stride T=4: [10,11,12,99,20] and [20,21,99,30,31]. X/Y shape is (2,4). Carry [31,32,33,99] includes the preceding row's last target as the next row's first input; three adjacent pairs remain pending until further tokens are available. Do not silently pad, wrap, or discard this carry in the example.
+
+This toy packing policy deliberately accepts cross-document next-token targets and causal visibility within a packed row. EOS marks a boundary but does not automatically isolate attention or suppress boundary targets. Independent-document policies need document/segment metadata and explicit attention/target rules; describe their role without changing the current model, implementing new masks/losses, or entering Step 17. Keep train/validation data separation in any packing or shard discussion.
+
+Distinguish storage shards, distributed rank, world size, and loader workers. The distributed example is only a Python allocation plan, with shared hand-specified sample order [7,2,9,4,0,6,1,8,3,5], world_size=2, and local batch size=2. Allocate consecutive groups of two per rank inside each logical global batch of four. Use the first eight IDs and explicitly drop tail [3,5]; rank 0 gets [[7,2],[0,6]], rank 1 gets [[9,4],[1,8]]. Each rank has X/Y:(2,T), with logical global shape (4,T); no distributed process, communication, gradient accumulation, or training is implemented. Sample IDs identify records and are not the token IDs inside them. Do not simultaneously promise complete coverage, no duplication, and equal rank step counts when a non-divisible tail policy prevents that.
+
+Define local plan cursor as next_batch_index, the index of the next batch to deliver from the current rank's plan. An in-memory plan snapshot may preserve tuple(order), epoch, rank/world_size, local B, T, tail policy, a declared toy data identity label, and next_batch_index. Rebuild the same plan against unchanged toy records/runtime to identify the next batch. A label is metadata, not a content-integrity proof. With the complete fixed order saved and no further random transforms, locating the next batch in the current epoch requires no additional RNG draw; later random operations still require the corresponding Step 16.4 RNG state. Changing world size changes local assignment, so an old local cursor cannot be copied blindly.
+
+Do not describe this plan snapshot as saving a live packing stream, prefetch queue, actual distributed loader, model, optimizer, or full training state. Industrial continuation may require shard manifest/order, reader positions, all relevant RNG states, shuffle-buffer contents, packing carry/boundaries, consumed-position accounting, pending prefetched items or a deterministic reconstruction from a committed consumption boundary, and topology/software metadata. Reading through item 12 while only consuming through item 8 means saving only the reader position can skip items 9–12. Keep persistence and actual training resume implementation in Step 20.
+
+Prepare and publish only. Do not read/download corpus, execute Notebook cells, tests, training, experiments, sampling, or a user work copy; do not answer exercises or imply mastery/runtime verification. All five Step 16 subsection materials are prepared, with 16.5 current initial material. Stop at major Step 16, before Step 17. Future requests continue one subsection at a time through major Step 20, then stop.
