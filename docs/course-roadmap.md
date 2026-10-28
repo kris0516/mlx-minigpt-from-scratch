@@ -48,6 +48,7 @@ Step 3 retains its historical seven-subsection structure; later Steps may natura
 ### Material review rule
 
 - each lesson/subsection gets at most **two correction rounds** after its first prepared version;
+- actual correction counts persist across conversations; starting a new session does not reset them;
 - review focuses on substantive correctness, obvious prerequisite gaps, basic usability, and whether the material was actually published to the repository;
 - do not spend extra correction rounds on minor formatting, wording, or stylistic preferences once the material is otherwise usable;
 - a static audit or correction limit describes material quality control only; it never implies learner mastery or exercise completion.
@@ -103,7 +104,7 @@ For the normal post-setup lesson workflow, give the learner the two routine comm
 
 Do not combine them into one shell block. Normally do **not** require the learner to paste terminal output between these two routine commands. Only switch to one-command-at-a-time troubleshooting if a command fails, Git reports a conflict, the work copy already exists in a way that matters, or another abnormal state appears.
 
-Do not add recurring setup commands such as `mkdir -p notebooks/work`; the directory already exists. Do not replace the normal copy command with `cp -n` or another variant unless troubleshooting requires it.
+Do not add recurring setup commands such as `mkdir -p notebooks/work`; the directory already exists. Use the normal copy command unless troubleshooting or the learner's explicit request requires another form. For the current continuation, the learner explicitly requests a new filename and protection against overwriting notes: use a timestamped `*_work.ipynb` name with `cp -n`.
 
 The learner runs and edits only the `_work.ipynb` copy.
 
@@ -704,12 +705,12 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - encoding
 - corpus size
 
-### 16.2 Train/validation split 🚧
+### 16.2 Train/validation split ✅
 
 - why held-out validation exists
 - avoid training on validation tokens
 
-### 16.3 Batch sampler
+### 16.3 Batch sampler 🚧
 
 - `block_size`
 - shifted targets
@@ -1123,14 +1124,19 @@ Steps 13.1–13.5  ✅ Material prepared / static audit passed
 Steps 14.1–14.5  ✅ Material prepared / static audit passed
 Steps 15.1–15.5  ✅ Material prepared / static audit passed (15.5 correction 1/2)
 Step 16.1         ✅ Material prepared / static audit passed (correction 1/2)
-Step 16.2         🚧 Current material prepared / corrections 0/2
-Step 16.3+           Planned only
+Step 16.2         ✅ Material prepared / static audit passed (correction 1/2)
+Step 16.3         🚧 Current initial material prepared / corrections 0/2
+Step 16.4+           Planned only
 ```
 
 Current course-material checkpoint:
 
-> **Step 16.2 — Train/validation split**
+> **Step 16.3 — Batch sampler**
 
 Learner-status note:
 
-> Material preparation for Step 16.2 does not assert learner mastery, work-notebook completion, local cache availability, split execution, inspection results, or runtime validation. Do not enter Step 16.3 unless the learner explicitly asks to proceed beyond Step 16.2.
+> Material preparation for Step 16.3 does not assert learner mastery, work-notebook completion, local cache availability, sampled batches, inspection results, or runtime validation. This turn stops at Step 16.3; do not enter Step 16.4.
+
+Actual correction ledger: Step 16.1 **1/2**, Step 16.2 **1/2** (including the learner-confirmed reply completion after a timeout), Step 16.3 initial version **0/2**. These counts are carried into mlx-chap2 without resetting.
+
+Active continuation boundary: subsequent requests proceed one subsection at a time through major **Step 20**, then stop. The existing Step 21–25 roadmap remains a future curriculum plan; this boundary does not authorize automatic or batch preparation of later lessons.

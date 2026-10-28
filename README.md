@@ -24,13 +24,18 @@ Steps 13.1–13.5  ✅ Material prepared / static audit passed
 Steps 14.1–14.5  ✅ Material prepared / static audit passed
 Steps 15.1–15.5  ✅ Material prepared / static audit passed (15.5 correction 1/2)
 Step 16.1         ✅ Material prepared / static audit passed (correction 1/2)
-Step 16.2         🚧 Current material prepared / corrections 0/2
-Step 16.3+           Planned only
+Step 16.2         ✅ Material prepared / static audit passed (correction 1/2)
+Step 16.3         🚧 Current initial material prepared / corrections 0/2
+Step 16.4+           Planned only
 ```
 
-Current course-material checkpoint: **Step 16.2 — Train/validation split**.
+Current course-material checkpoint: **Step 16.3 — Batch sampler**.
 
-Learner completion/mastery, local-cache availability, split execution, and runtime validation for Step 16.2 are intentionally **not asserted** here.
+Current master: [69_step16_3_batch_sampler.ipynb](notebooks/69_step16_3_batch_sampler.ipynb).
+
+Actual correction counts persist across conversations: Step 16.1 **1/2**, Step 16.2 **1/2**, Step 16.3 initial version **0/2**. Step 16.2's count includes the learner-confirmed completion of a reply after a timeout.
+
+Learner completion/mastery, local-cache availability, batch creation, Notebook execution, and runtime validation for Step 16.3 are intentionally **not asserted** here. Material preparation stops at Step 16.3 for this turn.
 
 ## Persistent course documents
 

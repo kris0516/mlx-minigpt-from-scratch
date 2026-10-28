@@ -2,7 +2,9 @@
 
 目标：把 Step 15 已经完成的 MiniGPT 从 toy token tensors 接到一份真实、可重复获取的小型 character-level language-model corpus。
 
-本 Step 保留现有 roadmap 的 16.1–16.5 结构。Step 16.1 材料已通过静态审核（实际修正 1/2）；当前只准备 **16.2 Train/validation split**，不进入 16.3。
+本 Step 保留现有 roadmap 的 16.1–16.5 结构。Step 16.1、16.2 的材料与核心教学均已通过，各实际修正 **1/2**；当前只准备并发布 **16.3 Batch sampler** 初版，实际修正 **0/2**，完成后停在本节，不进入16.4。
+
+16.2 的一次实际修正为用户确认的超时后完整回复补齐，本次补记，不因从 mlx-chap1 转到 mlx-chap2 而重置。材料状态不代表用户运行或掌握情况。
 
 ## Step 16.1 — Acquire and inspect Tiny Shakespeare
 
@@ -157,8 +159,86 @@ val_tokens:(N_val,)
 
 ### Scope boundary
 
-Step 16.2 只覆盖 held-out validation 的目的、train/validation 数据隔离与 contiguous split。修正计数从 0/2 起。
+Step 16.2 只覆盖 held-out validation 的目的、train/validation 数据隔离与 contiguous split。材料与核心教学已通过，实际修正计数为 **1/2**（包含超时后的完整回复补齐）；不重置，也不返工已通过内容。
 
 不进入 Step 16.3：不定义 `block_size`、batch sampler、随机 start index、shifted `(x,y)` windows、loss、optimizer 或 training loop。
 
 本轮材料准备不读取本地语料、不执行 split、不运行 Notebook、assertion、测试或训练。
+
+## Step 16.3 — Batch sampler
+
+母版：[69_step16_3_batch_sampler.ipynb](../notebooks/69_step16_3_batch_sampler.ipynb)。本节沿用6.5的采样接口，把16.2的真实 train/validation streams 接到模型需要的 `(B,T)` 输入与标签形状。
+
+### New work copy and dependency definitions
+
+本节母版包含 `Path`、`random`、`mlx.core` 导入，以及 `find_project_root`、`load_cached_character_corpus`、`split_train_validation` 的 definition-only cell。后两者复用16.2的字符词表、`mx.int32` stream 与连续90/10切分，不需要共享旧kernel，也不通过 `%run` 执行旧Notebook。
+
+路径 usage 从 kernel CWD 向上定位本仓库，默认选仓库根目录的 `data/tinyshakespeare/input.txt`，显示绝对路径。若16.1的既有缓存位于其他目录，在本节把 `CACHE_PATH` 改为该文件的绝对路径，再运行bootstrap。缺缓存时只明确报错；16.3不下载、不复制或移动语料。
+
+Bootstrap usage 才实际读取本地缓存并恢复 `itos`、`token_stream`、`train_tokens`、`val_tokens`、`split_index`。这些使用代码仅为未来work副本准备，本轮不执行。
+
+### Batch size, block_size, and the extra target token
+
+`batch_size=B` 指batch行数；本节固定长度sampler中 `block_size=T` 指每行输入长度。它与Transformer Block数量无关。以后送入MiniGPT时需要 `T<=max_seq_len`。
+
+每行需读取连续T+1个token，因为最后一个输入位置也需要真实的next-token target：
+
+```python
+chunk = data[s : s + T + 1]
+x = chunk[:-1]  # first T tokens
+y = chunk[1:]   # last T tokens
+```
+
+即 `X[b,t]=data[s_b+t]`、`Y[b,t]=data[s_b+t+1]`，t=0…T−1。Shift不把序列开头接回末尾。
+
+手算例：data=`[0,1,2,3,4,5,6,7]`，T=3，手工起点为1和4：
+
+| 行 | X | Y |
+|---|---|---|
+| 0 | `[1,2,3]` | `[2,3,4]` |
+| 1 | `[4,5,6]` | `[5,6,7]` |
+
+这些是用于解释的指定数值，不是执行得到的随机输出。
+
+### Legal start indices and the split boundary
+
+最后一个target下标为s+T。要求 `s+T<N_split`，所以合法起点为 `0…N_split−T−1`，共N_split−T个。`rng.randrange(0,N_split-block_size)` 的右端不包含在内，恰好对应这个范围。
+
+N_split=T+1时只有起点0；N_split<=T时必须报错。先选split再调用，整个T+1 chunk都在该split内：
+
+```python
+get_batch(train_tokens, batch_size, block_size, rng)
+get_batch(val_tokens, batch_size, block_size, rng)
+```
+
+只依据完整stream上的起点归类不够，窗口最后的target也必须受边界限制。返回的starts是split-local indices；validation的原始下标为split_index+start。Batch行可以重叠或重复，每行内部仍按连续文本顺序排列。
+
+### Sampler and output contract
+
+接口保持 `get_batch(data, batch_size, block_size, rng)`。输入为单个已选split的一维整数stream；实现检查一维、正整数B/T和T+1最小长度。
+
+对B个起点分别切片，将每行`(T,)`放入xs/ys，再用 `mx.stack(...,axis=0)` 增加Batch轴：
+
+| 返回对象 | 类型/shape |
+|---|---|
+| X | MLX整数array，`(B,T)` |
+| Y | MLX整数array，`(B,T)` |
+| starts | Python `list[int]`，长度B |
+
+Bootstrap的stream为`mx.int32`，切片与stack保持此dtype。Y仍是正确类别ID，不是one-hot或embedding。未来模型logits的`(B,T,V)`中，每个`logits[b,t,:]`与一个`Y[b,t]`配对；本节不实现loss或forward。
+
+Sampler定义监督配对，causal mask定义每个位置允许使用的输入前缀。X/Y重叠并不允许模型看未来；沿用Step12的因果约束。
+
+### Prepared usage and operational order
+
+准备B=2、T=8的小例子，使用未显式指定seed的`random.Random()`提供起点。分别创建train/val的X/Y，准备打印shape、dtype、局部起点及各一行decoded文本。所有具体随机起点和字符串都由未来实际采样决定，材料不伪造运行输出。
+
+之后真正使用work副本时，顺序为：依赖定义 → 路径确认 → 本地bootstrap/split → sampler定义 → 小batch usage → 按需观察一行文本。命令工作流保留两个独立终端块，先`git pull`，再以新文件名和`cp -n`安全复制本节母版，避免覆盖笔记。
+
+### Scope and correction ledger
+
+本节初始生成与发布计 **0/2**；16.1、16.2累计实际修正均保留 **1/2**。每小节最多两次实际修正，新对话不重置。
+
+本轮只准备并发布16.3，结束后停在本节。16.4的seed、determinism与RNG-state resume，16.5的工业数据管线，以及loss/optimizer/training均不在本节范围内。不下载或读取语料，不执行Notebook、assertion、测试、训练、实验或用户work副本，也不代答练习。
+
+API参考：[Python 3.12 randrange](https://docs.python.org/3.12/library/random.html#random.randrange)、[MLX stack](https://ml-explore.github.io/mlx/build/html/python/_autosummary/mlx.core.stack.html)。项目继续固定`mlx==0.32.2`。

@@ -24,13 +24,22 @@ Steps 13.1–13.5  material prepared; static audit passed
 Steps 14.1–14.5  material prepared; static audit passed
 Steps 15.1–15.5  material prepared; static audit passed (15.5 correction 1/2)
 Step 16.1         material prepared; static audit passed (correction 1/2)
-Step 16.2         current material prepared; corrections 0/2
-Step 16.3+        planned only; not current
+Step 16.2         material prepared; static audit passed (correction 1/2)
+Step 16.3         current initial material prepared; corrections 0/2
+Step 16.4+        planned only; not current
 ```
 
-**Material status is not learner status.** No claim is made that the learner has executed the Step 16.2 split, has a local corpus cache, completed exercises, or mastered held-out validation. No runtime validation is asserted.
+**Material status is not learner status.** No claim is made that the learner has a local corpus cache, executed the Step 16.3 sampler, created batches, completed exercises, or mastered batch sampling. No runtime validation is asserted.
 
-Do not enter Step 16.3 until the learner explicitly asks to proceed beyond Step 16.2.
+This turn prepares and publishes only Step 16.3, then stops before Step 16.4.
+
+### mlx-chap2 continuation ledger
+
+- Step 16.1 material/core teaching passed; actual corrections **1/2**.
+- Step 16.2 material/core teaching passed; actual corrections **1/2**. The learner confirmed one completion of the full reply after a timeout; this previously unrecorded correction is now included.
+- Step 16.3 initial preparation; actual corrections **0/2**.
+- Earlier notebook wording about an initial count is historical; this cumulative ledger does not reset when conversations change.
+- Subsequent requests continue one subsection at a time through major **Step 20**, then stop. Do not prepare Step 16.4 or any later lesson during this turn, and do not infer authorization for automatic batch preparation. Keep the wider Step 21–25 curriculum as a future plan.
 
 ## Non-negotiable teaching constraints
 
@@ -54,6 +63,7 @@ From Step 4 onward:
 Review/audit policy:
 
 - each lesson/subsection receives at most **two correction rounds** after its initial prepared version;
+- actual correction counts persist across conversations and must not reset in a new session;
 - corrections focus on major content correctness, obvious prerequisite discontinuities, basic material usability, and actual repository publication;
 - do not keep revising small formatting, wording, or style issues once the lesson is materially usable;
 - static audit status never implies learner mastery or exercise completion.
@@ -99,7 +109,7 @@ Normal post-setup lesson workflow:
 4. Under normal conditions, do not stop and wait for terminal output between these two routine commands.
 5. If Git/copying reports an error, conflict, unexpected existing work copy, or other abnormal state, then switch to one-command-at-a-time troubleshooting and wait for output after each diagnostic/fix command.
 6. Do not invent recurring setup commands such as `mkdir -p notebooks/work`; the work directory already exists.
-7. Use the normal plain `cp` command unless troubleshooting specifically requires another form.
+7. Use the normal plain `cp` command unless troubleshooting or an explicit learner request requires another form. For mlx-chap2 the learner requests a new filename and no overwriting of notes: use a timestamped `*_work.ipynb` destination with `cp -n`. Keep `git pull` and copying in two separate terminal blocks.
 
 Then the learner works only in the `_work.ipynb` copy.
 
@@ -171,9 +181,9 @@ mlx-minigpt-from-scratch/
 
 Current course-material checkpoint:
 
-> **Step 16.2 — Train/validation split**
+> **Step 16.3 — Batch sampler**
 
-Step 16.2 material is prepared only. Do not infer learner mastery, split execution, local-cache availability, exercise completion, or runtime validation, and do not create or teach Step 16.3 unless the learner explicitly asks to proceed. Step 14's completed static audit still does not imply runtime tests were executed or passed.
+Step 16.3 initial material is prepared and published only. Do not infer learner mastery, sampled batches, local-cache availability, exercise completion, or runtime validation. Stop before Step 16.4 in this turn. Step 14's completed static audit still does not imply runtime tests were executed or passed.
 
 ## 2026-10-08 continuity re-audit
 
@@ -603,7 +613,7 @@ The standard file is commonly reported by Karpathy's nanoGPT preparation script 
 
 Clarify that corpus length N and model context T/T_max are different. Stop before Step 16.2: no held-out split, no batch sampler/block_size, no shifted batch construction, no loss/optimizer/training.
 
-Correction count starts at 0/2. Do not actually download the corpus or execute any Notebook cell during material preparation.
+Step 16.1 material/core teaching passed; actual correction count is **1/2**, carried forward without resetting. Do not actually download the corpus or execute any Notebook cell during material preparation.
 
 ## Step 16.2 accuracy boundary
 
@@ -623,4 +633,24 @@ Keep the Step 16.1 fixed character vocabulary. This lesson's held-out separation
 
 Stop before Step 16.3. No block_size, batch sampler, random start indices, shifted `(x,y)` windows, loss, optimizer, or training loop.
 
-Correction count starts at 0/2. Do not execute corpus reads, split code, assertions, Notebook cells, tests, or training during material preparation.
+Step 16.2 material/core teaching passed; actual correction count is **1/2**, including the learner-confirmed reply completion after a timeout. Do not reopen the passed lesson or reset the count. Do not execute corpus reads, split code, assertions, Notebook cells, tests, or training during material preparation.
+
+## Step 16.3 accuracy boundary
+
+Current master: `notebooks/69_step16_3_batch_sampler.ipynb`. Initial preparation count: **0/2**. This does not change the accumulated 1/2 counts for Steps 16.1 and 16.2.
+
+The new work copy must operate in its own kernel. Include the imports and definition-only helpers needed to find the course root, read the existing local cache, rebuild the same character vocabulary/MLX int32 stream, and reuse the contiguous 90/10 split from Step 16.2. Keep path selection, cache reading/splitting, and sampling usage separate from definitions. Never `%run` a whole previous notebook or assume its variables exist.
+
+Default to the repository-root `data/tinyshakespeare/input.txt`, but explicitly show the kernel CWD and selected absolute cache path. If Step 16.1 created its cache elsewhere, the learner points `CACHE_PATH` at that existing file. Missing cache produces a clear error directing the learner to Step 16.1 or the correct path; no download or file relocation occurs in 16.3.
+
+Use the existing Step 6.5 interface `get_batch(data, batch_size, block_size, rng)` on one already-selected split. Explain B as batch size and T=block_size as this sampler's fixed input length. A supervised row requires T+1 consecutive tokens: X uses the first T, Y the last T. Distinguish block_size from the number of Transformer Blocks; future model use requires T<=max_seq_len.
+
+Derive legal starts from the last target: `s+T<N_split`, hence `0<=s<N_split-T`. Use `rng.randrange(0, N_split-block_size)` with its exclusive upper bound. N_split=T+1 has exactly start 0; N_split<=T must fail clearly. Validate one-dimensional input and positive integer batch_size/block_size.
+
+For row b and position t, preserve `X[b,t]=data[starts[b]+t]` and `Y[b,t]=data[starts[b]+t+1]`. Explain slicing and `mx.stack(..., axis=0)` before use. Output X/Y have shape `(B,T)` and preserve the input's integer dtype; starts is a Python list of length B, not a third tensor. Targets remain categorical IDs rather than one-hot vectors or embeddings.
+
+Call the sampler separately with train_tokens and val_tokens, so the entire T+1 chunk including its last target stays inside its split. Starts are split-local; a validation start maps to original index split_index+start. Batch rows may overlap or repeat, while token order within each row is preserved. Shifted targets define supervision; the already-taught causal mask governs input visibility.
+
+Prepare only a small B=2, T=8 usage and optional inspection of one decoded row per split. Use `random.Random()` without an explicit seed only to supply random starts. Do not conduct reproducibility experiments or teach seed/state restoration before 16.4. Do not run a MiniGPT forward, loss, optimizer, tests, training, or the user's work copy.
+
+Stop at Step 16.3. Step 16.4 and later remain planned. Material preparation/publication is not evidence of runtime validation or learner mastery.
