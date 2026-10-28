@@ -778,12 +778,12 @@ All five subsection masters, documents, and full replies have independently pass
 
 **Goal:** understand what makes MLX distinctive on Apple Silicon.
 
-### 18.1 Lazy evaluation 🚧
+### 18.1 Lazy evaluation ✅
 
 - operations build a graph
 - Python line execution does not necessarily mean immediate GPU execution
 
-### 18.2 `mx.eval` as an execution/materialization boundary
+### 18.2 `mx.eval` as an execution/materialization boundary 🚧
 
 - force required arrays to materialize
 - iterative graph growth if state is never evaluated
@@ -1135,20 +1135,21 @@ Step 17.2         ✅ Material reviewer independently confirmed core static PASS
 Step 17.3         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
 Step 17.4         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
 Step 17.5         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
-Step 18.1         🚧 Current initial material prepared / corrections 0/2
-Step 18.2+          Planned only
+Step 18.1         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
+Step 18.2         🚧 Current initial material prepared / corrections 0/2
+Step 18.3+          Planned only
 ```
 
 Current course-material checkpoint:
 
-> **Step 18.1 — Lazy evaluation**
+> **Step 18.2 — `mx.eval` as an execution/materialization boundary**
 
-Current master: [77_step18_1_lazy_evaluation.ipynb](../notebooks/77_step18_1_lazy_evaluation.ipynb). Current Step document: [Step 18 — MLX execution model](step-18-mlx-execution-model.md).
+Current master: [78_step18_2_eval_boundary.ipynb](../notebooks/78_step18_2_eval_boundary.ipynb). Current Step document: [Step 18 — MLX execution model](step-18-mlx-execution-model.md).
 
 Learner-status note:
 
-> All major Step 16 and Step 17 materials have independently passed the material reviewer's core static review. The latest acceptance includes Step 17.5's actual five-file commit `3fdec00b251765bda581c2b183e68d039c83c902`, fixed MLX v0.32.2 interfaces, and full teaching reply, with actual corrections **0/2**. This is material acceptance, not learner learning or execution feedback. Step 18.1 uses self-contained, explicitly supplied float32 arrays to explain how array operations record calculation dependencies and why a completed Python statement does not guarantee that the corresponding GPU numerical work has completed. It connects known shapes and dtypes, Python name binding, and ordinary function returns to the minimal evaluation semantics already introduced in 17.5. All lesson code remains unexecuted, and no corpus, old kernel, sampler, model, optimizer, or new dependency is needed. This turn stops at Step 18.1, before 18.2. Earlier independent acceptance does not imply acceptance of 18.1, learner completion, mastery, experiments, or runtime validation. Graph growth, compilation, and performance experiments remain outside the current subsection.
+> All major Step 16 and Step 17 materials, and Step 18.1, have independently passed the material reviewer's core static review. The latest acceptance includes Step 18.1's actual six-file commit `4dd066c839d8e5d371b6ba1fb9d039d50fd39efa`, fixed MLX v0.32.2 interfaces, and full teaching reply, with actual corrections **0/2**. This is material acceptance, not learner learning or execution feedback. Step 18.2 uses self-contained, explicitly supplied float32 arrays to explain how `mx.eval` requires selected arrays and their dependencies to complete, how unevaluated iterative state retains an extending dependency chain, and why this matters for memory. It restores the small two-branch example from 18.1, then uses two ordinary three-iteration state examples to contrast an end-of-loop boundary with a boundary after each update. The examples are unexecuted reading material, not performance experiments. All imports and input constants are supplied; no old kernel, corpus, sampler, model, optimizer, or new dependency is needed. This turn stops at Step 18.2, before 18.3. Earlier independent acceptance does not imply acceptance of 18.2, learner completion, mastery, experiments, or runtime validation. Compilation and performance experiments remain outside the current subsection.
 
-Actual correction ledger: Step 16.1 **1/2**, Step 16.2 **1/2**, Step 16.3 **0/2**, Step 16.4 **0/2**, Step 16.5 **0/2**, Step 17.1 **0/2**, Step 17.2 **0/2**, Step 17.3 **0/2**, Step 17.4 **0/2**, Step 17.5 **0/2**, Step 18.1 initial version **0/2**. Step 16.2 includes the previously recorded reply completion after a timeout. Preserve the passed lessons and all accumulated counts across turns and conversations.
+Actual correction ledger: Step 16.1 **1/2**, Step 16.2 **1/2**, Step 16.3 **0/2**, Step 16.4 **0/2**, Step 16.5 **0/2**, Step 17.1 **0/2**, Step 17.2 **0/2**, Step 17.3 **0/2**, Step 17.4 **0/2**, Step 17.5 **0/2**, Step 18.1 **0/2**, Step 18.2 initial version **0/2**. Step 16.2 includes the previously recorded reply completion after a timeout. Preserve the passed lessons and all accumulated counts across turns and conversations.
 
 Active continuation boundary: subsequent requests proceed one subsection at a time through major **Step 20**, then stop. The existing Step 21–25 roadmap remains a future curriculum plan; this boundary does not authorize automatic or batch preparation of later lessons.

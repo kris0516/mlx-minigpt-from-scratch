@@ -33,19 +33,20 @@ Step 17.2         ✅ Material reviewer independently confirmed core static PASS
 Step 17.3         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
 Step 17.4         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
 Step 17.5         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
-Step 18.1         🚧 Current initial material prepared / corrections 0/2
-Step 18.2+          Planned only
+Step 18.1         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
+Step 18.2         🚧 Current initial material prepared / corrections 0/2
+Step 18.3+          Planned only
 ```
 
-Current course-material checkpoint: **Step 18.1 — Lazy evaluation**.
+Current course-material checkpoint: **Step 18.2 — `mx.eval` as an execution/materialization boundary**.
 
-Current master: [77_step18_1_lazy_evaluation.ipynb](notebooks/77_step18_1_lazy_evaluation.ipynb).
+Current master: [78_step18_2_eval_boundary.ipynb](notebooks/78_step18_2_eval_boundary.ipynb).
 
-Actual correction counts persist across conversations: Step 16.1 **1/2**, Step 16.2 **1/2**, Step 16.3 **0/2**, Step 16.4 **0/2**, Step 16.5 **0/2**, Step 17.1 **0/2**, Step 17.2 **0/2**, Step 17.3 **0/2**, Step 17.4 **0/2**, Step 17.5 **0/2**, Step 18.1 initial version **0/2**. Step 16.2's count includes the learner-confirmed completion of a reply after a timeout. Passed lessons are not reworked and counts do not reset.
+Actual correction counts persist across conversations: Step 16.1 **1/2**, Step 16.2 **1/2**, Step 16.3 **0/2**, Step 16.4 **0/2**, Step 16.5 **0/2**, Step 17.1 **0/2**, Step 17.2 **0/2**, Step 17.3 **0/2**, Step 17.4 **0/2**, Step 17.5 **0/2**, Step 18.1 **0/2**, Step 18.2 initial version **0/2**. Step 16.2's count includes the learner-confirmed completion of a reply after a timeout. Passed lessons are not reworked and counts do not reset.
 
-All major Step 16 and Step 17 materials have independently passed the material reviewer's core static review. The latest acceptance includes Step 17.5's actual five-file commit `3fdec00b251765bda581c2b183e68d039c83c902`, fixed MLX v0.32.2 interfaces, and full teaching reply, with actual corrections **0/2**. This is material acceptance, not learner learning or execution feedback. This turn prepares only **Step 18.1**, then stops before 18.2. The earlier acceptance does not automatically extend to 18.1.
+All major Step 16 and Step 17 materials, and Step 18.1, have independently passed the material reviewer's core static review. The latest acceptance includes Step 18.1's actual six-file commit `4dd066c839d8e5d371b6ba1fb9d039d50fd39efa`, fixed MLX v0.32.2 interfaces, and full teaching reply, with actual corrections **0/2**. This is material acceptance, not learner learning or execution feedback. This turn prepares only **Step 18.2**, then stops before 18.3. The earlier acceptance does not automatically extend to 18.2.
 
-Learner completion/mastery, local-cache availability, experiment results, Notebook execution, and runtime validation are intentionally **not asserted** here. Step 18.1 uses self-contained, explicitly supplied float32 arrays to explain how array operations record calculation dependencies and why a completed Python statement does not guarantee that the corresponding GPU numerical work has completed. It connects known shapes and dtypes, Python name binding, and ordinary function returns to the minimal evaluation semantics already introduced in 17.5. All lesson code remains unexecuted, and no corpus, old kernel, sampler, model, optimizer, or new dependency is needed. Graph-growth explanations, compilation, and performance experiments are outside this subsection. Subsequent requests continue one subsection at a time through major Step 20, then stop.
+Learner completion/mastery, local-cache availability, experiment results, Notebook execution, and runtime validation are intentionally **not asserted** here. Step 18.2 uses self-contained, explicitly supplied float32 arrays to explain how `mx.eval` requires selected arrays and their dependencies to complete, how unevaluated iterative state retains an extending dependency chain, and why this matters for memory. It restores the small two-branch example from 18.1, then uses two ordinary three-iteration state examples to contrast an end-of-loop boundary with a boundary after each update. The examples are unexecuted reading material, not performance experiments. All imports and input constants are supplied; no old kernel, corpus, sampler, model, optimizer, or new dependency is needed. Compilation and performance experiments are outside this subsection. Subsequent requests continue one subsection at a time through major Step 20, then stop.
 
 ## Persistent course documents
 

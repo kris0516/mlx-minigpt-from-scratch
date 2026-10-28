@@ -1,8 +1,8 @@
 # Step 17 — Language-Model Loss
 
-本 Step 沿用现有 roadmap，17.1至17.5的全部材料已获材料审核方独立核心静态 PASS。最新验收包括17.5的实际五文件提交 `3fdec00b251765bda581c2b183e68d039c83c902`、固定MLX v0.32.2接口和完整教学回复，实际修正 **0/2**。末节母版为 [76_step17_5_uncompiled_training_step.ipynb](../notebooks/76_step17_5_uncompiled_training_step.ipynb)。本文件保留已通过的教学与各节当时边界，不返工大Step17；当前只准备[18.1 Lazy evaluation](step-18-mlx-execution-model.md)，完成即停在18.1，不进入18.2。
+本 Step 沿用现有 roadmap，17.1至17.5的全部材料已获材料审核方独立核心静态 PASS。最新验收包括17.5的实际五文件提交 `3fdec00b251765bda581c2b183e68d039c83c902`、固定MLX v0.32.2接口和完整教学回复，实际修正 **0/2**。末节母版为 [76_step17_5_uncompiled_training_step.ipynb](../notebooks/76_step17_5_uncompiled_training_step.ipynb)。本文件保留已通过的教学与各节当时边界，不返工大Step17；后续材料进度与当前停止点由[Step18文档](step-18-mlx-execution-model.md)、[roadmap](course-roadmap.md)和[handoff](teaching-handoff.md)维护。
 
-这是材料验收，不是学员学习或运行反馈，不表示学员完成、掌握、运行通过或完成练习。大Step16已通过的材料与计数同样保留。累计实际修正为16.1=**1/2**、16.2=**1/2**（包括已记录的超时后完整回复补齐）、16.3至16.5及17.1至17.5各**0/2**，当前18.1初始生成=**0/2**。计数跨轮、跨对话不重置，后续只按请求逐小节至大Step20全部完成后停止。
+这是材料验收，不是学员学习或运行反馈，不表示学员完成、掌握、运行通过或完成练习。大Step16已通过的材料与计数同样保留。本文件记录的截至大Step17累计实际修正为16.1=**1/2**、16.2=**1/2**（包括已记录的超时后完整回复补齐）、16.3至16.5及17.1至17.5各**0/2**；后续课节的验收及累计计数继续在[handoff](teaching-handoff.md)登记。计数跨轮、跨对话不重置，后续只按请求逐小节至大Step20全部完成后停止。
 
 ## Step 17.1 — Logits, probabilities, and cross-entropy
 
