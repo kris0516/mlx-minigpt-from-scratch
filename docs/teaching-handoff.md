@@ -22,17 +22,14 @@ Steps 11.1–11.5  material prepared; static audit passed
 Steps 12.1–12.5  material prepared; static audit passed
 Steps 13.1–13.5  material prepared; static audit passed
 Steps 14.1–14.5  material prepared; static audit passed
-Step 15.1         material prepared; static audit passed
-Step 15.2         material prepared; static audit passed
-Step 15.3         material prepared; static audit passed
-Step 15.4         material prepared; static audit passed
-Step 15.5         current material prepared
-Step 16           planned only; not current
+Steps 15.1–15.5  material prepared; static audit passed (15.5 correction 1/2)
+Step 16.1         current material prepared; corrections 0/2
+Step 16.2+        planned only; not current
 ```
 
-**Material status is not learner status.** No claim is made that the learner has completed the Step 15.5 work notebook, exercises, or mastered the full MiniGPT trace. No runtime validation is asserted.
+**Material status is not learner status.** No claim is made that the learner has downloaded Tiny Shakespeare, executed Step 16.1, completed exercises, or mastered the data pipeline. No runtime validation is asserted.
 
-Do not enter Step 16 until the learner explicitly asks to proceed beyond Step 15.5.
+Do not enter Step 16.2 until the learner explicitly asks to proceed beyond Step 16.1.
 
 ## Non-negotiable teaching constraints
 
@@ -173,9 +170,9 @@ mlx-minigpt-from-scratch/
 
 Current course-material checkpoint:
 
-> **Step 15.5 — Full forward shape trace**
+> **Step 16.1 — Acquire and inspect Tiny Shakespeare**
 
-Step 15.5 material is prepared only. Do not infer learner mastery, exercise completion, or runtime validation, and do not create or teach Step 16 unless the learner explicitly asks to proceed. Step 14's completed static audit still does not imply runtime tests were executed or passed.
+Step 16.1 material is prepared only. Do not infer learner mastery, corpus download success, inspection results, exercise completion, or runtime validation, and do not create or teach Step 16.2 unless the learner explicitly asks to proceed. Step 14's completed static audit still does not imply runtime tests were executed or passed.
 
 ## 2026-10-08 continuity re-audit
 
@@ -588,3 +585,21 @@ Keep definition cells separate from usage/assertion cells. Do not use the Step 1
 Operational order in a 15.5 work copy: run definition-only cells first; then helper definitions; then, only when the learner chooses, run explicitly marked usage/assertion cells.
 
 Correction count: 1/2. No runtime execution or Step 16 work is implied.
+
+## Step 16.1 accuracy boundary
+
+Use the Karpathy `char-rnn/data/tinyshakespeare/input.txt` source and cache it locally at `data/tinyshakespeare/input.txt`. The repository already ignores `/data/`; do not commit the corpus.
+
+Acquisition must be cache-first and use only Python standard-library functionality already available (`pathlib`, `urllib.request`) so the lesson does not add a new requests dependency. Keep acquisition helper definition separate from the usage cell that can actually access the network.
+
+Read cached text explicitly as UTF-8. Teach character count and UTF-8 byte count as distinct quantities.
+
+Reuse the Step 6.1 character tokenizer: `sorted(set(text))`, `stoi`, `itos`, `encode`, `decode`. Do not introduce BPE, SentencePiece, GPT-2 tokenizer, `<UNK>`, or other tokenizer systems here.
+
+For this character tokenizer, one corpus character becomes one token, so encoded length N equals `len(text)`. Convert the full encoded corpus to a 1-D MLX integer array `(N,)`, but do not create train/validation splits or batches.
+
+The standard file is commonly reported by Karpathy's nanoGPT preparation script as 1,115,394 characters with vocabulary size 65; present this only as a reference expectation, not as a hard assertion. Actual local inspection remains authoritative.
+
+Clarify that corpus length N and model context T/T_max are different. Stop before Step 16.2: no held-out split, no batch sampler/block_size, no shifted batch construction, no loss/optimizer/training.
+
+Correction count starts at 0/2. Do not actually download the corpus or execute any Notebook cell during material preparation.
