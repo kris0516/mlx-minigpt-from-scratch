@@ -2,7 +2,7 @@
 
 目标：解释 2017 Transformer 的 encoder–decoder architecture，以及 GPT 后续究竟保留、删除和重组了什么。
 
-本 Step 保留现有 roadmap 的 15.1–15.5 结构。Step 15.1 材料已通过静态审核；当前只准备 **15.2 Why autoregressive GPT can be decoder-only**，不进入 15.3。
+本 Step 保留现有 roadmap 的 15.1–15.5 结构。Step 15.1、15.2 材料已通过静态审核；当前只准备 **15.3 MiniGPT top-level architecture**，不进入 15.4。
 
 ## Step 15.1 — Original Transformer architecture
 
@@ -103,3 +103,50 @@ Conditional context 可以被序列化为同一 stream 的 prefix，例如 `[ins
 本节只解释 decoder-only 的 sufficiency argument。不列出 MiniGPT 顶层模块，不实现 token/position embeddings、Block stacking、final norm 或 LM head。
 
 Step 15.2 材料准备到此停止，不进入 Step 15.3。
+
+## Step 15.3 — MiniGPT top-level architecture
+
+### Top-level shape chain
+
+MiniGPT 的顶层数据流：
+
+```text
+token IDs (B,T)
+-> token embedding (B,T,C)
++ learned position embedding (T,C)
+-> initial hidden (B,T,C)
+-> Block × N
+-> final norm (B,T,C)
+-> LM head C->V
+-> logits (B,T,V)
+```
+
+### Token embedding
+
+Token embedding table 为 `(V,C)`，将 categorical token IDs `(B,T)` lookup 成 continuous representations `(B,T,C)`。MLX 0.32.2 API：`nn.Embedding(num_embeddings=V,dims=C)`。
+
+### Position embedding
+
+本项目 MiniGPT 使用 learned absolute position table `(T_max,C)`。当前位置 IDs `0...T-1` lookup 为 `(T,C)`，broadcast 加到 token embeddings 上，因此要求 `T<=T_max`。
+
+Causal mask 与 position embedding 不同：mask 规定 visibility，position embedding 提供 position-specific learned representation signal。本项目选择不是所有现代 LLM 的唯一 positional design。
+
+### Block × N
+
+每个 Transformer Block 保持 `(B,T,C)->(B,T,C)`。`Block × N` 通常表示 N 个结构相同但参数独立的 block instances，而不是默认共享一套 Block parameters。
+
+### Final norm
+
+当前课程使用 Pre-Norm Block，因此每个 Block 的最终 residual output 并不会自动在 block exit 再做一次 normalization。MiniGPT 顶层在 block stack 后使用 final RMSNorm，保持 `(B,T,C)`。
+
+### LM head
+
+LM head 将每个 position 的 C-dimensional hidden state 映射到 V-dimensional vocabulary logits：`(B,T,C)->(B,T,V)`。MLX 可使用 `nn.Linear(C,V,bias=False)`；stored weight shape 为 `(V,C)`。
+
+Logits 是未归一化分数。本节不在顶层手动加 softmax，也不进入 next-token loss。
+
+### Scope boundary
+
+本节只建立顶层组件清单、职责与 shape flow。不实现 `MiniGPT(nn.Module)`、真实 Block list 或 top-level shape assertions，也不处理 causal-mask state-registration 等 Step 15.4 实现细节。
+
+Step 15.3 材料准备到此停止，不进入 Step 15.4。
