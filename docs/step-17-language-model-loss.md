@@ -1,8 +1,8 @@
 # Step 17 — Language-Model Loss
 
-本 Step 沿用现有 roadmap。当前只准备并发布 **17.4 Adam optimizer**，初始生成实际修正计数 **0/2**，完成后停在17.4，不进入17.5。当前母版为 [75_step17_4_adam_optimizer.ipynb](../notebooks/75_step17_4_adam_optimizer.ipynb)。
+本 Step 沿用现有 roadmap。当前只准备并发布 **17.5 Uncompiled training step**，初始生成实际修正计数 **0/2**，完成后停在17.5及大Step17，不进入大Step18。当前母版为 [76_step17_5_uncompiled_training_step.ipynb](../notebooks/76_step17_5_uncompiled_training_step.ipynb)。大Step17材料已覆盖至既定末节；这不表示17.5已获材料审核方独立验收，更不表示学员完成或运行通过。
 
-材料审核方已独立核验大 Step 16 的全部母版、文档与完整回复，17.1的实际母版、文档、固定MLX版本接口与完整回复，17.2的实际母版、文档与完整回复，以及17.3的真实母版、文档、MLX v0.32.2接口与完整教学回复，核心静态 PASS。这是材料验收，不是学员学习或运行反馈；已通过课节不返工。累计实际修正保留16.1=**1/2**、16.2=**1/2**（包括已记录的超时后完整回复补齐）、16.3至16.5及17.1至17.3各**0/2**，17.4初版=**0/2**。计数跨轮、跨对话不重置，后续只按请求逐小节至大 Step 20 全部完成后停止。
+材料审核方已独立核验大 Step 16 的全部母版、文档与完整回复，17.1的实际母版、文档、固定MLX版本接口与完整回复，17.2的实际母版、文档与完整回复，17.3的真实母版、文档、MLX v0.32.2接口与完整教学回复，以及17.4的实际母版、文档、固定MLX接口与完整教学回复，核心静态 PASS。这是材料验收，不是学员学习或运行反馈；已通过课节不返工。累计实际修正保留16.1=**1/2**、16.2=**1/2**（包括已记录的超时后完整回复补齐）、16.3至16.5及17.1至17.4各**0/2**，17.5初版=**0/2**。计数跨轮、跨对话不重置，后续只按请求逐小节至大 Step 20 全部完成后停止。
 
 ## Step 17.1 — Logits, probabilities, and cross-entropy
 
@@ -171,7 +171,7 @@ toy_logits = mx.log(mx.array(
 
 17.1当轮仅准备并发布本节，停止在17.1，没有进入17.2。没有读取或下载语料，没有执行Notebook、测试、训练、实验、采样或用户work副本，没有代答练习。没有模型构造、forward、梯度、optimizer、训练循环或生成实现。材料准备和静态审阅不表示学员掌握或运行通过。
 
-17.1验收后的累计实际修正：16.1=**1/2**、16.2=**1/2**、16.3至16.5及17.1各**0/2**。每节最多两次实际修正，跨轮与换对话不重置；随后17.2与17.3验收计数保持**0/2**，当前17.4初版另记**0/2**。
+17.1验收后的累计实际修正：16.1=**1/2**、16.2=**1/2**、16.3至16.5及17.1各**0/2**。每节最多两次实际修正，跨轮与换对话不重置；随后17.2至17.4验收计数保持**0/2**，当前17.5初版另记**0/2**。
 
 ### References
 
@@ -317,7 +317,7 @@ loss = mx.mean(flat_losses)  # Scalar, shape ().
 
 17.2当轮仅准备并发布本节，完成即停，没有进入17.3。没有执行Notebook、用户work副本、测试、数值实验、采样或训练，没有读取或下载语料或代答练习；没有实现 `value_and_grad`、梯度、optimizer、训练循环或生成。材料准备与静态审阅不代表学员掌握或运行验证。
 
-17.2验收后的累计实际修正：16.1=**1/2**、16.2=**1/2**（包括超时后完整回复补齐）、16.3至16.5及17.1至17.2各**0/2**。每小节最多两次实际修正，跨轮与换对话不重置；随后17.3验收保持**0/2**，当前17.4初版另记**0/2**，后续只按请求逐小节至大Step20全部完成后停止。
+17.2验收后的累计实际修正：16.1=**1/2**、16.2=**1/2**（包括超时后完整回复补齐）、16.3至16.5及17.1至17.2各**0/2**。每小节最多两次实际修正，跨轮与换对话不重置；随后17.3与17.4验收保持**0/2**，当前17.5初版另记**0/2**，后续只按请求逐小节至大Step20全部完成后停止。
 
 ### References and continuity
 
@@ -480,7 +480,7 @@ L=\ln3.
 
 17.3当轮仅准备并发布本节，完成即停，没有进入17.4。没有读取或下载语料，没有执行课程代码、Notebook、测试、数值实验、采样、训练或用户work副本，没有代答练习；不实现optimizer、参数学习更新、训练循环或生成，不扩展执行/编译专题。材料准备、静态审阅与发布均不表示学员掌握或运行验证。
 
-17.3验收后的累计实际修正：16.1=**1/2**、16.2=**1/2**（包括超时后的完整回复补齐）、16.3至16.5及17.1至17.3各**0/2**。每小节最多两次实际修正，跨轮与换对话不重置；当前17.4初版另记**0/2**，后续仍只按请求逐小节至大Step20全部完成后停止。
+17.3验收后的累计实际修正：16.1=**1/2**、16.2=**1/2**（包括超时后的完整回复补齐）、16.3至16.5及17.1至17.3各**0/2**。每小节最多两次实际修正，跨轮与换对话不重置；随后17.4验收保持**0/2**，当前17.5初版另记**0/2**，后续仍只按请求逐小节至大Step20全部完成后停止。
 
 ### References and continuity
 
@@ -492,7 +492,7 @@ L=\ln3.
 
 ## Step 17.4 — Adam optimizer
 
-母版：[75_step17_4_adam_optimizer.ipynb](../notebooks/75_step17_4_adam_optimizer.ipynb)。本节承接17.3已经得到的scalar loss与参数梯度树，解释Adam怎样保存历史梯度的摘要、怎样形成每个参数分量的调整，以及这些状态为什么占内存。只准备Adam本身与一次孤立的树接口示例，不组装17.5的训练步骤。
+母版：[75_step17_4_adam_optimizer.ipynb](../notebooks/75_step17_4_adam_optimizer.ipynb)。17.4实际母版、文档、固定MLX接口与完整教学回复已由材料审核方独立确认核心静态PASS，累计实际修正**0/2**；下文保留本节已通过的教学及当时边界。本节承接17.3已经得到的scalar loss与参数梯度树，解释Adam怎样保存历史梯度的摘要、怎样形成每个参数分量的调整，以及这些状态为什么占内存。只准备Adam本身与一次孤立的树接口示例，不组装17.5的训练步骤。
 
 ### Self-contained inputs: use the parameter-shaped gradient
 
@@ -684,9 +684,9 @@ parameters_after = optimizer.apply_gradients(example_grads, parameters)
 
 以后使用work副本时：安全复制75母版到已有 `notebooks/work/` 的时间戳新文件名 → 选择项目kernel → imports → 明确手工参数/梯度树的来源 → 阅读EMA、偏差修正与固定版本默认值 → 构造全新Adam并初始化state → 阅读手算 → 使用单次树接口示例并按路径理解状态。所有必要定义在新副本中；重复调用 `apply_gradients` 会继续增加step和历史，不是重新做第一轮手算。
 
-本轮只准备并发布17.4，完成即停，不进入17.5。没有运行Notebook、课程代码、测试、训练、实验、采样或用户work副本，没有读取或下载语料，没有代答练习。没有组装完整训练步骤，不扩展AdamW、学习率计划、执行/编译或checkpoint实现。材料准备、静态审阅与发布均不表示学员掌握或运行通过。
+17.4当轮只准备并发布本节，完成即停，没有进入17.5。没有运行Notebook、课程代码、测试、训练、实验、采样或用户work副本，没有读取或下载语料，没有代答练习。没有组装完整训练步骤，不扩展AdamW、学习率计划、执行/编译或checkpoint实现。材料准备、静态审阅与发布均不表示学员掌握或运行通过。
 
-累计实际修正：16.1=**1/2**、16.2=**1/2**（包括已记录的超时后完整回复补齐）、16.3至16.5及17.1至17.3各**0/2**，17.4初始生成=**0/2**。每小节最多两次实际修正，跨轮与换对话不重置；后续按请求逐小节至大Step20全部完成后停止。
+17.4验收后的累计实际修正：16.1=**1/2**、16.2=**1/2**（包括已记录的超时后完整回复补齐）、16.3至16.5及17.1至17.4各**0/2**；当前17.5初始生成=**0/2**。每小节最多两次实际修正，跨轮与换对话不重置；后续按请求逐小节至大Step20全部完成后停止。
 
 ### References and continuity
 
@@ -694,3 +694,223 @@ parameters_after = optimizer.apply_gradients(example_grads, parameters)
 - [MLX v0.32.2 optimizers.py](https://github.com/ml-explore/mlx/blob/v0.32.2/python/mlx/optimizers/optimizers.py)：Adam真实默认值、两个公式分支、moment初始化和Optimizer的state/init/apply_gradients。
 - [Official Adam API](https://ml-explore.github.io/mlx/build/html/python/optimizers/_autosummary/mlx.optimizers.Adam.html)：公开构造接口；固定版本行为仍以v0.32.2源码为准。
 - [Course roadmap](course-roadmap.md) 与 [teaching handoff](teaching-handoff.md)：17.4范围、材料状态、累计修正计数及停止边界。
+
+
+## Step 17.5 — Uncompiled training step
+
+母版：[76_step17_5_uncompiled_training_step.ipynb](../notebooks/76_step17_5_uncompiled_training_step.ipynb)。本节把已经说明的forward、scalar loss、参数梯度和Adam接成一次 **uncompiled training step（未编译训练步骤）**，并明确何时要求这些数组结果完成求值。这里只准备一个自包含toy单步，没有训练循环或运行结果；完成后停在大Step17，不进入大Step18。
+
+### Restore all dependencies in the new work copy
+
+本节沿用Python3.12 / `.venv` kernel与固定 `mlx==0.32.2`。新副本包含所有必要导入、类、toy数据、loss函数、函数变换、Adam构造、单步函数和一次准备调用；无需旧kernel、旧Notebook执行、`%run`、语料缓存、sampler或完整MiniGPT定义。
+
+先导入三个模块。`mx` 负责数组运算，`nn` 提供Module、交叉熵和针对Module的求导变换，`optim` 提供Adam：
+
+```python
+import mlx.core as mx
+import mlx.nn as nn
+import mlx.optimizers as optim
+```
+
+恢复17.3的最小模型。`class ... (nn.Module)` 定义继承Module的类，`super().__init__()` 初始化父类，`self` 指当前实例。调用 `model(X)` 会进入 `__call__`。公开字典 `self.head` 中的 `bias` 是参数叶子，shape为 `(3,)`；`mx.broadcast_to` 把同一个向量用于每个batch/位置。
+
+```python
+class SharedLogitModel(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.head = {
+            "bias": mx.array([0.0, 0.0, 0.0], dtype=mx.float32),
+        }
+
+    def __call__(self, X):
+        B, T = X.shape
+        V = self.head["bias"].shape[0]
+        return mx.broadcast_to(self.head["bias"], (B, T, V))
+
+
+toy_chunks = mx.array([[0, 2, 1], [1, 0, 2]], dtype=mx.int32)
+X = toy_chunks[:, :-1]
+Y = toy_chunks[:, 1:]
+```
+
+这个toy只读取X的shape，不根据token内容或上下文预测；它保留接口以便手算，不是MiniGPT架构，也不是给MiniGPT推荐零初始化。X/Y都在Module之外。X=`[[0,2],[1,0]]`，Y=`[[2,1],[0,2]]`，B=2、T=2、V=3；Y已经shift，不再次右移。
+
+### Forward and scalar loss: preserve the parameter-to-loss dependency
+
+**Forward pass（前向计算）** 按模型规则由当前参数与输入得到raw logits。本例是在loss函数内部调用 `model(X)`，让后续交叉熵依赖当前模型参数。
+
+**Scalar loss（标量损失）** 用17.2的方式得到：保持类别轴V，合并B/T为N=B×T个位置，逐位置交叉熵后再求等权mean。`return` 返回MLX scalar array，shape `()`，不在loss函数中转成Python数值。
+
+```python
+def loss_fn(model, X, Y):
+    logits = model(X)
+    B, T, V = logits.shape
+    N = B * T
+    flat_logits = mx.reshape(logits, (N, V))
+    flat_targets = mx.reshape(Y, (N,))
+    token_losses = nn.losses.cross_entropy(
+        flat_logits,
+        flat_targets,
+        axis=-1,
+        reduction="none",
+    )
+    return mx.mean(token_losses)
+```
+
+| 计算对象 | 本例shape | 含义 |
+|---|---|---|
+| 参数 `head.bias` | `(3,)` | 三个共享分数参数 |
+| X与Y | `(2,2)` / `(2,2)` | 输入与已shift目标 |
+| raw logits | `(2,2,3)` | 每个位置的三类别分数 |
+| 展平logits / targets | `(4,3)` / `(4,)` | 四条对应的监督项 |
+| token losses | `(4,)` | 四个位置的交叉熵 |
+| scalar loss | `()` | 四项loss的等权平均 |
+
+保留raw logits与整数targets，不先softmax再作为logits传入。四项平均的缩放已经进入loss和梯度，优化器处不再除以4。
+
+### Reverse-mode autodiff: follow dependencies backward
+
+**Reverse-mode automatic differentiation（反向模式自动微分）** 从scalar loss出发，沿前向计算依赖反向应用链式法则，得到loss对参数的导数。顺着一条计算路径时，局部导数相乘；同一参数通过多条路径影响loss时，各路径贡献相加。这里的“反向”不是倒着读tokens、求前向函数的逆函数，也不是逐个扰动参数做有限差分。
+
+用r表示展平后的监督位置，v表示类别；本例r=0到3、v=0到2。令 `y_r` 是第r个target ID，`z_{r,v}` 是该位置第v类raw logit，`p_{r,v}` 是softmax概率。定义one-hot指示量 `q_{r,v}`：当v等于y_r时为1，否则为0。q只是推导记号，代码仍传整数targets。
+
+反向链条从loss对自身的导数开始：
+
+\[
+\frac{\partial L}{\partial L}=1.
+\]
+
+因为 \(L=(1/N)\sum_r\ell_r\)，每个位置收到mean传来的权重：
+
+\[
+\frac{\partial L}{\partial\ell_r}=\frac1N.
+\]
+
+沿用17.3的交叉熵局部导数 \(\partial\ell_r/\partial z_{r,v}=p_{r,v}-q_{r,v}\)，链式法则给出：
+
+\[
+\frac{\partial L}{\partial z_{r,v}}
+=\frac{p_{r,v}-q_{r,v}}N.
+\]
+
+本例每个位置都使用同一个参数分量：\(z_{r,v}=\theta_v\)。所以broadcast的各位置贡献汇总到同一个参数上：
+
+\[
+\frac{\partial L}{\partial\theta_v}
+=\sum_{r=0}^{N-1}\frac{p_{r,v}-q_{r,v}}N.
+\]
+
+在零参数处，p的三个分量均为1/3；四个targets按顺序是 `[2,1,0,2]`，各类别比例为1/4、1/4、1/2。因此参数梯度仍是：
+
+\[
+\nabla_\theta L=[1/12,\ 1/12,\ -1/6],\qquad \text{shape }(3,).
+\]
+
+这说明逐logit导数可以有 `(B,T,V)` 的对应关系，但最终返回的是参数形状的梯度树。本节不手填这一梯度；准备代码将由 `nn.value_and_grad` 连接反向规则得到它。以上推导是理解计算关系，不是执行结果或数值检查。
+
+### Create one consistent model, gradient function, and Adam instance
+
+Python中 `loss_fn` 表示函数对象，`loss_fn(...)` 表示调用。`nn.value_and_grad(model, loss_fn)` 接收函数并返回一个新函数；构造时的model指定求导参数所属的Module。之后调用新函数时，`model,X,Y` 会转交给原来的 `loss_fn(model,X,Y)`，包装器不会自动插入model。
+
+把这些对象在单步函数之外创建一次，并保持同一组实例：
+
+```python
+model = SharedLogitModel()
+loss_and_grad_fn = nn.value_and_grad(model, loss_fn)
+optimizer = optim.Adam(
+    learning_rate=1e-3,
+    betas=[0.9, 0.999],
+    eps=1e-8,
+    bias_correction=True,
+)
+optimizer.init(model.trainable_parameters())
+```
+
+`trainable_parameters()` 返回模型的可训练参数树。对这个全新optimizer，`init` 按该树准备零初始m/v，不增加step。配置延续17.4：本节明确使用 `bias_correction=True`；MLX v0.32.2的真实默认是False，learning_rate也没有默认数值。这些是教学设置，不是已调优配置。
+
+不能只重建model却沿用绑定旧model的 `loss_and_grad_fn`。重新从首步开始时，要一起重建model、对应函数变换和optimizer。正常延续同一过程则要保留optimizer历史，不在每个单步内构造一个全新Adam。
+
+### Optimizer update and the minimum evaluation contract
+
+17.4的 `apply_gradients(grads, parameters)` 返回新参数树。本节使用针对Module的 **`optimizer.update(model, grads)`**：它应用优化器规则并把新参数写回model，同时推进优化器state。它的返回值是None，因此不写 `model = optimizer.update(...)`。
+
+**Evaluation（求值）** 指真正得到数组数值结果。理解本单步只需要一个MLX事实：Python已经走过一行数组运算，不代表其所需数值计算都已经完成。**Explicit evaluation boundary（显式求值边界）** 用 `mx.eval(...)` 清楚指定本次调用结束前必须完成哪些结果及其依赖。
+
+固定v0.32.2的 `mx.eval` 可接收多个数组，也可接收包含数组的dict/list/tuple树；完成指定数组所需的求值后返回None。这里选择三个根结果：
+
+```python
+mx.eval(loss_before_update, model.parameters(), optimizer.state)
+```
+
+其中 `model.parameters()` 在更新后读取当前模型参数树，`optimizer.state` 是更新后的m/v、step等状态；loss是本次用于求导的那一个scalar。只要求loss完成，不应当被描述为已经明确要求新的参数与优化器状态都完成。本节只解释这条必要边界，不展开Step18的图增长、异步、编译或内存测量。
+
+### One ordinary Python training-step function
+
+`def` 定义函数时不会执行函数体。下面显式传入model、X、Y、梯度函数和optimizer，让所需对象清楚可见。`loss_before_update, grads = ...` 是元组解包，按顺序接收scalar loss和参数梯度树。
+
+**Uncompiled（未编译）** 在这里表示普通Python函数没有用 `mx.compile` 包装，不表示强制CPU执行，也不表示内部每一行都立即完成全部数值计算。
+
+```python
+def train_step(model, X, Y, loss_and_grad_fn, optimizer):
+    loss_before_update, grads = loss_and_grad_fn(model, X, Y)
+    optimizer.update(model, grads)
+    mx.eval(loss_before_update, model.parameters(), optimizer.state)
+    return loss_before_update
+```
+
+`loss_and_grad_fn` 调用包含loss函数内部的forward、交叉熵、mean以及对模型参数的反向模式求导；不用再在前面额外计算一次forward/loss。优化器取得返回的grads后更新参数；显式求值边界再要求本步关心的结果完成。
+
+这里只返回loss；model与optimizer通过方法调用发生状态变化。返回值不必包含这些对象，调用方仍持有同一组实例。未添加手写 `.backward()`、`.grad` 或 `.zero_grad()` 工作流。
+
+### Why the returned loss belongs to the parameters before the update
+
+令\(\theta_{\text{before}}\)表示本步开始时的参数，\(\theta_{\text{after}}\)表示本步更新后的参数。函数返回的是：
+
+\[
+L_{\text{returned}}=L(\theta_{\text{before}};X,Y).
+\]
+
+虽然 `mx.eval` 写在update之后，已经建立的loss计算仍对应本次forward使用的旧参数；更新model中的参数引用，不会把这个loss自动改写为 \(L(\theta_{\text{after}};X,Y)\)。因此不能把返回loss标成“更新后的loss”或据此宣称本次更新降低了loss。本节不额外执行第二次forward来测量更新后的loss。
+
+在首次调用、零参数和全新Adam的前提下，手算对应如下：
+
+| 项目 | 数学预期与归属 |
+|---|---|
+| 返回的loss | 更新前loss \(\ln3\)，shape `()` |
+| 本次参数梯度 | `[1/12,1/12,-1/6]`，bias叶子 `(3,)` |
+| 更新后m | `[1/120,1/120,-1/60]`，`(3,)` |
+| 更新后v | `[1/144000,1/144000,1/36000]`，`(3,)` |
+| 更新后step | 1，scalar `()` |
+| 更新后参数 | 约 `[-0.001,-0.001,+0.001]`，`(3,)` |
+
+参数近似沿用17.4的首步带修正手算，展示近似暂时忽略极小epsilon；实际准备代码保留 `eps=1e-8`，并有浮点舍入。此表不是Notebook输出、运行验证或loss下降证据。
+
+### Prepared single call and scalar logging
+
+最后只准备一次 `train_step` 调用。返回之后，`array.item()` 可把仅含一个元素的MLX数组转换成Python标量，适合日志；本节loss本来就是shape `()`，因此满足要求。这个转换放在单步返回和显式求值之后，不放进需要求导的loss函数。
+
+```python
+loss_before_update = train_step(
+    model, X, Y, loss_and_grad_fn, optimizer
+)
+print("loss before update:", loss_before_update.item())
+```
+
+这是未来work副本的调用示例，不是本轮执行记录。若以后重复调用，同一个model与optimizer会继续前进；不应再把结果当作新状态下的“第一次更新”。本节没有循环、采样、语料读取、断言、测试或训练实验。
+
+### Operational order, scope, and ledger
+
+以后使用work副本时：在仓库根目录更新 → 用时间戳新文件名与 `cp -n` 安全复制76母版到已有 `notebooks/work/` → 选择项目kernel → 本节imports/类/toy数据/loss定义 → 阅读反向模式与状态衔接 → 在单步外构造同组model/函数变换/Adam → 了解update与eval的真实接口 → 定义普通单步函数 → 阅读旧loss/新状态的手算归属 → 使用唯一准备调用及返回后日志。所有依赖在本节可恢复。
+
+本轮只编写并发布17.5，完成即停在大Step17，不进入大Step18。没有运行Notebook、课程代码、测试、训练、实验、采样或用户work副本，没有读取或下载语料，没有代答练习，也不声称学员掌握或运行通过。只铺垫本单步必须的evaluation boundary；不扩展 `mx.compile`、图增长实验、异步执行、性能测量、训练循环、checkpoint或生成。
+
+累计实际修正：16.1=**1/2**、16.2=**1/2**（包含已记录的超时后完整回复补齐）、16.3至16.5及17.1至17.4各**0/2**，17.5初始生成=**0/2**。每小节最多两次实际修正，跨轮与换对话不重置；后续按请求逐小节至大Step20全部完成后停止。
+
+### References and continuity
+
+- [17.3母版](../notebooks/74_step17_3_nn_value_and_grad.ipynb)与[17.4母版](../notebooks/75_step17_4_adam_optimizer.ipynb)：共享参数模型、scalar loss、参数梯度树和明确的Adam设置。
+- [MLX v0.32.2 nn/utils.py](https://github.com/ml-explore/mlx/blob/v0.32.2/python/mlx/nn/utils.py)：针对Module的函数变换与调用参数。
+- [MLX v0.32.2 optimizers.py](https://github.com/ml-explore/mlx/blob/v0.32.2/python/mlx/optimizers/optimizers.py)：Adam默认行为、Optimizer.update和状态推进。
+- [MLX v0.32.2 Python transforms](https://github.com/ml-explore/mlx/blob/v0.32.2/python/src/transforms.cpp)与[core transforms](https://github.com/ml-explore/mlx/blob/v0.32.2/mlx/transforms.cpp)：eval的参数树接收与求值行为。
+- [MLX v0.32.2 array interface](https://github.com/ml-explore/mlx/blob/v0.32.2/python/src/array.cpp)：单元素数组的item接口。
+- [Course roadmap](course-roadmap.md)与[teaching handoff](teaching-handoff.md)：末节材料状态、累计修正与止于大Step17的边界。

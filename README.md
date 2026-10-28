@@ -31,19 +31,20 @@ Step 16.5         ✅ Material reviewer independently confirmed core static PASS
 Step 17.1         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
 Step 17.2         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
 Step 17.3         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
-Step 17.4         🚧 Current initial material prepared / corrections 0/2
-Step 17.5+          Planned only
+Step 17.4         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
+Step 17.5         🚧 Current initial material prepared / corrections 0/2
+Step 18+            Planned only
 ```
 
-Current course-material checkpoint: **Step 17.4 — Adam optimizer**.
+Current course-material checkpoint: **Step 17.5 — Uncompiled training step**.
 
-Current master: [75_step17_4_adam_optimizer.ipynb](notebooks/75_step17_4_adam_optimizer.ipynb).
+Current master: [76_step17_5_uncompiled_training_step.ipynb](notebooks/76_step17_5_uncompiled_training_step.ipynb).
 
-Actual correction counts persist across conversations: Step 16.1 **1/2**, Step 16.2 **1/2**, Step 16.3 **0/2**, Step 16.4 **0/2**, Step 16.5 **0/2**, Step 17.1 **0/2**, Step 17.2 **0/2**, Step 17.3 **0/2**, Step 17.4 initial version **0/2**. Step 16.2's count includes the learner-confirmed completion of a reply after a timeout. Passed lessons are not reworked and counts do not reset.
+Actual correction counts persist across conversations: Step 16.1 **1/2**, Step 16.2 **1/2**, Step 16.3 **0/2**, Step 16.4 **0/2**, Step 16.5 **0/2**, Step 17.1 **0/2**, Step 17.2 **0/2**, Step 17.3 **0/2**, Step 17.4 **0/2**, Step 17.5 initial version **0/2**. Step 16.2's count includes the learner-confirmed completion of a reply after a timeout. Passed lessons are not reworked and counts do not reset.
 
-The material reviewer independently confirmed core static PASS for all major Step 16 masters, documents, and full replies; Step 17.1's actual master, documentation, fixed-version MLX API contract, and full reply; Step 17.2's actual master, documentation, and full reply; and Step 17.3's actual master, documentation, MLX v0.32.2 API, and full reply. This is material acceptance, not learner learning or execution feedback. This turn prepares only **Step 17.4**, then stops before Step 17.5.
+All major Step 16 masters, documents, and full replies; Step 17.1's actual master, documentation, fixed-version MLX API contract, and full reply; Step 17.2's actual master, documentation, and full reply; Step 17.3's actual master, documentation, MLX v0.32.2 API, and full reply; and Step 17.4's actual master, documentation, fixed-version MLX API, and full reply have independently passed the material reviewer's core static review. This is material acceptance, not learner learning or execution feedback. This turn prepares only **Step 17.5**, then stops at major Step 17, before Step 18. The major Step 17 material sequence now reaches its final planned subsection; this does not assert independent acceptance of 17.5 or learner completion.
 
-Learner completion/mastery, local-cache availability, experiment results, Notebook execution, and runtime validation are intentionally **not asserted** here. Step 17.4 supplies explicit parameter and gradient trees to explain Adam's first and second moments, bias correction, state, and memory cost. It distinguishes MLX v0.32.2 defaults from the lesson's explicit settings and prepares one isolated optimizer API example without assembling a training step. The example needs no corpus, old kernel, model forward, or new dependency; all lesson code remains unexecuted. Subsequent requests continue one subsection at a time through major Step 20, then stop.
+Learner completion/mastery, local-cache availability, experiment results, Notebook execution, and runtime validation are intentionally **not asserted** here. Step 17.5 supplies a self-contained toy Module, already-shifted data, scalar loss, Module-aware gradient function, and explicit Adam settings to connect one uncompiled training step. It explains reverse-mode autodiff, model/optimizer state updates, and the required explicit evaluation boundary. The prepared call returns the loss from before the update; it is not a post-update loss measurement. All lesson code remains unexecuted, and no corpus, old kernel, sampler, or new dependency is needed. Subsequent requests continue one subsection at a time through major Step 20, then stop.
 
 ## Persistent course documents
 

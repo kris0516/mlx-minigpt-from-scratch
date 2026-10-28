@@ -757,14 +757,14 @@ All five subsection masters, documents, and full replies have independently pass
 - loss + gradients as a function transformation
 - contrast with a simplistic “gradient attached to every parameter” mental model
 
-### 17.4 Adam optimizer 🚧
+### 17.4 Adam optimizer ✅
 
 - first moment
 - second moment
 - state
 - why optimizer state consumes memory
 
-### 17.5 Uncompiled training step
+### 17.5 Uncompiled training step 🚧
 
 - forward
 - loss
@@ -1133,20 +1133,21 @@ Step 16.5         ✅ Material reviewer independently confirmed core static PASS
 Step 17.1         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
 Step 17.2         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
 Step 17.3         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
-Step 17.4         🚧 Current initial material prepared / corrections 0/2
-Step 17.5+          Planned only
+Step 17.4         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
+Step 17.5         🚧 Current initial material prepared / corrections 0/2
+Step 18+            Planned only
 ```
 
 Current course-material checkpoint:
 
-> **Step 17.4 — Adam optimizer**
+> **Step 17.5 — Uncompiled training step**
 
-Current master: [75_step17_4_adam_optimizer.ipynb](../notebooks/75_step17_4_adam_optimizer.ipynb).
+Current master: [76_step17_5_uncompiled_training_step.ipynb](../notebooks/76_step17_5_uncompiled_training_step.ipynb).
 
 Learner-status note:
 
-> All major Step 16 masters, documents, and full replies have independently passed the material reviewer's core static review. Step 17.1's actual master, documentation, fixed-version MLX API contract, and full reply; Step 17.2's actual master, documentation, and full reply; and Step 17.3's actual master, documentation, MLX v0.32.2 API, and full reply have also independently received core static PASS. This is material acceptance, not learner learning or execution feedback. Step 17.4 supplies explicit parameter and gradient trees to explain Adam's first and second moments, bias correction, state, and memory cost. It distinguishes fixed-version defaults from the lesson's explicit settings and prepares one isolated optimizer API example, without assembling a training step. No corpus, old kernel, model forward, or new dependency is needed; all lesson code remains unexecuted. Its preparation does not assert mastery, work-notebook completion, experiments, or runtime validation. This turn stops at Step 17.4; do not enter Step 17.5.
+> All major Step 16 masters, documents, and full replies; Step 17.1's actual master, documentation, fixed-version MLX API contract, and full reply; Step 17.2's actual master, documentation, and full reply; Step 17.3's actual master, documentation, MLX v0.32.2 API, and full reply; and Step 17.4's actual master, documentation, fixed-version MLX API, and full reply have independently passed the material reviewer's core static review. This is material acceptance, not learner learning or execution feedback. Step 17.5 supplies a self-contained toy Module, already-shifted data, scalar loss, Module-aware gradient function, and explicit Adam settings to connect one uncompiled training step. It explains reverse-mode autodiff, model/optimizer state updates, and the required explicit evaluation boundary. The prepared call returns the loss from before the update; it is not a post-update loss measurement. All lesson code remains unexecuted, and no corpus, old kernel, sampler, or new dependency is needed. This turn stops at Step 17.5, the final planned subsection of major Step 17; do not enter Step 18. Material coverage through this subsection does not imply independent acceptance of 17.5, learner completion, mastery, experiments, or runtime validation.
 
-Actual correction ledger: Step 16.1 **1/2**, Step 16.2 **1/2** (including the learner-confirmed reply completion after a timeout), Step 16.3 **0/2**, Step 16.4 **0/2**, Step 16.5 **0/2**, Step 17.1 **0/2**, Step 17.2 **0/2**, Step 17.3 **0/2**, Step 17.4 initial version **0/2**. Preserve the passed lessons and all accumulated counts across turns and conversations.
+Actual correction ledger: Step 16.1 **1/2**, Step 16.2 **1/2**, Step 16.3 **0/2**, Step 16.4 **0/2**, Step 16.5 **0/2**, Step 17.1 **0/2**, Step 17.2 **0/2**, Step 17.3 **0/2**, Step 17.4 **0/2**, Step 17.5 initial version **0/2**. Step 16.2 includes the previously recorded reply completion after a timeout. Preserve the passed lessons and all accumulated counts across turns and conversations.
 
 Active continuation boundary: subsequent requests proceed one subsection at a time through major **Step 20**, then stop. The existing Step 21–25 roadmap remains a future curriculum plan; this boundary does not authorize automatic or batch preparation of later lessons.
