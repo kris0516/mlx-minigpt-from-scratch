@@ -1140,15 +1140,16 @@ Step 18.2         ✅ Material reviewer independently confirmed core static PASS
 Step 18.3         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
 Step 18.4         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
 Step 18.5         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
-Step 19.1         🚧 Current initial material prepared / corrections 0/2
-Step 19.2+         Planned only
+Step 19.1         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
+Step 19.2         🚧 Current initial material published / corrections 0/2
+Step 19.3+         Planned only
 ```
 
 Current course-material checkpoint:
 
-> **Step 19.1 — Hyperparameter baseline**
+> **Step 19.2 — Train / Validation Loop**
 
-Current master: [82_step19_1_hyperparameter_baseline.ipynb](../notebooks/82_step19_1_hyperparameter_baseline.ipynb). Current Step document: [Step 19 — Stable low-heat training](step-19-stable-low-heat-training.md).
+Current master: [83_step19_2_train_validation_loop.ipynb](../notebooks/83_step19_2_train_validation_loop.ipynb). Current Step document: [Step 19 — Stable low-heat training](step-19-stable-low-heat-training.md).
 
 Learner-status note:
 
@@ -1157,3 +1158,8 @@ Learner-status note:
 Actual correction ledger: Step 16.1 **1/2**, Step 16.2 **1/2**, Step 16.3 **0/2**, Step 16.4 **0/2**, Step 16.5 **0/2**, Step 17.1 **0/2**, Step 17.2 **0/2**, Step 17.3 **0/2**, Step 17.4 **0/2**, Step 17.5 **0/2**, Step 18.1 **0/2**, Step 18.2 **0/2**, Step 18.3 **0/2**, Step 18.4 **0/2**, Step 18.5 **0/2**, Step 19.1 initial version **0/2**. Step 16.2 includes the previously recorded reply completion after a timeout. Preserve the passed lessons and all accumulated counts across turns and conversations.
 
 Active continuation boundary: subsequent requests proceed one subsection at a time through major **Step 20**, then stop. The existing Step 21–25 roadmap remains a future curriculum plan; this boundary does not authorize automatic or batch preparation of later lessons.
+
+
+### Step 19.2 current boundary
+
+Step 19.2 initial material has been published with corrections **0/2**. It provides a self-contained train/validation loop master using the 19.1 candidate, complete MiniGPT definitions, split-local sampling, fixed validation-window RNG, scalar loss, MLX v0.32.2 train/eval semantics, and the explicit compile/evaluation boundary. Validation does not call gradient transforms or an optimizer; it evaluates current parameters, whereas a training-step loss belongs to the pre-update parameters. The optional corpus acquisition is disabled by default; local cache availability is not assumed. The four-update/two-step validation schedule is a teaching example only, not a measured baseline. All code cells remain unexecuted and output-free. This is material preparation, not learner mastery or runtime validation. Stop before 19.3.
