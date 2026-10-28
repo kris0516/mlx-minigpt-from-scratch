@@ -698,13 +698,13 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 
 **Goal:** replace toy tensors with a real small language-model corpus.
 
-### 16.1 Acquire and inspect Tiny Shakespeare 🚧
+### 16.1 Acquire and inspect Tiny Shakespeare ✅
 
 - download / cache
 - encoding
 - corpus size
 
-### 16.2 Train/validation split
+### 16.2 Train/validation split 🚧
 
 - why held-out validation exists
 - avoid training on validation tokens
@@ -1122,14 +1122,15 @@ Steps 12.1–12.5  ✅ Material prepared / static audit passed
 Steps 13.1–13.5  ✅ Material prepared / static audit passed
 Steps 14.1–14.5  ✅ Material prepared / static audit passed
 Steps 15.1–15.5  ✅ Material prepared / static audit passed (15.5 correction 1/2)
-Step 16.1         🚧 Current material prepared / corrections 0/2
-Step 16.2+           Planned only
+Step 16.1         ✅ Material prepared / static audit passed (correction 1/2)
+Step 16.2         🚧 Current material prepared / corrections 0/2
+Step 16.3+           Planned only
 ```
 
 Current course-material checkpoint:
 
-> **Step 16.1 — Acquire and inspect Tiny Shakespeare**
+> **Step 16.2 — Train/validation split**
 
 Learner-status note:
 
-> Material preparation for Step 16.1 does not assert learner mastery, work-notebook completion, corpus download success, inspection results, or runtime validation. Do not enter Step 16.2 unless the learner explicitly asks to proceed beyond Step 16.1.
+> Material preparation for Step 16.2 does not assert learner mastery, work-notebook completion, local cache availability, split execution, inspection results, or runtime validation. Do not enter Step 16.3 unless the learner explicitly asks to proceed beyond Step 16.2.
