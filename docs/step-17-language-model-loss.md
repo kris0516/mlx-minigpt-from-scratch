@@ -1,8 +1,8 @@
 # Step 17 — Language-Model Loss
 
-本 Step 沿用现有 roadmap。当前只准备并发布 **17.2 Flatten B×T supervision**，初始生成实际修正计数 **0/2**，完成后停在17.2，不进入17.3。当前母版为 [73_step17_2_flatten_bt_supervision.ipynb](../notebooks/73_step17_2_flatten_bt_supervision.ipynb)。
+本 Step 沿用现有 roadmap。当前只准备并发布 **17.3 MLX nn.value_and_grad**，初始生成实际修正计数 **0/2**，完成后停在17.3，不进入17.4。当前母版为 [74_step17_3_nn_value_and_grad.ipynb](../notebooks/74_step17_3_nn_value_and_grad.ipynb)。
 
-材料审核方已独立核验大 Step 16 的全部母版、文档与完整回复，以及17.1的实际母版、文档、固定MLX版本接口与完整回复，核心静态 PASS。这是材料验收，不是学员学习或运行反馈；已通过课节不返工。累计实际修正保留16.1=**1/2**、16.2=**1/2**（包括已记录的超时后完整回复补齐）、16.3至16.5及17.1各**0/2**，17.2初版=**0/2**。计数跨轮、跨对话不重置，后续只按请求逐小节至大 Step 20 全部完成后停止。
+材料审核方已独立核验大 Step 16 的全部母版、文档与完整回复，17.1的实际母版、文档、固定MLX版本接口与完整回复，以及17.2的实际母版、文档与完整回复，核心静态 PASS。这是材料验收，不是学员学习或运行反馈；已通过课节不返工。累计实际修正保留16.1=**1/2**、16.2=**1/2**（包括已记录的超时后完整回复补齐）、16.3至16.5及17.1至17.2各**0/2**，17.3初版=**0/2**。计数跨轮、跨对话不重置，后续只按请求逐小节至大 Step 20 全部完成后停止。
 
 ## Step 17.1 — Logits, probabilities, and cross-entropy
 
@@ -171,7 +171,7 @@ toy_logits = mx.log(mx.array(
 
 17.1当轮仅准备并发布本节，停止在17.1，没有进入17.2。没有读取或下载语料，没有执行Notebook、测试、训练、实验、采样或用户work副本，没有代答练习。没有模型构造、forward、梯度、optimizer、训练循环或生成实现。材料准备和静态审阅不表示学员掌握或运行通过。
 
-17.1验收后的累计实际修正：16.1=**1/2**、16.2=**1/2**、16.3至16.5及17.1各**0/2**。每节最多两次实际修正，跨轮与换对话不重置；当前17.2初版另记**0/2**。
+17.1验收后的累计实际修正：16.1=**1/2**、16.2=**1/2**、16.3至16.5及17.1各**0/2**。每节最多两次实际修正，跨轮与换对话不重置；随后17.2验收计数保持**0/2**，当前17.3初版另记**0/2**。
 
 ### References
 
@@ -183,7 +183,7 @@ toy_logits = mx.log(mx.array(
 
 ## Step 17.2 — Flatten B×T supervision
 
-母版：[73_step17_2_flatten_bt_supervision.ipynb](../notebooks/73_step17_2_flatten_bt_supervision.ipynb)。本节承接17.1的逐位置交叉熵，把B行、每行T个位置组织成N=B×T条监督项，再说明这些位置损失的等权平均。这里准备的是未来同一训练步骤所用loss的组织，不执行或实现训练步骤。
+母版：[73_step17_2_flatten_bt_supervision.ipynb](../notebooks/73_step17_2_flatten_bt_supervision.ipynb)。17.2实际母版、文档与完整回复已由材料审核方独立确认核心静态PASS，累计实际修正**0/2**；下文保留本节已通过的教学及当时边界。本节承接17.1的逐位置交叉熵，把B行、每行T个位置组织成N=B×T条监督项，再说明这些位置损失的等权平均。这里准备的是未来同一训练步骤所用loss的组织，不执行或实现训练步骤。
 
 ### Self-contained work copy and the shared interface
 
@@ -315,12 +315,177 @@ loss = mx.mean(flat_losses)  # Scalar, shape ().
 
 之后实际使用work副本时：安全复制到新文件名 → 选择项目kernel → imports与自带toy setup → 对照r与 `(b,t)` 的四行表 → reshape logits和targets → 未归约交叉熵 → 等权mean。所有必要依赖与示例数组均在本母版中，不需要执行旧课或读取语料。
 
-本轮仅准备并发布17.2，完成即停，不进入17.3。不执行Notebook、用户work副本、测试、数值实验、采样或训练，不读取或下载语料，不代答练习；不实现 `value_and_grad`、梯度、optimizer、训练循环或生成。材料准备与静态审阅不代表学员掌握或运行验证。
+17.2当轮仅准备并发布本节，完成即停，没有进入17.3。没有执行Notebook、用户work副本、测试、数值实验、采样或训练，没有读取或下载语料或代答练习；没有实现 `value_and_grad`、梯度、optimizer、训练循环或生成。材料准备与静态审阅不代表学员掌握或运行验证。
 
-累计实际修正保留：16.1=**1/2**、16.2=**1/2**（包括超时后完整回复补齐）、16.3至16.5及17.1各**0/2**，17.2初版=**0/2**。每小节最多两次实际修正，跨轮与换对话不重置；后续只按请求逐小节至大Step20全部完成后停止。
+17.2验收后的累计实际修正：16.1=**1/2**、16.2=**1/2**（包括超时后完整回复补齐）、16.3至16.5及17.1至17.2各**0/2**。每小节最多两次实际修正，跨轮与换对话不重置；当前17.3初版另记**0/2**，后续只按请求逐小节至大Step20全部完成后停止。
 
 ### References and continuity
 
 - [17.1母版](../notebooks/72_step17_1_logits_probabilities_cross_entropy.ipynb)：raw logits、已shift的整数目标和逐位置交叉熵。
 - [MLX 0.32.2 loss implementation](https://github.com/ml-explore/mlx/blob/v0.32.2/python/mlx/nn/losses.py) 与 [cross_entropy API](https://ml-explore.github.io/mlx/build/html/python/nn/_autosummary_functions/mlx.nn.losses.cross_entropy.html)：原rank与展平后的输入契约。
-- [Course roadmap](course-roadmap.md) 与 [teaching handoff](teaching-handoff.md)：当前17.2范围、累计计数与后续边界。
+- [Course roadmap](course-roadmap.md) 与 [teaching handoff](teaching-handoff.md)：本节范围记录、累计计数与当前后续边界。
+
+## Step 17.3 — MLX nn.value_and_grad
+
+母版：[74_step17_3_nn_value_and_grad.ipynb](../notebooks/74_step17_3_nn_value_and_grad.ipynb)。本节把17.2的标量loss接口接到Module的可训练参数树，解释如何由一个loss函数得到“同时返回loss与gradients”的新函数。只到求导接口与梯度对应关系，不进入17.4 Adam或参数学习更新。
+
+### Self-contained work copy and the new dependency on parameters
+
+新work副本自带 `mlx.core as mx`、`mlx.nn as nn`、完整toy Module、toy数据、loss函数与变换调用示例。之后使用时，选择项目Python3.12 / `.venv` kernel，从本节imports开始按顺序使用；沿用 `mlx==0.32.2`，不添加依赖，不需要旧kernel、旧Notebook的 `%run`、语料缓存、sampler或完整MiniGPT定义。本轮只准备材料，所有代码均未执行、无输出。
+
+17.2的手工toy logits用来解释监督组织，并不依赖模型参数。现在要求导的是“loss怎样随参数变化”，所以本节必须在loss函数内部，由模型参数产生logits，再计算同一个reshape → 交叉熵 → mean。不能把上节那组固定logits放到函数外，然后宣称所得loss反映了模型参数的变化。
+
+### A tiny Module and its parameter tree
+
+回顾4.2：`class ... (nn.Module)` 定义模型类，`super().__init__()` 初始化父类；`self` 表示当前对象。实例写成 `model(X)` 时会调用它的 `__call__` 方法。
+
+本例给模型一个公开属性 `head`，它是Python **dict（字典）**。字典通过key查找值，`self.head['bias']` 用字符串key `'bias'` 取得数组。dict是参数树的 **container（容器）**，真正保存浮点参数的数组是 **leaf（叶子）**。
+
+`mx.broadcast_to(array, shape)` 按广播规则把数组扩展为指定shape。本例把一个长度V=3的向量广播到 `(B,T,V)`：每个位置使用同一组3个参数，不是为B×T个位置创建独立参数。
+
+```python
+import mlx.core as mx
+import mlx.nn as nn
+
+class SharedLogitModel(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.head = {
+            'bias': mx.array([0., 0., 0.], dtype=mx.float32)
+        }
+
+    def __call__(self, X):
+        B, T = X.shape
+        V = self.head['bias'].shape[0]
+        return mx.broadcast_to(self.head['bias'], (B, T, V))
+```
+
+这只是**参数到loss的接口toy替身**。它只读取X的shape，不读取token内容或上下文，每个位置都输出相同的分数向量；它不是MiniGPT，也不是给MiniGPT推荐全零初始化。
+
+MLX会递归收集Module、dict、list结构中的公开数组参数。`parameters()` 返回参数树，其中也可以包含被冻结的参数；`trainable_parameters()` 只保留可训练的参数。本例没有冻结任何叶子，两棵树相同，其结构示意为：
+
+```text
+{'head': {'bias': 一个shape为(3,)的MLX数组}}
+```
+
+```python
+model = SharedLogitModel()
+params = model.parameters()
+trainable_params = model.trainable_parameters()
+```
+
+路径 `head → bias` 标识同一个参数叶子，例如 `trainable_params['head']['bias']`。这里的树形组织保留名称和层次，并不是17.2合并B、T轴的张量reshape。输入数据X、目标Y放在Module外部，不把它们作为模型参数保存。
+
+### Put the scalar loss in a function
+
+**Function object（函数对象）** 是可被传递的函数本身：`loss_fn` 表示函数；`loss_fn(model,X,Y)` 则表示调用它。Python的 `def` 定义函数，函数体在调用时使用传入的参数，`return` 把计算结果交还调用方。
+
+先恢复17.2相同的toy输入：
+
+```python
+toy_chunks = mx.array([[0, 2, 1], [1, 0, 2]], dtype=mx.int32)
+X = toy_chunks[:, :-1]  # [[0,2],[1,0]], shape (2,2)
+Y = toy_chunks[:, 1:]   # [[2,1],[0,2]], shape (2,2), already shifted
+```
+
+下面 `loss_fn` 的第一个普通Python参数叫model，函数内部的 `model(X)` 调用它的forward规则。所得raw logits依赖当前模型参数；再沿用17.2的两侧reshape、逐位置CE和等权mean。返回值保持MLX scalar array，shape为 `()`，不转成 `.item()` 或 `float(...)`。
+
+```python
+def loss_fn(model, X, Y):
+    logits = model(X)
+    B, T, V = logits.shape
+    N = B * T
+    flat_logits = mx.reshape(logits, (N, V))
+    flat_targets = mx.reshape(Y, (N,))
+    token_losses = nn.losses.cross_entropy(
+        flat_logits,
+        flat_targets,
+        axis=-1,
+        reduction='none',
+    )
+    return mx.mean(token_losses)
+```
+
+X/Y shape为 `(2,2)`，logits为 `(2,2,3)`，N=4。`token_losses:(4,)` 每项仍对应target顺序 `[2,1,0,2]`，但数值由本节共享参数产生，不再是17.2手工指定的四组分数。Y已经shift，不再次右移；交叉熵直接接收raw logits。
+
+### Function transformation: first obtain a callable, then call it
+
+**Function transformation（函数变换）** 接收一个函数并产生另一个函数。5.3已经见过 `mx.grad` 和 `mx.value_and_grad`；这里使用能识别Module可训练参数树的 `nn.value_and_grad`。它的第一个参数model指定“对这个Module的可训练参数求导”，第二个参数接收函数对象 `loss_fn`，返回一个新的 **callable（可调用对象）**，下面命名为g：
+
+```python
+g = nn.value_and_grad(model, loss_fn)
+```
+
+这里没有把一个预先计算好的loss交给变换。随后调用g时，`model,X,Y` 是转交给原 `loss_fn(model,X,Y)` 的普通实参；包装器不会自动插入model。因此两个地方都出现model是有原因的，而且使用的是同一个实例。
+
+调用g返回两项结果。左侧的 `loss_value, grads` 是 **tuple unpacking（元组解包）**：按顺序接收两个返回项。第一项 `loss_value` 是scalar MLX array；第二项 `grads` 是与可训练参数树对应的梯度结构：
+
+```python
+loss_value, grads = g(model, X, Y)
+```
+
+`nn.value_and_grad` 不是给通用 `mx.value_and_grad` 换一个缩写，也不在此helper上另加 `argnums`。本节示例按参数树路径读取梯度：
+
+```python
+bias_gradient = grads['head']['bias']  # Shape (3,).
+```
+
+这个向量的三个分量对应共享参数的三个分量。它不是shape为 `(4,)` 的逐token损失，也不是shape为 `(2,2,3)` 的logits梯度。参数树的叶子shape与相应梯度叶子的shape一致。
+
+当前用显式返回的 `grads` 接收结果，无需假定参数数组上自动附着 `.grad`，也无需添加 `.backward()` 或 `.zero_grad()` 调用。这个例子只准备loss与梯度的取得方式，不进行参数学习更新。
+
+### Hand calculation: one shared vector, four supervised positions
+
+用 \(\theta\) 表示所有可训练参数，本例就是长度3的向量。标量loss写作 \(L(\theta;X,Y)\)：当前X/Y固定，考察L对参数的依赖。
+
+**Partial derivative（偏导数）** \(\partial L/\partial\theta_v\) 表示固定其他参数分量时，第v个分量微小变化引起的局部loss变化率。把三个偏导数按参数位置排列，就是shape `(3,)` 的 **gradient（梯度）**。正负号解释的是局部影响，不是本节要实现的更新算法。
+
+本例 \(\theta=[0,0,0]\)。每个位置的三个logits都相同，因此各类别概率均为1/3，每个位置的损失均为ln3，等权平均仍为：
+
+\[
+L=\ln3.
+\]
+
+接着推导三个梯度分量。r是17.2的展平位置，\(y_r\) 是它的正确类别；定义one-hot指示量 \(q_{r,v}\)：当v等于\(y_r\)时为1，否则为0。共享的类别概率记作 \(p_v\)。
+
+沿用17.1从logits直接计算NLL的表达式，令 \(s=\sum_u\exp(\theta_u)\)，其中u遍历三个类别，则：
+
+\[
+\ell_r=\ln s-\theta_{y_r}.
+\]
+
+简短回顾链式法则所需的导数：\(\mathrm{d}\exp(a)/\mathrm{d}a=\exp(a)\)，对s>0有 \(\mathrm{d}\ln s/\mathrm{d}s=1/s\)。固定其他分量时，s中只有 \(\exp(\theta_v)\) 这一项随 \(\theta_v\) 变化；\(\theta_{y_r}\) 对 \(\theta_v\) 的导数就是指示量 \(q_{r,v}\)。因此：
+
+\[
+\frac{\partial\ell_r}{\partial\theta_v}
+=\frac{\exp(\theta_v)}{s}-q_{r,v}
+=p_v-q_{r,v}.
+\]
+
+四个位置共用同一个参数向量，平均loss的梯度也要把它们的贡献相加再除以N=4。target顺序 `[2,1,0,2]` 中，类别0、1、2分别出现1、1、2次；one-hot指示量的平均分别为1/4、1/4、1/2。所以：
+
+\[
+\nabla_\theta L
+=\left[\frac13-\frac14,\frac13-\frac14,\frac13-\frac12\right]
+=\left[\frac1{12},\frac1{12},-\frac16\right].
+\]
+
+这对应 `grads['head']['bias']` 的三个分量。前两个正分量表示分别小幅增大相应参数时loss局部上升；第三个负分量表示小幅增大第三个参数时loss局部下降。这里只解释敏感度，不选择学习率或执行参数更新。
+
+`loss_value=ln3` 和上述梯度都是按明确输入推导的数学预期，不是本轮运行输出、数值实验或测试结果；没有展开softmax Jacobian。
+
+### Operational order, scope, and ledger
+
+之后使用work副本时：安全复制到新文件名 → 选择项目kernel → imports → 阅读dict与broadcast并定义toy Module → 创建toy模型和外部X/Y → 了解参数树 → 定义内部调用model的loss函数 → 先取得g再调用g → 按树路径读取梯度并对照手算。所需定义全部在新母版中，不依赖旧课执行状态。
+
+本轮仅准备并发布17.3，完成即停，不进入17.4。没有读取或下载语料，没有执行课程代码、Notebook、测试、数值实验、采样、训练或用户work副本，没有代答练习；不实现optimizer、参数学习更新、训练循环或生成，不扩展执行/编译专题。材料准备、静态审阅与发布均不表示学员掌握或运行验证。
+
+累计实际修正：16.1=**1/2**、16.2=**1/2**（包括超时后的完整回复补齐）、16.3至16.5及17.1至17.2各**0/2**、17.3初版=**0/2**。每小节最多两次实际修正，跨轮与换对话不重置；后续仍只按请求逐小节至大Step20全部完成后停止。
+
+### References and continuity
+
+- [MLX v0.32.2 nn/utils.py](https://github.com/ml-explore/mlx/blob/v0.32.2/python/mlx/nn/utils.py)：Module-aware `value_and_grad` 的固定版本调用契约。
+- [MLX v0.32.2 Module implementation](https://github.com/ml-explore/mlx/blob/v0.32.2/python/mlx/nn/layers/base.py)：参数树与可训练参数的筛选。
+- [Official nn.value_and_grad API](https://ml-explore.github.io/mlx/build/html/python/_autosummary/mlx.nn.value_and_grad.html)：函数变换及返回值。
+- [4.2 Module与参数树](../notebooks/09_step04_2_parameters_bias_module.ipynb)、[5.3 自动微分](../notebooks/14_step05_3_gradient_autodiff.ipynb)、[17.2监督与标量loss](../notebooks/73_step17_2_flatten_bt_supervision.ipynb)：本节的课程前置。
+- [Course roadmap](course-roadmap.md) 与 [teaching handoff](teaching-handoff.md)：17.3范围、材料状态与累计计数。

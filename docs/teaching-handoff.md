@@ -29,13 +29,14 @@ Step 16.3         material and full-reply core independently passed; corrections
 Step 16.4         material reviewer independently confirmed core static PASS; corrections 0/2
 Step 16.5         material reviewer independently confirmed core static PASS; corrections 0/2
 Step 17.1         material reviewer independently confirmed core static PASS; corrections 0/2
-Step 17.2         current initial material prepared; corrections 0/2
-Step 17.3+        planned only; not current
+Step 17.2         material reviewer independently confirmed core static PASS; corrections 0/2
+Step 17.3         current initial material prepared; corrections 0/2
+Step 17.4+        planned only; not current
 ```
 
-**Material status is not learner status.** All major Step 16 masters, documents, and full replies independently passed the material reviewer's core static review. Step 17.1's actual master, documentation, fixed-version MLX API contract, and full reply have also independently received core static PASS; this is not learner learning or execution feedback. No claim is made that the learner has a local corpus cache, executed Step 17 code, performed experiments, completed exercises, or mastered the material. No runtime validation is asserted.
+**Material status is not learner status.** All major Step 16 masters, documents, and full replies independently passed the material reviewer's core static review. Step 17.1's actual master, documentation, fixed-version MLX API contract, and full reply, plus Step 17.2's actual master, documentation, and full reply, have also independently received core static PASS; this is not learner learning or execution feedback. No claim is made that the learner has a local corpus cache, executed Step 17 code, performed experiments, completed exercises, or mastered the material. No runtime validation is asserted.
 
-Preserve all passed Step 16 and Step 17.1 teaching and masters. This turn prepares and publishes only Step 17.2, then stops before Step 17.3. Step 17.2 uses self-contained toy logits and already-shifted targets to explain matching B×T rows, per-position losses, and their equal-weight mean; it needs no corpus access, sampler execution, model construction, model forward, or training step.
+Preserve all passed Step 16 and Step 17.1–17.2 teaching and masters. This turn prepares and publishes only Step 17.3, then stops before Step 17.4. Step 17.3 supplies a self-contained toy Module, already-shifted targets, and a scalar loss function to explain a trainable parameter tree and the loss/gradient function transformation. The prepared example needs no corpus, sampler, or MiniGPT dependencies and performs no parameter learning update; all lesson code remains unexecuted.
 
 ### mlx-chap2 continuation ledger
 
@@ -45,9 +46,10 @@ Preserve all passed Step 16 and Step 17.1 teaching and masters. This turn prepar
 - Step 16.4 full reply, master, and Step 16 documentation independently confirmed core static PASS by the material reviewer; actual corrections **0/2**. This is material acceptance, not learner feedback. Do not reopen the passed lesson.
 - Step 16.5 material/core teaching passed; actual corrections **0/2**. The material reviewer independently confirmed core static PASS for all major Step 16 masters, documents, and full replies; this cumulative acceptance is not learner feedback.
 - Step 17.1 actual master, documentation, fixed-version MLX API contract, and full reply independently confirmed core static PASS by the material reviewer; actual corrections **0/2**. This is material acceptance, not learner feedback. Do not reopen the passed lesson.
-- Step 17.2 initial preparation; actual corrections **0/2**.
+- Step 17.2 actual master, documentation, and full reply independently confirmed core static PASS by the material reviewer; actual corrections **0/2**. This is material acceptance, not learner feedback. Do not reopen the passed lesson.
+- Step 17.3 initial preparation; actual corrections **0/2**.
 - Earlier notebook wording about an initial count is historical; this cumulative ledger does not reset when conversations change.
-- Subsequent requests continue one subsection at a time through major **Step 20**, then stop. This turn ends at Step 17.2; do not prepare Step 17.3 or any later lesson during this turn, and do not infer authorization for automatic batch preparation. Keep the wider Step 21–25 curriculum as a future plan.
+- Subsequent requests continue one subsection at a time through major **Step 20**, then stop. This turn ends at Step 17.3; do not prepare Step 17.4 or any later lesson during this turn, and do not infer authorization for automatic batch preparation. Keep the wider Step 21–25 curriculum as a future plan.
 
 ## Non-negotiable teaching constraints
 
@@ -189,9 +191,9 @@ mlx-minigpt-from-scratch/
 
 Current course-material checkpoint:
 
-> **Step 17.2 — Flatten B×T supervision**
+> **Step 17.3 — MLX nn.value_and_grad**
 
-Step 17.2 initial material is prepared and published only. All major Step 16 masters, documents, and full replies, plus Step 17.1's actual master, documentation, fixed-version MLX API contract, and full reply, have independently passed the material reviewer's core static review. Neither acceptance nor current preparation implies learner completion, mastery, experiments, exercise completion, or runtime validation. Stop at Step 17.2, before Step 17.3. Step 14's completed static audit still does not imply runtime tests were executed or passed.
+Step 17.3 initial material is prepared and published only. All major Step 16 masters, documents, and full replies; Step 17.1's actual master, documentation, fixed-version MLX API contract, and full reply; and Step 17.2's actual master, documentation, and full reply have independently passed the material reviewer's core static review. Neither acceptance nor current preparation implies learner completion, mastery, experiments, exercise completion, or runtime validation. Stop at Step 17.3, before Step 17.4. Step 14's completed static audit still does not imply runtime tests were executed or passed.
 
 ## 2026-10-08 continuity re-audit
 
@@ -707,7 +709,7 @@ The historical Step 16.5 lesson ends at major Step 16; current progression is re
 
 ## Step 17.1 accuracy boundary
 
-Lesson master: `notebooks/72_step17_1_logits_probabilities_cross_entropy.ipynb`. The material reviewer independently confirmed core static PASS for the actual master, documentation, fixed-version MLX API contract, and full reply. Actual corrections remain **0/2**. Preserve 16.1=1/2, 16.2=1/2, and 16.3–16.5=0/2. All major Step 16 masters, documents, and full replies also independently passed the material reviewer's core static review; this is material acceptance, not learner learning or execution feedback. The scope below records the passed 17.1 lesson; current preparation proceeds only to 17.2.
+Lesson master: `notebooks/72_step17_1_logits_probabilities_cross_entropy.ipynb`. The material reviewer independently confirmed core static PASS for the actual master, documentation, fixed-version MLX API contract, and full reply. Actual corrections remain **0/2**. Preserve 16.1=1/2, 16.2=1/2, and 16.3–16.5=0/2. All major Step 16 masters, documents, and full replies also independently passed the material reviewer's core static review; this is material acceptance, not learner learning or execution feedback. The scope below records the passed 17.1 lesson; current preparation proceeds only to 17.3.
 
 Follow the existing 17.1 topics: logits are not probabilities, softmax, negative log-likelihood, and one small hand-computable example. Connect the raw MiniGPT logits `(B,T,V)` to the already-shifted integer targets `Y:(B,T)`, pairing `logits[b,t,:]` with `Y[b,t]`. Do not shift Y again. Preserve the raw-logit model interface and do not alter passed model or data notebooks.
 
@@ -729,7 +731,7 @@ The 17.1 preparation was limited to materials: no corpus read/download, Notebook
 
 ## Step 17.2 accuracy boundary
 
-Current master: `notebooks/73_step17_2_flatten_bt_supervision.ipynb`. Initial preparation count: **0/2**. Preserve 16.1=1/2, 16.2=1/2 (including the previously recorded reply completion after a timeout), 16.3–16.5=0/2, and 17.1=0/2. Step 17.1's actual master, documentation, fixed-version MLX API contract, and full reply independently received core static PASS from the material reviewer; this is material acceptance, not learner learning or execution feedback.
+Lesson master: `notebooks/73_step17_2_flatten_bt_supervision.ipynb`. The material reviewer independently confirmed core static PASS for its actual master, documentation, and full reply. Actual corrections remain **0/2**. Preserve 16.1=1/2, 16.2=1/2 (including the previously recorded reply completion after a timeout), 16.3–16.5=0/2, and 17.1=0/2. Step 17.1's actual master, documentation, fixed-version MLX API contract, and full reply also independently received core static PASS; this is material acceptance, not learner learning or execution feedback. The scope below records the passed 17.2 lesson; current preparation proceeds only to 17.3.
 
 Follow the existing 17.2 topics: `(B,T,V) -> (B*T,V)`, `(B,T) -> (B*T,)`, and many token-level targets in the batch used by a future training step. Explain B, T, V, N=B*T, and the flattened row index r before using them. Preserve the class axis V and the existing pairing `logits[b,t,:]` with already-shifted `Y[b,t]`; do not shift targets again.
 
@@ -741,4 +743,24 @@ Reuse raw-logit cross-entropy with integer targets, `axis=-1`, and `reduction='n
 
 Introduce an equal-weight arithmetic mean only after explaining summation indices and division by the number of supervised positions: `L=(1/N)*sum_r ell_r=(1/(B*T))*sum_b sum_t ell_(b,t)`. Use `mx.mean(flat_losses)` to produce scalar shape `()`. Every position in this lesson is valid and equally weighted; do not expand into padding, masks, or weights. The denominator is N=B*T, not V. Distinguish three operations: reshape organizes positions; cross-entropy consumes each V-class vector and its target; mean aggregates the resulting position losses. Do not add a reduction='mean' shortcut or unrelated alternative implementations.
 
-N supervised positions do not mean N parameter updates, N distinct token IDs, or N statistically independent examples. The lesson only explains the loss organization used by a future training step. Stop at 17.2 before 17.3; do not introduce value_and_grad, gradients, optimizers, training loops, or generation. Prepare and publish materials only: no corpus read/download, Notebook or user work copy execution, tests, numerical experiments, sampling, training, or exercise answers. Static review and publication do not imply learner mastery or runtime validation.
+N supervised positions do not mean N parameter updates, N distinct token IDs, or N statistically independent examples. The 17.2 lesson only explained the loss organization used by a future training step. Its scope stopped at 17.2 before 17.3, without value_and_grad, gradients, optimizers, training loops, or generation. Its preparation was limited to materials: no corpus read/download, Notebook or user work copy execution, tests, numerical experiments, sampling, training, or exercise answers. Static review and publication do not imply learner mastery or runtime validation.
+
+## Step 17.3 accuracy boundary
+
+Current master: `notebooks/74_step17_3_nn_value_and_grad.ipynb`. Initial preparation count: **0/2**. Preserve 16.1=1/2, 16.2=1/2 (including the reply completion after a timeout), 16.3–16.5=0/2, and 17.1–17.2=0/2. Step 17.2's actual master, documentation, and full reply independently received core static PASS from the material reviewer. This is material acceptance, not learner learning or execution feedback.
+
+Follow only the existing 17.3 topics: Module parameter trees; loss and gradients as a function transformation; and the difference from a model of gradients automatically attached to parameter arrays. Connect 4.2's Module/tree explanation, 5.3's mx.grad/mx.value_and_grad, 15.4–15.5's trainable parameter tree, and 17.2's scalar MLX mean loss. Do not reopen passed lessons or enter 17.4 Adam, parameter updates, the full training loop, or Step 18 execution/compilation topics.
+
+Use a self-contained SharedLogitModel(nn.Module). Its __init__ calls super().__init__() and assigns `self.head={'bias':mx.array([0.,0.,0.],dtype=mx.float32)}`. Its __call__(self,X) obtains B,T from X.shape, V from the bias vector's shape, and returns `mx.broadcast_to(self.head['bias'],(B,T,V))`. Explain dictionary keys, containers and array leaves, callable instances, and broadcasting before code. Every position uses the same parameter vector. This toy depends only on X.shape, not token contents or context; it is an interface example, not MiniGPT or an initialization recommendation.
+
+Keep the data outside the Module: `toy_chunks=[[0,2,1],[1,0,2]]`, X=`[[0,2],[1,0]]`, Y=`[[2,1],[0,2]]`; Y is already shifted. The work copy includes imports, the full toy class, explicit arrays, loss_fn, and prepared transform/call usage. No old kernel, prior Notebook execution, corpus, sampler, full MiniGPT definitions, or new dependency is required. All cells remain unexecuted and output-free.
+
+Explain that parameters() returns the parameter tree, including frozen parameter leaves, while trainable_parameters() filters out frozen parameters. Public mx.array members can be collected through nested Modules/dicts/lists. Do not assert default tuple traversal. This toy freezes nothing, so both trees contain the single path `head -> bias`, with leaf shape (3,). Returned gradients follow the trainable tree: `grads['head']['bias']` is shape (3,), corresponding to the three shared parameter components, not N token losses or the full `(B,T,V)` logits array. Do not require `.grad`, `.backward()`, or `.zero_grad()` calls.
+
+Define `loss_fn(model,X,Y)` so `logits=model(X)` is computed inside the differentiable function. Reuse 17.2's matching reshape to `(N,V)` and `(N,)`, raw-logit cross_entropy with axis=-1/reduction='none', and return mx.mean of the resulting (N,) losses as a scalar MLX array. Do not close over fixed 17.2 toy logits or convert the return value with item()/float(). Explain function objects versus calls, return, a function transformation returning a callable, and tuple unpacking before the usage code.
+
+Use the fixed MLX 0.32.2 API `g=nn.value_and_grad(model,loss_fn)`, then `loss_value,grads=g(model,X,Y)`. The first model identifies whose trainable parameters are differentiated. Arguments to g are ordinary arguments forwarded to the supplied loss_fn; this wrapper does not insert model automatically. Use the same model instance in both places. nn.value_and_grad is the Module-aware helper, distinct from the general mx array-argument transformation; do not add argnums or other nonexistent helper arguments. No optimizer learning update occurs in the example. Do not claim the wrapper never writes Module state: fixed-version source internally uses model.update(params) to connect differentiated parameters to the computation, not to perform a learning update. The internal tracking mechanism need not become another teaching topic.
+
+Let theta denote all trainable parameters, a length-3 vector in this toy, and write scalar L(theta;X,Y). Explain each partial derivative as the local loss change rate when that component changes and the others stay fixed. Gradient signs describe local effects, not an optimizer algorithm. With theta=[0,0,0], every position has p=[1/3,1/3,1/3], and L=ln3. Define q_(r,v) as the one-hot indicator for target flat_targets[r]. From ell_r=ln(sum_v exp(theta_v))-theta_y and the brief derivative/chain-rule reminders d(exp(u))/du=exp(u), d(ln(s))/ds=1/s, obtain d(ell_r)/d(theta_v)=p_v-q_(r,v). Average the four position contributions for target order [2,1,0,2]: gradient=[1/3-1/4,1/3-1/4,1/3-1/2]=[1/12,1/12,-1/6]. These are hand-derived expectations, not observed output or executed checks. Do not add a softmax Jacobian derivation.
+
+API authority: fixed v0.32.2 python/mlx/nn/utils.py and python/mlx/nn/layers/base.py; the official helper page is https://ml-explore.github.io/mlx/build/html/python/_autosummary/mlx.nn.value_and_grad.html. Prepare and publish materials only: no corpus read/download, lesson code or Notebook execution, tests, numerical experiments, sampling, training, user work copy execution, or exercise answers. Stop at 17.3 before 17.4. Static review and publication do not imply learner mastery or runtime validation.
