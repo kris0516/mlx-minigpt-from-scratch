@@ -37,24 +37,25 @@ Step 18.1         ✅ Material reviewer independently confirmed core static PASS
 Step 18.2         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
 Step 18.3         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
 Step 18.4         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
-Step 18.5         🚧 Current initial material prepared / corrections 0/2
-Step 19+           Planned only
+Step 18.5         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
+Step 19.1         🚧 Current initial material prepared / corrections 0/2
+Step 19.2+         Planned only
 ```
 
-Current course-material checkpoint: **Step 18.5 — Memory instrumentation**.
+Current course-material checkpoint: **Step 19.1 — Hyperparameter baseline**.
 
-Current master: [81_step18_5_memory_instrumentation.ipynb](notebooks/81_step18_5_memory_instrumentation.ipynb).
+Current master: [82_step19_1_hyperparameter_baseline.ipynb](notebooks/82_step19_1_hyperparameter_baseline.ipynb).
 
-Actual correction counts persist across conversations: Step 16.1 **1/2**, Step 16.2 **1/2**, Step 16.3 **0/2**, Step 16.4 **0/2**, Step 16.5 **0/2**, Step 17.1 **0/2**, Step 17.2 **0/2**, Step 17.3 **0/2**, Step 17.4 **0/2**, Step 17.5 **0/2**, Step 18.1 **0/2**, Step 18.2 **0/2**, Step 18.3 **0/2**, Step 18.4 **0/2**, Step 18.5 initial version **0/2**. Step 16.2's count includes the learner-confirmed completion of a reply after a timeout. Passed lessons are not reworked and counts do not reset.
+Actual correction counts persist across conversations: Step 16.1 **1/2**, Step 16.2 **1/2**, Step 16.3 **0/2**, Step 16.4 **0/2**, Step 16.5 **0/2**, Step 17.1 **0/2**, Step 17.2 **0/2**, Step 17.3 **0/2**, Step 17.4 **0/2**, Step 17.5 **0/2**, Step 18.1 **0/2**, Step 18.2 **0/2**, Step 18.3 **0/2**, Step 18.4 **0/2**, Step 18.5 **0/2**, Step 19.1 initial version **0/2**. Step 16.2's count includes the learner-confirmed completion of a reply after a timeout. Passed lessons are not reworked and counts do not reset.
 
-All major Step 16 and Step 17 materials, and Steps 18.1 through 18.4, have independently passed the material reviewer's core static review. The latest acceptance covers Step 18.4's actual five-file commit `b3993d819c47c1a3dccf9bd71022db12bafcf7b0` and full teaching reply, with actual corrections **0/2**. This is material acceptance, not learner mastery or runtime validation. This turn prepares only **Step 18.5**, then stops at major Step 18, before Step 19. Earlier acceptance does not automatically extend to 18.5.
+All major Step 16, Step 17, and Step 18 materials have independently passed the material reviewer's core static review. The latest acceptance covers Step 18.5's actual five-file commit `57dc27ee121430b11802b7c6f54fa2617ccd710e`, fixed MLX v0.32.2 interfaces, and full teaching reply, with actual corrections **0/2**. This is material acceptance, not learner mastery or runtime feedback. This turn prepares only **Step 19.1**, then stops before 19.2. Earlier acceptance does not automatically extend to 19.1.
 
-Learner completion/mastery, local-cache availability, exercise completion, Notebook execution, and runtime validation are intentionally **not asserted** here. Step 18.5 explains active, peak, and cache memory in the fixed MLX v0.32.2 allocator, including bytes/MiB, the difference between logical array payload and allocator statistics, and the separate scope of whole-system memory and Swap. Its self-contained master restores the complete tiny model, explicit shifted X/Y, scalar loss, gradient helper, Adam, and live training-state containers. It prepares one selected uncompiled or compiled mode per fresh kernel, with the same one-update warm-up and three measured updates, each followed by an external evaluation boundary covering the old-parameter loss and new model/optimizer state. Counter reads and comparison code are written only for later practice; no measurement, training, test, or experiment has been executed, and no measurement values or efficiency conclusion are supplied. Resetting a peak counter does not free memory; memory-cache buffers and compiled-graph cache are different things. Compilation is not a promise of lower memory or faster execution. All imports, definitions, and data are included, without an old kernel, corpus, sampler, or extra dependency. Subsequent requests continue one subsection at a time through major Step 20, then stop.
+Learner completion/mastery, local-cache availability, exercise completion, Notebook execution, and runtime validation are intentionally **not asserted** here. Step 19.1 prepares one explicit, unmeasured hyperparameter candidate: model_width=64, layers=2, heads=4, block_size=64, batch_size=4, and learning_rate=3e-4. It connects these six choices to the existing MiniGPT, sampler, scalar loss, and Adam interfaces, keeping max_seq_len=block_size as this candidate's convention and vocabulary size as actual tokenizer metadata rather than a guessed constant. Pure Python configuration and argument-mapping helpers are self-contained and do not construct models, optimizers, arrays, batches, or training state. The material distinguishes structural constraints and hand-derived shapes from measurements; the old shape toys are not promoted to tuned training baselines. No low-heat, memory, performance, or convergence result is claimed. Only course materials are authored and published; no Notebook, training, code tests, experiments, measurements, sampling, or user-work-copy code has been run, and no corpus has been read or downloaded. Subsequent explicit requests continue one subsection at a time through major Step 20, then stop before Step 21.
 
 ## Persistent course documents
 
 - [Full course roadmap](docs/course-roadmap.md)
 - [Teaching handoff / continuation guide](docs/teaching-handoff.md)
-- [Current Step 18 material](docs/step-18-mlx-execution-model.md)
+- [Current Step 19 material](docs/step-19-stable-low-heat-training.md)
 
 教学笔记、代码与实验将按学习进度逐步提交。

@@ -774,7 +774,7 @@ All five subsection masters, documents, and full replies have independently pass
 
 ---
 
-## Step 18 — MLX execution model: lazy evaluation, `mx.eval`, and `mx.compile` 🚧
+## Step 18 — MLX execution model: lazy evaluation, `mx.eval`, and `mx.compile` ✅
 
 **Goal:** understand what makes MLX distinctive on Apple Silicon.
 
@@ -803,7 +803,7 @@ All five subsection masters, documents, and full replies have independently pass
 - dynamic inputs/outputs
 - avoid treating changing parameters as constants
 
-### 18.5 Memory instrumentation 🚧
+### 18.5 Memory instrumentation ✅
 
 - active memory
 - peak memory
@@ -812,11 +812,11 @@ All five subsection masters, documents, and full replies have independently pass
 
 ---
 
-## Step 19 — Stable low-heat training
+## Step 19 — Stable low-heat training 🚧
 
 **Goal:** train the model responsibly on an M-series laptop rather than maximize benchmark throughput.
 
-### 19.1 Hyperparameter baseline
+### 19.1 Hyperparameter baseline 🚧
 
 - model width
 - layers
@@ -1139,20 +1139,21 @@ Step 18.1         ✅ Material reviewer independently confirmed core static PASS
 Step 18.2         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
 Step 18.3         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
 Step 18.4         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
-Step 18.5         🚧 Current initial material prepared / corrections 0/2
-Step 19+           Planned only
+Step 18.5         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
+Step 19.1         🚧 Current initial material prepared / corrections 0/2
+Step 19.2+         Planned only
 ```
 
 Current course-material checkpoint:
 
-> **Step 18.5 — Memory instrumentation**
+> **Step 19.1 — Hyperparameter baseline**
 
-Current master: [81_step18_5_memory_instrumentation.ipynb](../notebooks/81_step18_5_memory_instrumentation.ipynb). Current Step document: [Step 18 — MLX execution model](step-18-mlx-execution-model.md).
+Current master: [82_step19_1_hyperparameter_baseline.ipynb](../notebooks/82_step19_1_hyperparameter_baseline.ipynb). Current Step document: [Step 19 — Stable low-heat training](step-19-stable-low-heat-training.md).
 
 Learner-status note:
 
-> All major Step 16 and Step 17 materials, and Steps 18.1 through 18.4, have independently passed the material reviewer's core static review. The latest acceptance covers Step 18.4's actual five-file commit `b3993d819c47c1a3dccf9bd71022db12bafcf7b0` and full teaching reply, with actual corrections **0/2**. This is material acceptance, not learner mastery or runtime validation. Step 18.5 explains active, peak, and cache memory in the fixed MLX v0.32.2 allocator, including bytes/MiB, the difference between logical array payload and allocator statistics, and the separate scope of whole-system memory and Swap. Its self-contained master restores the complete tiny model, explicit shifted X/Y, scalar loss, gradient helper, Adam, and live training-state containers. It prepares one selected uncompiled or compiled mode per fresh kernel, with the same one-update warm-up and three measured updates, each followed by an external evaluation boundary covering the old-parameter loss and new model/optimizer state. Counter reads and comparison code are written only for later practice; no measurement, training, test, or experiment has been executed, and no measurement values or efficiency conclusion are supplied. This turn stops at Step 18.5 and major Step 18, before Step 19. Earlier independent acceptance does not imply acceptance of 18.5, learner completion, mastery, exercise completion, or runtime validation. Compilation is not a memory-saving or speedup claim.
+> All major Step 16, Step 17, and Step 18 materials have independently passed the material reviewer's core static review. The latest acceptance covers Step 18.5's actual five-file commit `57dc27ee121430b11802b7c6f54fa2617ccd710e`, fixed MLX v0.32.2 interfaces, and full teaching reply, with actual corrections **0/2**. This is material acceptance, not learner mastery or runtime feedback. Step 19.1 prepares one explicit, unmeasured hyperparameter candidate: model_width=64, layers=2, heads=4, block_size=64, batch_size=4, and learning_rate=3e-4. It connects these six choices to the existing MiniGPT, sampler, scalar loss, and Adam interfaces, keeping max_seq_len=block_size as this candidate's convention and vocabulary size as actual tokenizer metadata rather than a guessed constant. Pure Python configuration and argument-mapping helpers are self-contained and do not construct models, optimizers, arrays, batches, or training state. The material distinguishes structural constraints and hand-derived shapes from measurements; the old shape toys are not promoted to tuned training baselines. No low-heat, memory, performance, or convergence result is claimed. This turn stops at Step 19.1, before 19.2. Earlier independent acceptance does not imply acceptance of 19.1, learner completion, mastery, exercise completion, or runtime validation. The major Step 19 title is a course goal, not evidence that this candidate has been measured as stable or low-heat.
 
-Actual correction ledger: Step 16.1 **1/2**, Step 16.2 **1/2**, Step 16.3 **0/2**, Step 16.4 **0/2**, Step 16.5 **0/2**, Step 17.1 **0/2**, Step 17.2 **0/2**, Step 17.3 **0/2**, Step 17.4 **0/2**, Step 17.5 **0/2**, Step 18.1 **0/2**, Step 18.2 **0/2**, Step 18.3 **0/2**, Step 18.4 **0/2**, Step 18.5 initial version **0/2**. Step 16.2 includes the previously recorded reply completion after a timeout. Preserve the passed lessons and all accumulated counts across turns and conversations.
+Actual correction ledger: Step 16.1 **1/2**, Step 16.2 **1/2**, Step 16.3 **0/2**, Step 16.4 **0/2**, Step 16.5 **0/2**, Step 17.1 **0/2**, Step 17.2 **0/2**, Step 17.3 **0/2**, Step 17.4 **0/2**, Step 17.5 **0/2**, Step 18.1 **0/2**, Step 18.2 **0/2**, Step 18.3 **0/2**, Step 18.4 **0/2**, Step 18.5 **0/2**, Step 19.1 initial version **0/2**. Step 16.2 includes the previously recorded reply completion after a timeout. Preserve the passed lessons and all accumulated counts across turns and conversations.
 
 Active continuation boundary: subsequent requests proceed one subsection at a time through major **Step 20**, then stop. The existing Step 21–25 roadmap remains a future curriculum plan; this boundary does not authorize automatic or batch preparation of later lessons.
