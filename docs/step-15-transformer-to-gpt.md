@@ -2,7 +2,7 @@
 
 目标：解释 2017 Transformer 的 encoder–decoder architecture，以及 GPT 后续究竟保留、删除和重组了什么。
 
-本 Step 保留现有 roadmap 的 15.1–15.5 结构。Step 14 材料已通过静态审核；当前只准备 **15.1 Original Transformer architecture**，不进入 15.2。
+本 Step 保留现有 roadmap 的 15.1–15.5 结构。Step 15.1 材料已通过静态审核；当前只准备 **15.2 Why autoregressive GPT can be decoder-only**，不进入 15.3。
 
 ## Step 15.1 — Original Transformer architecture
 
@@ -53,3 +53,53 @@ V : (B,T_src,d_v)
 本节只恢复原始 Transformer 全局 architecture，不解释为什么 GPT 能移除 separate encoder，也不实现 decoder-only GPT。
 
 Step 15.1 材料准备到此停止，不进入 Step 15.2。
+
+## Step 15.2 — Why autoregressive GPT can be decoder-only
+
+### Autoregressive task factorization
+
+GPT 的核心目标是同一条 token stream 上的 next-token modeling：
+
+```text
+p(x_0,...,x_T) = product_t p(x_t | x_<t)
+```
+
+预测下一个 token 所需要的条件信息就是同一 stream 中已经出现的 prefix，而不是一份独立 encoder memory。
+
+### Shifted supervision is not encoder–decoder separation
+
+训练时 `input=x_0...x_(T-1)` 与 `label=x_1...x_T` 是同一 underlying sequence 的 shifted views，只用于 supervision；它们不是 Original Transformer 中独立 source stream / target stream 的 architecture roles。
+
+### Causal self-attention is sufficient for prefix conditioning
+
+输入 position i 用于预测 `x_(i+1)`，允许访问 `j<=i`。因此 causal self-attention 恰好提供 `p(next | prefix)` 所需的信息集合。
+
+### Remove encoder and cross-attention
+
+Pure autoregressive LM 没有 separate source encoder memory，所以可以移除：
+
+```text
+encoder stack
+encoder memory
+encoder–decoder cross-attention
+```
+
+保留 decoder-side causal self-attention + FFN / residual / normalization lineage。
+
+Decoder-only 并不意味着把 2017 decoder layer 原封不动保留，因为原版 decoder 还包含 cross-attention；GPT-style block 删除了这一 sublayer。
+
+### Prompt-conditioned generation
+
+Conditional context 可以被序列化为同一 stream 的 prefix，例如 `[instruction/source | response]`。生成 response 时，全部 prompt/source tokens 已位于 causal past，因此 response positions 可以通过 causal self-attention 读取它们。
+
+这解释了 decoder-only 为什么仍可承担大量 prompt-conditioned generation，但不证明 encoder–decoder architecture 在所有 Seq2Seq 任务上都劣于 decoder-only。
+
+### Training versus inference
+
+训练可并行处理整条 shifted input tensor，但 causal mask 限制 future visibility；inference 时未来 token 尚不存在，因此仍需逐 token autoregressive generation。
+
+### Scope boundary
+
+本节只解释 decoder-only 的 sufficiency argument。不列出 MiniGPT 顶层模块，不实现 token/position embeddings、Block stacking、final norm 或 LM head。
+
+Step 15.2 材料准备到此停止，不进入 Step 15.3。
