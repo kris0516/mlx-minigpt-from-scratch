@@ -34,19 +34,20 @@ Step 17.3         ✅ Material reviewer independently confirmed core static PASS
 Step 17.4         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
 Step 17.5         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
 Step 18.1         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
-Step 18.2         🚧 Current initial material prepared / corrections 0/2
-Step 18.3+          Planned only
+Step 18.2         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
+Step 18.3         🚧 Current initial material prepared / corrections 0/2
+Step 18.4+          Planned only
 ```
 
-Current course-material checkpoint: **Step 18.2 — `mx.eval` as an execution/materialization boundary**.
+Current course-material checkpoint: **Step 18.3 — `mx.compile`**.
 
-Current master: [78_step18_2_eval_boundary.ipynb](notebooks/78_step18_2_eval_boundary.ipynb).
+Current master: [79_step18_3_mx_compile.ipynb](notebooks/79_step18_3_mx_compile.ipynb).
 
-Actual correction counts persist across conversations: Step 16.1 **1/2**, Step 16.2 **1/2**, Step 16.3 **0/2**, Step 16.4 **0/2**, Step 16.5 **0/2**, Step 17.1 **0/2**, Step 17.2 **0/2**, Step 17.3 **0/2**, Step 17.4 **0/2**, Step 17.5 **0/2**, Step 18.1 **0/2**, Step 18.2 initial version **0/2**. Step 16.2's count includes the learner-confirmed completion of a reply after a timeout. Passed lessons are not reworked and counts do not reset.
+Actual correction counts persist across conversations: Step 16.1 **1/2**, Step 16.2 **1/2**, Step 16.3 **0/2**, Step 16.4 **0/2**, Step 16.5 **0/2**, Step 17.1 **0/2**, Step 17.2 **0/2**, Step 17.3 **0/2**, Step 17.4 **0/2**, Step 17.5 **0/2**, Step 18.1 **0/2**, Step 18.2 **0/2**, Step 18.3 initial version **0/2**. Step 16.2's count includes the learner-confirmed completion of a reply after a timeout. Passed lessons are not reworked and counts do not reset.
 
-All major Step 16 and Step 17 materials, and Step 18.1, have independently passed the material reviewer's core static review. The latest acceptance includes Step 18.1's actual six-file commit `4dd066c839d8e5d371b6ba1fb9d039d50fd39efa`, fixed MLX v0.32.2 interfaces, and full teaching reply, with actual corrections **0/2**. This is material acceptance, not learner learning or execution feedback. This turn prepares only **Step 18.2**, then stops before 18.3. The earlier acceptance does not automatically extend to 18.2.
+All major Step 16 and Step 17 materials, and Steps 18.1 and 18.2, have independently passed the material reviewer's core static review. The latest acceptance includes Step 18.2's actual six-file commit `e3656db90239437cc0d50c24730920f1f783e59c`, fixed MLX v0.32.2 interfaces, and full teaching reply, with actual corrections **0/2**. This is material acceptance, not learner learning or execution feedback. This turn prepares only **Step 18.3**, then stops before 18.4. The earlier acceptance does not automatically extend to 18.3.
 
-Learner completion/mastery, local-cache availability, experiment results, Notebook execution, and runtime validation are intentionally **not asserted** here. Step 18.2 uses self-contained, explicitly supplied float32 arrays to explain how `mx.eval` requires selected arrays and their dependencies to complete, how unevaluated iterative state retains an extending dependency chain, and why this matters for memory. It restores the small two-branch example from 18.1, then uses two ordinary three-iteration state examples to contrast an end-of-loop boundary with a boundary after each update. The examples are unexecuted reading material, not performance experiments. All imports and input constants are supplied; no old kernel, corpus, sampler, model, optimizer, or new dependency is needed. Compilation and performance experiments are outside this subsection. Subsequent requests continue one subsection at a time through major Step 20, then stop.
+Learner completion/mastery, local-cache availability, experiment results, Notebook execution, and runtime validation are intentionally **not asserted** here. Step 18.3 restores a complete ordinary build_score(arr) function, explicitly supplied small arrays, and all imports. It explains tracing and compiling an array dependency graph, optimization and fusion intuition, first-use preparation costs, and default shape/dtype-related cache behavior. It distinguishes the callable returned by mx.compile, a call to that callable, and an explicit mx.eval boundary; compilation is not a numerical-completion guarantee. Cache reuse concerns a computation plan for compatible inputs, not a previously computed answer. The examples are unexecuted reading material with hand-derived values, not timing, cache-hit, or performance experiments. No old kernel, corpus, sampler, model, optimizer, or new dependency is needed. Mutable training state under compilation and performance/memory experiments are outside this subsection. Subsequent requests continue one subsection at a time through major Step 20, then stop.
 
 ## Persistent course documents
 

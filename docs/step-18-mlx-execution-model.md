@@ -1,8 +1,8 @@
 # Step 18 — MLX Execution Model
 
-沿用既有roadmap，本轮只准备并发布 **18.2 mx.eval as an execution/materialization boundary**，初始实际修正计数 **0/2**；完成即停，不进入18.3。当前母版：[78_step18_2_eval_boundary.ipynb](../notebooks/78_step18_2_eval_boundary.ipynb)。
+沿用既有roadmap，本轮只准备并发布 **18.3 mx.compile**，初始实际修正计数 **0/2**；完成即停，不进入18.4。当前母版：[79_step18_3_mx_compile.ipynb](../notebooks/79_step18_3_mx_compile.ipynb)。
 
-材料审核方已独立核验18.1真实六文件提交 `4dd066c839d8e5d371b6ba1fb9d039d50fd39efa`、固定MLX v0.32.2接口和完整教学回复，核心静态PASS、实际修正0/2。大Step16、17及18.1已通过材料保留，不返工；这是材料验收，不是学员掌握或运行反馈。18.2只登记当前初始材料编写发布，不继承前节外部验收结论。
+材料审核方已独立核验18.2实际六文件提交 `e3656db90239437cc0d50c24730920f1f783e59c`、固定MLX接口和完整教学回复，核心静态PASS、实际修正0/2。大Step16、17及18.1、18.2已通过材料保留，不返工；这是材料验收，不是学员掌握或运行反馈。18.3只登记当前初始材料编写发布，不继承前节外部验收结论。
 
 ## Step 18.1 — Lazy evaluation
 
@@ -245,7 +245,7 @@ print("returned metadata:", score_from_function.shape, score_from_function.dtype
 
 ## Step 18.2 — mx.eval as an execution/materialization boundary
 
-母版：[78_step18_2_eval_boundary.ipynb](../notebooks/78_step18_2_eval_boundary.ipynb)。本节承接18.1惰性求值及17.5单步，解释选定数组与依赖完成、迭代状态的待求值链以及内存关系。全部示例仅为材料，未执行、无输出；不进入18.3或性能实验。
+母版：[78_step18_2_eval_boundary.ipynb](../notebooks/78_step18_2_eval_boundary.ipynb)。18.2实际六文件提交 `e3656db90239437cc0d50c24730920f1f783e59c`、固定MLX接口及完整教学回复已由材料审核方独立确认核心静态PASS，实际修正 **0/2**。下文保留已通过的教学及18.2当轮边界，不返工该节。它承接18.1惰性求值及17.5单步，解释选定数组与依赖完成、迭代状态的待求值链以及内存关系；全部示例仅为材料，未执行、无输出。
 
 ### 0. 新Work Copy：导入、数据和两个迭代片段都在本节
 
@@ -508,7 +508,7 @@ for k in range(3):
 4. 状态版本B也自带初值，不承接版本A的末状态。两段循环只有三轮，均用于阅读边界语义；不要求任何测试、长循环、计时或内存测量。
 5. 17.5的model/optimizer表达式只在说明文字中出现，新副本没有对旧kernel变量的执行依赖。
 
-18.1的独立材料验收保持 **0/2**；18.2当前为初始材料编写发布，不能继承前节的外部验收结论。累计实际修正：16.1=**1/2**、16.2=**1/2**（含已记录的超时后完整回复补齐），16.3至16.5、17.1至17.5及18.1各**0/2**，18.2初始生成=**0/2**。每节最多两次实际修正，跨轮与换对话不重置。
+18.2当轮只进行初始材料编写发布，随后已获独立材料核心静态PASS，实际修正保持 **0/2**。18.1的验收同样保持 **0/2**。当轮记录的累计实际修正：16.1=**1/2**、16.2=**1/2**（含已记录的超时后完整回复补齐），16.3至16.5、17.1至17.5及18.1各**0/2**，18.2初始生成=**0/2**。每节最多两次实际修正，跨轮与换对话不重置。
 
 本轮只编写发布材料，未执行Notebook、课程代码、代码测试、训练、实验、采样或用户work副本，未读取/下载语料，未代答练习；不声称学员掌握或运行通过，不返工合格课节。
 
@@ -524,3 +524,293 @@ for k in range(3):
 - [MLX v0.32.2 Metal allocator](https://github.com/ml-explore/mlx/blob/v0.32.2/mlx/backend/metal/allocator.cpp)：缓冲区复用与缓存；本节没有调用测量或缓存操作API。
 - [官方mx.eval接口](https://ml-explore.github.io/mlx/build/html/python/_autosummary/mlx.core.eval.html)。在线文档可能更新，本课程行为以 **v0.32.2源码** 为准。
 - [Roadmap](https://github.com/kris0516/mlx-minigpt-from-scratch/blob/main/docs/course-roadmap.md)与[teaching handoff](https://github.com/kris0516/mlx-minigpt-from-scratch/blob/main/docs/teaching-handoff.md)：18.2当前材料状态、累计计数及停止边界。
+
+## Step 18.3 — mx.compile
+
+母版：[79_step18_3_mx_compile.ipynb](../notebooks/79_step18_3_mx_compile.ipynb)。本节承接18.1／18.2，准备tracing与编译、优化和fusion直觉、首次使用成本及shape／dtype相关缓存。初始实际修正 **0/2**；全部单元未执行、无输出，完成即停在18.3。
+
+### 0. 新Work Copy：导入、函数和输入全部在本节
+
+沿用项目Python 3.12 / `.venv` kernel与 `pyproject.toml` 固定的 `mlx==0.32.2`。`import mlx.core as mx`导入数组模块，`as mx`提供短名称；这是本节唯一导入。
+
+新副本完整恢复18.1的普通函数 `build_score`，重新给出全部手写输入，并在本节创建编译后的可调用对象。以后使用新副本时，从导入单元开始按顺序取得定义即可；无需旧kernel、运行旧Notebook、`%run`、语料、sampler、模型或优化器。
+
+本节按编译未被显式禁用、后端支持编译的正常课程环境解释机制，不添加环境切换API。我们只写小型调用示例，不运行它们，也不安排计时、缓存命中观测或性能实验。
+
+```python
+import mlx.core as mx
+
+# Self-contained import. Every code cell in this master is unexecuted.
+```
+
+### 1. 恢复一个熟悉的普通函数：数学含义保持清楚
+
+先恢复必要的Python和数组接口：
+
+- `def build_score(arr):`创建函数；定义时不执行函数体。`arr`是形参，调用时接收输入数组。
+- 函数内的名字 `left`、`right`、`combined`、`score`只组织本次计算。`return score`返回MLX数组对象，不自动把它变成Python数字。
+- `mx.array(..., dtype=mx.float32)`从明确写出的嵌套列表建立32位浮点数组；每个内层列表是一行。
+- `+`与这里的 `*`是 **elementwise operations（逐元素运算）**。标量1.0和2.0广播到每个位置，shape不变；`*`不是矩阵乘法。
+- `mx.mean`执行 **reduction（归约）**。固定版本默认 `axis=None, keepdims=False`，即平均全部元素且不保留归约轴，结果shape为 `()`。
+
+本例x是普通实数矩阵，两个轴没有batch/token含义；score只是算术平均，不是新增的语言模型loss。函数仅使用显式传入的数组和固定数字，不修改外部对象；这样的 **pure function（纯函数）** 让我们先聚焦编译本身。
+
+```python
+# EXPLICIT TOY DATA — prepared only, NOT executed.
+x = mx.array(
+    [[1.0, 2.0, 3.0],
+     [4.0, 5.0, 6.0]],
+    dtype=mx.float32,
+)
+
+
+def build_score(arr):
+    left = arr + 1.0
+    right = arr * 2.0
+    combined = left + right
+    score = mx.mean(combined)
+    return score
+
+
+# Full local definition. No model, optimizer, hidden input, or old kernel state.
+```
+
+#### 从shape到手算：后面编译的是这个函数
+
+用i表示行下标，j表示列下标。对于本例，i取0、1，j取0、1、2；下标只是指定矩阵位置。数学关系为：
+
+$$
+c_{ij}=(x_{ij}+1)+2x_{ij}=3x_{ij}+1,
+\qquad
+s=\frac{1}{6}\sum_{i=0}^{1}\sum_{j=0}^{2}c_{ij}.
+$$
+
+双重求和把六个位置全部加起来，再除以6。因此：
+
+$$
+c=\begin{bmatrix}4&7&10\\13&16&19\end{bmatrix},
+\qquad s=\frac{4+7+10+13+16+19}{6}=11.5.
+$$
+
+| 对象 | 含义 | 本例shape |
+|---|---|---|
+| x／函数内arr | 本次输入矩阵 | `(2,3)` |
+| left、right、combined | 对应位置的加法、乘法与合并结果 | `(2,3)` |
+| score | 全部六个元素的平均值 | `()` |
+
+这些数组在本例中使用float32。shape `()`表示零个轴、一个元素的MLX scalar array，不是空数组，也不是普通Python float。
+
+**11.5是手算的数学预期，没有来自Notebook的执行输出。** 编译应保持同一计算的数学含义；浮点数只有有限精度，不能据此保证任意编译前后结果都逐bit相同。`3x+1`也只是便于手算的表达式，不能当作已经观察到的编译器改写。
+
+### 2. Function Transformation：先得到一个可调用对象
+
+17.3已经见过“函数作为输入，得到另一个函数”的 **function transformation（函数变换）**。这里 `mx.compile`接收原函数，返回 **callable（可调用对象）**：以后可以用括号和实参调用它。
+
+先分清三个表达式：
+
+| 表达式 | Python含义 |
+|---|---|
+| `build_score` | 取得函数对象，没有调用 |
+| `build_score(x)` | 立即调用原函数，得到它返回的数组对象 |
+| `mx.compile(build_score)` | 把函数对象交给编译变换，取得编译包装后的可调用对象 |
+
+所以这里传的是不带括号的 `build_score`，而不是把 `build_score(x)`先算出的数组交给compile。下面用普通赋值保留原函数与编译对象两个名字，不需要引入装饰器语法。
+
+固定v0.32.2的接口可简记为以下签名；它是阅读说明，不是执行单元：
+
+```text
+mx.compile(fun, inputs=None, outputs=None, shapeless=False) -> callable
+```
+
+`fun`是待变换的函数。`shapeless`是一个布尔选项，`False`表示本节保持默认的具体shape匹配；稍后解释缓存。显式写 `shapeless=False`是把默认值写清楚。`inputs`、`outputs`是额外的状态捕获选项，默认均为None，本节不使用；它们不是在这里填写x的位置。实际数组仍通过后面的 `compiled_score(x)`传入，状态捕获留在18.4。
+
+依据：[MLX v0.32.2 Python compile绑定](https://github.com/ml-explore/mlx/blob/v0.32.2/python/src/transforms.cpp)。
+
+```python
+# Create a callable. Pass the function object, not build_score(x).
+compiled_score = mx.compile(build_score, shapeless=False)
+
+# shapeless=False is the MLX v0.32.2 default, written explicitly here.
+# This line does not establish that any input's numerical result is complete.
+```
+
+### 3. Tracing记录数组关系，求值仍有自己的边界
+
+**Tracing（追踪）** 在这里指：为输入创建占位数组，沿原Python函数走一遍，让数组运算建立计算依赖。**Placeholder／tracer（占位数组／追踪数组）** 具有相应的shape和dtype，但不是这次输入元素值的计算结果。
+
+例如，首次遇到本节的 `(2,3), float32` 输入规格，若还没有可用的匹配缓存，MLX会用同shape、同dtype的占位输入走过 `build_score`：先记录两个逐元素分支，再记录合并和mean。随后整理与优化图，把当前真实输入接入准备好的计算关系，返回本次调用的结果数组。
+
+这不是读取Python源码字符串，也不是把整个Python程序的所有行为都搬到GPU。原函数体在tracing时确实会被Python执行；以后命中可复用图时，不需要再次按原函数体重做同样的tracing。
+
+本节让函数体只建立数组关系并返回数组。不要在里面对tracer或由它产生的数组使用 `mx.eval`、`print(array)`、`.item()`等需要元素值的操作；占位追踪时没有这些输入数值可供读取。后面的显式求值放在编译调用外侧。
+
+**Compilation（编译）** 准备和优化可复用的计算表示；**evaluation（求值）** 要求某次输入对应的结果数值完成。两者承担不同工作。下面先准备一次调用，并只保存它返回的数组对象：
+
+```python
+# First prepared call for this input specification; NOT executed here.
+score = compiled_score(x)
+
+# score is an MLX scalar array, shape (). No value display in this cell.
+```
+
+#### 三个阶段不要压成同一件事
+
+| 代码位置 | 发生的接口工作 | 是否由此保证score数值完成 |
+|---|---|---|
+| `compiled_score = mx.compile(build_score, shapeless=False)` | 创建可调用的编译包装 | 否；还没有这次输入的调用 |
+| `score = compiled_score(x)` | 对当前规格查缓存；必要时tracing和图优化，接入本次x，返回结果数组 | 否；返回数组对象不是求值完成承诺 |
+| `mx.eval(score)` | 要求score及取得它所需的依赖完成，并等待所选结果可用 | 是，针对这次选定的结果 |
+
+18.2的接口语义保持不变：`mx.eval`返回None，score仍是MLX数组；不要写 `score = mx.eval(score)`。请求范围是选定结果及必要依赖，不是全局无关GPU工作的完成保证。
+
+固定源码在首次图准备后将占位输入替换为“可供求值”的真实数组，并返回它们。它没有把编译调用本身变成 `mx.eval`。依据：[v0.32.2 compile_trace、compile与compile_replace](https://github.com/ml-explore/mlx/blob/v0.32.2/mlx/compile.cpp)。
+
+```python
+# Explicit completion request outside the compiled function.
+mx.eval(score)
+
+# The return value is None; score remains the selected MLX array.
+# No timing, result assertion, or recorded numerical output.
+```
+
+### 4. Optimization与Fusion：把合适的工作组织在一起
+
+**Graph optimization（图优化）** 是在保持计算含义的前提下整理计算表示，例如合并可判定的重复工作，或去掉特定的无效操作。并不是每张图都恰好有这些机会；本例也没有承诺发生哪一种具体改写。
+
+**Kernel（计算内核）** 是设备执行的一段计算程序。**Fusion（融合）** 将符合条件的若干运算合并为一个执行区域，可能减少多个小操作分别调度的开销，以及部分中间结果的单独读写。
+
+回看同一个位置：
+
+$$
+\ell_{ij}=x_{ij}+1,\qquad r_{ij}=2x_{ij},\qquad c_{ij}=\ell_{ij}+r_{ij}.
+$$
+
+这里的希腊字母ell（\(\ell\)）只代表left分支，r代表right分支。三个运算都可以在各位置分别完成。若实现将合适的部分融合，设备可以把相关算术组织在一起，不必把每条Python赋值都当作一次独立设备任务，也可能少保留或少搬运某些中间结果。
+
+但 `mx.mean(combined)`需要把多个位置汇总，它是归约，不能只凭前面几项逐元素计算可融合，就宣称整个函数一定成为一个kernel。固定版本的普通逐元素融合候选包括Add、Multiply等；Reduce不在同一候选集合里。具体优化还受图结构、运算类型、形状和后端条件约束。
+
+| 可以从机制得到的理解 | 本节没有得出的运行结论 |
+|---|---|
+| 编译可识别和组合符合条件的数组工作 | 本函数已经实际融合成了几个kernel |
+| 融合有机会减少调度或部分中间读写 | 本函数必然更快、必然减少多少内存 |
+| 数学上可用 `3x+1`理解combined | 编译器一定生成了这个手工化简式 |
+
+“几行Python”“几个逻辑运算”和“几个设备kernel”不是同一个计数。我们只讲优化的动机与条件，不使用性能、内存或kernel探针。
+
+依据：[v0.32.2 compile_simplify、is_fusable与compile_fuse](https://github.com/ml-explore/mlx/blob/v0.32.2/mlx/compile.cpp)。
+
+### 5. 首次使用与Cache：准备计算方案也有成本
+
+**Cache（缓存）** 在这里保存可复用的编译计算表示。第一次没有匹配项时，需要额外准备；匹配项仍可用时，后续调用可以复用它。
+
+把 **first-call cost（首次调用成本）** 放回MLX的惰性执行背景，需要区分两层：
+
+1. 首次遇到某种输入规格且没有匹配图缓存时，调用阶段需要tracing、整理与优化图等工作。
+2. 第一次实际要求结果求值时，设备后端还可能需要生成／编译相应代码，并准备计算管线。**Compute pipeline（计算管线）** 在这里只指设备执行该kernel所需的已准备配置，不是数据输入pipeline。
+
+因此，“首次使用并取得数值”的工作可能分布在编译调用与随后求值两个阶段。固定Metal实现把部分kernel代码／管线准备放在求值路径；不能把所有首次成本都归到 `mx.compile(build_score)`那一行，也不能说 `compiled_score(x)`返回前所有GPU编译和数值计算必已完成。
+
+复用能省去一些准备工作，但本次输入的数值仍要计算，调用和执行也不是零成本。图规模、运算和环境都会影响实际收益；本节没有计时，不能断言首次慢多少、后续快多少或必然提速。
+
+依据：[图缓存与首次图准备](https://github.com/ml-explore/mlx/blob/v0.32.2/mlx/compile.cpp)、[Metal Compiled::eval_gpu](https://github.com/ml-explore/mlx/blob/v0.32.2/mlx/backend/metal/compiled.cpp)与[设备library／kernel准备及缓存](https://github.com/ml-explore/mlx/blob/v0.32.2/mlx/backend/metal/device.cpp)。
+
+#### 5.1 Shape／dtype怎样参与默认缓存匹配？
+
+先固定讨论前提：保持同一个编译函数、相同的参数组织与环境设置，相关缓存仍存在，使用本节默认 `shapeless=False`。这里的 **input specification（输入规格）** 包括输入数组shape和dtype等信息；**specialization（专门化版本）** 指为某类输入规格准备的计算表示。
+
+固定源码会比较输入数组数量、每个输入的轴数、shape和dtype等。**ndim（轴数）** 是shape中轴的数量，例如 `(2,3)`和 `(3,2)`都是两个轴。函数身份、非数组常量／参数结构、默认设备与执行环境等也参与匹配；shape和dtype不是完整缓存规则的全部。
+
+**作为函数实参的MLX数组，其元素数值本身不加入这一图缓存匹配条件。** 于是同规格的新数据可以沿用计算方案，但仍需把新数组接进去计算新的答案。这个结论限定于数组元素值，不能直接套到函数实参中的普通Python整数或浮点常量上。
+
+下面给出三组新增常量，分别改变数值、shape与dtype。`mx.float16`表示另一种16位浮点格式，精度与float32不同；本节只用它说明dtype区别，不作精度实验或混合精度教学。仍用 `mx.array`显式写出数据，无随机数、无语料，也不需要新的转换API。
+
+```python
+# Same shape and dtype as x; different element values.
+x_new_values = mx.array(
+    [[2.0, 3.0, 4.0],
+     [5.0, 6.0, 7.0]],
+    dtype=mx.float32,
+)
+
+# Still six elements and two axes, but a different shape.
+x_new_shape = mx.array(
+    [[1.0, 2.0],
+     [3.0, 4.0],
+     [5.0, 6.0]],
+    dtype=mx.float32,
+)
+
+# Same shape and real-number entries as x, but a different input dtype.
+x_new_dtype = mx.array(
+    [[1.0, 2.0, 3.0],
+     [4.0, 5.0, 6.0]],
+    dtype=mx.float16,
+)
+```
+
+#### 5.2 缓存的是方案，返回值仍对应本次输入
+
+下表是根据默认接口与源码推导的阅读预期，不是实测的缓存命中记录：
+
+| 输入 | 输入shape／dtype | 对已准备的 `(2,3), float32` 图缓存 | 输出shape／实数手算 |
+|---|---|---|---|
+| 初始x | `(2,3)`／float32 | 首次没有匹配项时准备该规格 | `()`／11.5 |
+| x_new_values | `(2,3)`／float32 | 可以匹配同一规格项；使用本次新数值 | `()`／14.5 |
+| x_new_shape | `(3,2)`／float32 | 不能直接匹配原shape项；寻找另一项，没有时重新准备 | `()`／11.5 |
+| x_new_dtype | `(2,3)`／float16 | 不能直接匹配原dtype项；寻找另一项，没有时重新准备 | `()`／11.5的实数数学值 |
+
+对第二行，输入每个位置加1，所以 `3x+1`的每个位置增加3，平均值由11.5变为14.5。也可直接手算combined为 `[[7,10,13],[16,19,22]]`，六项和87，平均为14.5。这说明可复用的是处理输入的关系，不是永远返回第一次的11.5。
+
+第三行虽仍有六个元素、输出也仍是scalar，输入shape却不同。缓存匹配不能只看元素总数，更不能只看最后输出shape。第四行说明dtype也是输入规格的一部分；手算表表达实数数学，不保证不同浮点格式的运行结果逐bit一致。
+
+如果后来重新传入已经缓存过的 `(2,3), float32`，原规格的匹配项仍在时可以再次使用。不能把“从A换到B再换回A”说成每次都从零完整编译。同样，图缓存未命中不等于所有后端缓存也全部失效。
+
+下面只准备三个明确的调用，再在外侧列出所需结果的求值边界。它们是接口阅读代码，不包含断言、计时、循环压测或缓存计数：
+
+```python
+# Reuse the same callable created above; these calls are prepared, not run.
+score_new_values = compiled_score(x_new_values)
+score_new_shape = compiled_score(x_new_shape)
+score_new_dtype = compiled_score(x_new_dtype)
+
+# Numerical completion remains a separate, explicit request.
+mx.eval(score_new_values, score_new_shape, score_new_dtype)
+
+# All three results have scalar shape (). No measured output or speedup claim.
+```
+
+#### 5.3 默认False的边界，以及函数对象的生存期
+
+`shapeless=True`是非默认选项。在固定v0.32.2的缓存匹配中，它放宽相同ndim下具体维度大小的比较；**ndim和dtype仍会参与匹配**，并不是“任意形状、任意dtype只编译一次”。也不是所有函数都支持它。本节保持False，不增加True的示例或实验。
+
+版本核对以 [v0.32.2 Python绑定](https://github.com/ml-explore/mlx/blob/v0.32.2/python/src/transforms.cpp)和[CompileCache::find](https://github.com/ml-explore/mlx/blob/v0.32.2/mlx/compile.cpp)为准，不把其他版本或其他实现的默认值套过来。
+
+本节在调用前创建一次 `compiled_score`，后面复用同一对象。重新执行函数定义会创建新的Python函数对象；不能把新对象的首次调用当成前一个对象缓存的必然延续。这里说明代码组织与缓存讨论的前提，不要求做重新定义或清缓存实验。
+
+18.2的执行边界仍然有效：编译图可以复用，当前输入对应的结果仍须在需要数值时完成求值。17.5已经写好的未编译训练单步保持原样；本节不把model、参数或optimizer状态塞进这个纯函数示例，也不改写训练步骤。
+
+### 工作副本顺序、材料状态与停止点
+
+以后使用本节新副本时：
+
+1. 在仓库根目录先 `git pull`，再用时间戳新文件名与 `cp -n`把79母版安全复制到已有 `notebooks/work/`；只打开新副本。
+2. 选择项目Python3.12 / `.venv` kernel，从唯一的mx导入开始，取得本节x与完整 `build_score`定义。
+3. 阅读函数对象与compile接口后取得 `compiled_score`。本节先给调用，再单列外侧 `mx.eval`，保持包装、调用、求值三层关系清楚。
+4. 三组后续输入都在本节直接给出；后续调用复用前面同一个编译对象，不依赖任何旧Notebook变量。
+
+以上是副本依赖恢复顺序，不是本轮运行记录或执行要求。全部代码单元保持未执行与空输出，没有运行Notebook、代码测试、训练、实验、采样或用户work副本，没有读取／下载语料，也没有代答练习。不声称学员掌握、运行通过或测得性能。
+
+18.2的独立材料验收保持 **0/2**，18.3当前仅为初始材料编写发布。累计实际修正：16.1=**1/2**、16.2=**1/2**（含已记录的超时后完整回复补齐），16.3至16.5、17.1至17.5、18.1及18.2各**0/2**，18.3初始生成=**0/2**。每节最多两次实际修正，跨轮和换对话不重置。
+
+**完成即停在18.3，不进入18.4。** 后续仅按请求逐小节准备，至大Step20全部完成后停止。
+
+### 固定版本依据与课程链接
+
+- [18.1已验收母版](https://github.com/kris0516/mlx-minigpt-from-scratch/blob/e3656db90239437cc0d50c24730920f1f783e59c/notebooks/77_step18_1_lazy_evaluation.ipynb)：本节复用的普通函数、两分支数学、shape与惰性求值。
+- [18.2已验收母版](https://github.com/kris0516/mlx-minigpt-from-scratch/blob/e3656db90239437cc0d50c24730920f1f783e59c/notebooks/78_step18_2_eval_boundary.ipynb)：选定数组与依赖的显式完成边界。
+- [MLX v0.32.2 Python transforms](https://github.com/ml-explore/mlx/blob/v0.32.2/python/src/transforms.cpp)：compile签名与默认值、函数包装、数组实参与Python常量／结构处理。
+- [MLX v0.32.2 compile.cpp](https://github.com/ml-explore/mlx/blob/v0.32.2/mlx/compile.cpp)：占位追踪、图缓存匹配、优化与融合候选、把真实输入接入图。
+- [MLX v0.32.2 Metal compiled.cpp](https://github.com/ml-explore/mlx/blob/v0.32.2/mlx/backend/metal/compiled.cpp)与[device.cpp](https://github.com/ml-explore/mlx/blob/v0.32.2/mlx/backend/metal/device.cpp)：求值时的后端代码与计算管线准备，以及相应缓存。
+- [MLX v0.32.2 ops.cpp](https://github.com/ml-explore/mlx/blob/v0.32.2/mlx/ops.cpp)：原小函数中的逐元素操作与mean语义。
+- [官方mx.compile接口](https://ml-explore.github.io/mlx/build/html/python/_autosummary/mlx.core.compile.html)。在线文档可能更新，本课程行为以 **v0.32.2真实源码** 为准。
+- [Roadmap](https://github.com/kris0516/mlx-minigpt-from-scratch/blob/main/docs/course-roadmap.md)与[teaching handoff](https://github.com/kris0516/mlx-minigpt-from-scratch/blob/main/docs/teaching-handoff.md)：当前材料状态、累计修正与18.3停止边界。
