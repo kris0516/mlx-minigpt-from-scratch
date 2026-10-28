@@ -28,13 +28,14 @@ Step 16.2         material prepared; static audit passed (correction 1/2)
 Step 16.3         material and full-reply core independently passed; corrections 0/2
 Step 16.4         material reviewer independently confirmed core static PASS; corrections 0/2
 Step 16.5         material reviewer independently confirmed core static PASS; corrections 0/2
-Step 17.1         current initial material prepared; corrections 0/2
-Step 17.2+        planned only; not current
+Step 17.1         material reviewer independently confirmed core static PASS; corrections 0/2
+Step 17.2         current initial material prepared; corrections 0/2
+Step 17.3+        planned only; not current
 ```
 
-**Material status is not learner status.** All major Step 16 masters, documents, and full replies independently passed the material reviewer's core static review; this is not learner learning or execution feedback. No claim is made that the learner has a local corpus cache, executed Step 17.1 code, performed experiments, completed exercises, or mastered cross-entropy. No runtime validation is asserted.
+**Material status is not learner status.** All major Step 16 masters, documents, and full replies independently passed the material reviewer's core static review. Step 17.1's actual master, documentation, fixed-version MLX API contract, and full reply have also independently received core static PASS; this is not learner learning or execution feedback. No claim is made that the learner has a local corpus cache, executed Step 17 code, performed experiments, completed exercises, or mastered the material. No runtime validation is asserted.
 
-Preserve all passed Step 16 teaching and masters. This turn prepares and publishes only Step 17.1, then stops before Step 17.2. Step 17.1 uses self-contained toy logits and shifted targets; it needs no corpus access, sampler execution, model construction, or model forward.
+Preserve all passed Step 16 and Step 17.1 teaching and masters. This turn prepares and publishes only Step 17.2, then stops before Step 17.3. Step 17.2 uses self-contained toy logits and already-shifted targets to explain matching B×T rows, per-position losses, and their equal-weight mean; it needs no corpus access, sampler execution, model construction, model forward, or training step.
 
 ### mlx-chap2 continuation ledger
 
@@ -43,9 +44,10 @@ Preserve all passed Step 16 teaching and masters. This turn prepares and publish
 - Step 16.3 master and full-reply core independently confirmed PASS by the learner; actual corrections **0/2**. Do not reopen the passed lesson.
 - Step 16.4 full reply, master, and Step 16 documentation independently confirmed core static PASS by the material reviewer; actual corrections **0/2**. This is material acceptance, not learner feedback. Do not reopen the passed lesson.
 - Step 16.5 material/core teaching passed; actual corrections **0/2**. The material reviewer independently confirmed core static PASS for all major Step 16 masters, documents, and full replies; this cumulative acceptance is not learner feedback.
-- Step 17.1 initial preparation; actual corrections **0/2**.
+- Step 17.1 actual master, documentation, fixed-version MLX API contract, and full reply independently confirmed core static PASS by the material reviewer; actual corrections **0/2**. This is material acceptance, not learner feedback. Do not reopen the passed lesson.
+- Step 17.2 initial preparation; actual corrections **0/2**.
 - Earlier notebook wording about an initial count is historical; this cumulative ledger does not reset when conversations change.
-- Subsequent requests continue one subsection at a time through major **Step 20**, then stop. This turn ends at Step 17.1; do not prepare Step 17.2 or any later lesson during this turn, and do not infer authorization for automatic batch preparation. Keep the wider Step 21–25 curriculum as a future plan.
+- Subsequent requests continue one subsection at a time through major **Step 20**, then stop. This turn ends at Step 17.2; do not prepare Step 17.3 or any later lesson during this turn, and do not infer authorization for automatic batch preparation. Keep the wider Step 21–25 curriculum as a future plan.
 
 ## Non-negotiable teaching constraints
 
@@ -187,9 +189,9 @@ mlx-minigpt-from-scratch/
 
 Current course-material checkpoint:
 
-> **Step 17.1 — Logits, probabilities, and cross-entropy**
+> **Step 17.2 — Flatten B×T supervision**
 
-Step 17.1 initial material is prepared and published only. All major Step 16 masters, documents, and full replies have independently passed the material reviewer's core static review. Neither acceptance nor current preparation implies learner completion, mastery, experiments, exercise completion, or runtime validation. Stop at Step 17.1, before Step 17.2. Step 14's completed static audit still does not imply runtime tests were executed or passed.
+Step 17.2 initial material is prepared and published only. All major Step 16 masters, documents, and full replies, plus Step 17.1's actual master, documentation, fixed-version MLX API contract, and full reply, have independently passed the material reviewer's core static review. Neither acceptance nor current preparation implies learner completion, mastery, experiments, exercise completion, or runtime validation. Stop at Step 17.2, before Step 17.3. Step 14's completed static audit still does not imply runtime tests were executed or passed.
 
 ## 2026-10-08 continuity re-audit
 
@@ -705,7 +707,7 @@ The historical Step 16.5 lesson ends at major Step 16; current progression is re
 
 ## Step 17.1 accuracy boundary
 
-Current master: `notebooks/72_step17_1_logits_probabilities_cross_entropy.ipynb`. Initial preparation count: **0/2**. Preserve 16.1=1/2, 16.2=1/2, and 16.3–16.5=0/2. All major Step 16 masters, documents, and full replies have independently passed the material reviewer's core static review; this is material acceptance, not learner learning or execution feedback.
+Lesson master: `notebooks/72_step17_1_logits_probabilities_cross_entropy.ipynb`. The material reviewer independently confirmed core static PASS for the actual master, documentation, fixed-version MLX API contract, and full reply. Actual corrections remain **0/2**. Preserve 16.1=1/2, 16.2=1/2, and 16.3–16.5=0/2. All major Step 16 masters, documents, and full replies also independently passed the material reviewer's core static review; this is material acceptance, not learner learning or execution feedback. The scope below records the passed 17.1 lesson; current preparation proceeds only to 17.2.
 
 Follow the existing 17.1 topics: logits are not probabilities, softmax, negative log-likelihood, and one small hand-computable example. Connect the raw MiniGPT logits `(B,T,V)` to the already-shifted integer targets `Y:(B,T)`, pairing `logits[b,t,:]` with `Y[b,t]`. Do not shift Y again. Preserve the raw-logit model interface and do not alter passed model or data notebooks.
 
@@ -723,4 +725,20 @@ Use the verified MLX 0.32.2 `nn.losses.cross_entropy(raw_logits,Y,axis=-1,reduct
 
 The prepared shape example uses chunk `[[0,2,1]]`, X=`[[0,2]]`, Y=`[[2,1]]`, and manually constructed toy logits `mx.log(mx.array([[[1.,2.,3.],[3.,2.,1.]]],dtype=mx.float32))`, shape `(1,2,3)`. Taking log of positive toy numbers is only a convenient way to make the hand calculation simple; it is not the MiniGPT algorithm for token IDs or word counts. Per-position losses have shape `(1,2)` with hand-derived values `[[ln(2),ln(3)]]`, not claimed runtime output.
 
-Prepare and publish only: no corpus read/download, Notebook execution, tests, sampling, experiments, training, user work copy execution, or exercise answers. Stop at 17.1 before 17.2; do not teach flattening, gradient/value_and_grad, optimizer, training loop, or generation. Material preparation and static review do not imply learner mastery or successful execution.
+The 17.1 preparation was limited to materials: no corpus read/download, Notebook execution, tests, sampling, experiments, training, user work copy execution, or exercise answers. That lesson stopped at 17.1 before 17.2 and did not teach flattening, gradient/value_and_grad, optimizer, training loop, or generation. Its material preparation and static review do not imply learner mastery or successful execution.
+
+## Step 17.2 accuracy boundary
+
+Current master: `notebooks/73_step17_2_flatten_bt_supervision.ipynb`. Initial preparation count: **0/2**. Preserve 16.1=1/2, 16.2=1/2 (including the previously recorded reply completion after a timeout), 16.3–16.5=0/2, and 17.1=0/2. Step 17.1's actual master, documentation, fixed-version MLX API contract, and full reply independently received core static PASS from the material reviewer; this is material acceptance, not learner learning or execution feedback.
+
+Follow the existing 17.2 topics: `(B,T,V) -> (B*T,V)`, `(B,T) -> (B*T,)`, and many token-level targets in the batch used by a future training step. Explain B, T, V, N=B*T, and the flattened row index r before using them. Preserve the class axis V and the existing pairing `logits[b,t,:]` with already-shifted `Y[b,t]`; do not shift targets again.
+
+Use a self-contained work copy with `mlx.core` / `mlx.nn` imports, `toy_chunks=[[0,2,1],[1,0,2]]`, X=`[[0,2],[1,0]]`, Y=`[[2,1],[0,2]]`, and manually specified toy logits `mx.log(mx.array([[[1.,2.,3.],[3.,2.,1.]],[[1.,1.,2.],[3.,2.,1.]]],dtype=mx.float32))`. B=2, T=2, V=3, N=4. No corpus cache, old kernel variables, sampler, model construction, forward, or new project dependency is required. Taking log of chosen positive values is only a convenient hand-calculation fixture, not the MiniGPT algorithm for producing logits.
+
+Teach reshape as preserving logical element order and total element count. Keep V separate; merge only B and T. For this unchanged input order, r=b*T+t, `flat_logits[r,v]=toy_logits[b,t,v]`, and `flat_targets[r]=Y[b,t]`. Explain the trailing comma in the one-dimensional shape tuple `(N,)` before use. Then use `mx.reshape(toy_logits,(N,V))` and `mx.reshape(Y,(N,))`. A short reading note may explain that one inferred dimension can be written as -1; do not add a separate experiment. Do not imply reshape is always zero-copy or changes causal context. Both arrays must keep the same position order; do not transpose or reorder only one side.
+
+Reuse raw-logit cross-entropy with integer targets, `axis=-1`, and `reduction='none'` to obtain `flat_losses:(N,)`. The original-rank call remains valid in MLX 0.32.2 and returns `(B,T)`; flattening is a way to organize supervision, not an API requirement. The flattened and original-rank losses correspond per position mathematically. For the four positions, `flat_targets=[2,1,0,2]` and hand-derived losses are `[ln2,ln3,ln4,ln6]`. These are derivations, not observed outputs or executed equality tests.
+
+Introduce an equal-weight arithmetic mean only after explaining summation indices and division by the number of supervised positions: `L=(1/N)*sum_r ell_r=(1/(B*T))*sum_b sum_t ell_(b,t)`. Use `mx.mean(flat_losses)` to produce scalar shape `()`. Every position in this lesson is valid and equally weighted; do not expand into padding, masks, or weights. The denominator is N=B*T, not V. Distinguish three operations: reshape organizes positions; cross-entropy consumes each V-class vector and its target; mean aggregates the resulting position losses. Do not add a reduction='mean' shortcut or unrelated alternative implementations.
+
+N supervised positions do not mean N parameter updates, N distinct token IDs, or N statistically independent examples. The lesson only explains the loss organization used by a future training step. Stop at 17.2 before 17.3; do not introduce value_and_grad, gradients, optimizers, training loops, or generation. Prepare and publish materials only: no corpus read/download, Notebook or user work copy execution, tests, numerical experiments, sampling, training, or exercise answers. Static review and publication do not imply learner mastery or runtime validation.

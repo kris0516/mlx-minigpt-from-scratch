@@ -1,12 +1,12 @@
 # Step 17 — Language-Model Loss
 
-本 Step 沿用现有 roadmap。当前只准备并发布 **17.1 Logits, probabilities, and cross-entropy**，初始生成实际修正计数 **0/2**，完成后停在17.1，不进入17.2。
+本 Step 沿用现有 roadmap。当前只准备并发布 **17.2 Flatten B×T supervision**，初始生成实际修正计数 **0/2**，完成后停在17.2，不进入17.3。当前母版为 [73_step17_2_flatten_bt_supervision.ipynb](../notebooks/73_step17_2_flatten_bt_supervision.ipynb)。
 
-材料审核方已独立核验大 Step 16 的全部母版、文档与完整回复，核心静态 PASS。这是材料验收，不是学员学习或运行反馈；已通过课节不返工。累计实际修正保留16.1=**1/2**、16.2=**1/2**、16.3至16.5各**0/2**，17.1初版=**0/2**。计数跨轮、跨对话不重置，后续只按请求逐小节至大 Step 20 全部完成后停止。
+材料审核方已独立核验大 Step 16 的全部母版、文档与完整回复，以及17.1的实际母版、文档、固定MLX版本接口与完整回复，核心静态 PASS。这是材料验收，不是学员学习或运行反馈；已通过课节不返工。累计实际修正保留16.1=**1/2**、16.2=**1/2**（包括已记录的超时后完整回复补齐）、16.3至16.5及17.1各**0/2**，17.2初版=**0/2**。计数跨轮、跨对话不重置，后续只按请求逐小节至大 Step 20 全部完成后停止。
 
 ## Step 17.1 — Logits, probabilities, and cross-entropy
 
-母版：[72_step17_1_logits_probabilities_cross_entropy.ipynb](../notebooks/72_step17_1_logits_probabilities_cross_entropy.ipynb)。本节把 MiniGPT 的 raw logits 接到“模型为正确下一 token 分配了多少概率”这一问题，再由此建立每个位置的 loss。
+母版：[72_step17_1_logits_probabilities_cross_entropy.ipynb](../notebooks/72_step17_1_logits_probabilities_cross_entropy.ipynb)。17.1已由材料审核方独立确认核心静态PASS，累计实际修正**0/2**；下文保留本节已通过的教学及当时边界。本节把 MiniGPT 的 raw logits 接到“模型为正确下一 token 分配了多少概率”这一问题，再由此建立每个位置的 loss。
 
 ### Self-contained work copy and existing interfaces
 
@@ -169,9 +169,9 @@ toy_logits = mx.log(mx.array(
 
 之后实际使用work副本时：安全复制新文件 → 选择项目kernel → imports → 阅读单位置符号与softmax → 手工toy logits/target usage → NLL与cross-entropy对应 → 稳定表达式与MLX API → 自带的 `(1,2,3)` / `(1,2)` shape示意。所有必要数据与依赖已在本母版中。
 
-本轮仅准备并发布17.1，停止在本节，不进入17.2。没有读取或下载语料，没有执行Notebook、测试、训练、实验、采样或用户work副本，没有代答练习。没有模型构造、forward、梯度、optimizer、训练循环或生成实现。材料准备和静态审阅不表示学员掌握或运行通过。
+17.1当轮仅准备并发布本节，停止在17.1，没有进入17.2。没有读取或下载语料，没有执行Notebook、测试、训练、实验、采样或用户work副本，没有代答练习。没有模型构造、forward、梯度、optimizer、训练循环或生成实现。材料准备和静态审阅不表示学员掌握或运行通过。
 
-累计实际修正：16.1=**1/2**、16.2=**1/2**、16.3至16.5各**0/2**、17.1初版=**0/2**。每节最多两次实际修正，跨轮与换对话不重置。
+17.1验收后的累计实际修正：16.1=**1/2**、16.2=**1/2**、16.3至16.5及17.1各**0/2**。每节最多两次实际修正，跨轮与换对话不重置；当前17.2初版另记**0/2**。
 
 ### References
 
@@ -180,3 +180,147 @@ toy_logits = mx.log(mx.array(
 - [MLX softmax API](https://ml-explore.github.io/mlx/build/html/python/_autosummary/mlx.core.softmax.html)：显式指定词表轴。
 - [MLX logsumexp API](https://ml-explore.github.io/mlx/build/html/python/_autosummary/mlx.core.logsumexp.html)：稳定表达式所用API。
 - [Step15模型接口](step-15-transformer-to-gpt.md)、[Step16数据接口](step-16-tiny-shakespeare-data.md)、[course roadmap](course-roadmap.md)。
+
+## Step 17.2 — Flatten B×T supervision
+
+母版：[73_step17_2_flatten_bt_supervision.ipynb](../notebooks/73_step17_2_flatten_bt_supervision.ipynb)。本节承接17.1的逐位置交叉熵，把B行、每行T个位置组织成N=B×T条监督项，再说明这些位置损失的等权平均。这里准备的是未来同一训练步骤所用loss的组织，不执行或实现训练步骤。
+
+### Self-contained work copy and the shared interface
+
+新work副本自带 `mlx.core as mx`、`mlx.nn as nn` 导入和全部toy数组，沿用项目Python3.12、`.venv`与固定 `mlx==0.32.2`。之后使用时，选择项目kernel，先运行本节imports，再按本节顺序使用toy setup、reshape、逐位置loss与mean的cells即可。无需旧kernel变量、旧Notebook的 `%run`、语料缓存、sampler、模型构造或forward，没有新依赖；本轮只准备材料。
+
+沿用已经建立的接口：`toy_logits:(B,T,V)` 是每个位置的raw scores，`Y:(B,T)` 是已右移的整数目标。`toy_logits[b,t,:]` 仍对应 `Y[b,t]`，不能在loss处再次shift。B表示batch行数，T表示每行输入位置数，V表示类别数。
+
+本节手工给出两个长度为T+1的chunk，第一行沿用17.1的例子：
+
+```python
+import mlx.core as mx
+import mlx.nn as nn
+
+toy_chunks = mx.array([[0, 2, 1], [1, 0, 2]], dtype=mx.int32)
+X = toy_chunks[:, :-1]  # [[0,2],[1,0]], shape (2,2)
+Y = toy_chunks[:, 1:]   # [[2,1],[0,2]], shape (2,2), already shifted
+
+toy_logits = mx.log(mx.array(
+    [[[1., 2., 3.], [3., 2., 1.]],
+     [[1., 1., 2.], [3., 2., 1.]]],
+    dtype=mx.float32,
+))  # Shape (2,2,3); manually specified, not model outputs.
+```
+
+对这些正数取log只为构造方便手算的分数，不是对token IDs或词频取log的模型算法。这里B=2、T=2、V=3，因此总共有 **N=B×T=4个token-level targets（逐token监督目标）**。X只帮助看清已右移的对应关系，不用来产生这些手工logits。
+
+### Flatten merges the position axes and keeps V
+
+**Flatten B×T supervision（将B、T两个定位轴展平为监督行）** 指把每个位置的V个类别分数作为一整行。我们合并的是B、T，不把类别轴V混进去：
+
+| 对象 | 展平前 | 展平后 |
+|---|---|---|
+| Raw logits | `(B,T,V)` | `(N,V)`，N=B×T |
+| Integer targets | `(B,T)` | `(N,)` |
+
+定义展平后的行下标r。沿原数组的B/T顺序，先走完某行的T个位置，再进入下一行，因此：
+
+\[
+r=bT+t,\qquad
+\mathrm{flat\_logits}[r,v]=\mathrm{toy\_logits}[b,t,v],\qquad
+\mathrm{flat\_targets}[r]=Y[b,t].
+\]
+
+b从0到B−1，t从0到T−1，v从0到V−1；r便从0到N−1。这个式子只是为原位置换一个行号，两个数组必须采用同一对应关系。
+
+| 展平行r | 原位置 `(b,t)` | 该行raw logits | 正确类别 |
+|---:|---|---|---:|
+| 0 | `(0,0)` | `[ln1,ln2,ln3]` | 2 |
+| 1 | `(0,1)` | `[ln3,ln2,ln1]` | 1 |
+| 2 | `(1,0)` | `[ln1,ln1,ln2]` | 0 |
+| 3 | `(1,1)` | `[ln3,ln2,ln1]` | 2 |
+
+展平不会创造新的监督信息，不会改变模型允许看见的因果上下文，也不是把两条输入序列接成一条更长的模型输入。不能只对logits或targets的一侧调换位置，否则正确目标会配到别的位置的分数上。
+
+### Explain reshape before using it
+
+**Reshape（重塑形状）** 在这里保留逻辑元素顺序和元素总数，只改变shape。logits的元素总数仍为B×T×V=N×V；targets的元素总数仍为B×T=N。`mx.reshape(array, shape)` 的第二个参数给出目标形状；不要据此推断底层存储一定不发生复制。
+
+`(N,V)` 表示两个轴；`(N,)` 表示只有一个轴的Python tuple，尾部逗号使它成为单元素tuple，`(N)` 则只是给N加括号。
+
+```python
+B, T, V = toy_logits.shape
+N = B * T
+
+flat_logits = mx.reshape(toy_logits, (N, V))
+flat_targets = mx.reshape(Y, (N,))
+```
+
+本例shape分别为 `(4,3)` 和 `(4,)`，`flat_targets` 的数学预期顺序为 `[2,1,0,2]`。以后读到 `mx.reshape(toy_logits, (-1,V))` 或 `mx.reshape(Y, (-1,))` 时，`-1` 表示从元素总数推断该维度；同一个shape里至多使用一处。当前示例显式写N，便于对照监督项的数量，不另开实验。
+
+### Cross-entropy still computes one loss per target
+
+复用17.1的API契约：传入raw logits和整数目标IDs，`axis=-1` 指类别轴，`reduction='none'` 保留每条监督项的loss。每个目标ID仍须满足 `0<=y<V`。
+
+```python
+flat_losses = nn.losses.cross_entropy(
+    flat_logits,
+    flat_targets,
+    axis=-1,
+    reduction='none',
+)  # Shape (N,) = (4,).
+```
+
+**MLX本来就支持17.1的三维logits和二维targets。** 展平是理解与组织监督项的一种方式，不是该API只能接收二维logits的限制。同样使用 `reduction='none'` 时，直接对 `toy_logits,Y` 计算会得到 `position_losses:(B,T)`；两种写法在数学上满足 `flat_losses[b*T+t]=position_losses[b,t]`。
+
+四个位置继续用17.1的NLL含义手算：
+
+| r | 正确类别 | 正确类别的概率 | 逐位置loss |
+|---:|---:|---|---|
+| 0 | 2 | `3/(1+2+3)=1/2` | `ln2` |
+| 1 | 1 | `2/(3+2+1)=1/3` | `ln3` |
+| 2 | 0 | `1/(1+1+2)=1/4` | `ln4` |
+| 3 | 2 | `1/(3+2+1)=1/6` | `ln6` |
+
+所以原位置排列的损失为 `[[ln2,ln3],[ln4,ln6]]`，展平排列为 `[ln2,ln3,ln4,ln6]`。这是数学对应，不是本轮运行输出、测试结果或数值比较。
+
+### Equal-weight mean: many targets, one scalar loss
+
+**Arithmetic mean（算术平均）** 指把所有数相加，再除以数的个数。本例所有位置均有效且等权。用小写 `ell` / \(\ell_r\) 表示第r条监督项的损失，大写L表示它们的平均值：
+
+单层求和用r遍历全部N条展平行；双层求和则先遍历某个b的T个位置，再遍历全部B行。两种下标写法数的是同一组B×T个损失，因此可以写成：
+
+\[
+L=\frac{1}{N}\sum_{r=0}^{N-1}\ell_r
+ =\frac{1}{BT}\sum_{b=0}^{B-1}\sum_{t=0}^{T-1}\ell_{b,t}.
+\]
+
+分母是监督位置数N=B×T，不是类别数V。对本例，L的手算表达式为 `(ln2+ln3+ln4+ln6)/4`。
+
+`mx.mean(array)` 未指定axis时计算所有元素的平均值；当前输入是一维 `flat_losses`，因此恰好汇总这N个位置：
+
+```python
+loss = mx.mean(flat_losses)  # Scalar, shape ().
+```
+
+**Scalar（标量）** 只有一个数，shape写作 `()`，没有B、T或V轴。本节不展开padding、mask或权重等其他设置，也不另加 `reduction='mean'` 捷径。
+
+把三个操作分清：
+
+| 操作 | Shape变化 | 所做的事 |
+|---|---|---|
+| Reshape | `(B,T,V)`→`(N,V)`；`(B,T)`→`(N,)` | 按相同顺序组织监督位置，保留每个V类向量 |
+| Cross-entropy | `(N,V)`与`(N,)`→`(N,)` | 为每个位置的分数与正确类别算一个loss |
+| Mean | `(N,)`→`()` | 对这N个位置损失取等权平均 |
+
+一个batch含有N个token-level targets，不表示有N次参数更新；目标ID可以重复，相邻位置也不必是统计独立样本。这里只解释未来同一训练步骤所用loss的组织，不实现更新过程。
+
+### Operational order, scope, and ledger
+
+之后实际使用work副本时：安全复制到新文件名 → 选择项目kernel → imports与自带toy setup → 对照r与 `(b,t)` 的四行表 → reshape logits和targets → 未归约交叉熵 → 等权mean。所有必要依赖与示例数组均在本母版中，不需要执行旧课或读取语料。
+
+本轮仅准备并发布17.2，完成即停，不进入17.3。不执行Notebook、用户work副本、测试、数值实验、采样或训练，不读取或下载语料，不代答练习；不实现 `value_and_grad`、梯度、optimizer、训练循环或生成。材料准备与静态审阅不代表学员掌握或运行验证。
+
+累计实际修正保留：16.1=**1/2**、16.2=**1/2**（包括超时后完整回复补齐）、16.3至16.5及17.1各**0/2**，17.2初版=**0/2**。每小节最多两次实际修正，跨轮与换对话不重置；后续只按请求逐小节至大Step20全部完成后停止。
+
+### References and continuity
+
+- [17.1母版](../notebooks/72_step17_1_logits_probabilities_cross_entropy.ipynb)：raw logits、已shift的整数目标和逐位置交叉熵。
+- [MLX 0.32.2 loss implementation](https://github.com/ml-explore/mlx/blob/v0.32.2/python/mlx/nn/losses.py) 与 [cross_entropy API](https://ml-explore.github.io/mlx/build/html/python/nn/_autosummary_functions/mlx.nn.losses.cross_entropy.html)：原rank与展平后的输入契约。
+- [Course roadmap](course-roadmap.md) 与 [teaching handoff](teaching-handoff.md)：当前17.2范围、累计计数与后续边界。

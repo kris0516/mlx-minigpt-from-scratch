@@ -738,14 +738,14 @@ All five subsection masters, documents, and full replies have independently pass
 
 **Goal:** make MiniGPT actually learn next-token prediction.
 
-### 17.1 Logits, probabilities, and cross-entropy 🚧
+### 17.1 Logits, probabilities, and cross-entropy ✅
 
 - logits are not probabilities
 - softmax
 - negative log-likelihood
 - one tiny numeric example
 
-### 17.2 Flatten `B×T` supervision
+### 17.2 Flatten `B×T` supervision 🚧
 
 - `(B,T,V) → (B*T,V)`
 - `(B,T) → (B*T)`
@@ -1130,20 +1130,21 @@ Step 16.2         ✅ Material prepared / static audit passed (correction 1/2)
 Step 16.3         ✅ Material and full-reply core independently passed / corrections 0/2
 Step 16.4         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
 Step 16.5         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
-Step 17.1         🚧 Current initial material prepared / corrections 0/2
-Step 17.2+          Planned only
+Step 17.1         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
+Step 17.2         🚧 Current initial material prepared / corrections 0/2
+Step 17.3+          Planned only
 ```
 
 Current course-material checkpoint:
 
-> **Step 17.1 — Logits, probabilities, and cross-entropy**
+> **Step 17.2 — Flatten B×T supervision**
 
-Current master: [72_step17_1_logits_probabilities_cross_entropy.ipynb](../notebooks/72_step17_1_logits_probabilities_cross_entropy.ipynb).
+Current master: [73_step17_2_flatten_bt_supervision.ipynb](../notebooks/73_step17_2_flatten_bt_supervision.ipynb).
 
 Learner-status note:
 
-> All major Step 16 masters, documents, and full replies have independently passed the material reviewer's core static review. This is material acceptance, not learner learning or execution feedback. Step 17.1 uses self-contained toy logits and shifted targets, without corpus access or a model forward. Its preparation does not assert mastery, work-notebook completion, experiments, or runtime validation. This turn stops at Step 17.1; do not enter Step 17.2.
+> All major Step 16 masters, documents, and full replies have independently passed the material reviewer's core static review. Step 17.1's actual master, documentation, fixed-version MLX API contract, and full reply have also independently received core static PASS. This is material acceptance, not learner learning or execution feedback. Step 17.2 uses self-contained toy logits and already-shifted targets to explain matching B×T rows, per-position losses, and their equal-weight mean; no corpus access, model forward, or training step is needed. Its preparation does not assert mastery, work-notebook completion, experiments, or runtime validation. This turn stops at Step 17.2; do not enter Step 17.3.
 
-Actual correction ledger: Step 16.1 **1/2**, Step 16.2 **1/2** (including the learner-confirmed reply completion after a timeout), Step 16.3 **0/2**, Step 16.4 **0/2**, Step 16.5 **0/2**, Step 17.1 initial version **0/2**. Preserve the passed lessons and all accumulated counts across turns and conversations.
+Actual correction ledger: Step 16.1 **1/2**, Step 16.2 **1/2** (including the learner-confirmed reply completion after a timeout), Step 16.3 **0/2**, Step 16.4 **0/2**, Step 16.5 **0/2**, Step 17.1 **0/2**, Step 17.2 initial version **0/2**. Preserve the passed lessons and all accumulated counts across turns and conversations.
 
 Active continuation boundary: subsequent requests proceed one subsection at a time through major **Step 20**, then stop. The existing Step 21–25 roadmap remains a future curriculum plan; this boundary does not authorize automatic or batch preparation of later lessons.
