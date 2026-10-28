@@ -23,13 +23,14 @@ Steps 12.1–12.5  material prepared; static audit passed
 Steps 13.1–13.5  material prepared; static audit passed
 Steps 14.1–14.5  material prepared; static audit passed
 Steps 15.1–15.5  material prepared; static audit passed (15.5 correction 1/2)
-Step 16.1         current material prepared; corrections 0/2
-Step 16.2+        planned only; not current
+Step 16.1         material prepared; static audit passed (correction 1/2)
+Step 16.2         current material prepared; corrections 0/2
+Step 16.3+        planned only; not current
 ```
 
-**Material status is not learner status.** No claim is made that the learner has downloaded Tiny Shakespeare, executed Step 16.1, completed exercises, or mastered the data pipeline. No runtime validation is asserted.
+**Material status is not learner status.** No claim is made that the learner has executed the Step 16.2 split, has a local corpus cache, completed exercises, or mastered held-out validation. No runtime validation is asserted.
 
-Do not enter Step 16.2 until the learner explicitly asks to proceed beyond Step 16.1.
+Do not enter Step 16.3 until the learner explicitly asks to proceed beyond Step 16.2.
 
 ## Non-negotiable teaching constraints
 
@@ -170,9 +171,9 @@ mlx-minigpt-from-scratch/
 
 Current course-material checkpoint:
 
-> **Step 16.1 — Acquire and inspect Tiny Shakespeare**
+> **Step 16.2 — Train/validation split**
 
-Step 16.1 material is prepared only. Do not infer learner mastery, corpus download success, inspection results, exercise completion, or runtime validation, and do not create or teach Step 16.2 unless the learner explicitly asks to proceed. Step 14's completed static audit still does not imply runtime tests were executed or passed.
+Step 16.2 material is prepared only. Do not infer learner mastery, split execution, local-cache availability, exercise completion, or runtime validation, and do not create or teach Step 16.3 unless the learner explicitly asks to proceed. Step 14's completed static audit still does not imply runtime tests were executed or passed.
 
 ## 2026-10-08 continuity re-audit
 
@@ -603,3 +604,23 @@ The standard file is commonly reported by Karpathy's nanoGPT preparation script 
 Clarify that corpus length N and model context T/T_max are different. Stop before Step 16.2: no held-out split, no batch sampler/block_size, no shifted batch construction, no loss/optimizer/training.
 
 Correction count starts at 0/2. Do not actually download the corpus or execute any Notebook cell during material preparation.
+
+## Step 16.2 accuracy boundary
+
+Start from the Step 16.1 character-level `token_stream:(N,)`. The new notebook must be operable without sharing a kernel with 16.1, so include a minimal local-cache bootstrap helper that reads `data/tinyshakespeare/input.txt`, rebuilds the same character vocabulary/token stream, and never accesses the network.
+
+If the cache is absent, fail clearly and direct the learner back to Step 16.1 acquisition. Do not duplicate network download logic in 16.2.
+
+Use a contiguous 90/10 split: `N_train=floor(0.9N)`, `N_val=N-N_train`; output `train_tokens:(N_train,)` and `val_tokens:(N_val,)` with non-overlapping original index ranges.
+
+Teach held-out validation as data excluded from optimizer parameter updates. Future validation evaluation may inspect model performance, but validation examples are not optimizer training examples.
+
+Do not randomize individual tokens across splits. For this single continuous corpus, preserve contiguous text structure.
+
+State the future sampler boundary without implementing it: every training window must lie fully inside train_tokens and every validation window fully inside val_tokens. No window may cross the split point.
+
+Keep the Step 16.1 fixed character vocabulary. This lesson's held-out separation concerns sequence tokens / optimization examples; do not redesign tokenizer training.
+
+Stop before Step 16.3. No block_size, batch sampler, random start indices, shifted `(x,y)` windows, loss, optimizer, or training loop.
+
+Correction count starts at 0/2. Do not execute corpus reads, split code, assertions, Notebook cells, tests, or training during material preparation.
