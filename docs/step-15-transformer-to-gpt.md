@@ -254,3 +254,24 @@ Notebook 提供 `trace_forward_shapes(...)` 与基于 `model.trainable_parameter
 本节把最终代码重新连接到课程历史：embedding 处理离散输入；position signal 补回无 recurrence 的位置信息；causal self-attention 实现 prefix-only direct interaction；multi-head 提供多个 learned subspaces；residual / RMSNorm 支持深层 repeated computation；MLP 做 position-wise nonlinear processing；LM head 将 hidden features 映射到 vocabulary logits。
 
 Step 15.5 材料准备到此停止，不进入 Step 16；不开始 Tiny Shakespeare 数据、tokenizer、batching 或训练流程。
+
+### Step 15.5 correction 1/2 — dependency bootstrap
+
+第一次最小依赖修正只处理 Notebook 可执行依赖，不改动已经通过审核的参数公式、7,664 示例、shape trace 或历史说明。
+
+15.5 母版现在在任何 helper / usage 前先提供一组从 Step 15.4 复用的 **definition-only cells**：
+
+```text
+CausalMultiHeadAttention
+FeedForwardMLP
+TransformerBlock
+MiniGPT
+```
+
+同时显式导入 `mlx.core as mx`，保证 `trace_forward_shapes(...)` 使用 `mx.*` 前依赖已存在。
+
+Step 15.4 的 usage/assertion 示例不会作为“加载定义”的手段复制进 15.5。15.5 work copy 应先运行 definition-only cells，再运行 parameter-count / trace helper definitions，最后才按需运行被明确标记为 usage/assertion 的示例。
+
+不要用 `%run` 整个 Step 15.4 Notebook 来加载定义，因为这会同时执行其 usage/assertion cells。
+
+本修正记录为 Step 15.5 correction 1/2；仍不进入 Step 16，也不声明任何 runtime validation。
