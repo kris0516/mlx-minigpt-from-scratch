@@ -660,14 +660,14 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 
 **Goal:** explain exactly what GPT keeps and removes from the 2017 Transformer.
 
-### 15.1 Original Transformer architecture 🚧
+### 15.1 Original Transformer architecture ✅
 
 - encoder stack
 - decoder stack
 - self-attention
 - cross-attention
 
-### 15.2 Why autoregressive GPT can be decoder-only
+### 15.2 Why autoregressive GPT can be decoder-only 🚧
 
 - no separate source encoder
 - causal self-attention over the same token stream
@@ -1121,14 +1121,15 @@ Steps 11.1–11.5  ✅ Material prepared / static audit passed
 Steps 12.1–12.5  ✅ Material prepared / static audit passed
 Steps 13.1–13.5  ✅ Material prepared / static audit passed
 Steps 14.1–14.5  ✅ Material prepared / static audit passed
-Step 15.1         🚧 Current material prepared
-Step 15.2+           Planned only
+Step 15.1         ✅ Material prepared / static audit passed
+Step 15.2         🚧 Current material prepared
+Step 15.3+           Planned only
 ```
 
 Current course-material checkpoint:
 
-> **Step 15.1 — Original Transformer architecture**
+> **Step 15.2 — Why autoregressive GPT can be decoder-only**
 
 Learner-status note:
 
-> Material preparation for Step 15.1 does not assert learner mastery, work-notebook completion, or exercise completion. Step 14 static-material audit completion does not assert that its runtime tests were executed or passed. Do not enter Step 15.2 unless the learner explicitly asks to proceed beyond Step 15.1.
+> Material preparation for Step 15.2 does not assert learner mastery, work-notebook completion, exercise completion, or runtime validation. Do not enter Step 15.3 unless the learner explicitly asks to proceed beyond Step 15.2.
