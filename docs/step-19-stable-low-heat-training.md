@@ -408,3 +408,18 @@ adam_kwargs = make_optimizer_kwargs(baseline_candidate)
 - [当前roadmap](https://github.com/kris0516/mlx-minigpt-from-scratch/blob/main/docs/course-roadmap.md)与[handoff](https://github.com/kris0516/mlx-minigpt-from-scratch/blob/main/docs/teaching-handoff.md)：材料状态、累计修正与停止边界。
 
 接口核对以 **MLX v0.32.2真实源码** 为准。在线文档可能随发布更新；本节没有将别的实现默认值套到MLX，也没有将源码核对写成运行验证。
+
+
+---
+
+## Step 19.2 — Train / Validation Loop
+
+Current master: [83_step19_2_train_validation_loop.ipynb](../notebooks/83_step19_2_train_validation_loop.ipynb). Initial material preparation count: **0/2**. Step 19.1's six-file commit `3d2e95606daf1b5d789599c3d29fd0696240be26`, true MiniGPT/sampler interfaces, fixed MLX v0.32.2 contract, and full reply independently passed core static acceptance with corrections 0/2. This is material acceptance, not learner mastery, local corpus availability, or runtime feedback.
+
+This lesson covers only periodic validation loss and relevant train/eval behavior. It carries forward the 19.1 candidate (width 64, 2 blocks, 4 heads, block size 64, batch size 4, learning rate 3e-4), the actual MiniGPT, the split-local sampler, scalar cross-entropy loss, Adam, and the explicit MLX evaluation/compiled-state boundary. It provides a self-contained work-copy setup and complete model definitions; corpus acquisition is a separately defined optional entry point and defaults to disabled. The local bootstrap reports a missing cache instead of silently substituting toy data. The material was published without running Notebook cells, reading/downloading the corpus, sampling, training, validating, testing, or measuring.
+
+Validation batches are sampled only from the held-out validation split; training batches are sampled only from the train split. Validation directly calls the scalar loss and does not receive an optimizer or use `nn.value_and_grad`. It does not update model parameters or Adam state. A dedicated Python RNG is recreated from the validation seed for each validation estimate, so the selected validation windows are fixed across checks without consuming the persistent training RNG. The estimate is a sampled-window metric, not a claim that the full validation stream was traversed.
+
+The validation helper temporarily calls `model.eval()` and restores the prior uniform mode in `finally`. In MLX v0.32.2, `eval()` is equivalent to `train(False)`; mode switching does not disable gradients or freeze parameters. The current MiniGPT has no Dropout, BatchNorm, or `self.training`-dependent forward branch, so train/eval mode does not change its current forward formula. `mx.eval` is a separate materialization boundary. The compiled training graph returns the pre-update loss while updating model/optimizer state; periodic validation then measures the current post-update parameter version. Logs distinguish these values.
+
+The notebook's small four-update/two-step-validation schedule is a control-flow teaching example only, not a tuned run or the Step 19.5 baseline. No loss value, convergence, memory, speed, temperature, low-heat, or Swap claim is made. All cells are unexecuted and output-free. The current turn stops at 19.2 before 19.3.
