@@ -27,19 +27,20 @@ Step 16.1         ✅ Material prepared / static audit passed (correction 1/2)
 Step 16.2         ✅ Material prepared / static audit passed (correction 1/2)
 Step 16.3         ✅ Material and full-reply core independently passed / corrections 0/2
 Step 16.4         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
-Step 16.5         🚧 Current initial material prepared / corrections 0/2
-Step 17+            Planned only
+Step 16.5         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
+Step 17.1         🚧 Current initial material prepared / corrections 0/2
+Step 17.2+          Planned only
 ```
 
-Current course-material checkpoint: **Step 16.5 — Toy sampling vs industrial input pipelines**.
+Current course-material checkpoint: **Step 17.1 — Logits, probabilities, and cross-entropy**.
 
-Current master: [71_step16_5_toy_vs_industrial_input_pipelines.ipynb](notebooks/71_step16_5_toy_vs_industrial_input_pipelines.ipynb).
+Current master: [72_step17_1_logits_probabilities_cross_entropy.ipynb](notebooks/72_step17_1_logits_probabilities_cross_entropy.ipynb).
 
-Actual correction counts persist across conversations: Step 16.1 **1/2**, Step 16.2 **1/2**, Step 16.3 **0/2**, Step 16.4 **0/2**, Step 16.5 initial version **0/2**. Step 16.2's count includes the learner-confirmed completion of a reply after a timeout. Step 16.3's accepted status is retained. The material reviewer independently confirmed core static PASS for the Step 16.4 full reply, master, and Step 16 documentation; this is material acceptance, not learner feedback. Passed lessons are not reworked.
+Actual correction counts persist across conversations: Step 16.1 **1/2**, Step 16.2 **1/2**, Step 16.3 **0/2**, Step 16.4 **0/2**, Step 16.5 **0/2**, Step 17.1 initial version **0/2**. Step 16.2's count includes the learner-confirmed completion of a reply after a timeout. Passed lessons are not reworked and counts do not reset.
 
-All five subsections of major Step 16 now have prepared material; Step 16.5 is the current initial version, not a claim that every lesson has independently passed acceptance. This turn stops at the end of major **Step 16** and does not enter Step 17.
+The material reviewer independently confirmed core static PASS for all major Step 16 masters, documents, and full replies. This is material acceptance, not learner learning or execution feedback. This turn prepares only **Step 17.1**, then stops before Step 17.2.
 
-Learner completion/mastery, local-cache availability, sampling or experiment results, Notebook execution, and runtime validation are intentionally **not asserted** here. Step 16.5 uses self-contained toy inputs and requires no corpus read. Subsequent requests continue one subsection at a time through major Step 20, then stop.
+Learner completion/mastery, local-cache availability, experiment results, Notebook execution, and runtime validation are intentionally **not asserted** here. Step 17.1 uses self-contained toy logits and shifted targets; no corpus access, model construction, or forward is needed. Subsequent requests continue one subsection at a time through major Step 20, then stop.
 
 ## Persistent course documents
 

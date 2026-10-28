@@ -699,7 +699,7 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 
 **Goal:** replace toy tensors with a real small language-model corpus.
 
-All five subsection materials are prepared. Step 16.5 is the current initial version; this heading does not assert independent acceptance of that new lesson, learner completion, or runtime validation. This turn ends at major Step 16, before Step 17.
+All five subsection masters, documents, and full replies have independently passed the material reviewer's core static review. This is material acceptance, not learner completion, learning feedback, or runtime validation. Preserve the passed lessons and their accumulated correction counts.
 
 ### 16.1 Acquire and inspect Tiny Shakespeare ✅
 
@@ -724,7 +724,7 @@ All five subsection materials are prepared. Step 16.5 is the current initial ver
 - deterministic sampling expectations
 - what must be saved for resume
 
-### 16.5 Toy sampling vs industrial input pipelines 🚧
+### 16.5 Toy sampling vs industrial input pipelines ✅
 
 - random windows
 - shuffling
@@ -734,11 +734,11 @@ All five subsection materials are prepared. Step 16.5 is the current initial ver
 
 ---
 
-## Step 17 — Language-model loss and the first real training loop
+## Step 17 — Language-model loss and the first real training loop 🚧
 
 **Goal:** make MiniGPT actually learn next-token prediction.
 
-### 17.1 Logits, probabilities, and cross-entropy
+### 17.1 Logits, probabilities, and cross-entropy 🚧
 
 - logits are not probabilities
 - softmax
@@ -1129,20 +1129,21 @@ Step 16.1         ✅ Material prepared / static audit passed (correction 1/2)
 Step 16.2         ✅ Material prepared / static audit passed (correction 1/2)
 Step 16.3         ✅ Material and full-reply core independently passed / corrections 0/2
 Step 16.4         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
-Step 16.5         🚧 Current initial material prepared / corrections 0/2
-Step 17+            Planned only
+Step 16.5         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
+Step 17.1         🚧 Current initial material prepared / corrections 0/2
+Step 17.2+          Planned only
 ```
 
 Current course-material checkpoint:
 
-> **Step 16.5 — Toy sampling vs industrial input pipelines**
+> **Step 17.1 — Logits, probabilities, and cross-entropy**
 
-Current master: [71_step16_5_toy_vs_industrial_input_pipelines.ipynb](../notebooks/71_step16_5_toy_vs_industrial_input_pipelines.ipynb).
+Current master: [72_step17_1_logits_probabilities_cross_entropy.ipynb](../notebooks/72_step17_1_logits_probabilities_cross_entropy.ipynb).
 
 Learner-status note:
 
-> Material preparation for Step 16.5 does not assert learner mastery, work-notebook completion, sampled batches, experiments, or runtime validation. Its examples use self-contained toy data and require no corpus access. All five Step 16 subsection materials are prepared, with 16.5 still the current initial version. This turn stops at major Step 16; do not enter Step 17.
+> All major Step 16 masters, documents, and full replies have independently passed the material reviewer's core static review. This is material acceptance, not learner learning or execution feedback. Step 17.1 uses self-contained toy logits and shifted targets, without corpus access or a model forward. Its preparation does not assert mastery, work-notebook completion, experiments, or runtime validation. This turn stops at Step 17.1; do not enter Step 17.2.
 
-Actual correction ledger: Step 16.1 **1/2**, Step 16.2 **1/2** (including the learner-confirmed reply completion after a timeout), Step 16.3 **0/2**, Step 16.4 **0/2**, Step 16.5 initial version **0/2**. Preserve Step 16.3's accepted status. The material reviewer independently confirmed core static PASS for the Step 16.4 full reply, master, and Step 16 documentation; this is material acceptance, not learner learning or execution feedback. Preserve the passed lessons and all accumulated counts across turns and conversations.
+Actual correction ledger: Step 16.1 **1/2**, Step 16.2 **1/2** (including the learner-confirmed reply completion after a timeout), Step 16.3 **0/2**, Step 16.4 **0/2**, Step 16.5 **0/2**, Step 17.1 initial version **0/2**. Preserve the passed lessons and all accumulated counts across turns and conversations.
 
 Active continuation boundary: subsequent requests proceed one subsection at a time through major **Step 20**, then stop. The existing Step 21–25 roadmap remains a future curriculum plan; this boundary does not authorize automatic or batch preparation of later lessons.

@@ -27,13 +27,14 @@ Step 16.1         material prepared; static audit passed (correction 1/2)
 Step 16.2         material prepared; static audit passed (correction 1/2)
 Step 16.3         material and full-reply core independently passed; corrections 0/2
 Step 16.4         material reviewer independently confirmed core static PASS; corrections 0/2
-Step 16.5         current initial material prepared; corrections 0/2
-Step 17+         planned only; not current
+Step 16.5         material reviewer independently confirmed core static PASS; corrections 0/2
+Step 17.1         current initial material prepared; corrections 0/2
+Step 17.2+        planned only; not current
 ```
 
-**Material status is not learner status.** Step 16.4 acceptance came from the material reviewer, not learner learning or execution feedback. No claim is made that the learner has a local corpus cache, executed Step 16.5 code, sampled batches, performed experiments, completed exercises, or mastered input pipelines. No runtime validation is asserted.
+**Material status is not learner status.** All major Step 16 masters, documents, and full replies independently passed the material reviewer's core static review; this is not learner learning or execution feedback. No claim is made that the learner has a local corpus cache, executed Step 17.1 code, performed experiments, completed exercises, or mastered cross-entropy. No runtime validation is asserted.
 
-All five major Step 16 subsection materials are prepared; Step 16.5 remains the current initial version, not an independently accepted lesson. This turn prepares and publishes only Step 16.5, then stops at the end of major Step 16, before Step 17.
+Preserve all passed Step 16 teaching and masters. This turn prepares and publishes only Step 17.1, then stops before Step 17.2. Step 17.1 uses self-contained toy logits and shifted targets; it needs no corpus access, sampler execution, model construction, or model forward.
 
 ### mlx-chap2 continuation ledger
 
@@ -41,9 +42,10 @@ All five major Step 16 subsection materials are prepared; Step 16.5 remains the 
 - Step 16.2 material/core teaching passed; actual corrections **1/2**. The learner confirmed one completion of the full reply after a timeout; this previously unrecorded correction is now included.
 - Step 16.3 master and full-reply core independently confirmed PASS by the learner; actual corrections **0/2**. Do not reopen the passed lesson.
 - Step 16.4 full reply, master, and Step 16 documentation independently confirmed core static PASS by the material reviewer; actual corrections **0/2**. This is material acceptance, not learner feedback. Do not reopen the passed lesson.
-- Step 16.5 initial preparation; actual corrections **0/2**.
+- Step 16.5 material/core teaching passed; actual corrections **0/2**. The material reviewer independently confirmed core static PASS for all major Step 16 masters, documents, and full replies; this cumulative acceptance is not learner feedback.
+- Step 17.1 initial preparation; actual corrections **0/2**.
 - Earlier notebook wording about an initial count is historical; this cumulative ledger does not reset when conversations change.
-- Subsequent requests continue one subsection at a time through major **Step 20**, then stop. This turn ends at major Step 16; do not prepare Step 17 or any later lesson during this turn, and do not infer authorization for automatic batch preparation. Keep the wider Step 21–25 curriculum as a future plan.
+- Subsequent requests continue one subsection at a time through major **Step 20**, then stop. This turn ends at Step 17.1; do not prepare Step 17.2 or any later lesson during this turn, and do not infer authorization for automatic batch preparation. Keep the wider Step 21–25 curriculum as a future plan.
 
 ## Non-negotiable teaching constraints
 
@@ -185,9 +187,9 @@ mlx-minigpt-from-scratch/
 
 Current course-material checkpoint:
 
-> **Step 16.5 — Toy sampling vs industrial input pipelines**
+> **Step 17.1 — Logits, probabilities, and cross-entropy**
 
-Step 16.5 initial material is prepared and published only. Major Step 16's five subsection materials are now prepared; this does not make the new 16.5 version independently accepted or imply learner completion. Do not infer learner mastery, sampled batches, completed experiments, exercise completion, or runtime validation. Stop at major Step 16, before Step 17. Step 14's completed static audit still does not imply runtime tests were executed or passed.
+Step 17.1 initial material is prepared and published only. All major Step 16 masters, documents, and full replies have independently passed the material reviewer's core static review. Neither acceptance nor current preparation implies learner completion, mastery, experiments, exercise completion, or runtime validation. Stop at Step 17.1, before Step 17.2. Step 14's completed static audit still does not imply runtime tests were executed or passed.
 
 ## 2026-10-08 continuity re-audit
 
@@ -683,7 +685,7 @@ The historical scope of the Step 16.4 lesson stops before industrial input pipel
 
 ## Step 16.5 accuracy boundary
 
-Current master: `notebooks/71_step16_5_toy_vs_industrial_input_pipelines.ipynb`. Initial preparation count: **0/2**. Carry forward 16.1=1/2, 16.2=1/2, 16.3=0/2, and the material-reviewer-accepted 16.4=0/2. Do not reset counts or rework passed masters.
+Lesson master: `notebooks/71_step16_5_toy_vs_industrial_input_pipelines.ipynb`. The material reviewer independently confirmed core static PASS for all Step 16 masters, documents, and full replies; actual correction count for 16.5 remains **0/2**. Carry forward 16.1=1/2, 16.2=1/2, 16.3=0/2, and 16.4=0/2. Do not reset counts or rework passed masters; acceptance is not learner feedback.
 
 Follow the existing five roadmap topics: random windows, shuffling, token packing, distributed shards, and deterministic cursor/state. Use Chinese explanations with English terms introduced before use. The new work copy is self-contained: random/MLX imports, the unchanged four-argument Step 16.3 get_batch definition, small lesson-specific helper definitions, and literal toy inputs. It needs no corpus cache, previous kernel variables, network access, or execution of another notebook. Separate definitions from prepared usage. Do not add third-party data-loading dependencies.
 
@@ -699,4 +701,26 @@ Define local plan cursor as next_batch_index, the index of the next batch to del
 
 Do not describe this plan snapshot as saving a live packing stream, prefetch queue, actual distributed loader, model, optimizer, or full training state. Industrial continuation may require shard manifest/order, reader positions, all relevant RNG states, shuffle-buffer contents, packing carry/boundaries, consumed-position accounting, pending prefetched items or a deterministic reconstruction from a committed consumption boundary, and topology/software metadata. Reading through item 12 while only consuming through item 8 means saving only the reader position can skip items 9–12. Keep persistence and actual training resume implementation in Step 20.
 
-Prepare and publish only. Do not read/download corpus, execute Notebook cells, tests, training, experiments, sampling, or a user work copy; do not answer exercises or imply mastery/runtime verification. All five Step 16 subsection materials are prepared, with 16.5 current initial material. Stop at major Step 16, before Step 17. Future requests continue one subsection at a time through major Step 20, then stop.
+The historical Step 16.5 lesson ends at major Step 16; current progression is recorded above. Its preparation did not read/download corpus, execute Notebook cells, tests, training, experiments, sampling, or a user work copy, answer exercises, or imply mastery/runtime verification. Future requests continue one subsection at a time through major Step 20, then stop.
+
+## Step 17.1 accuracy boundary
+
+Current master: `notebooks/72_step17_1_logits_probabilities_cross_entropy.ipynb`. Initial preparation count: **0/2**. Preserve 16.1=1/2, 16.2=1/2, and 16.3–16.5=0/2. All major Step 16 masters, documents, and full replies have independently passed the material reviewer's core static review; this is material acceptance, not learner learning or execution feedback.
+
+Follow the existing 17.1 topics: logits are not probabilities, softmax, negative log-likelihood, and one small hand-computable example. Connect the raw MiniGPT logits `(B,T,V)` to the already-shifted integer targets `Y:(B,T)`, pairing `logits[b,t,:]` with `Y[b,t]`. Do not shift Y again. Preserve the raw-logit model interface and do not alter passed model or data notebooks.
+
+The new work copy is self-contained with `mlx.core` and `mlx.nn` imports and explicit toy arrays. It does not require a corpus cache, previous kernel variables, sampler calls, model construction, model forward, or whole-notebook `%run`. Toy logits are manually specified interface examples, not real model outputs or measured results. No new project dependency is needed.
+
+Define B/T/V, a fixed position `(b,t)`, class index v, correct class ID y, logits z, and probabilities p before using them. Logits are unconstrained real-valued scores; token IDs are categorical labels rather than numeric distances. Softmax normalizes over the vocabulary axis V (`axis=-1`), not over batch or time positions. Distinguish this axis from attention's key-position axis even though both examples use a final-axis softmax.
+
+Explain exponentiation, natural logarithm, the summation symbol, and the logarithm quotient rule before their use. Use `p_v=exp(z_v)/sum_u exp(z_u)`, then `NLL=-ln(p_y)`. Larger probability for the correct class produces smaller NLL; model-assigned probability is not an empirically verified accuracy rate.
+
+Use V=3, `z=[ln(1),ln(2),ln(3)]`, y=2, giving p=[1/6,1/3,1/2] and NLL=ln(2), approximately 0.6931. Define general categorical cross-entropy `H(q,p)=-sum_v q_v ln(p_v)` and show that hard-label one-hot q=[0,0,1] reduces it to NLL. The one-hot is a mathematical explanation; actual Y remains integer IDs. Do not introduce label smoothing or soft-target training.
+
+Derive `NLL=logsumexp(z)-z_y`, explaining logsumexp before its API. For the hand-written stable calculation, first subtract m=max(z), then calculate `mx.logsumexp(shifted,axis=-1)-shifted[y]`. Explain row-wise `keepdims=True` if broadcasting is used. Do not implement loss as `-log(softmax(z)[y])` for general numerical use, and do not claim unlimited robustness under extreme floating-point values.
+
+Use the verified MLX 0.32.2 `nn.losses.cross_entropy(raw_logits,Y,axis=-1,reduction='none')` contract. Explain raw logits, the explicit class axis, integer target IDs in `[0,V)`, and no reduction before use. Do not feed probabilities back as logits. The result retains per-position shape `(B,T)`; no B×T flattening, global mean, or other full-batch aggregation is taught here.
+
+The prepared shape example uses chunk `[[0,2,1]]`, X=`[[0,2]]`, Y=`[[2,1]]`, and manually constructed toy logits `mx.log(mx.array([[[1.,2.,3.],[3.,2.,1.]]],dtype=mx.float32))`, shape `(1,2,3)`. Taking log of positive toy numbers is only a convenient way to make the hand calculation simple; it is not the MiniGPT algorithm for token IDs or word counts. Per-position losses have shape `(1,2)` with hand-derived values `[[ln(2),ln(3)]]`, not claimed runtime output.
+
+Prepare and publish only: no corpus read/download, Notebook execution, tests, sampling, experiments, training, user work copy execution, or exercise answers. Stop at 17.1 before 17.2; do not teach flattening, gradient/value_and_grad, optimizer, training loop, or generation. Material preparation and static review do not imply learner mastery or successful execution.
