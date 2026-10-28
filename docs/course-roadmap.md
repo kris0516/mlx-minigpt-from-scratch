@@ -656,7 +656,7 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 
 ---
 
-## Step 15 — From the original Transformer to GPT / Decoder-Only Transformer 🚧
+## Step 15 — From the original Transformer to GPT / Decoder-Only Transformer ✅
 
 **Goal:** explain exactly what GPT keeps and removes from the 2017 Transformer.
 
@@ -686,7 +686,7 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - shape assertions
 - avoid accidental trainable constants such as causal masks
 
-### 15.5 Full forward shape trace 🚧
+### 15.5 Full forward shape trace ✅
 
 - `(B,T) → (B,T,C) → ... → (B,T,V)`
 - parameter count
@@ -694,11 +694,11 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 
 ---
 
-## Step 16 — Tiny Shakespeare data pipeline
+## Step 16 — Tiny Shakespeare data pipeline 🚧
 
 **Goal:** replace toy tensors with a real small language-model corpus.
 
-### 16.1 Acquire and inspect Tiny Shakespeare
+### 16.1 Acquire and inspect Tiny Shakespeare 🚧
 
 - download / cache
 - encoding
@@ -1109,7 +1109,7 @@ These are not required to declare the MiniGPT project complete.
 
 # Current course-material status
 
-> Status here tracks **repository lesson-material preparation**, not learner mastery, exercise completion, assessment, or runtime validation.
+> Status here tracks **repository lesson-material preparation**, not learner mastery, exercise completion, assessment, data acquisition success, or runtime validation.
 > `✅` = master lesson/material has been prepared and its static review status has been confirmed where noted; `🚧` = current prepared lesson/material being used or revised; no icon = future planned lesson.
 > Learner completion must only be recorded when the learner explicitly confirms completion or an agreed assessment has actually been completed.
 
@@ -1121,18 +1121,15 @@ Steps 11.1–11.5  ✅ Material prepared / static audit passed
 Steps 12.1–12.5  ✅ Material prepared / static audit passed
 Steps 13.1–13.5  ✅ Material prepared / static audit passed
 Steps 14.1–14.5  ✅ Material prepared / static audit passed
-Step 15.1         ✅ Material prepared / static audit passed
-Step 15.2         ✅ Material prepared / static audit passed
-Step 15.3         ✅ Material prepared / static audit passed
-Step 15.4         ✅ Material prepared / static audit passed
-Step 15.5         🚧 Current material prepared / correction 1/2
-Step 16              Planned only
+Steps 15.1–15.5  ✅ Material prepared / static audit passed (15.5 correction 1/2)
+Step 16.1         🚧 Current material prepared / corrections 0/2
+Step 16.2+           Planned only
 ```
 
 Current course-material checkpoint:
 
-> **Step 15.5 — Full forward shape trace**
+> **Step 16.1 — Acquire and inspect Tiny Shakespeare**
 
 Learner-status note:
 
-> Material preparation for Step 15.5 does not assert learner mastery, work-notebook completion, exercise completion, or runtime validation. Do not enter Step 16 unless the learner explicitly asks to proceed beyond Step 15.5.
+> Material preparation for Step 16.1 does not assert learner mastery, work-notebook completion, corpus download success, inspection results, or runtime validation. Do not enter Step 16.2 unless the learner explicitly asks to proceed beyond Step 16.1.
