@@ -1125,7 +1125,7 @@ Step 15.1         ✅ Material prepared / static audit passed
 Step 15.2         ✅ Material prepared / static audit passed
 Step 15.3         ✅ Material prepared / static audit passed
 Step 15.4         ✅ Material prepared / static audit passed
-Step 15.5         🚧 Current material prepared
+Step 15.5         🚧 Current material prepared / correction 1/2
 Step 16              Planned only
 ```
 
