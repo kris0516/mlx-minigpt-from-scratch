@@ -24,13 +24,14 @@ Steps 13.1–13.5  material prepared; static audit passed
 Steps 14.1–14.5  material prepared; static audit passed
 Step 15.1         material prepared; static audit passed
 Step 15.2         material prepared; static audit passed
-Step 15.3         current material prepared
-Step 15.4+        planned only; not current
+Step 15.3         material prepared; static audit passed
+Step 15.4         current material prepared
+Step 15.5         planned only; not current
 ```
 
-**Material status is not learner status.** No claim is made that the learner has completed the Step 15.3 work notebook, exercises, or mastered the MiniGPT top-level architecture. No runtime validation is asserted.
+**Material status is not learner status.** No claim is made that the learner has completed the Step 15.4 work notebook, exercises, or mastered the MiniGPT implementation. No runtime validation is asserted.
 
-Do not enter Step 15.4 until the learner explicitly asks to proceed beyond Step 15.3.
+Do not enter Step 15.5 until the learner explicitly asks to proceed beyond Step 15.4.
 
 ## Non-negotiable teaching constraints
 
@@ -171,9 +172,9 @@ mlx-minigpt-from-scratch/
 
 Current course-material checkpoint:
 
-> **Step 15.3 — MiniGPT top-level architecture**
+> **Step 15.4 — Implement `MiniGPT`**
 
-Step 15.3 material is prepared only. Do not infer learner mastery, exercise completion, or runtime validation, and do not create, teach, or mark Step 15.4 as current unless the learner explicitly asks to proceed. Step 14's completed static audit still does not imply runtime tests were executed or passed.
+Step 15.4 material is prepared only. Do not infer learner mastery, exercise completion, or runtime validation, and do not create, teach, or mark Step 15.5 as current unless the learner explicitly asks to proceed. Step 14's completed static audit still does not imply runtime tests were executed or passed.
 
 ## 2026-10-08 continuity re-audit
 
@@ -542,3 +543,19 @@ Because the current Block is Pre-Norm, use a final RMSNorm after the stack befor
 The LM head maps `C->V` independently at each position and returns unnormalized logits `(B,T,V)`. Do not add softmax or loss in this lesson.
 
 Stop before Step 15.4. Do not implement a `MiniGPT` class, construct the real Block list, add model-level shape assertions, or revisit causal-mask module-state registration.
+
+## Step 15.4 accuracy boundary
+
+Implement a clean MLX `MiniGPT(nn.Module)` using the already-taught token embedding, learned absolute position embedding, independently instantiated Transformer Blocks, final RMSNorm, and bias-free LM head.
+
+Validate positive constructor dimensions, `dims % num_heads == 0`, rank-2 token IDs `(B,T)`, and `1<=T<=max_seq_len`. Keep token dtype/index-range as the caller/embedding lookup contract rather than adding device-synchronizing runtime checks.
+
+MLX 0.32.2 recursively tracks child modules stored in list/dict/tuple structures, so `self.blocks=[TransformerBlock(...) for ...]` is valid and produces separately parameterized blocks. Do not create one shared block and repeat the same object reference unless weight sharing is intentionally desired.
+
+MLX `Module.parameters()` recursively collects mx.array members. A directly assigned `self.causal_mask = mx.array(...)` would therefore become module state and, unless frozen, trainable. Keep causal masks and position IDs forward-local in the primary implementation.
+
+If a structural array is cached in the future, explain that it must be explicitly frozen (or otherwise managed as non-trainable state). Frozen arrays remain state/parameters but are excluded from `trainable_parameters()`.
+
+Use Python scalar metadata for head_dim, scale, max_seq_len, etc. Do not introduce weight tying in this lesson; token embedding and LM-head weights remain separate.
+
+Stop before Step 15.5. Do not compute the entire MiniGPT parameter count or provide the full line-by-line historical forward trace yet.
