@@ -12,7 +12,7 @@ MLP → RNN → LSTM/GRU → Seq2Seq → Attention → Transformer → GPT
 
 ## Course-material status
 
-`✅` means repository lesson material has been prepared; it does **not** mean learner mastery, exercise completion, or runtime validation.
+`✅` means repository lesson material has been prepared; it does **not** mean learner mastery, data acquisition success, exercise completion, or runtime validation.
 
 ```text
 Steps 1–8.5      ✅ Material prepared
@@ -22,17 +22,14 @@ Steps 11.1–11.5  ✅ Material prepared / static audit passed
 Steps 12.1–12.5  ✅ Material prepared / static audit passed
 Steps 13.1–13.5  ✅ Material prepared / static audit passed
 Steps 14.1–14.5  ✅ Material prepared / static audit passed
-Step 15.1         ✅ Material prepared / static audit passed
-Step 15.2         ✅ Material prepared / static audit passed
-Step 15.3         ✅ Material prepared / static audit passed
-Step 15.4         ✅ Material prepared / static audit passed
-Step 15.5         🚧 Current material prepared / correction 1/2
-Step 16              Planned only
+Steps 15.1–15.5  ✅ Material prepared / static audit passed (15.5 correction 1/2)
+Step 16.1         🚧 Current material prepared / corrections 0/2
+Step 16.2+           Planned only
 ```
 
-Current course-material checkpoint: **Step 15.5 — Full forward shape trace**.
+Current course-material checkpoint: **Step 16.1 — Acquire and inspect Tiny Shakespeare**.
 
-Learner completion/mastery and runtime validation for Step 15.5 are intentionally **not asserted** here.
+Learner completion/mastery, corpus download success, inspection results, and runtime validation for Step 16.1 are intentionally **not asserted** here.
 
 ## Persistent course documents
 
