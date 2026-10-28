@@ -38,13 +38,14 @@ Step 18.2         ✅ Material reviewer independently confirmed core static PASS
 Step 18.3         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
 Step 18.4         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
 Step 18.5         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
-Step 19.1         🚧 Current initial material prepared / corrections 0/2
-Step 19.2+         Planned only
+Step 19.1         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
+Step 19.2         🚧 Current initial material published / corrections 0/2
+Step 19.3+         Planned only
 ```
 
-Current course-material checkpoint: **Step 19.1 — Hyperparameter baseline**.
+Current course-material checkpoint: **Step 19.2 — Train / Validation Loop**.
 
-Current master: [82_step19_1_hyperparameter_baseline.ipynb](notebooks/82_step19_1_hyperparameter_baseline.ipynb).
+Current master: [83_step19_2_train_validation_loop.ipynb](notebooks/83_step19_2_train_validation_loop.ipynb).
 
 Actual correction counts persist across conversations: Step 16.1 **1/2**, Step 16.2 **1/2**, Step 16.3 **0/2**, Step 16.4 **0/2**, Step 16.5 **0/2**, Step 17.1 **0/2**, Step 17.2 **0/2**, Step 17.3 **0/2**, Step 17.4 **0/2**, Step 17.5 **0/2**, Step 18.1 **0/2**, Step 18.2 **0/2**, Step 18.3 **0/2**, Step 18.4 **0/2**, Step 18.5 **0/2**, Step 19.1 initial version **0/2**. Step 16.2's count includes the learner-confirmed completion of a reply after a timeout. Passed lessons are not reworked and counts do not reset.
 
@@ -59,3 +60,6 @@ Learner completion/mastery, local-cache availability, exercise completion, Noteb
 - [Current Step 19 material](docs/step-19-stable-low-heat-training.md)
 
 教学笔记、代码与实验将按学习进度逐步提交。
+
+
+Step 19.2's train/validation loop material is published with initial corrections 0/2. The master separates train/validation data, distinguishes pre-update training loss from current-parameter validation loss, and uses MLX v0.32.2 mode/evaluation boundaries. Its sample loop is instructional only; no run results are claimed. Stop at 19.2 before 19.3.
