@@ -680,13 +680,13 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - final norm
 - LM head
 
-### 15.4 Implement `MiniGPT` 🚧
+### 15.4 Implement `MiniGPT` ✅
 
 - clean MLX `nn.Module`
 - shape assertions
 - avoid accidental trainable constants such as causal masks
 
-### 15.5 Full forward shape trace
+### 15.5 Full forward shape trace 🚧
 
 - `(B,T) → (B,T,C) → ... → (B,T,V)`
 - parameter count
@@ -1124,14 +1124,15 @@ Steps 14.1–14.5  ✅ Material prepared / static audit passed
 Step 15.1         ✅ Material prepared / static audit passed
 Step 15.2         ✅ Material prepared / static audit passed
 Step 15.3         ✅ Material prepared / static audit passed
-Step 15.4         🚧 Current material prepared
-Step 15.5            Planned only
+Step 15.4         ✅ Material prepared / static audit passed
+Step 15.5         🚧 Current material prepared
+Step 16              Planned only
 ```
 
 Current course-material checkpoint:
 
-> **Step 15.4 — Implement `MiniGPT`**
+> **Step 15.5 — Full forward shape trace**
 
 Learner-status note:
 
-> Material preparation for Step 15.4 does not assert learner mastery, work-notebook completion, exercise completion, or runtime validation. Do not enter Step 15.5 unless the learner explicitly asks to proceed beyond Step 15.4.
+> Material preparation for Step 15.5 does not assert learner mastery, work-notebook completion, exercise completion, or runtime validation. Do not enter Step 16 unless the learner explicitly asks to proceed beyond Step 15.5.
