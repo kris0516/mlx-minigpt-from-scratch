@@ -25,13 +25,14 @@ Steps 14.1–14.5  ✅ Material prepared / static audit passed
 Step 15.1         ✅ Material prepared / static audit passed
 Step 15.2         ✅ Material prepared / static audit passed
 Step 15.3         ✅ Material prepared / static audit passed
-Step 15.4         🚧 Current material prepared
-Step 15.5            Planned only
+Step 15.4         ✅ Material prepared / static audit passed
+Step 15.5         🚧 Current material prepared
+Step 16              Planned only
 ```
 
-Current course-material checkpoint: **Step 15.4 — Implement `MiniGPT`**.
+Current course-material checkpoint: **Step 15.5 — Full forward shape trace**.
 
-Learner completion/mastery and runtime validation for Step 15.4 are intentionally **not asserted** here.
+Learner completion/mastery and runtime validation for Step 15.5 are intentionally **not asserted** here.
 
 ## Persistent course documents
 
