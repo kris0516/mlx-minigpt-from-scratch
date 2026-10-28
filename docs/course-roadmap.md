@@ -734,7 +734,7 @@ All five subsection masters, documents, and full replies have independently pass
 
 ---
 
-## Step 17 — Language-model loss and the first real training loop 🚧
+## Step 17 — Language-model loss and the first real training loop ✅
 
 **Goal:** make MiniGPT actually learn next-token prediction.
 
@@ -764,7 +764,7 @@ All five subsection masters, documents, and full replies have independently pass
 - state
 - why optimizer state consumes memory
 
-### 17.5 Uncompiled training step 🚧
+### 17.5 Uncompiled training step ✅
 
 - forward
 - loss
@@ -774,11 +774,11 @@ All five subsection masters, documents, and full replies have independently pass
 
 ---
 
-## Step 18 — MLX execution model: lazy evaluation, `mx.eval`, and `mx.compile`
+## Step 18 — MLX execution model: lazy evaluation, `mx.eval`, and `mx.compile` 🚧
 
 **Goal:** understand what makes MLX distinctive on Apple Silicon.
 
-### 18.1 Lazy evaluation
+### 18.1 Lazy evaluation 🚧
 
 - operations build a graph
 - Python line execution does not necessarily mean immediate GPU execution
@@ -1134,20 +1134,21 @@ Step 17.1         ✅ Material reviewer independently confirmed core static PASS
 Step 17.2         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
 Step 17.3         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
 Step 17.4         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
-Step 17.5         🚧 Current initial material prepared / corrections 0/2
-Step 18+            Planned only
+Step 17.5         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
+Step 18.1         🚧 Current initial material prepared / corrections 0/2
+Step 18.2+          Planned only
 ```
 
 Current course-material checkpoint:
 
-> **Step 17.5 — Uncompiled training step**
+> **Step 18.1 — Lazy evaluation**
 
-Current master: [76_step17_5_uncompiled_training_step.ipynb](../notebooks/76_step17_5_uncompiled_training_step.ipynb).
+Current master: [77_step18_1_lazy_evaluation.ipynb](../notebooks/77_step18_1_lazy_evaluation.ipynb). Current Step document: [Step 18 — MLX execution model](step-18-mlx-execution-model.md).
 
 Learner-status note:
 
-> All major Step 16 masters, documents, and full replies; Step 17.1's actual master, documentation, fixed-version MLX API contract, and full reply; Step 17.2's actual master, documentation, and full reply; Step 17.3's actual master, documentation, MLX v0.32.2 API, and full reply; and Step 17.4's actual master, documentation, fixed-version MLX API, and full reply have independently passed the material reviewer's core static review. This is material acceptance, not learner learning or execution feedback. Step 17.5 supplies a self-contained toy Module, already-shifted data, scalar loss, Module-aware gradient function, and explicit Adam settings to connect one uncompiled training step. It explains reverse-mode autodiff, model/optimizer state updates, and the required explicit evaluation boundary. The prepared call returns the loss from before the update; it is not a post-update loss measurement. All lesson code remains unexecuted, and no corpus, old kernel, sampler, or new dependency is needed. This turn stops at Step 17.5, the final planned subsection of major Step 17; do not enter Step 18. Material coverage through this subsection does not imply independent acceptance of 17.5, learner completion, mastery, experiments, or runtime validation.
+> All major Step 16 and Step 17 materials have independently passed the material reviewer's core static review. The latest acceptance includes Step 17.5's actual five-file commit `3fdec00b251765bda581c2b183e68d039c83c902`, fixed MLX v0.32.2 interfaces, and full teaching reply, with actual corrections **0/2**. This is material acceptance, not learner learning or execution feedback. Step 18.1 uses self-contained, explicitly supplied float32 arrays to explain how array operations record calculation dependencies and why a completed Python statement does not guarantee that the corresponding GPU numerical work has completed. It connects known shapes and dtypes, Python name binding, and ordinary function returns to the minimal evaluation semantics already introduced in 17.5. All lesson code remains unexecuted, and no corpus, old kernel, sampler, model, optimizer, or new dependency is needed. This turn stops at Step 18.1, before 18.2. Earlier independent acceptance does not imply acceptance of 18.1, learner completion, mastery, experiments, or runtime validation. Graph growth, compilation, and performance experiments remain outside the current subsection.
 
-Actual correction ledger: Step 16.1 **1/2**, Step 16.2 **1/2**, Step 16.3 **0/2**, Step 16.4 **0/2**, Step 16.5 **0/2**, Step 17.1 **0/2**, Step 17.2 **0/2**, Step 17.3 **0/2**, Step 17.4 **0/2**, Step 17.5 initial version **0/2**. Step 16.2 includes the previously recorded reply completion after a timeout. Preserve the passed lessons and all accumulated counts across turns and conversations.
+Actual correction ledger: Step 16.1 **1/2**, Step 16.2 **1/2**, Step 16.3 **0/2**, Step 16.4 **0/2**, Step 16.5 **0/2**, Step 17.1 **0/2**, Step 17.2 **0/2**, Step 17.3 **0/2**, Step 17.4 **0/2**, Step 17.5 **0/2**, Step 18.1 initial version **0/2**. Step 16.2 includes the previously recorded reply completion after a timeout. Preserve the passed lessons and all accumulated counts across turns and conversations.
 
 Active continuation boundary: subsequent requests proceed one subsection at a time through major **Step 20**, then stop. The existing Step 21–25 roadmap remains a future curriculum plan; this boundary does not authorize automatic or batch preparation of later lessons.
