@@ -2,7 +2,7 @@
 
 目标：解释 2017 Transformer 的 encoder–decoder architecture，以及 GPT 后续究竟保留、删除和重组了什么。
 
-本 Step 保留现有 roadmap 的 15.1–15.5 结构。Step 15.1、15.2 材料已通过静态审核；当前只准备 **15.3 MiniGPT top-level architecture**，不进入 15.4。
+本 Step 保留现有 roadmap 的 15.1–15.5 结构。Step 15.1–15.3 材料已通过静态审核；当前只准备 **15.4 Implement `MiniGPT`**，不进入 15.5。
 
 ## Step 15.1 — Original Transformer architecture
 
@@ -150,3 +150,44 @@ Logits 是未归一化分数。本节不在顶层手动加 softmax，也不进�
 本节只建立顶层组件清单、职责与 shape flow。不实现 `MiniGPT(nn.Module)`、真实 Block list 或 top-level shape assertions，也不处理 causal-mask state-registration 等 Step 15.4 实现细节。
 
 Step 15.3 材料准备到此停止，不进入 Step 15.4。
+
+## Step 15.4 — Implement `MiniGPT`
+
+### Clean MLX module structure
+
+MiniGPT 由 token embedding、learned absolute position embedding、独立 Transformer Block list、final RMSNorm 与 LM head 组成。
+
+```text
+token_ids (B,T)
+-> token + position representations (B,T,C)
+-> Block × N
+-> final norm
+-> LM head
+-> logits (B,T,V)
+```
+
+`self.blocks=[TransformerBlock(...) for _ in range(num_blocks)]` 创建独立子模块对象。MLX 0.32.2 的 `nn.Module` 会递归追踪 list / tuple / dict 中的 child modules 与 arrays。
+
+### Shape and construction constraints
+
+Constructor 检查 positive `vocab_size/dims/num_heads/num_blocks/max_seq_len` 以及 `dims % num_heads == 0`。
+
+Forward 要求 token IDs 为 rank-2 `(B,T)`，并显式要求 `1<=T<=max_seq_len`。位置 IDs 在 forward 内通过 `mx.arange(T)` 创建；最终 logits contract 为 `(B,T,V)`。
+
+### Structural constants versus trainable arrays
+
+MLX Module 中直接保存的 `mx.array` 会被 `parameters()` 递归收集，若未冻结也会进入 `trainable_parameters()`。
+
+因此当前 Attention 不把 causal mask 保存成 `self.causal_mask`，而是在每次 forward 中根据当前 T 局部创建。MiniGPT position IDs 同样 forward-local。`head_dim`、scale、max sequence length 等用 Python int/float metadata 表示。
+
+如果未来缓存 structural array，可以把它作为 module state 后显式 `freeze(..., keys=..., recurse=False)`；被冻结 array 仍在 module state/parameters 中，但不会进入 trainable parameter set。
+
+### Current implementation choices
+
+本节沿用已有 Block：Pre-Norm + RMSNorm + causal MHA + GELU MLP。Learned absolute positions 是本项目教学选择；token embedding 与 LM-head weights 暂时独立，不做 weight tying。
+
+### Scope boundary
+
+本节只实现干净的 `MiniGPT(nn.Module)` 与必要 shape constraints。不计算完整 MiniGPT 参数总数，不做完整逐行 forward shape trace，也不进入 loss / training。
+
+Step 15.4 材料准备到此停止，不进入 Step 15.5。
