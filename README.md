@@ -23,13 +23,14 @@ Steps 12.1–12.5  ✅ Material prepared / static audit passed
 Steps 13.1–13.5  ✅ Material prepared / static audit passed
 Steps 14.1–14.5  ✅ Material prepared / static audit passed
 Step 15.1         ✅ Material prepared / static audit passed
-Step 15.2         🚧 Current material prepared
-Step 15.3+           Planned only
+Step 15.2         ✅ Material prepared / static audit passed
+Step 15.3         🚧 Current material prepared
+Step 15.4+           Planned only
 ```
 
-Current course-material checkpoint: **Step 15.2 — Why autoregressive GPT can be decoder-only**.
+Current course-material checkpoint: **Step 15.3 — MiniGPT top-level architecture**.
 
-Learner completion/mastery and runtime validation for Step 15.2 are intentionally **not asserted** here.
+Learner completion/mastery and runtime validation for Step 15.3 are intentionally **not asserted** here.
 
 ## Persistent course documents
 
