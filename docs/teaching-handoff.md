@@ -23,13 +23,14 @@ Steps 12.1–12.5  material prepared; static audit passed
 Steps 13.1–13.5  material prepared; static audit passed
 Steps 14.1–14.5  material prepared; static audit passed
 Step 15.1         material prepared; static audit passed
-Step 15.2         current material prepared
-Step 15.3+        planned only; not current
+Step 15.2         material prepared; static audit passed
+Step 15.3         current material prepared
+Step 15.4+        planned only; not current
 ```
 
-**Material status is not learner status.** No claim is made that the learner has completed the Step 15.2 work notebook, exercises, or mastered why autoregressive GPT can be decoder-only. No runtime validation is asserted.
+**Material status is not learner status.** No claim is made that the learner has completed the Step 15.3 work notebook, exercises, or mastered the MiniGPT top-level architecture. No runtime validation is asserted.
 
-Do not enter Step 15.3 until the learner explicitly asks to proceed beyond Step 15.2.
+Do not enter Step 15.4 until the learner explicitly asks to proceed beyond Step 15.3.
 
 ## Non-negotiable teaching constraints
 
@@ -170,9 +171,9 @@ mlx-minigpt-from-scratch/
 
 Current course-material checkpoint:
 
-> **Step 15.2 — Why autoregressive GPT can be decoder-only**
+> **Step 15.3 — MiniGPT top-level architecture**
 
-Step 15.2 material is prepared only. Do not infer learner mastery, exercise completion, or runtime validation, and do not create, teach, or mark Step 15.3 as current unless the learner explicitly asks to proceed. Step 14's completed static audit still does not imply runtime tests were executed or passed.
+Step 15.3 material is prepared only. Do not infer learner mastery, exercise completion, or runtime validation, and do not create, teach, or mark Step 15.4 as current unless the learner explicitly asks to proceed. Step 14's completed static audit still does not imply runtime tests were executed or passed.
 
 ## 2026-10-08 continuity re-audit
 
@@ -525,3 +526,19 @@ Prompt-conditioned tasks may serialize prompt/source before the continuation so 
 Preserve the training/inference distinction: training can compute positions in parallel under the mask; autoregressive inference remains token-by-token.
 
 Stop before Step 15.3. Do not enumerate or implement the MiniGPT top-level token embedding, position embedding, Block × N, final norm, or LM head.
+
+## Step 15.3 accuracy boundary
+
+Teach only the top-level MiniGPT component inventory and shape flow: token IDs `(B,T)` -> token embedding `(B,T,C)` + position embedding `(T,C)` -> Block × N -> final norm -> LM-head logits `(B,T,V)`.
+
+Token embedding is an MLX `nn.Embedding(V,C)` lookup table with stored shape `(V,C)`. Token IDs are categorical indices, not continuous features.
+
+For this project, choose learned absolute positions with a table `(T_max,C)` and require `T<=T_max`. State explicitly that this is a MiniGPT teaching choice, not a universal modern-LLM requirement. The causal mask handles visibility and is not a substitute for positional representation.
+
+Explain that `Block × N` normally means separately parameterized block instances with the same architecture, not one shared block repeatedly called.
+
+Because the current Block is Pre-Norm, use a final RMSNorm after the stack before the LM head. Treat this as the current project design rather than a universal placement law.
+
+The LM head maps `C->V` independently at each position and returns unnormalized logits `(B,T,V)`. Do not add softmax or loss in this lesson.
+
+Stop before Step 15.4. Do not implement a `MiniGPT` class, construct the real Block list, add model-level shape assertions, or revisit causal-mask module-state registration.
