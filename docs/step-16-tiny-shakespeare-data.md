@@ -2,9 +2,9 @@
 
 目标：把 Step 15 已经完成的 MiniGPT 从 toy token tensors 接到一份真实、可重复获取的小型 character-level language-model corpus。
 
-本 Step 保留现有 roadmap 的 16.1–16.5 结构。Step 16.1、16.2 的材料与核心教学均已通过，各实际修正 **1/2**；当前只准备并发布 **16.3 Batch sampler** 初版，实际修正 **0/2**，完成后停在本节，不进入16.4。
+本 Step 保留现有 roadmap 的 16.1–16.5 结构。Step 16.1、16.2 的材料与核心教学均已通过，各实际修正 **1/2**；16.3 母版及完整回复核心内容已由用户独立核验 PASS，实际修正保持 **0/2**。当前只准备并发布 **16.4 Reproducibility** 初版，实际修正 **0/2**，完成后停在本节，不进入16.5。
 
-16.2 的一次实际修正为用户确认的超时后完整回复补齐，本次补记，不因从 mlx-chap1 转到 mlx-chap2 而重置。材料状态不代表用户运行或掌握情况。
+16.2 的一次实际修正为用户确认的超时后完整回复补齐，已补记，不因从 mlx-chap1 转到 mlx-chap2 而重置。材料状态不代表用户运行或掌握情况。后续仍按请求逐小节推进，至大 Step 20 全部完成后停止。
 
 ## Step 16.1 — Acquire and inspect Tiny Shakespeare
 
@@ -237,8 +237,114 @@ Sampler定义监督配对，causal mask定义每个位置允许使用的输入�
 
 ### Scope and correction ledger
 
-本节初始生成与发布计 **0/2**；16.1、16.2累计实际修正均保留 **1/2**。每小节最多两次实际修正，新对话不重置。
+16.3 母版及完整回复核心内容已由用户独立核验 PASS，实际修正仍为 **0/2**；16.1、16.2累计实际修正均保留 **1/2**。不返工已通过课节。每小节最多两次实际修正，新对话不重置。
 
-本轮只准备并发布16.3，结束后停在本节。16.4的seed、determinism与RNG-state resume，16.5的工业数据管线，以及loss/optimizer/training均不在本节范围内。不下载或读取语料，不执行Notebook、assertion、测试、训练、实验或用户work副本，也不代答练习。
+16.3 的原课节范围停在 batch sampler；seed、determinism与RNG-state resume 留给16.4，工业数据管线留给16.5，loss/optimizer/training另有后续课节。材料准备不下载或读取语料，不执行Notebook、assertion、测试、训练、实验或用户work副本，也不代答练习。
 
 API参考：[Python 3.12 randrange](https://docs.python.org/3.12/library/random.html#random.randrange)、[MLX stack](https://ml-explore.github.io/mlx/build/html/python/_autosummary/mlx.core.stack.html)。项目继续固定`mlx==0.32.2`。
+
+## Step 16.4 — Reproducibility
+
+母版：[70_step16_4_reproducibility.ipynb](../notebooks/70_step16_4_reproducibility.ipynb)。本节承接16.3的 `random.Random` 和 `get_batch`，解释随机采样怎样从头复现、怎样从保存的位置继续，以及完整恢复训练还缺哪些状态。
+
+### New work copy and dependency recovery
+
+新母版自带16.3的 `Path`、`random`、`mlx.core` 导入，以及 `find_project_root`、`load_cached_character_corpus`、`split_train_validation`、`get_batch` 定义。依赖定义不读取语料或采样；不依赖旧Notebook的kernel，也不通过 `%run` 执行旧课节。
+
+路径 cell 默认指向仓库根目录的 `data/tinyshakespeare/input.txt`。若16.1既有缓存位于其他目录，将 `CACHE_PATH` 改为该文件的绝对路径。随后单独的bootstrap usage才从既有缓存恢复相同的字符映射、`mx.int32` stream、连续90/10 split；缺缓存只报错，不下载或移动文件。这些都是以后使用work副本的操作步骤，本轮材料准备没有执行。
+
+### Seed, RNG state, and continuing draws
+
+**Seed（随机种子）**是初始化随机数生成器的输入；**RNG state（随机数生成器状态）**记录它当前可继续产生后续输出的位置。伪随机数由算法产生，state随调用变化，不是每次凭空重新开始。
+
+用 `S_0` 表示初始状态，seed决定：
+
+```text
+S_0 = Init(seed)
+```
+
+用 `S_k` 表示第k个batch之前的状态，`G` 表示本sampler取完整batch起点的过程，`N_split-T` 是合法起点数量：
+
+```text
+(starts_k, S_{k+1}) = G(S_k; B, N_split-T)
+```
+
+这里是整个batch的状态转移，不表示每次 `randrange` 恰好消耗一个底层随机数。保持一个rng对象持续使用，状态就继续前进。若每个batch前都重新执行 `random.Random(SEED)`，会重新从同一序列开头取样。
+
+手工示意取N=8、T=3、B=2，合法起点0至4。假设连续两次batch的起点分别为 `[1,4]` 和 `[0,3]`：保存第一次之后的state，恢复后应接着取得第二组；重新使用原seed则回到第一组所处的起点。这只是便于解释的假设序列，不是某个seed的实测输出。
+
+### Deterministic sampling expectations
+
+**Deterministic sampling（确定性采样）**是在条件相同的情况下重复同样的采样结果；不是每次调用都应返回相同batch。
+
+| 要重复的对象 | 必须保持的条件 |
+|---|---|
+| 从头的起点序列 | 相同seed、sampler实现、调用参数及顺序、兼容的Python运行环境 |
+| 从某个边界继续的起点序列 | 恢复该边界的RNG state，后续条件与调用顺序相同 |
+| 相同的X/Y内容 | 起点相同，且token数据、字符映射和split相同 |
+| 完整训练轨迹 | 还涉及模型、优化器、其他随机源和执行环境；本节不保证或验证 |
+
+同一个数据文件名或相同长度不足以说明token内容一致。改变B、T、split长度，或插入额外的随机调用，都可能改变后续起点；即使起点偶然相同，也不能据此认定全部状态相同。
+
+输出接口仍是 `X/Y:(B,T)` 的整数数组以及长度B的 `starts` 列表。每行的shift关系仍为 `X[b,t]=data[starts[b]+t]`、`Y[b,t]=data[starts[b]+t+1]`；seed/state不改变shape或split边界。
+
+### Separate random sources and prepared usage
+
+母版先解释API再准备以下fresh-run setup：
+
+```python
+TRAIN_SEED = 2026
+VAL_SEED = 2027
+MLX_SEED = 2028
+
+train_rng = random.Random(TRAIN_SEED)
+val_rng = random.Random(VAL_SEED)
+mx.random.seed(MLX_SEED)
+```
+
+两个Python对象分别负责train与validation起点；validation只消耗 `val_rng`，不会改变 `train_rng` 的位置。不同seed不保证每次结果不同，也不保证窗口互不重叠。
+
+模块级 `random.seed(...)` 管理模块自己的默认生成器，不会替这些显式创建的Random对象设seed。`mx.random.seed(...)` 管理MLX随机源，不会给Python sampler设seed。它应在将来需要受其影响的MLX随机初始化之前调用；本节不创建模型或MLX随机数组。当前sampler的MLX切片与stack本身不产生随机起点。
+
+使用代码继续取B=2、T=8，train/validation各准备一次batch调用，输出仍为 `(2,8)`。另用 `train_batches_sampled`、`val_batches_sampled` 记录各自已经采过多少个batch；这些计数不是optimizer训练步数、epoch或底层随机数调用次数。本轮不执行setup或sampling usage，不给出假造随机输出。
+
+### In-memory continuation: getstate and setstate
+
+`rng.getstate()` 返回当前状态；`rng.setstate(saved_state)` 将兼容状态装回生成器。两者自身不取新的随机样本。状态按完整对象保存，不拆解或猜测其内部tuple结构。
+
+母版准备一个Python dictionary作为**内存快照（in-memory snapshot）**，保存：
+
+- train_rng与val_rng的两份 `getstate()`；
+- batch_size与block_size；
+- train/validation已采batch计数。
+
+恢复时创建两个替代Random对象，以 `setstate(...)` 覆盖其初始状态，再恢复B/T和计数。保留当前kernel中的同一份数据、split、词表与sampler定义，下一次取样就从保存的边界继续。恢复后不要重跑fresh-run setup，否则又会回到seed决定的起点。
+
+快照保存“下一次从哪里开始”，不会自动重放刚采出的上一batch。它也无法追回16.3中没有保存seed/state的旧随机序列。内存字典不包含语料、MLX RNG、模型或优化器，kernel重启后便不存在；本节没有把它写成可跨进程恢复的完整checkpoint。
+
+### What later resume must preserve
+
+这里只明确将来恢复继续所需的条件，不提前实现checkpoint文件或训练恢复。
+
+| 状态或条件 | 为什么需要 |
+|---|---|
+| 确切数据内容、字符ID映射、split规则/位置 | 同一起点必须仍指向相同token与同一数据集 |
+| sampler代码、B/T等配置 | 保持相同合法范围、调用行为与batch形状 |
+| 所有实际参与的Python RNG states | 从保存的位置继续各自的随机序列 |
+| 采样进度及未来训练步数 | 区分已完成与下一步；两种计数不能混用 |
+| Python/MLX版本、设备、dtype及相关执行条件 | seed本身不能保证跨环境逐位相同 |
+| 将来的模型权重 | 保留模型已学到的参数 |
+| 将来的optimizer状态 | 保留更新规则累计的历史；其内部细节留给Step17 |
+| 将来实际使用的MLX随机状态 | 继续MLX侧随机计算，不能只重设初始seed |
+
+MLX状态的实际保存/恢复API、模型与optimizer落盘、加载顺序和恢复验证留给后续Step18/20。项目仍固定MLX 0.32.2；不把 `mx.random.state` 当作普通可写list来提供赋值恢复代码，也不承诺仅设置几个seed就能得到跨硬件完全一致的训练结果。
+
+### Operational order, scope, and ledger
+
+以后使用新work副本时：依赖定义 → 既有缓存路径确认 → 本地bootstrap → 阅读seed/state与API → fresh-run setup → 按需采样 → 保存内存快照 → 恢复该快照后继续。恢复分支不重复fresh-run setup；每次重复sampling cell都会继续消耗对应RNG，顺序属于复现条件。
+
+本轮只准备和发布16.4，停在本节，不进入16.5。没有下载或读取语料，没有执行Notebook、测试、采样、复现实验、训练或用户work副本，没有代答练习。材料完成不等于学员掌握或运行验证。
+
+累计实际修正：16.1=**1/2**，16.2=**1/2**，16.3=**0/2**（已独立核验核心PASS），16.4初版=**0/2**。后续继续逐小节，至大Step20完成后停止。
+
+参考：[Python 3.12 random：seed、getstate、setstate与复现说明](https://docs.python.org/3.12/library/random.html)、[MLX random.seed](https://ml-explore.github.io/mlx/build/html/python/_autosummary/mlx.core.random.seed.html)、[MLX 0.32.2 random binding source](https://github.com/ml-explore/mlx/blob/v0.32.2/python/src/random.cpp)。

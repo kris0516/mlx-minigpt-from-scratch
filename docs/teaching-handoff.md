@@ -25,21 +25,23 @@ Steps 14.1–14.5  material prepared; static audit passed
 Steps 15.1–15.5  material prepared; static audit passed (15.5 correction 1/2)
 Step 16.1         material prepared; static audit passed (correction 1/2)
 Step 16.2         material prepared; static audit passed (correction 1/2)
-Step 16.3         current initial material prepared; corrections 0/2
-Step 16.4+        planned only; not current
+Step 16.3         material and full-reply core independently passed; corrections 0/2
+Step 16.4         current initial material prepared; corrections 0/2
+Step 16.5+        planned only; not current
 ```
 
-**Material status is not learner status.** No claim is made that the learner has a local corpus cache, executed the Step 16.3 sampler, created batches, completed exercises, or mastered batch sampling. No runtime validation is asserted.
+**Material status is not learner status.** No claim is made that the learner has a local corpus cache, executed the Step 16.4 code, sampled batches, performed reproducibility experiments, completed exercises, or mastered reproducibility. No runtime validation is asserted.
 
-This turn prepares and publishes only Step 16.3, then stops before Step 16.4.
+This turn prepares and publishes only Step 16.4, then stops before Step 16.5.
 
 ### mlx-chap2 continuation ledger
 
 - Step 16.1 material/core teaching passed; actual corrections **1/2**.
 - Step 16.2 material/core teaching passed; actual corrections **1/2**. The learner confirmed one completion of the full reply after a timeout; this previously unrecorded correction is now included.
-- Step 16.3 initial preparation; actual corrections **0/2**.
+- Step 16.3 master and full-reply core independently confirmed PASS by the learner; actual corrections **0/2**. Do not reopen the passed lesson.
+- Step 16.4 initial preparation; actual corrections **0/2**.
 - Earlier notebook wording about an initial count is historical; this cumulative ledger does not reset when conversations change.
-- Subsequent requests continue one subsection at a time through major **Step 20**, then stop. Do not prepare Step 16.4 or any later lesson during this turn, and do not infer authorization for automatic batch preparation. Keep the wider Step 21–25 curriculum as a future plan.
+- Subsequent requests continue one subsection at a time through major **Step 20**, then stop. Do not prepare Step 16.5 or any later lesson during this turn, and do not infer authorization for automatic batch preparation. Keep the wider Step 21–25 curriculum as a future plan.
 
 ## Non-negotiable teaching constraints
 
@@ -181,9 +183,9 @@ mlx-minigpt-from-scratch/
 
 Current course-material checkpoint:
 
-> **Step 16.3 — Batch sampler**
+> **Step 16.4 — Reproducibility**
 
-Step 16.3 initial material is prepared and published only. Do not infer learner mastery, sampled batches, local-cache availability, exercise completion, or runtime validation. Stop before Step 16.4 in this turn. Step 14's completed static audit still does not imply runtime tests were executed or passed.
+Step 16.4 initial material is prepared and published only. Do not infer learner mastery, sampled batches, local-cache availability, completed reproducibility experiments, exercise completion, or runtime validation. Stop before Step 16.5 in this turn. Step 14's completed static audit still does not imply runtime tests were executed or passed.
 
 ## 2026-10-08 continuity re-audit
 
@@ -637,7 +639,7 @@ Step 16.2 material/core teaching passed; actual correction count is **1/2**, inc
 
 ## Step 16.3 accuracy boundary
 
-Current master: `notebooks/69_step16_3_batch_sampler.ipynb`. Initial preparation count: **0/2**. This does not change the accumulated 1/2 counts for Steps 16.1 and 16.2.
+Lesson master: `notebooks/69_step16_3_batch_sampler.ipynb`. The learner independently confirmed that the master and full reply pass the core-content review; actual correction count remains **0/2**. This does not change the accumulated 1/2 counts for Steps 16.1 and 16.2. Preserve this passed master.
 
 The new work copy must operate in its own kernel. Include the imports and definition-only helpers needed to find the course root, read the existing local cache, rebuild the same character vocabulary/MLX int32 stream, and reuse the contiguous 90/10 split from Step 16.2. Keep path selection, cache reading/splitting, and sampling usage separate from definitions. Never `%run` a whole previous notebook or assume its variables exist.
 
@@ -653,4 +655,26 @@ Call the sampler separately with train_tokens and val_tokens, so the entire T+1 
 
 Prepare only a small B=2, T=8 usage and optional inspection of one decoded row per split. Use `random.Random()` without an explicit seed only to supply random starts. Do not conduct reproducibility experiments or teach seed/state restoration before 16.4. Do not run a MiniGPT forward, loss, optimizer, tests, training, or the user's work copy.
 
-Stop at Step 16.3. Step 16.4 and later remain planned. Material preparation/publication is not evidence of runtime validation or learner mastery.
+The historical scope of the Step 16.3 lesson stops before seed/state restoration; current progression is recorded above. Material preparation/publication is not evidence of runtime validation or learner mastery.
+
+## Step 16.4 accuracy boundary
+
+Current master: `notebooks/70_step16_4_reproducibility.ipynb`. Initial preparation count: **0/2**. Carry forward Step 16.1=1/2, Step 16.2=1/2, and the independently passed Step 16.3=0/2 without resetting or reworking them.
+
+The new work copy is self-contained: include the same Path/random/MLX imports, root/cache/split helpers, and four-argument `get_batch` definition from Step 16.3. Separate definitions, cache-path selection, local bootstrap, RNG setup, sampling usage, and state restoration. The learner can select the existing cache by absolute path; missing cache fails clearly. Do not assume shared kernel state or execute a previous notebook wholesale.
+
+Teach a seed as initialization input and RNG state as the current continuation position. Use `S_0=Init(seed)` and `(starts_k,S_{k+1})=G(S_k;B,N_split-T)` only after defining each symbol. This is a whole-batch transition, not a claim that each randrange call consumes exactly one fixed PRNG step. A small hypothetical example with N=8, T=3, B=2 and successive starts [1,4] then [0,3] is a hand illustration, not measured output or a claimed output for a particular seed.
+
+Same initial seed or restored state, matching sampler/call parameters and call order, and a compatible runtime support matching start sequences. Matching X/Y additionally requires identical token data, vocabulary mapping, and split. Preserve the `(B,T)` integer arrays, length-B Python starts list, shifted targets, and split-local boundaries. Do not claim cross-version, cross-device, or whole-training bitwise determinism from seeds alone.
+
+Prepare explicit `train_rng=random.Random(2026)` and `val_rng=random.Random(2027)` objects, B=2 and T=8, and `mx.random.seed(2028)` for future MLX initialization. Explain before use that these are separate random sources: module-level `random.seed` does not seed existing explicit Random instances, and MLX seed does not seed Python sampling. MLX seeding must precede future model initialization to affect its random draws; this lesson neither constructs a model nor draws MLX random arrays.
+
+Use each Python RNG continuously. Do not reseed or recreate it before each batch. Validation sampling consumes val_rng, leaving train_rng untouched. Different seeds do not guarantee non-overlapping windows or different outputs on every call. Batch counters count sampled batches, not optimizer updates, epochs, or low-level random draws.
+
+Prepare an in-memory snapshot dictionary containing both Python `getstate()` values, batch_size, block_size, and both sampled-batch counters. Restore two replacement Random objects with `setstate()`, then restore configuration and counters; the next draw continues from the saved boundary. Explain that getstate/setstate themselves do not sample. After restoring, do not rerun the fresh-run seed setup cell. Resetting to the original seed restarts the stream; it does not continue from the saved point.
+
+Keep the same data/split/vocabulary and sampler definition during this in-memory demonstration. The snapshot does not contain corpus data, MLX RNG, model weights, or optimizer state; it is not a complete checkpoint and does not survive a kernel restart. It cannot reconstruct Step 16.3's earlier unsaved, unseeded RNG sequence. Do not give a writable-list assignment recipe for `mx.random.state`; the project uses MLX 0.32.2 and the actual MLX checkpoint/state API belongs to later implementation work.
+
+The future resume checklist may name exact data identity (filename and length alone are insufficient), vocabulary/split, sampler and B/T configuration, Python RNG states, progress, software/device/dtype, and future model weights, optimizer state, training step, and MLX RNG state. Explain only their roles here. Leave checkpoint serialization, optimizer internals, compiled state handling, and resume verification to their existing Steps 17/18/20; do not introduce Step 16.5 industrial input pipelines.
+
+Prepare and publish only. Do not read/download corpus, run Notebook cells, tests, sampling, reproducibility experiments, training, or a user work copy; do not answer exercises or imply learner mastery/runtime verification. Stop at Step 16.4, before Step 16.5.

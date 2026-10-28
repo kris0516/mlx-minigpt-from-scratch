@@ -25,17 +25,18 @@ Steps 14.1–14.5  ✅ Material prepared / static audit passed
 Steps 15.1–15.5  ✅ Material prepared / static audit passed (15.5 correction 1/2)
 Step 16.1         ✅ Material prepared / static audit passed (correction 1/2)
 Step 16.2         ✅ Material prepared / static audit passed (correction 1/2)
-Step 16.3         🚧 Current initial material prepared / corrections 0/2
-Step 16.4+           Planned only
+Step 16.3         ✅ Material and full-reply core independently passed / corrections 0/2
+Step 16.4         🚧 Current initial material prepared / corrections 0/2
+Step 16.5+           Planned only
 ```
 
-Current course-material checkpoint: **Step 16.3 — Batch sampler**.
+Current course-material checkpoint: **Step 16.4 — Reproducibility**.
 
-Current master: [69_step16_3_batch_sampler.ipynb](notebooks/69_step16_3_batch_sampler.ipynb).
+Current master: [70_step16_4_reproducibility.ipynb](notebooks/70_step16_4_reproducibility.ipynb).
 
-Actual correction counts persist across conversations: Step 16.1 **1/2**, Step 16.2 **1/2**, Step 16.3 initial version **0/2**. Step 16.2's count includes the learner-confirmed completion of a reply after a timeout.
+Actual correction counts persist across conversations: Step 16.1 **1/2**, Step 16.2 **1/2**, Step 16.3 **0/2**, Step 16.4 initial version **0/2**. Step 16.2's count includes the learner-confirmed completion of a reply after a timeout. The learner independently confirmed that the Step 16.3 master and full reply pass the core-content review; the passed lesson is not reworked.
 
-Learner completion/mastery, local-cache availability, batch creation, Notebook execution, and runtime validation for Step 16.3 are intentionally **not asserted** here. Material preparation stops at Step 16.3 for this turn.
+Learner completion/mastery, local-cache availability, sampling results, reproducibility experiments, Notebook execution, and runtime validation for Step 16.4 are intentionally **not asserted** here. Material preparation stops at Step 16.4 for this turn, before Step 16.5. Subsequent requests continue one subsection at a time through major Step 20, then stop.
 
 ## Persistent course documents
 

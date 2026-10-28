@@ -710,13 +710,13 @@ This prevents notebook outputs, execution counts, and personal experiments from 
 - why held-out validation exists
 - avoid training on validation tokens
 
-### 16.3 Batch sampler 🚧
+### 16.3 Batch sampler ✅
 
 - `block_size`
 - shifted targets
 - output shapes
 
-### 16.4 Reproducibility
+### 16.4 Reproducibility 🚧
 
 - random seeds
 - deterministic sampling expectations
@@ -1125,18 +1125,21 @@ Steps 14.1–14.5  ✅ Material prepared / static audit passed
 Steps 15.1–15.5  ✅ Material prepared / static audit passed (15.5 correction 1/2)
 Step 16.1         ✅ Material prepared / static audit passed (correction 1/2)
 Step 16.2         ✅ Material prepared / static audit passed (correction 1/2)
-Step 16.3         🚧 Current initial material prepared / corrections 0/2
-Step 16.4+           Planned only
+Step 16.3         ✅ Material and full-reply core independently passed / corrections 0/2
+Step 16.4         🚧 Current initial material prepared / corrections 0/2
+Step 16.5+           Planned only
 ```
 
 Current course-material checkpoint:
 
-> **Step 16.3 — Batch sampler**
+> **Step 16.4 — Reproducibility**
+
+Current master: [70_step16_4_reproducibility.ipynb](../notebooks/70_step16_4_reproducibility.ipynb).
 
 Learner-status note:
 
-> Material preparation for Step 16.3 does not assert learner mastery, work-notebook completion, local cache availability, sampled batches, inspection results, or runtime validation. This turn stops at Step 16.3; do not enter Step 16.4.
+> Material preparation for Step 16.4 does not assert learner mastery, work-notebook completion, local cache availability, sampled batches, reproducibility experiments, or runtime validation. This turn stops at Step 16.4; do not enter Step 16.5.
 
-Actual correction ledger: Step 16.1 **1/2**, Step 16.2 **1/2** (including the learner-confirmed reply completion after a timeout), Step 16.3 initial version **0/2**. These counts are carried into mlx-chap2 without resetting.
+Actual correction ledger: Step 16.1 **1/2**, Step 16.2 **1/2** (including the learner-confirmed reply completion after a timeout), Step 16.3 **0/2**, Step 16.4 initial version **0/2**. The learner independently confirmed that the Step 16.3 master and full reply pass the core-content review. Preserve the passed lessons and all accumulated counts across turns and conversations.
 
 Active continuation boundary: subsequent requests proceed one subsection at a time through major **Step 20**, then stop. The existing Step 21–25 roadmap remains a future curriculum plan; this boundary does not authorize automatic or batch preparation of later lessons.
