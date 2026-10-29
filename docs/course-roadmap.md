@@ -1211,3 +1211,8 @@ Step 20.3 — Save Configuration and Metadata is published as `notebooks/89_step
 
 
 Step 20.3 first correction accepted: cumulative actual correction count **1/2**. Tokenizer metadata now preserves the full `stoi` mapping and `itos_by_id` character table in addition to the fingerprint. A reconstruction helper rebuilds and validates the same mapping from saved metadata alone, without a prior kernel or corpus re-inference. No corpus was read and no metadata file was created. Stop at 20.3.
+
+
+## Step 20.4 current boundary
+
+Step 20.4 — Resume Training is published as `notebooks/90_step20_4_resume_training.ipynb`. This follow-up completes an interrupted initial delivery; initial material generation count remains 0/2 and no learner/runtime result is implied. The notebook defines metadata/tokenizer/architecture reconstruction, artifact hash/path checks, strict model weight loading, optimizer state restoration, Adam-step/progress matching, and a caller-supplied continuation loop. It includes its sampler dependency but never loads data or executes a restore. Without full RNG/sampler/data state, do not claim exact trajectory reproduction. Stop before 20.5.
