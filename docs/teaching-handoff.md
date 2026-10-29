@@ -1052,3 +1052,10 @@ Step 20.3 covers architecture/config, tokenizer/vocab mapping fingerprint, initi
 ### Step 20.3 first correction — 1/2
 
 The tokenizer metadata now persists both the complete `stoi` mapping and `itos_by_id` table, alongside the SHA-256 fingerprint. `reconstruct_stoi_from_tokenizer_metadata` rebuilds the mapping from the stored character table and checks vocabulary size, character uniqueness, agreement with the saved `stoi`, and the fingerprint. Future code can reconstruct the same mapping from JSON alone; it does not depend on a previous kernel or reread/re-infer the corpus vocabulary. No corpus was accessed and no metadata file was generated. Step 20.3 cumulative correction count is 1/2; stop before 20.4.
+
+
+## Step 20.4 continuation boundary
+
+Current master: `notebooks/90_step20_4_resume_training.ipynb`; Step 20 document: `docs/step-20-checkpointing-and-recovery.md`. This completes the interrupted initial delivery; 20.4 initial generation count remains **0/2**. Step 20.3 remains cumulative correction 1/2; 20.2 remains 1/2; 19.5 remains 2/2; 19.2/19.3 remain 1/2 each. These are material statuses only.
+
+The notebook defines an explicit resume order: metadata and tokenizer reconstruction; artifact path/size/SHA-256 validation; full MiniGPT reconstruction; strict weight loading; matching Adam initialization; 20.2 optimizer-state restore; comparison of Adam step with recorded completed updates; then caller-supplied continuation. Missing artifacts or mismatched architecture, tokenizer, hashes, optimizer tree, shape/dtype or progress must fail clearly. It embeds the split-local sampler but does not read corpus. Initial seeds are not full RNG state; without RNG/sampler/data/scheduler state, do not claim exact trajectory reproduction. All code cells are unexecuted and output-free. No real checkpoint was saved, loaded, or restored. Stop before 20.5.
