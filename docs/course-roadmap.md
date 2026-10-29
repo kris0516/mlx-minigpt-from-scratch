@@ -1195,3 +1195,8 @@ Step 19.5 second/final merge correction accepted: cumulative actual correction c
 ## Step 20.1 current boundary
 
 Step 20.1 — Save Model Weights has been published as `notebooks/87_step20_1_save_model_weights.ipynb`, with initial material generation count **0/2**. It covers parameter-tree serialization, MLX v0.32.2 `Module.save_weights`, SafeTensors, and safe output-directory organization. The full MiniGPT definitions are included; the real vocabulary size must be supplied explicitly from the existing token-ID mapping. No model was instantiated, no weights were saved, and no corpus was read/downloaded. Weights-only files do not represent complete optimizer/RNG/data training state. Stop before 20.2.
+
+
+## Step 20.2 current boundary
+
+Step 20.2 — Save Optimizer State is published as `notebooks/88_step20_2_save_optimizer_state.ipynb`, initial generation count **0/2**. It covers Adam first/second moments, step count, the optimizer state tree, and a future-work-copy NPZ + JSON serialization pattern with exclusive output-directory creation. Model weights and optimizer state remain distinct; hyperparameters, RNG, sampler position, data split and training history are separate recovery information. No model/optimizer was instantiated, and no state was saved or loaded. Stop before 20.3.
