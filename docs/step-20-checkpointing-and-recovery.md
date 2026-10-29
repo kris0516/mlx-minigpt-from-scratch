@@ -40,3 +40,11 @@ Metadata alone is not a checkpoint and does not restore training. Weight files, 
 ### Step 20.3 first correction (1/2)
 
 Tokenizer metadata now stores the complete `stoi` character-to-ID mapping and `itos_by_id` character table in addition to the existing SHA-256 fingerprint. A reconstruction helper rebuilds `stoi` directly from `itos_by_id`, verifies vocabulary size, character uniqueness, agreement with the saved `stoi`, and the fingerprint. Future work-copy code can therefore reconstruct the same token-ID mapping from the JSON alone, without an old kernel or re-inferring the vocabulary from corpus text. No corpus was read and no metadata file was generated during this correction.
+
+## Step 20.4 — Resume Training
+
+Master: [90_step20_4_resume_training.ipynb](../notebooks/90_step20_4_resume_training.ipynb). Initial generation count **0/2**; the interrupted first delivery is completed in the follow-up commit. This is material status only, not runtime validation.
+
+The lesson defines a future resume order: read an explicitly selected metadata manifest; reconstruct the exact tokenizer mapping and architecture; validate referenced artifacts by path, size and SHA-256; reconstruct the matching MiniGPT; strictly load weights; initialize the matching Adam configuration/state tree; restore optimizer state using the 20.2 loader; compare Adam step against metadata `completed_updates`; then continue with an explicitly supplied compatible training split and RNG. Missing files or mismatched hashes, shapes, dtypes, architecture, optimizer paths or update counts must stop the process rather than guess or auto-select a latest file.
+
+Initial seeds are not full RNG state. If Python/MLX RNG state, sampler cursor, data ordering/version, scheduler state, or compatible environment details were not saved, the user may be able to continue optimization from matched model/Adam state but must not claim exact trajectory reproduction. The notebook includes the full MiniGPT and sampler definitions, but does not load a corpus, instantiate model/optimizer objects, save/load a checkpoint, or run a resume loop. All code cells remain unexecuted and output-free. Stop at 20.4 before 20.5.
