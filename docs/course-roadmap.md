@@ -1184,3 +1184,6 @@ Step 19.4 initial material is published with corrections **0/2**. It covers unif
 ### Step 19.5 current boundary
 
 Step 19.5 baseline-run material is published with initial correction count **0/2**. It prepares a future protocol for speed, loss curves, MLX allocator memory and reproducible JSON records. The 20-update schedule and measurement settings are candidates only; no training, validation, timing, memory measurement, corpus access, or system changes were performed. Missing corpus cache fails clearly and optional acquisition is disabled by default. All code cells are unexecuted. Stop before Step 20.
+
+
+Step 19.5 first merge correction accepted: cumulative actual correction count **1/2**. The baseline master restores all referenced config/helpers, fixes the malformed bootstrap source, keeps host evaluation and finite checks outside compilation, uses a host-side stability step that checks/clips before optimizer update, preserves one warm-up plus 20 timed updates, and labels validation after completed updates 6/11/16/21. JSON metadata uses `mx.__version__`, records the clip threshold, and uses exclusive-create mode. No execution or measurement occurred. Stop at 19.5 before Step 20.
