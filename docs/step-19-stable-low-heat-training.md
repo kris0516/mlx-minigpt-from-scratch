@@ -430,3 +430,14 @@ The notebook's small four-update/two-step-validation schedule is a control-flow 
 The master at `notebooks/83_step19_2_train_validation_loop.ipynb` now defines `loss_fn` before its first use. It consumes raw logits with shape `(B,T,V)` and already-shifted targets `(B,T)`, flattens them in matching order to `(B*T,V)` and `(B*T,)`, applies cross entropy, and returns the mean scalar MLX array. It does not shift a second time, pre-apply softmax, or convert to a Python scalar inside the differentiable loss.
 
 The notebook also now invokes a local bootstrap before model construction: locate the repository root (or set the explicit root/path), keep optional acquisition disabled by default, load the selected local cache, derive `vocab_size` from the same character mapping/token stream, perform the contiguous 90/10 split, and check that each split contains at least `block_size + 1` tokens. Missing cache raises a clear error; no implicit download or toy-data fallback is used. This correction changes dependencies only, not the accepted training/validation loop. No Notebook, data read/download, test, training, validation, sampling, experiment, or measurement was run.
+
+
+---
+
+## Step 19.3 — Training Stability
+
+Current master: [84_step19_3_training_stability.ipynb](../notebooks/84_step19_3_training_stability.ipynb). Initial material preparation count: **0/2**. Step 19.2's actual commit `8a83021c12dd8f5561b562d4156238cefd507a84` and its full initial/correction replies independently passed core static acceptance with cumulative correction count 1/2. This is material acceptance, not learner mastery or runtime feedback.
+
+The lesson covers initialization, global gradient norms, optional global gradient clipping, and NaN/Inf/divergence detection. It includes self-contained imports, the 19.1 candidate, optional corpus acquisition disabled by default, local cache loading, contiguous 90/10 split, split-local sampler, complete MiniGPT classes, scalar loss, validation helper, Adam and a stability-aware step definition. Missing cache stops clearly; no implicit download or toy-data fallback is used.
+
+The global L2 norm combines squared values from all gradient leaves. Optional clipping scales the whole gradient tree before the Adam update; it does not guarantee loss reduction or diagnose bad data, NaN parameters, or an unsuitable learning rate. Non-finite checks mark an anomaly but do not prove a root cause. The candidate clipping threshold is not tuned. All code cells are unexecuted and output-free; no training, validation, sampling, testing, or measurement was performed. This is material preparation only. Stop at 19.3 before 19.4.
