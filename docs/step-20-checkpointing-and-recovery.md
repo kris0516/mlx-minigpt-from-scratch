@@ -43,7 +43,7 @@ Tokenizer metadata now stores the complete `stoi` character-to-ID mapping and `i
 
 ## Step 20.4 — Resume Training
 
-Master: [90_step20_4_resume_training.ipynb](../notebooks/90_step20_4_resume_training.ipynb). Initial generation count **0/2**; the interrupted first delivery is completed in the follow-up commit. This is material status only, not runtime validation.
+Master: [90_step20_4_resume_training.ipynb](../notebooks/90_step20_4_resume_training.ipynb). Interrupted initial delivery completed in the first delivery correction (**1/2**). This is material status only, not runtime validation.
 
 The lesson defines a future resume order: read an explicitly selected metadata manifest; reconstruct the exact tokenizer mapping and architecture; validate referenced artifacts by path, size and SHA-256; reconstruct the matching MiniGPT; strictly load weights; initialize the matching Adam configuration/state tree; restore optimizer state using the 20.2 loader; compare Adam step against metadata `completed_updates`; then continue with an explicitly supplied compatible training split and RNG. Missing files or mismatched hashes, shapes, dtypes, architecture, optimizer paths or update counts must stop the process rather than guess or auto-select a latest file.
 
