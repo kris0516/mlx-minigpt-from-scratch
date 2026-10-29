@@ -1203,3 +1203,8 @@ Step 20.2 — Save Optimizer State is published as `notebooks/88_step20_2_save_o
 
 
 Step 20.2 first merge correction accepted: cumulative actual correction count **1/2**. MLX v0.32.2 Adam's zero-dimensional uint64 `step` and current `learning_rate` are MLX array leaves and are serialized in NPZ alongside m/v; JSON records array paths, shapes, dtypes and actual Python scalar leaves. The loader compares each rebuilt leaf against the already-initialized target optimizer state (array identity, shape/dtype, or exact non-array type) before assignment. Adam hyperparameters and scheduler rules remain separate. No code or state serialization was executed. Stop at 20.2.
+
+
+## Step 20.3 current boundary
+
+Step 20.3 — Save Configuration and Metadata is published as `notebooks/89_step20_3_save_configuration_metadata.ipynb`, initial generation count **0/2**. It records architecture/config, tokenizer/vocabulary fingerprint, initial seeds, training progress, and explicit weight/optimizer artifact references. The tokenizer fingerprint hashes the canonical `stoi` mapping, not just vocabulary size. Metadata output uses a new UTC-stamped directory with exclusive creation. The lesson distinguishes seed values from full RNG state and does not imply metadata alone restores training. No corpus was read/downloaded and no metadata/checkpoint was generated. Stop before 20.4.
