@@ -82,3 +82,8 @@ Step 19.5 Baseline Training Run material is published with initial correction co
 ## Current checkpointing lesson
 
 **Step 20.2 — Save Optimizer State**: [Notebook master](notebooks/88_step20_2_save_optimizer_state.ipynb) · [Step 20 document](docs/step-20-checkpointing-and-recovery.md). Initial generation count 0/2. The lesson prepares optimizer-state serialization only; no real state file was created or loaded. Stop at 20.2 before 20.3.
+
+
+## Current checkpointing lesson
+
+**Step 20.3 — Save Configuration and Metadata**: [Notebook master](notebooks/89_step20_3_save_configuration_metadata.ipynb) · [Step 20 document](docs/step-20-checkpointing-and-recovery.md). Initial generation count 0/2. The lesson prepares metadata serialization only; no metadata file or checkpoint was generated. Stop at 20.3 before 20.4.
