@@ -43,9 +43,9 @@ Step 19.2         🚧 Current initial material published / corrections 0/2
 Step 19.3+         Planned only
 ```
 
-Current course-material checkpoint: **Step 19.4 — Apple Silicon Resource Control**.
+Current course-material checkpoint: **Step 19.5 — Baseline Training Run**.
 
-Current master: [85_step19_4_apple_silicon_resource_control.ipynb](notebooks/85_step19_4_apple_silicon_resource_control.ipynb).
+Current master: [86_step19_5_baseline_training_run.ipynb](notebooks/86_step19_5_baseline_training_run.ipynb).
 
 Actual correction counts persist across conversations: Step 16.1 **1/2**, Step 16.2 **1/2**, Step 16.3 **0/2**, Step 16.4 **0/2**, Step 16.5 **0/2**, Step 17.1 **0/2**, Step 17.2 **0/2**, Step 17.3 **0/2**, Step 17.4 **0/2**, Step 17.5 **0/2**, Step 18.1 **0/2**, Step 18.2 **0/2**, Step 18.3 **0/2**, Step 18.4 **0/2**, Step 18.5 **0/2**, Step 19.1 initial version **0/2**. Step 16.2's count includes the learner-confirmed completion of a reply after a timeout. Passed lessons are not reworked and counts do not reset.
 
@@ -69,3 +69,6 @@ Step 19.3 Training Stability material is published with initial correction count
 
 
 Step 19.4 Apple Silicon Resource Control material is published with initial correction count 0/2. It distinguishes unified memory, MLX allocator counters, system memory/Swap, conservative sizing, evaluation boundaries and sustained heat. No code was run and no resource, thermal, speed or memory result is claimed. Stop at 19.4 before 19.5.
+
+
+Step 19.5 Baseline Training Run material is published with initial correction count 0/2. It defines a future reproducible protocol for speed, loss curves, MLX allocator counters and JSON records; no run or measurements were performed. Stop at 19.5 before Step 20.
