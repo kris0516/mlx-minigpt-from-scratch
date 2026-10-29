@@ -993,3 +993,10 @@ Step 19.3 covers initialization, global gradient norms, optional global gradient
 ### Step 19.3 tree-helper namespace correction — first correction (1/2)
 
 Minimal correction only: the notebook imports `tree_flatten` and `tree_map` from `mlx.utils` and uses these names in `global_grad_norm` and `clip_grad_tree_global_norm`, matching the fixed MLX v0.32.2 namespace. The accepted norm, clipping, pre-update non-finite checks, parameter-version boundaries, and all historical masters remain unchanged. No Notebook/code/tests/training/validation/sampling/measurement or user work copy was executed. Material correction is not runtime verification or learner mastery. Stop before 19.4.
+
+
+## Step 19.4 continuation boundary
+
+Current master: `notebooks/85_step19_4_apple_silicon_resource_control.ipynb`. Initial material count **0/2**. Step 19.3 independently accepted commit `d193f85640bf9f36e79fcaf035612f76ba133895` and first correction are preserved (cumulative 1/2); Step 19.2 remains 1/2. This is material acceptance only.
+
+The 19.4 master covers unified memory awareness, avoiding Swap as a risk-management goal, conservative sizing, MLX allocator counters versus system memory/Swap, explicit evaluation boundaries, and sustained thermal load versus short bursts. It is self-contained through configuration, local bootstrap (optional acquisition disabled by default), split-local sampler, full MiniGPT definitions and loss. Missing corpus cache fails clearly; no toy fallback. Resource-reading snippets are not run, and no training, data access, measurement, system resource or permission change was performed. No zero-Swap, thermal, speed or memory-performance guarantee is claimed. Stop before 19.5.
