@@ -1190,3 +1190,8 @@ Step 19.5 first merge correction accepted: cumulative actual correction count **
 
 
 Step 19.5 second/final merge correction accepted: cumulative actual correction count **2/2**. The record cell's accidental line-leading commas were removed with indentation and exclusive-create JSON semantics preserved. The setup cell initializes a single-use marker; the protocol checks the marker and Adam step 0 before sampling, marks the run used immediately before the first sample, and does not clear the marker on failure. The baseline uses the uncompiled host-side stability step; timing excludes sampling, X/Y pre-evaluation, validation, and warm-up while including finite checks, clipping, Adam update, and state evaluation. The protocol retains one warm-up plus 20 timed updates and validation labels 6/11/16/21. No code was executed. Stop at 19.5 before Step 20.
+
+
+## Step 20.1 current boundary
+
+Step 20.1 — Save Model Weights has been published as `notebooks/87_step20_1_save_model_weights.ipynb`, with initial material generation count **0/2**. It covers parameter-tree serialization, MLX v0.32.2 `Module.save_weights`, SafeTensors, and safe output-directory organization. The full MiniGPT definitions are included; the real vocabulary size must be supplied explicitly from the existing token-ID mapping. No model was instantiated, no weights were saved, and no corpus was read/downloaded. Weights-only files do not represent complete optimizer/RNG/data training state. Stop before 20.2.
