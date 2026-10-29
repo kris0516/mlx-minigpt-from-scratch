@@ -1147,9 +1147,9 @@ Step 19.3+         Planned only
 
 Current course-material checkpoint:
 
-> **Step 19.4 — Apple Silicon Resource Control**
+> **Step 19.5 — Baseline Training Run**
 
-Current master: [85_step19_4_apple_silicon_resource_control.ipynb](../notebooks/85_step19_4_apple_silicon_resource_control.ipynb). Current Step document: [Step 19 — Stable low-heat training](step-19-stable-low-heat-training.md).
+Current master: [86_step19_5_baseline_training_run.ipynb](../notebooks/86_step19_5_baseline_training_run.ipynb). Current Step document: [Step 19 — Stable low-heat training](step-19-stable-low-heat-training.md).
 
 Learner-status note:
 
@@ -1179,3 +1179,8 @@ Step 19.3 first minimal correction accepted: cumulative actual correction count 
 ### Step 19.4 current boundary
 
 Step 19.4 initial material is published with corrections **0/2**. It covers unified memory awareness, Swap/system-memory versus MLX allocator counters, conservative sizing, evaluation boundaries, and sustained thermal load versus short bursts. The master includes a local bootstrap, with optional acquisition disabled by default and a clear missing-cache error. All resource-reading snippets are unexecuted; no training, system measurement, or performance/thermal claim is made. Stop before 19.5.
+
+
+### Step 19.5 current boundary
+
+Step 19.5 baseline-run material is published with initial correction count **0/2**. It prepares a future protocol for speed, loss curves, MLX allocator memory and reproducible JSON records. The 20-update schedule and measurement settings are candidates only; no training, validation, timing, memory measurement, corpus access, or system changes were performed. Missing corpus cache fails clearly and optional acquisition is disabled by default. All code cells are unexecuted. Stop before Step 20.
