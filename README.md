@@ -87,3 +87,8 @@ Step 19.5 Baseline Training Run material is published with initial correction co
 ## Current checkpointing lesson
 
 **Step 20.3 — Save Configuration and Metadata**: [Notebook master](notebooks/89_step20_3_save_configuration_metadata.ipynb) · [Step 20 document](docs/step-20-checkpointing-and-recovery.md). Initial generation count 0/2. The lesson prepares metadata serialization only; no metadata file or checkpoint was generated. Stop at 20.3 before 20.4.
+
+
+## Current checkpointing lesson
+
+**Step 20.4 — Resume Training**: [Notebook master](notebooks/90_step20_4_resume_training.ipynb) · [Step 20 document](docs/step-20-checkpointing-and-recovery.md). This completes the interrupted initial material delivery; no checkpoint was loaded or resumed. Stop at 20.4 before 20.5.
