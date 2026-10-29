@@ -441,3 +441,8 @@ Current master: [84_step19_3_training_stability.ipynb](../notebooks/84_step19_3_
 The lesson covers initialization, global gradient norms, optional global gradient clipping, and NaN/Inf/divergence detection. It includes self-contained imports, the 19.1 candidate, optional corpus acquisition disabled by default, local cache loading, contiguous 90/10 split, split-local sampler, complete MiniGPT classes, scalar loss, validation helper, Adam and a stability-aware step definition. Missing cache stops clearly; no implicit download or toy-data fallback is used.
 
 The global L2 norm combines squared values from all gradient leaves. Optional clipping scales the whole gradient tree before the Adam update; it does not guarantee loss reduction or diagnose bad data, NaN parameters, or an unsuitable learning rate. Non-finite checks mark an anomaly but do not prove a root cause. The candidate clipping threshold is not tuned. All code cells are unexecuted and output-free; no training, validation, sampling, testing, or measurement was performed. This is material preparation only. Stop at 19.3 before 19.4.
+
+
+### Step 19.3 first minimal correction (1/2)
+
+The accepted stability logic is unchanged. The gradient-tree helpers now use the actual MLX v0.32.2 namespace: the master imports `tree_flatten` and `tree_map` from `mlx.utils`, calls `tree_flatten(grad_tree)` in `global_grad_norm`, and calls `tree_map(...)` in optional global clipping. No notebook cells were executed; this is a source/interface correction, not runtime verification or learner mastery.
