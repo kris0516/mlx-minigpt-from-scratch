@@ -43,9 +43,9 @@ Step 19.2         🚧 Current initial material published / corrections 0/2
 Step 19.3+         Planned only
 ```
 
-Current course-material checkpoint: **Step 19.3 — Training Stability**.
+Current course-material checkpoint: **Step 19.4 — Apple Silicon Resource Control**.
 
-Current master: [84_step19_3_training_stability.ipynb](notebooks/84_step19_3_training_stability.ipynb).
+Current master: [85_step19_4_apple_silicon_resource_control.ipynb](notebooks/85_step19_4_apple_silicon_resource_control.ipynb).
 
 Actual correction counts persist across conversations: Step 16.1 **1/2**, Step 16.2 **1/2**, Step 16.3 **0/2**, Step 16.4 **0/2**, Step 16.5 **0/2**, Step 17.1 **0/2**, Step 17.2 **0/2**, Step 17.3 **0/2**, Step 17.4 **0/2**, Step 17.5 **0/2**, Step 18.1 **0/2**, Step 18.2 **0/2**, Step 18.3 **0/2**, Step 18.4 **0/2**, Step 18.5 **0/2**, Step 19.1 initial version **0/2**. Step 16.2's count includes the learner-confirmed completion of a reply after a timeout. Passed lessons are not reworked and counts do not reset.
 
@@ -66,3 +66,6 @@ Step 19.2's train/validation loop material is published with initial corrections
 
 
 Step 19.3 Training Stability material is published with initial correction count 0/2. It prepares initialization, global gradient norms, optional clipping and non-finite/divergence checks. The lesson has not been run and makes no stability or training-result claims; stop at 19.3 before 19.4.
+
+
+Step 19.4 Apple Silicon Resource Control material is published with initial correction count 0/2. It distinguishes unified memory, MLX allocator counters, system memory/Swap, conservative sizing, evaluation boundaries and sustained heat. No code was run and no resource, thermal, speed or memory result is claimed. Stop at 19.4 before 19.5.
