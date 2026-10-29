@@ -1147,9 +1147,9 @@ Step 19.3+         Planned only
 
 Current course-material checkpoint:
 
-> **Step 19.3 — Training Stability**
+> **Step 19.4 — Apple Silicon Resource Control**
 
-Current master: [84_step19_3_training_stability.ipynb](../notebooks/84_step19_3_training_stability.ipynb). Current Step document: [Step 19 — Stable low-heat training](step-19-stable-low-heat-training.md).
+Current master: [85_step19_4_apple_silicon_resource_control.ipynb](../notebooks/85_step19_4_apple_silicon_resource_control.ipynb). Current Step document: [Step 19 — Stable low-heat training](step-19-stable-low-heat-training.md).
 
 Learner-status note:
 
@@ -1174,3 +1174,8 @@ Step 19.3 initial material is published with corrections **0/2**. It covers init
 
 
 Step 19.3 first minimal correction accepted: cumulative actual correction count **1/2**. Per the fixed MLX v0.32.2 `mlx.utils` namespace, the master imports `tree_flatten` and `tree_map` from `mlx.utils` and uses those names for gradient-tree traversal/mapping. All other accepted stability logic remains unchanged. No code was executed; stop at 19.3 before 19.4.
+
+
+### Step 19.4 current boundary
+
+Step 19.4 initial material is published with corrections **0/2**. It covers unified memory awareness, Swap/system-memory versus MLX allocator counters, conservative sizing, evaluation boundaries, and sustained thermal load versus short bursts. The master includes a local bootstrap, with optional acquisition disabled by default and a clear missing-cache error. All resource-reading snippets are unexecuted; no training, system measurement, or performance/thermal claim is made. Stop before 19.5.
