@@ -1200,3 +1200,6 @@ Step 20.1 — Save Model Weights has been published as `notebooks/87_step20_1_sa
 ## Step 20.2 current boundary
 
 Step 20.2 — Save Optimizer State is published as `notebooks/88_step20_2_save_optimizer_state.ipynb`, initial generation count **0/2**. It covers Adam first/second moments, step count, the optimizer state tree, and a future-work-copy NPZ + JSON serialization pattern with exclusive output-directory creation. Model weights and optimizer state remain distinct; hyperparameters, RNG, sampler position, data split and training history are separate recovery information. No model/optimizer was instantiated, and no state was saved or loaded. Stop before 20.3.
+
+
+Step 20.2 first merge correction accepted: cumulative actual correction count **1/2**. MLX v0.32.2 Adam's zero-dimensional uint64 `step` and current `learning_rate` are MLX array leaves and are serialized in NPZ alongside m/v; JSON records array paths, shapes, dtypes and actual Python scalar leaves. The loader compares each rebuilt leaf against the already-initialized target optimizer state (array identity, shape/dtype, or exact non-array type) before assignment. Adam hyperparameters and scheduler rules remain separate. No code or state serialization was executed. Stop at 20.2.
