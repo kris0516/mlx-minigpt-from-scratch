@@ -1171,3 +1171,6 @@ Step 19.2 dependency correction: first actual correction accepted, cumulative co
 ### Step 19.3 current boundary
 
 Step 19.3 initial material is published with corrections **0/2**. It covers initialization, global gradient norms, optional global gradient clipping, and NaN/Inf/divergence detection. The master is self-contained, includes the complete MiniGPT and local data bootstrap, and leaves corpus acquisition disabled by default. No code was executed and no stability or training result is claimed. Stop before 19.4.
+
+
+Step 19.3 first minimal correction accepted: cumulative actual correction count **1/2**. Per the fixed MLX v0.32.2 `mlx.utils` namespace, the master imports `tree_flatten` and `tree_map` from `mlx.utils` and uses those names for gradient-tree traversal/mapping. All other accepted stability logic remains unchanged. No code was executed; stop at 19.3 before 19.4.
