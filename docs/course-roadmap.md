@@ -1208,3 +1208,6 @@ Step 20.2 first merge correction accepted: cumulative actual correction count **
 ## Step 20.3 current boundary
 
 Step 20.3 — Save Configuration and Metadata is published as `notebooks/89_step20_3_save_configuration_metadata.ipynb`, initial generation count **0/2**. It records architecture/config, tokenizer/vocabulary fingerprint, initial seeds, training progress, and explicit weight/optimizer artifact references. The tokenizer fingerprint hashes the canonical `stoi` mapping, not just vocabulary size. Metadata output uses a new UTC-stamped directory with exclusive creation. The lesson distinguishes seed values from full RNG state and does not imply metadata alone restores training. No corpus was read/downloaded and no metadata/checkpoint was generated. Stop before 20.4.
+
+
+Step 20.3 first correction accepted: cumulative actual correction count **1/2**. Tokenizer metadata now preserves the full `stoi` mapping and `itos_by_id` character table in addition to the fingerprint. A reconstruction helper rebuilds and validates the same mapping from saved metadata alone, without a prior kernel or corpus re-inference. No corpus was read and no metadata file was created. Stop at 20.3.
