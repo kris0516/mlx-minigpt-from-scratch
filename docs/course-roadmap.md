@@ -1147,9 +1147,9 @@ Step 19.3+         Planned only
 
 Current course-material checkpoint:
 
-> **Step 19.2 — Train / Validation Loop**
+> **Step 19.3 — Training Stability**
 
-Current master: [83_step19_2_train_validation_loop.ipynb](../notebooks/83_step19_2_train_validation_loop.ipynb). Current Step document: [Step 19 — Stable low-heat training](step-19-stable-low-heat-training.md).
+Current master: [84_step19_3_training_stability.ipynb](../notebooks/84_step19_3_training_stability.ipynb). Current Step document: [Step 19 — Stable low-heat training](step-19-stable-low-heat-training.md).
 
 Learner-status note:
 
@@ -1166,3 +1166,8 @@ Step 19.2 initial material has been published with corrections **0/2**. It provi
 
 
 Step 19.2 dependency correction: first actual correction accepted, cumulative count **1/2**. The master now defines the scalar differentiable loss before use and invokes a local corpus bootstrap before model construction. The bootstrap uses the same character mapping to derive `vocab_size`, makes a contiguous 90/10 split, checks both sides have at least `block_size + 1` tokens, and defaults optional acquisition to disabled; missing cache fails clearly without toy fallback. The accepted train/validation loop is unchanged. No runtime verification or learner mastery is claimed. Stop at 19.2.
+
+
+### Step 19.3 current boundary
+
+Step 19.3 initial material is published with corrections **0/2**. It covers initialization, global gradient norms, optional global gradient clipping, and NaN/Inf/divergence detection. The master is self-contained, includes the complete MiniGPT and local data bootstrap, and leaves corpus acquisition disabled by default. No code was executed and no stability or training result is claimed. Stop before 19.4.
