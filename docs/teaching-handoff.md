@@ -981,3 +981,10 @@ The training-step loss is evaluated from pre-update parameters, while the subseq
 The master now contains a complete `loss_fn` before first use: raw MiniGPT logits `(B,T,V)` and already-shifted targets `(B,T)` are flattened in matching order to `(B*T,V)` and `(B*T,)`, passed to cross entropy, and averaged to a scalar MLX array. It does not double-shift, softmax logits first, or convert the differentiable loss to Python.
 
 A bootstrap now runs in notebook order before model construction: resolve repository root or explicit cache path, optional acquisition disabled by default, load local corpus, derive vocabulary size from the same character mapping/token stream, contiguous 90/10 split, and minimum `block_size+1` checks for both splits. Missing cache fails clearly, with no implicit download or toy fallback. The accepted training/validation loop is not rewritten. No runtime execution or data access was performed. Stop at 19.2.
+
+
+## Step 19.3 continuation boundary
+
+Current master: `notebooks/84_step19_3_training_stability.ipynb`. Initial material is published with actual correction count **0/2**. Preserve Step 19.2's independently accepted commit `8a83021c12dd8f5561b562d4156238cefd507a84` and cumulative correction count 1/2; this is material acceptance only, not learner mastery/runtime feedback.
+
+Step 19.3 covers initialization, global gradient norms, optional global gradient clipping, and NaN/Inf/divergence detection. The master includes the full MiniGPT classes, scalar loss, split-local sampler, local cache bootstrap and validation helper; optional corpus acquisition is disabled by default and missing cache fails clearly. Global L2 norm combines squared values across all gradient leaves. Optional clipping scales gradients before Adam update; it does not guarantee lower loss or diagnose instability root cause. Non-finite checks detect a symptom, not the cause. All code cells are unexecuted and output-free; no data access/download, training, validation, sampling, test, experiment or measurement was performed. Stop before 19.4.
