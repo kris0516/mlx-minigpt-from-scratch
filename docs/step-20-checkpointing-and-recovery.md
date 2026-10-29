@@ -25,3 +25,13 @@ The save/load helpers are definitions only; no model or optimizer is instantiate
 The serializer now stores all MLX array leaves in NPZ, including Adam m/v, the zero-dimensional uint64 `step`, and the current `learning_rate` array snapshot when present in `optimizer.state`. JSON contains array path/key/shape/dtype metadata plus only actual Python scalar leaves and their Python types. The current learning-rate snapshot does not contain the scheduler rule, future schedule, or all Adam hyperparameters (`betas`, `eps`, `bias_correction`); those must be recorded separately.
 
 Before assigning `optimizer.state = rebuilt`, the loader now compares the reconstructed state with the target optimizer's already-initialized state, path by path: array-vs-non-array identity, array shape and dtype, and exact non-array leaf type. Any mismatch raises before the target state is mutated. This is static material correction only; no state was saved/loaded and no code was executed.
+
+## Step 20.3 — Save Configuration and Metadata
+
+Master: [89_step20_3_save_configuration_metadata.ipynb](../notebooks/89_step20_3_save_configuration_metadata.ipynb). Initial generation **0/2**.
+
+The lesson records architecture/configuration, tokenizer/vocabulary fingerprint, initial random seeds, training progress and explicit artifact references. It uses the full MiniGPT definitions and requires the real vocabulary size and token-ID mapping to be supplied from the existing project mapping; it does not read/download the corpus or invent vocabulary values. A canonical sorted `stoi` mapping is hashed with SHA-256 to distinguish vocabularies of the same size but different ID assignments.
+
+The JSON writer creates a UTC-stamped directory using `mkdir(exist_ok=False)` and opens the manifest with exclusive-create mode `x` to avoid overwriting prior metadata. Artifact references require explicit existing files inside the chosen root and record relative path, size and SHA-256. Seed values are distinguished from full RNG state; the metadata explicitly records whether RNG state was saved and defaults that claim to false. Training progress must be supplied as real values; planned updates are not treated as completed updates.
+
+Metadata alone is not a checkpoint and does not restore training. Weight files, optimizer state, Adam hyperparameters/scheduler, RNG state, sampler position, data split and training progress remain distinct pieces of information. All code cells are unexecuted and output-free. No metadata file, checkpoint, or training result was generated. Stop at 20.3 before 20.4.
