@@ -446,3 +446,14 @@ The global L2 norm combines squared values from all gradient leaves. Optional cl
 ### Step 19.3 first minimal correction (1/2)
 
 The accepted stability logic is unchanged. The gradient-tree helpers now use the actual MLX v0.32.2 namespace: the master imports `tree_flatten` and `tree_map` from `mlx.utils`, calls `tree_flatten(grad_tree)` in `global_grad_norm`, and calls `tree_map(...)` in optional global clipping. No notebook cells were executed; this is a source/interface correction, not runtime verification or learner mastery.
+
+
+---
+
+## Step 19.4 — Apple Silicon Resource Control
+
+Current master: [85_step19_4_apple_silicon_resource_control.ipynb](../notebooks/85_step19_4_apple_silicon_resource_control.ipynb). Initial material count: **0/2**. Step 19.3 commit `d193f85640bf9f36e79fcaf035612f76ba133895` and its first minimal correction independently passed core static acceptance, cumulative correction 1/2. This is material acceptance only, not learner mastery or runtime feedback.
+
+The lesson covers unified memory awareness, avoiding Swap as a risk-management goal, conservative batch/model sizing, the 18.5 MLX allocator counters versus system memory/Swap, explicit evaluation boundaries, and sustained heat versus short bursts. It includes self-contained imports, configuration, local corpus loader/split/sampler, complete MiniGPT definitions and loss. The cache path is explicit, optional acquisition defaults to disabled, and missing cache fails clearly. The local bootstrap and all resource-reading snippets are code for future practice only; no code, corpus access, training, measurement, system resource setting or permission change was performed.
+
+Shape-based byte counts are logical payload estimates, not measured peak/process/system memory. MLX active/cache/peak counters are not Swap Used. Conservative sizing can reduce logical workload (for example, attention-score elements scale with B·H·T² for fixed H), but does not guarantee zero Swap, a temperature ceiling, a fixed speed, or lower peak memory. Short-burst behavior does not establish sustained thermal behavior. The lesson does not run training and does not enter Step 19.5.
