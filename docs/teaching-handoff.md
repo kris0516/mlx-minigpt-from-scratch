@@ -988,3 +988,8 @@ A bootstrap now runs in notebook order before model construction: resolve reposi
 Current master: `notebooks/84_step19_3_training_stability.ipynb`. Initial material is published with actual correction count **0/2**. Preserve Step 19.2's independently accepted commit `8a83021c12dd8f5561b562d4156238cefd507a84` and cumulative correction count 1/2; this is material acceptance only, not learner mastery/runtime feedback.
 
 Step 19.3 covers initialization, global gradient norms, optional global gradient clipping, and NaN/Inf/divergence detection. The master includes the full MiniGPT classes, scalar loss, split-local sampler, local cache bootstrap and validation helper; optional corpus acquisition is disabled by default and missing cache fails clearly. Global L2 norm combines squared values across all gradient leaves. Optional clipping scales gradients before Adam update; it does not guarantee lower loss or diagnose instability root cause. Non-finite checks detect a symptom, not the cause. All code cells are unexecuted and output-free; no data access/download, training, validation, sampling, test, experiment or measurement was performed. Stop before 19.4.
+
+
+### Step 19.3 tree-helper namespace correction — first correction (1/2)
+
+Minimal correction only: the notebook imports `tree_flatten` and `tree_map` from `mlx.utils` and uses these names in `global_grad_norm` and `clip_grad_tree_global_norm`, matching the fixed MLX v0.32.2 namespace. The accepted norm, clipping, pre-update non-finite checks, parameter-version boundaries, and all historical masters remain unchanged. No Notebook/code/tests/training/validation/sampling/measurement or user work copy was executed. Material correction is not runtime verification or learner mastery. Stop before 19.4.
