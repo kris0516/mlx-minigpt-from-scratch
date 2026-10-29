@@ -1047,3 +1047,8 @@ Before assigning `optimizer.state`, restore now compares every rebuilt path agai
 Current master: `notebooks/89_step20_3_save_configuration_metadata.ipynb`; Step 20 document: `docs/step-20-checkpointing-and-recovery.md`. Initial generation count **0/2**. Step 20.1 remains 0/2; Step 20.2 remains cumulative 1/2; Step 19.5 remains 2/2; Steps 19.2 and 19.3 remain 1/2 each. These are material statuses only.
 
 Step 20.3 covers architecture/config, tokenizer/vocab mapping fingerprint, initial random seed values, training progress, and explicit artifact references. It includes complete MiniGPT definitions but does not read corpus; the true vocab size and `stoi` mapping must be supplied explicitly. The canonical sorted `stoi` entries are SHA-256 fingerprinted. Progress values must come from actual recorded run state, not planned counts. Seed values are not full RNG state; `rng_state_saved` defaults false. Metadata is written to a unique UTC-stamped directory with `mkdir(exist_ok=False)` and an exclusive `open('x')` file creation. No metadata or checkpoint was created; all code cells remain unexecuted. Stop before 20.4.
+
+
+### Step 20.3 first correction — 1/2
+
+The tokenizer metadata now persists both the complete `stoi` mapping and `itos_by_id` table, alongside the SHA-256 fingerprint. `reconstruct_stoi_from_tokenizer_metadata` rebuilds the mapping from the stored character table and checks vocabulary size, character uniqueness, agreement with the saved `stoi`, and the fingerprint. Future code can reconstruct the same mapping from JSON alone; it does not depend on a previous kernel or reread/re-infer the corpus vocabulary. No corpus was accessed and no metadata file was generated. Step 20.3 cumulative correction count is 1/2; stop before 20.4.
