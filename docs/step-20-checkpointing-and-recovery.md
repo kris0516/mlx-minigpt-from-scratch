@@ -35,3 +35,8 @@ The lesson records architecture/configuration, tokenizer/vocabulary fingerprint,
 The JSON writer creates a UTC-stamped directory using `mkdir(exist_ok=False)` and opens the manifest with exclusive-create mode `x` to avoid overwriting prior metadata. Artifact references require explicit existing files inside the chosen root and record relative path, size and SHA-256. Seed values are distinguished from full RNG state; the metadata explicitly records whether RNG state was saved and defaults that claim to false. Training progress must be supplied as real values; planned updates are not treated as completed updates.
 
 Metadata alone is not a checkpoint and does not restore training. Weight files, optimizer state, Adam hyperparameters/scheduler, RNG state, sampler position, data split and training progress remain distinct pieces of information. All code cells are unexecuted and output-free. No metadata file, checkpoint, or training result was generated. Stop at 20.3 before 20.4.
+
+
+### Step 20.3 first correction (1/2)
+
+Tokenizer metadata now stores the complete `stoi` character-to-ID mapping and `itos_by_id` character table in addition to the existing SHA-256 fingerprint. A reconstruction helper rebuilds `stoi` directly from `itos_by_id`, verifies vocabulary size, character uniqueness, agreement with the saved `stoi`, and the fingerprint. Future work-copy code can therefore reconstruct the same token-ID mapping from the JSON alone, without an old kernel or re-inferring the vocabulary from corpus text. No corpus was read and no metadata file was generated during this correction.
