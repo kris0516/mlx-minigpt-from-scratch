@@ -1040,3 +1040,10 @@ Step 20.2 covers Adam first/second moments and step count, the nested optimizer 
 Serializer semantics are corrected for fixed MLX v0.32.2: NPZ holds all MLX array leaves, including Adam m/v, zero-dimensional uint64 `step`, and current `learning_rate` snapshot when present. JSON holds array key/path/shape/dtype metadata and actual Python scalar leaves with type metadata. The current LR snapshot does not encode the scheduler or full Adam configuration (`betas`, `eps`, `bias_correction`), which must be saved separately.
 
 Before assigning `optimizer.state`, restore now compares every rebuilt path against the target optimizer's initialized current tree: array/non-array identity, array shape/dtype, or exact non-array type. It raises before mutation on mismatch. The accepted save-directory protection and evaluation boundary remain unchanged. No code or state file was executed, saved, or loaded. Step 20.2 cumulative correction count is 1/2; stop before 20.3.
+
+
+## Step 20.3 continuation boundary
+
+Current master: `notebooks/89_step20_3_save_configuration_metadata.ipynb`; Step 20 document: `docs/step-20-checkpointing-and-recovery.md`. Initial generation count **0/2**. Step 20.1 remains 0/2; Step 20.2 remains cumulative 1/2; Step 19.5 remains 2/2; Steps 19.2 and 19.3 remain 1/2 each. These are material statuses only.
+
+Step 20.3 covers architecture/config, tokenizer/vocab mapping fingerprint, initial random seed values, training progress, and explicit artifact references. It includes complete MiniGPT definitions but does not read corpus; the true vocab size and `stoi` mapping must be supplied explicitly. The canonical sorted `stoi` entries are SHA-256 fingerprinted. Progress values must come from actual recorded run state, not planned counts. Seed values are not full RNG state; `rng_state_saved` defaults false. Metadata is written to a unique UTC-stamped directory with `mkdir(exist_ok=False)` and an exclusive `open('x')` file creation. No metadata or checkpoint was created; all code cells remain unexecuted. Stop before 20.4.
