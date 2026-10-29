@@ -77,3 +77,8 @@ Step 19.5 Baseline Training Run material is published with initial correction co
 ## Current checkpointing lesson
 
 **Step 20.1 — Save Model Weights**: [Notebook master](notebooks/87_step20_1_save_model_weights.ipynb) · [Step 20 document](docs/step-20-checkpointing-and-recovery.md). Initial material generation count 0/2. No model weights were generated and no Notebook code was executed. Stop at 20.1 before 20.2.
+
+
+## Current checkpointing lesson
+
+**Step 20.2 — Save Optimizer State**: [Notebook master](notebooks/88_step20_2_save_optimizer_state.ipynb) · [Step 20 document](docs/step-20-checkpointing-and-recovery.md). Initial generation count 0/2. The lesson prepares optimizer-state serialization only; no real state file was created or loaded. Stop at 20.2 before 20.3.
