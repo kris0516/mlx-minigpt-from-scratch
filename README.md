@@ -43,9 +43,9 @@ Step 19.2         🚧 Current initial material published / corrections 0/2
 Step 19.3+         Planned only
 ```
 
-Current course-material checkpoint: **Step 19.2 — Train / Validation Loop**.
+Current course-material checkpoint: **Step 19.3 — Training Stability**.
 
-Current master: [83_step19_2_train_validation_loop.ipynb](notebooks/83_step19_2_train_validation_loop.ipynb).
+Current master: [84_step19_3_training_stability.ipynb](notebooks/84_step19_3_training_stability.ipynb).
 
 Actual correction counts persist across conversations: Step 16.1 **1/2**, Step 16.2 **1/2**, Step 16.3 **0/2**, Step 16.4 **0/2**, Step 16.5 **0/2**, Step 17.1 **0/2**, Step 17.2 **0/2**, Step 17.3 **0/2**, Step 17.4 **0/2**, Step 17.5 **0/2**, Step 18.1 **0/2**, Step 18.2 **0/2**, Step 18.3 **0/2**, Step 18.4 **0/2**, Step 18.5 **0/2**, Step 19.1 initial version **0/2**. Step 16.2's count includes the learner-confirmed completion of a reply after a timeout. Passed lessons are not reworked and counts do not reset.
 
@@ -63,3 +63,6 @@ Learner completion/mastery, local-cache availability, exercise completion, Noteb
 
 
 Step 19.2's train/validation loop material is published with initial corrections 0/2. The master separates train/validation data, distinguishes pre-update training loss from current-parameter validation loss, and uses MLX v0.32.2 mode/evaluation boundaries. Its sample loop is instructional only; no run results are claimed. Stop at 19.2 before 19.3.
+
+
+Step 19.3 Training Stability material is published with initial correction count 0/2. It prepares initialization, global gradient norms, optional clipping and non-finite/divergence checks. The lesson has not been run and makes no stability or training-result claims; stop at 19.3 before 19.4.
