@@ -91,4 +91,4 @@ Step 19.5 Baseline Training Run material is published with initial correction co
 
 ## Current checkpointing lesson
 
-**Step 20.4 — Resume Training**: [Notebook master](notebooks/90_step20_4_resume_training.ipynb) · [Step 20 document](docs/step-20-checkpointing-and-recovery.md). This completes the interrupted initial material delivery (delivery correction 1/2); no checkpoint was loaded or resumed. Stop at 20.4 before 20.5.
+**Step 20.4 — Resume Training**: [Notebook master](notebooks/90_step20_4_resume_training.ipynb) · [Step 20 document](docs/step-20-checkpointing-and-recovery.md). The interrupted initial delivery and final merge correction are complete (cumulative correction 2/2); no checkpoint was loaded or resumed. Stop at 20.4 before 20.5.
