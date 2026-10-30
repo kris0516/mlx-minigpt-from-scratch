@@ -1064,3 +1064,6 @@ The notebook defines an explicit resume order: metadata and tokenizer reconstruc
 ### Step 20.4 second/final correction — 2/2
 
 Artifact resolution separates `metadata_path` from the original `artifact_root` used by 20.3 relative artifact references; existence, root containment, size and SHA-256 checks remain. The resume master now embeds the scalar shifted-target cross-entropy, global gradient norm, clipping and finite-value checks. After restore, a fresh `nn.value_and_grad` callable is built by `make_resumed_train_step(model, optimizer)` around the same restored objects, without the old 19.5 global closure or replacement model. Before any sampling, the continuation loop checks Adam step equals the supplied `completed_updates`; after each update it verifies exactly +1 and logs the actual step. No baseline warm-up is replayed. No notebook code, training, data, or checkpoint operation was executed. Step 20.4 is now 2/2; stop before 20.5.
+
+
+Step 20.4 explicitly authorized extra minimal correction: `tree_map` is imported from `mlx.utils`; the stale example now passes separate `metadata_path` and the original `artifact_root` used for 20.3 relative artifact references. Normal correction count remains 2/2, plus this one authorized exception. No code/checkpoint was executed. Stop at 20.4.
