@@ -1219,3 +1219,8 @@ Step 20.4 — Resume Training is published as `notebooks/90_step20_4_resume_trai
 
 
 Step 20.4 final merge correction accepted: cumulative delivery/correction count **2/2**. Artifact resolution explicitly separates the metadata file path from the original artifact root used for relative references. The master embeds the scalar shifted-target loss, global gradient norm, clipping and finite checks; a fresh gradient transform is bound to the restored model/optimizer. Before sampling it checks Adam step equals `completed_updates`; after every update it requires an exact +1 step and records the actual value. It does not replay warm-up or reuse the old baseline closure. No code or checkpoint was executed, loaded, restored, or trained. Stop at 20.4 before 20.5.
+
+
+## Step 20.5 current boundary — Step 20 materials complete
+
+Step 20.5 — Resume Verification is published as `notebooks/91_step20_5_resume_verification.ipynb`, initial generation count **0/2**. It prepares small deterministic checks for architecture/config mismatch, parameter-tree equality, same-input logits, optimizer state-tree equality, and Adam step/progress agreement. The fixed input is manually specified; no corpus is read. Tolerance-based agreement is distinguished from bitwise identity, and before/after comparison requires genuine saved reference evidence. All code cells are unexecuted and output-free. With this publication, the **Step 20.1–20.5 teaching-material scope is complete**. This is material completeness only, not checkpoint execution or runtime verification. Stop before Step 21.
