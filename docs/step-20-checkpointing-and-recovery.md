@@ -55,3 +55,8 @@ Initial seeds are not full RNG state. If Python/MLX RNG state, sampler cursor, d
 Artifact resolution now separates `metadata_path` from the original `artifact_root` used when 20.3 created each artifact's `relative_path`; metadata's `run_metadata.json` directory is no longer assumed to be the artifact root. Path containment, file existence, size and SHA-256 checks remain in place.
 
 The master now embeds the required shifted-target scalar cross-entropy, global gradient norm, clipping and finite-value checks. After restoring weights and optimizer state, `make_resumed_train_step(model, optimizer)` creates a fresh `nn.value_and_grad` callable bound to those exact restored objects; it does not use the old 19.5 global closure or create a replacement model. The continuation entry checks Adam step against `completed_updates` before sampling, and after every update requires the step to advance by exactly one before logging the actual step. It does not replay the baseline warm-up. This is a source-only correction: no notebook, checkpoint, data or training code was executed.
+
+
+### Step 20.4 authorized extra minimal correction
+
+The resume master imports `tree_map` from `mlx.utils`, required by its global gradient clipping helper. The orchestration example now takes `metadata_path` and the independent original `artifact_root` used by Step 20.3 artifact references, and follows the current resolver signatures and restore order. This is an explicitly authorized extra correction beyond the normal two-correction allowance. No notebook or checkpoint operation was executed.
