@@ -1067,3 +1067,8 @@ Artifact resolution separates `metadata_path` from the original `artifact_root` 
 
 
 Step 20.4 explicitly authorized extra minimal correction: `tree_map` is imported from `mlx.utils`; the stale example now passes separate `metadata_path` and the original `artifact_root` used for 20.3 relative artifact references. Normal correction count remains 2/2, plus this one authorized exception. No code/checkpoint was executed. Stop at 20.4.
+
+
+## Step 20.5 final subsection — Step 20 materials complete
+
+Master: `notebooks/91_step20_5_resume_verification.ipynb`; Step document: `docs/step-20-checkpointing-and-recovery.md`. Initial generation count **0/2**. The lesson covers deterministic same-input logits checks, parameter and optimizer state-tree comparisons, Adam step/progress agreement, and architecture/config mismatch rejection. The test input is manually specified; it does not require corpus access. Tolerance-based equality is not bitwise identity, and a valid before/after comparison requires genuine reference evidence captured before saving. All code cells are unexecuted and output-free. Step 20.1–20.5 material scope is now complete; no checkpoint was actually loaded or verified. Stop before Step 21.
