@@ -60,3 +60,10 @@ The master now embeds the required shifted-target scalar cross-entropy, global g
 ### Step 20.4 authorized extra minimal correction
 
 The resume master imports `tree_map` from `mlx.utils`, required by its global gradient clipping helper. The orchestration example now takes `metadata_path` and the independent original `artifact_root` used by Step 20.3 artifact references, and follows the current resolver signatures and restore order. This is an explicitly authorized extra correction beyond the normal two-correction allowance. No notebook or checkpoint operation was executed.
+
+
+## Step 20.5 — Resume Verification
+
+Master: [91_step20_5_resume_verification.ipynb](../notebooks/91_step20_5_resume_verification.ipynb). Initial generation count **0/2**. This is the final Step 20 subsection.
+
+The lesson prepares small deterministic checks for architecture/config compatibility, parameter-tree equality, same-input logits, Adam state-tree equality, and Adam step versus metadata `completed_updates`. It uses a fixed manually specified token-ID tensor and does not read corpus. It distinguishes tolerance-based numerical agreement from bitwise identity, and requires genuine pre-save reference outputs/state for before/after comparisons. Negative architecture mismatch cases are defined for future use. All code cells are unexecuted and output-free; no checkpoint is saved/loaded/restored and no verification result is claimed. With this publication, the Step 20.1–20.5 material scope is complete; this is not runtime validation. Stop before Step 21.
