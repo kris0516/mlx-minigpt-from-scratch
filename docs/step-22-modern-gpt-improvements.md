@@ -1,6 +1,6 @@
 # Step 22 — Course materials
 
-当前此 Step 已发布至 22.3。仅静态材料，不是运行结果。
+当前此 Step 已发布至 22.4。仅静态材料，不是运行结果。
 
 # Step 22.1 — Weight tying：输入与输出共享词向量
 
@@ -198,6 +198,72 @@ GLU 常用 sigmoid gate，SwiGLU 用 SiLU gate；GELU 是另一种激活，两�
 ## 8. 官方 API 阅读与完成边界
 
 - [MLX v0.32.2 / python/mlx/nn/layers/activations.py](https://github.com/ml-explore/mlx/blob/v0.32.2/python/mlx/nn/layers/activations.py)
+
+接口说明以固定版本源码为准。本次只有文本与源代码静态检查，没有运行通过声明。能够复述概念与完成练习后再进入下一节；材料覆盖范围不代表读者已经掌握。
+
+# Step 22.4 — MHA → MQA / GQA：减少 KV 头的数量
+
+## 先建立独立工作副本（以下只是命令参考，本次未执行）
+
+在仓库根目录先同步母版：
+
+```bash
+git pull
+```
+
+再创建不覆盖已有文件的时间戳副本（仓库应已有 notebooks/work 目录）：
+
+```bash
+cp -n notebooks/100_step22_4_mqa_gqa_attention.ipynb notebooks/work/100_step22_4_mqa_gqa_attention_$(date +%Y%m%d_%H%M%S)_work.ipynb
+```
+
+只在工作副本中填写练习或未来运行。`cp -n` 在同名目标存在时不覆盖；同一秒再次操作也不会覆盖已有内容。当前母版是**材料初稿 0/2**，不是学习完成证明。
+
+**执行边界：**所有代码单元 execution_count 为 null、outputs 为空。本次不执行 notebook、MLX 实验、测试、训练、验证、采样、语料读取/下载或 checkpoint 操作。下面的短实验是将来可观察的安排，不是已观察结果。MLX API 基线固定 v0.32.2。
+
+## 1. 为什么需要这一节
+
+Multi-head attention（MHA）为每个 query head 配一个独立 K/V head。Multi-query attention（MQA）让所有 query heads 共享一组 K/V；grouped-query attention（GQA）在中间取折衷：多组 query heads 各共享一个 K/V head。
+
+动机尤其来自 autoregressive decoding 的 KV cache。每步只生成一个 token，却需要读取历史 K/V；减少 KV heads 能减少逻辑缓存容量和相关带宽需求。它改变的是架构与参数，不是纯粹换一个执行算法。
+
+## 2. 先备数学与 Python / MLX 语义
+
+令 Hq 为 query heads、Hkv 为 KV heads，要求 Hq % Hkv=0。每组 g=Hq/Hkv 个 query heads 使用同一个 KV head。MHA: Hkv=Hq；MQA: Hkv=1；GQA: 1<Hkv<Hq。
+
+每层 K/V cache 的元素数为 2BTHkv d，N 层、每元素 s bytes 时逻辑容量为 2NBTHkv d s。这个公式没有包含模型权重、临时 attention scores、allocator 保留、碎片或系统 RAM。GQA 减少 KV 数量不等于消除 query heads 的打分计算。
+
+## 3. 纸笔走一遍（讲解例子，不是练习答案）
+
+B=1，N=2，T=64，d=16，Hq=4，float16 每元素 2 bytes。MHA Hkv=4：逻辑 cache 为 32768 bytes；GQA Hkv=2：16384 bytes；MQA Hkv=1：8192 bytes。只是在给定假设下的手算，不是硬件测量。
+
+GQA Hq=4,Hkv=2 的映射为 query heads [0,1]→KV head 0，[2,3]→KV head 1。不能交错成 [0,2] 与 [1,3] 又声称是同一 head 排列。
+
+## 4. Shape tracing 与接口契约
+
+Q (B,Hq,Tq,d)，K/V (B,Hkv,Tk,d)。参考实现先 repeat K/V 到 (B,Hq,Tk,d)，score=(Q @ Kᵀ)/√d → (B,Hq,Tq,Tk)，softmax 后乘 V → (B,Hq,Tq,d)。显式 repeat 只用来教学，会放大临时存储；fast SDPA 应直接接收未平铺 K/V。
+
+## 5. 短实验计划
+
+先预测 shape 与趋势，再在未来工作副本中运行下一个单元。这里没有运行记录。若未来结果和推导不同，先检查输入、axis、dtype、mask、随机 key，再讨论数值误差；不要把一次随机输出当成分布证明。
+
+## 6. 常见误区与未来衔接
+
+MLX v0.32.2 fast SDPA 支持 MHA/MQA/GQA，要求 scale 用 keyword；不要为 fast 路径预先 repeat K/V。本节相等 T 的 causal mask 不涉及增量 decode 的偏移；非方阵需要单独设计对齐。
+
+不同 head 数意味着 Q/K/V projection 输出宽度不同。原来的三个 C→C 投影不能只修改 reshape 就得到 GQA。把原 MHA checkpoint 的 K/V 平均成组也不是无损变换，不能宣称已兼容旧训练结果。参考/fast 数值差应使用容差理解，本次没有执行或记录差值。
+
+## 7. 练习（不附答案）
+
+1. Hq=8、Hkv=2 时画出 query→KV 映射，并列出 Q/K/V shapes。
+2. 给定 N、B、T、d、dtype，写出 cache 容量随 Hkv 的比例关系。
+3. 解释为什么 reference 中的 repeat 不应出现在最终缓存存储里。
+
+请先用纸笔作答，再决定是否在工作副本中添加自己的代码。母版不填入参考答案。
+
+## 8. 官方 API 阅读与完成边界
+
+- [MLX v0.32.2 / python/src/fast.cpp](https://github.com/ml-explore/mlx/blob/v0.32.2/python/src/fast.cpp)
 
 接口说明以固定版本源码为准。本次只有文本与源代码静态检查，没有运行通过声明。能够复述概念与完成练习后再进入下一节；材料覆盖范围不代表读者已经掌握。
 
