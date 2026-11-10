@@ -1,6 +1,6 @@
-# Course-material progress — Step 22.1
+# Course-material progress — Step 22.2
 
-当前已发布至 **Step 22.1**（6/25 个新小节）。最新授权允许按原路线自主补齐 Step 21–25；尚未发布的后续小节不计为完成。教材完成不代表学员掌握或运行通过。
+当前已发布至 **Step 22.2**（7/25 个新小节）。最新授权允许按原路线自主补齐 Step 21–25；尚未发布的后续小节不计为完成。教材完成不代表学员掌握或运行通过。
 
 只进行材料编写、静态审阅和 Git 发布。没有执行 Notebook/训练/验证/测试/采样/benchmark/checkpoint，没有读取或下载语料，没有执行 work copies。Release tag/GitHub Release 未创建。
 
@@ -12,3 +12,4 @@
 - [95_step21_4_top_k_sampling](../notebooks/95_step21_4_top_k_sampling.ipynb)
 - [96_step21_5_context_cropping](../notebooks/96_step21_5_context_cropping.ipynb)
 - [97_step22_1_weight_tying](../notebooks/97_step22_1_weight_tying.ipynb)
+- [98_step22_2_rotary_position_embeddings](../notebooks/98_step22_2_rotary_position_embeddings.ipynb)
