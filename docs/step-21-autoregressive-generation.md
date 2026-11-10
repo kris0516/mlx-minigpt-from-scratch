@@ -1,6 +1,6 @@
 # Step 21 — Course materials
 
-当前此 Step 已发布至 21.2。仅静态材料，不是运行结果。
+当前此 Step 已发布至 21.3。仅静态材料，不是运行结果。
 
 # Step 21.1 — Generation loop：把预测接回输入
 
@@ -131,6 +131,83 @@ MLX v0.32.2 的 `mx.random.categorical` 接受 logits，不是 probabilities。�
 ## 8. 官方 API 阅读与完成边界
 
 - [MLX v0.32.2 / python/src/random.cpp](https://github.com/ml-explore/mlx/blob/v0.32.2/python/src/random.cpp)
+
+接口说明以固定版本源码为准。本次只有文本与源代码静态检查，没有运行通过声明。能够复述概念与完成练习后再进入下一节；材料覆盖范围不代表读者已经掌握。
+
+# Step 21.3 — Temperature：只改变相对概率的锐利程度
+
+## 先建立独立工作副本（以下只是命令参考，本次未执行）
+
+在仓库根目录先同步母版：
+
+```bash
+git pull
+```
+
+再创建不覆盖已有文件的时间戳副本（仓库应已有 notebooks/work 目录）：
+
+```bash
+cp -n notebooks/94_step21_3_temperature.ipynb notebooks/work/94_step21_3_temperature_$(date +%Y%m%d_%H%M%S)_work.ipynb
+```
+
+只在工作副本中填写练习或未来运行。`cp -n` 在同名目标存在时不覆盖；同一秒再次操作也不会覆盖已有内容。当前母版已作**第一次实质修订 1/2**：增加温度分布分组柱状图教学。此计数不是学习完成证明。
+
+**执行边界：**所有代码单元 execution_count 为 null、outputs 为空。本次不执行 notebook、MLX 实验、测试、训练、验证、采样、语料读取/下载或 checkpoint 操作。下面的短实验是将来可观察的安排，不是已观察结果。MLX API 基线固定 v0.32.2。
+
+## 1. 为什么需要这一节
+
+Temperature（温度）τ 调整选择阶段的 logit scale，不改变模型已经学到的权重。低温把概率集中在高分候选，高温让候选更接近均匀。温度不是创造力开关，也不能修复错误知识；它是对当前分布的可解释变换。
+
+必须把“低温仍抽样”和“greedy”区分。温度非常小但为正时仍定义概率分布；τ=0 则除法未定义。课程把 greedy 作为单独分支，不用除以零近似。
+
+## 2. 先备数学与 Python / MLX 语义
+
+pᵢ(τ)=exp(zᵢ/τ)/Σⱼexp(zⱼ/τ)，τ>0。两候选的 odds ratio 为 pᵢ/pⱼ=exp((zᵢ−zⱼ)/τ)。因此降温放大分数差的作用。对所有 logits 加同一个常数不改变概率；对 logits 乘常数等价于调整温度。
+
+当唯一最大值存在，τ→0⁺ 时概率集中到该最大值；并列最大时不能声称极限一定只选一个。τ→∞ 时有限 logits 趋于均匀。以上是数学极限，不是有限精度实现可以任意接近零的承诺。
+
+## 3. 纸笔走一遍（讲解例子，不是练习答案）
+
+z=[0,ln2]。τ=1 时指数权重 1:2，概率 [1/3,2/3]；τ=0.5 时权重 1:4，概率 [1/5,4/5]；τ=2 时权重 1:√2，第二项概率 √2/(1+√2)。最大值位置没变，但 sampling 的选择频率变了。
+
+注意先将 logits 除以 τ，再计算 softmax；“先 softmax 再把概率除以 τ”通常连概率和为 1 都不满足。
+
+## 4. Shape tracing 与接口契约
+
+(B,V) logits → 减行最大值 (B,1) broadcast → 除以标量 τ → (B,V) scaled logits → categorical 移除 V 轴，得到 (B,)。本节先显示概率，不进行训练或生成长序列。float32 减最大值是数值防护；仍需拒绝不有限温度和无法表示的缩放。
+
+## 5. 短实验计划
+
+先预测 shape 与趋势，再在未来工作副本中运行下一个单元。这里没有运行记录。若未来结果和推导不同，先检查输入、axis、dtype、mask、随机 key，再讨论数值误差；不要把一次随机输出当成分布证明。
+
+## 5.1 用 grouped bar plot 比较温度分布（仅源码，未绘制）
+
+同一份人工 logits `z=[0, ln(2)]` 在三种温度下给出三个 categorical distributions。横轴是原始 token ID（0、1），纵轴是该 token 的理论概率，范围 0 到 1；颜色表示 temperature。每一种颜色对应的两个柱高相加应为 1，而不是要求每个 token 位置的三种颜色相加为 1。
+
+先按公式 `softmax(z / tau)` 计算各分布，再画图。这里复用上方 `temperature_logits` 的稳定化与参数检查，`mx.eval` 之后才转换为 Python list 交给 matplotlib。它们是对给定分数的理论分布作数值计算，不是 sampling 频率、不是真实训练模型的预测质量，也不是已取得的运行测量。当前并未执行绘图，因此没有图形输出或实测结论。
+
+Grouped bars（分组柱）让同一个 token 的三种温度并排，避免相互遮挡。`width=0.24` 是每根柱子的宽度；第 i 组使用 `(i-1)*width` 偏移，使 i=0、1、2 分别位于中心左侧、中心和右侧。`centers=[0,1]` 保留 token 的刻度位置，偏移只改变展示坐标，不改变 token ID 或概率。
+
+阅读时先比较 token 1 在降温和升温后的柱高，再检查同色两柱之和。图可以帮助观察趋势，但不能代替前面的 odds ratio 推导；改变横轴偏移或颜色不会改变概率模型。
+
+## 6. 常见误区与未来衔接
+
+温度不会改变正温度下的分数排序，故通常不改变 greedy 的选择。高温可能提高低质量 token 的概率；低温仍可能重复。比较策略时应固定 prompt、参数、长度、其他过滤设置，并区分理论概率与单次输出。
+
+未来真实模型接入点是 logits[:, -1, :] 之后、categorical 之前。不要在训练交叉熵中悄悄加入生成温度，也不要改 checkpoint。这里的参数拒绝策略是教学接口契约，不是 MLX 自带参数检查。
+
+## 7. 练习（不附答案）
+
+1. 手算 z=[0,ln3] 在 τ=1 与 τ=0.5 的 odds ratio。
+2. 提出一个并列最大 logits 例子，解释 τ→0⁺ 与 argmax tie policy 的区别。
+3. 为什么 temperature=NaN、0、负数应拒绝？为接口写出预期错误清单，不给答案代码。
+
+请先用纸笔作答，再决定是否在工作副本中添加自己的代码。母版不填入参考答案。
+
+## 8. 官方 API 阅读与完成边界
+
+- [MLX v0.32.2 / python/src/random.cpp](https://github.com/ml-explore/mlx/blob/v0.32.2/python/src/random.cpp)
+- [MLX v0.32.2 / python/src/ops.cpp](https://github.com/ml-explore/mlx/blob/v0.32.2/python/src/ops.cpp)
 
 接口说明以固定版本源码为准。本次只有文本与源代码静态检查，没有运行通过声明。能够复述概念与完成练习后再进入下一节；材料覆盖范围不代表读者已经掌握。
 
