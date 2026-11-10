@@ -1110,117 +1110,16 @@ These are not required to declare the MiniGPT project complete.
 
 ---
 
+---
+
 # Current course-material status
 
-> Status here tracks **repository lesson-material preparation**, not learner mastery, exercise completion, assessment, data acquisition success, or runtime validation.
-> `✅` = master lesson/material has been prepared and its static review status has been confirmed where noted; `🚧` = current prepared lesson/material being used or revised; no icon = future planned lesson.
-> Learner completion must only be recorded when the learner explicitly confirms completion or an agreed assessment has actually been completed.
+## Course-material progress — Step 21.1
 
-```text
-Steps 1–8.5      ✅ Material prepared
-Steps 9.1–9.5    ✅ Material prepared / static audit passed
-Steps 10.1–10.5  ✅ Material prepared / static audit passed
-Steps 11.1–11.5  ✅ Material prepared / static audit passed
-Steps 12.1–12.5  ✅ Material prepared / static audit passed
-Steps 13.1–13.5  ✅ Material prepared / static audit passed
-Steps 14.1–14.5  ✅ Material prepared / static audit passed
-Steps 15.1–15.5  ✅ Material prepared / static audit passed (15.5 correction 1/2)
-Step 16.1         ✅ Material prepared / static audit passed (correction 1/2)
-Step 16.2         ✅ Material prepared / static audit passed (correction 1/2)
-Step 16.3         ✅ Material and full-reply core independently passed / corrections 0/2
-Step 16.4         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
-Step 16.5         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
-Step 17.1         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
-Step 17.2         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
-Step 17.3         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
-Step 17.4         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
-Step 17.5         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
-Step 18.1         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
-Step 18.2         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
-Step 18.3         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
-Step 18.4         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
-Step 18.5         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
-Step 19.1         ✅ Material reviewer independently confirmed core static PASS / corrections 0/2
-Step 19.2         🚧 Current initial material published / corrections 0/2
-Step 19.3+         Planned only
-```
+当前已发布至 **Step 21.1**（1/25 个新小节）。最新授权允许按原路线自主补齐 Step 21–25；尚未发布的后续小节不计为完成。教材完成不代表学员掌握或运行通过。
 
-Current course-material checkpoint:
+只进行材料编写、静态审阅和 Git 发布。没有执行 Notebook/训练/验证/测试/采样/benchmark/checkpoint，没有读取或下载语料，没有执行 work copies。Release tag/GitHub Release 未创建。
 
-> **Step 19.5 — Baseline Training Run**
+## New masters published
 
-Current master: [86_step19_5_baseline_training_run.ipynb](../notebooks/86_step19_5_baseline_training_run.ipynb). Current Step document: [Step 19 — Stable low-heat training](step-19-stable-low-heat-training.md).
-
-Learner-status note:
-
-> All major Step 16, Step 17, and Step 18 materials have independently passed the material reviewer's core static review. The latest acceptance covers Step 18.5's actual five-file commit `57dc27ee121430b11802b7c6f54fa2617ccd710e`, fixed MLX v0.32.2 interfaces, and full teaching reply, with actual corrections **0/2**. This is material acceptance, not learner mastery or runtime feedback. Step 19.1 prepares one explicit, unmeasured hyperparameter candidate: model_width=64, layers=2, heads=4, block_size=64, batch_size=4, and learning_rate=3e-4. It connects these six choices to the existing MiniGPT, sampler, scalar loss, and Adam interfaces, keeping max_seq_len=block_size as this candidate's convention and vocabulary size as actual tokenizer metadata rather than a guessed constant. Pure Python configuration and argument-mapping helpers are self-contained and do not construct models, optimizers, arrays, batches, or training state. The material distinguishes structural constraints and hand-derived shapes from measurements; the old shape toys are not promoted to tuned training baselines. No low-heat, memory, performance, or convergence result is claimed. This turn stops at Step 19.1, before 19.2. Earlier independent acceptance does not imply acceptance of 19.1, learner completion, mastery, exercise completion, or runtime validation. The major Step 19 title is a course goal, not evidence that this candidate has been measured as stable or low-heat.
-
-Actual correction ledger: Step 16.1 **1/2**, Step 16.2 **1/2**, Step 16.3 **0/2**, Step 16.4 **0/2**, Step 16.5 **0/2**, Step 17.1 **0/2**, Step 17.2 **0/2**, Step 17.3 **0/2**, Step 17.4 **0/2**, Step 17.5 **0/2**, Step 18.1 **0/2**, Step 18.2 **0/2**, Step 18.3 **0/2**, Step 18.4 **0/2**, Step 18.5 **0/2**, Step 19.1 initial version **0/2**. Step 16.2 includes the previously recorded reply completion after a timeout. Preserve the passed lessons and all accumulated counts across turns and conversations.
-
-Active continuation boundary: subsequent requests proceed one subsection at a time through major **Step 20**, then stop. The existing Step 21–25 roadmap remains a future curriculum plan; this boundary does not authorize automatic or batch preparation of later lessons.
-
-
-### Step 19.2 current boundary
-
-Step 19.2 initial material has been published with corrections **0/2**. It provides a self-contained train/validation loop master using the 19.1 candidate, complete MiniGPT definitions, split-local sampling, fixed validation-window RNG, scalar loss, MLX v0.32.2 train/eval semantics, and the explicit compile/evaluation boundary. Validation does not call gradient transforms or an optimizer; it evaluates current parameters, whereas a training-step loss belongs to the pre-update parameters. The optional corpus acquisition is disabled by default; local cache availability is not assumed. The four-update/two-step validation schedule is a teaching example only, not a measured baseline. All code cells remain unexecuted and output-free. This is material preparation, not learner mastery or runtime validation. Stop before 19.3.
-
-
-Step 19.2 dependency correction: first actual correction accepted, cumulative count **1/2**. The master now defines the scalar differentiable loss before use and invokes a local corpus bootstrap before model construction. The bootstrap uses the same character mapping to derive `vocab_size`, makes a contiguous 90/10 split, checks both sides have at least `block_size + 1` tokens, and defaults optional acquisition to disabled; missing cache fails clearly without toy fallback. The accepted train/validation loop is unchanged. No runtime verification or learner mastery is claimed. Stop at 19.2.
-
-
-### Step 19.3 current boundary
-
-Step 19.3 initial material is published with corrections **0/2**. It covers initialization, global gradient norms, optional global gradient clipping, and NaN/Inf/divergence detection. The master is self-contained, includes the complete MiniGPT and local data bootstrap, and leaves corpus acquisition disabled by default. No code was executed and no stability or training result is claimed. Stop before 19.4.
-
-
-Step 19.3 first minimal correction accepted: cumulative actual correction count **1/2**. Per the fixed MLX v0.32.2 `mlx.utils` namespace, the master imports `tree_flatten` and `tree_map` from `mlx.utils` and uses those names for gradient-tree traversal/mapping. All other accepted stability logic remains unchanged. No code was executed; stop at 19.3 before 19.4.
-
-
-### Step 19.4 current boundary
-
-Step 19.4 initial material is published with corrections **0/2**. It covers unified memory awareness, Swap/system-memory versus MLX allocator counters, conservative sizing, evaluation boundaries, and sustained thermal load versus short bursts. The master includes a local bootstrap, with optional acquisition disabled by default and a clear missing-cache error. All resource-reading snippets are unexecuted; no training, system measurement, or performance/thermal claim is made. Stop before 19.5.
-
-
-### Step 19.5 current boundary
-
-Step 19.5 baseline-run material is published with initial correction count **0/2**. It prepares a future protocol for speed, loss curves, MLX allocator memory and reproducible JSON records. The 20-update schedule and measurement settings are candidates only; no training, validation, timing, memory measurement, corpus access, or system changes were performed. Missing corpus cache fails clearly and optional acquisition is disabled by default. All code cells are unexecuted. Stop before Step 20.
-
-
-Step 19.5 first merge correction accepted: cumulative actual correction count **1/2**. The baseline master restores all referenced config/helpers, fixes the malformed bootstrap source, keeps host evaluation and finite checks outside compilation, uses a host-side stability step that checks/clips before optimizer update, preserves one warm-up plus 20 timed updates, and labels validation after completed updates 6/11/16/21. JSON metadata uses `mx.__version__`, records the clip threshold, and uses exclusive-create mode. No execution or measurement occurred. Stop at 19.5 before Step 20.
-
-
-Step 19.5 second/final merge correction accepted: cumulative actual correction count **2/2**. The record cell's accidental line-leading commas were removed with indentation and exclusive-create JSON semantics preserved. The setup cell initializes a single-use marker; the protocol checks the marker and Adam step 0 before sampling, marks the run used immediately before the first sample, and does not clear the marker on failure. The baseline uses the uncompiled host-side stability step; timing excludes sampling, X/Y pre-evaluation, validation, and warm-up while including finite checks, clipping, Adam update, and state evaluation. The protocol retains one warm-up plus 20 timed updates and validation labels 6/11/16/21. No code was executed. Stop at 19.5 before Step 20.
-
-
-## Step 20.1 current boundary
-
-Step 20.1 — Save Model Weights has been published as `notebooks/87_step20_1_save_model_weights.ipynb`, with initial material generation count **0/2**. It covers parameter-tree serialization, MLX v0.32.2 `Module.save_weights`, SafeTensors, and safe output-directory organization. The full MiniGPT definitions are included; the real vocabulary size must be supplied explicitly from the existing token-ID mapping. No model was instantiated, no weights were saved, and no corpus was read/downloaded. Weights-only files do not represent complete optimizer/RNG/data training state. Stop before 20.2.
-
-
-## Step 20.2 current boundary
-
-Step 20.2 — Save Optimizer State is published as `notebooks/88_step20_2_save_optimizer_state.ipynb`, initial generation count **0/2**. It covers Adam first/second moments, step count, the optimizer state tree, and a future-work-copy NPZ + JSON serialization pattern with exclusive output-directory creation. Model weights and optimizer state remain distinct; hyperparameters, RNG, sampler position, data split and training history are separate recovery information. No model/optimizer was instantiated, and no state was saved or loaded. Stop before 20.3.
-
-
-Step 20.2 first merge correction accepted: cumulative actual correction count **1/2**. MLX v0.32.2 Adam's zero-dimensional uint64 `step` and current `learning_rate` are MLX array leaves and are serialized in NPZ alongside m/v; JSON records array paths, shapes, dtypes and actual Python scalar leaves. The loader compares each rebuilt leaf against the already-initialized target optimizer state (array identity, shape/dtype, or exact non-array type) before assignment. Adam hyperparameters and scheduler rules remain separate. No code or state serialization was executed. Stop at 20.2.
-
-
-## Step 20.3 current boundary
-
-Step 20.3 — Save Configuration and Metadata is published as `notebooks/89_step20_3_save_configuration_metadata.ipynb`, initial generation count **0/2**. It records architecture/config, tokenizer/vocabulary fingerprint, initial seeds, training progress, and explicit weight/optimizer artifact references. The tokenizer fingerprint hashes the canonical `stoi` mapping, not just vocabulary size. Metadata output uses a new UTC-stamped directory with exclusive creation. The lesson distinguishes seed values from full RNG state and does not imply metadata alone restores training. No corpus was read/downloaded and no metadata/checkpoint was generated. Stop before 20.4.
-
-
-Step 20.3 first correction accepted: cumulative actual correction count **1/2**. Tokenizer metadata now preserves the full `stoi` mapping and `itos_by_id` character table in addition to the fingerprint. A reconstruction helper rebuilds and validates the same mapping from saved metadata alone, without a prior kernel or corpus re-inference. No corpus was read and no metadata file was created. Stop at 20.3.
-
-
-## Step 20.4 current boundary
-
-Step 20.4 — Resume Training is published as `notebooks/90_step20_4_resume_training.ipynb`. This follow-up completes the interrupted initial delivery; cumulative delivery-correction count is 1/2 and no learner/runtime result is implied. The notebook defines metadata/tokenizer/architecture reconstruction, artifact hash/path checks, strict model weight loading, optimizer state restoration, Adam-step/progress matching, and a caller-supplied continuation loop. It includes its sampler dependency but never loads data or executes a restore. Without full RNG/sampler/data state, do not claim exact trajectory reproduction. Stop before 20.5.
-
-
-Step 20.4 final merge correction accepted: cumulative delivery/correction count **2/2**. Artifact resolution explicitly separates the metadata file path from the original artifact root used for relative references. The master embeds the scalar shifted-target loss, global gradient norm, clipping and finite checks; a fresh gradient transform is bound to the restored model/optimizer. Before sampling it checks Adam step equals `completed_updates`; after every update it requires an exact +1 step and records the actual value. It does not replay warm-up or reuse the old baseline closure. No code or checkpoint was executed, loaded, restored, or trained. Stop at 20.4 before 20.5.
-
-
-## Step 20.5 current boundary — Step 20 materials complete
-
-Step 20.5 — Resume Verification is published as `notebooks/91_step20_5_resume_verification.ipynb`, initial generation count **0/2**. It prepares small deterministic checks for architecture/config mismatch, parameter-tree equality, same-input logits, optimizer state-tree equality, and Adam step/progress agreement. The fixed input is manually specified; no corpus is read. Tolerance-based agreement is distinguished from bitwise identity, and before/after comparison requires genuine saved reference evidence. All code cells are unexecuted and output-free. With this publication, the **Step 20.1–20.5 teaching-material scope is complete**. This is material completeness only, not checkpoint execution or runtime verification. Stop before Step 21.
+- [92_step21_1_generation_loop](../notebooks/92_step21_1_generation_loop.ipynb)

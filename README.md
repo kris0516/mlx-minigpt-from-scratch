@@ -1,3 +1,5 @@
+> **Authoritative continuation status: material published through Step 21.1.** Latest scope is autonomous preparation through Step 25.5, then stop. Historical “current/stop” statements below are superseded. See [course progress](docs/course-progress.md). No course code, tests, training, corpus or checkpoint operations were executed.
+
 # mlx-minigpt-from-scratch
 
 在 Apple Silicon Mac 上使用 Apple MLX，从基础矩阵乘法开始，逐步构建并理解一个 Decoder-Only MiniGPT 的开源教学项目。
@@ -97,3 +99,4 @@ Step 19.5 Baseline Training Run material is published with initial correction co
 ## Step 20 material scope complete
 
 All checkpointing and resume teaching materials, Step 20.1–20.5, are now published. Final subsection: [91_step20_5_resume_verification.ipynb](notebooks/91_step20_5_resume_verification.ipynb) · [Step 20 document](docs/step-20-checkpointing-and-recovery.md). This is material completeness only; no checkpoint verification or training was run. Stop before Step 21.
+
