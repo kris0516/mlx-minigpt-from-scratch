@@ -1,4 +1,4 @@
-> **Authoritative continuation status: material published through Step 22.4.** Latest scope is autonomous preparation through Step 25.5, then stop. Historical “current/stop” statements below are superseded. See [course progress](docs/course-progress.md). No course code, tests, training, corpus or checkpoint operations were executed.
+> **Authoritative continuation status: material published through Step 22.5.** Latest scope is autonomous preparation through Step 25.5, then stop. Historical “current/stop” statements below are superseded. See [course progress](docs/course-progress.md). No course code, tests, training, corpus or checkpoint operations were executed.
 
 # mlx-minigpt-from-scratch
 
