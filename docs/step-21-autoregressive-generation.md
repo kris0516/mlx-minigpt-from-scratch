@@ -1,6 +1,6 @@
 # Step 21 — Course materials
 
-当前此 Step 已发布至 21.1。仅静态材料，不是运行结果。
+当前此 Step 已发布至 21.2。仅静态材料，不是运行结果。
 
 # Step 21.1 — Generation loop：把预测接回输入
 
@@ -65,6 +65,72 @@ Python 中 `logits[:, -1, :]` 的 -1 表示时间轴最后一项，不是词表�
 ## 8. 官方 API 阅读与完成边界
 
 - [MLX v0.32.2 / python/src/ops.cpp](https://github.com/ml-explore/mlx/blob/v0.32.2/python/src/ops.cpp)
+
+接口说明以固定版本源码为准。本次只有文本与源代码静态检查，没有运行通过声明。能够复述概念与完成练习后再进入下一节；材料覆盖范围不代表读者已经掌握。
+
+# Step 21.2 — Greedy vs sampling：选最大，还是按概率抽取
+
+## 先建立独立工作副本（以下只是命令参考，本次未执行）
+
+在仓库根目录先同步母版：
+
+```bash
+git pull
+```
+
+再创建不覆盖已有文件的时间戳副本（仓库应已有 notebooks/work 目录）：
+
+```bash
+cp -n notebooks/93_step21_2_greedy_vs_sampling.ipynb notebooks/work/93_step21_2_greedy_vs_sampling_$(date +%Y%m%d_%H%M%S)_work.ipynb
+```
+
+只在工作副本中填写练习或未来运行。`cp -n` 在同名目标存在时不覆盖；同一秒再次操作也不会覆盖已有内容。当前母版是**材料初稿 0/2**，不是学习完成证明。
+
+**执行边界：**所有代码单元 execution_count 为 null、outputs 为空。本次不执行 notebook、MLX 实验、测试、训练、验证、采样、语料读取/下载或 checkpoint 操作。下面的短实验是将来可观察的安排，不是已观察结果。MLX API 基线固定 v0.32.2。
+
+## 1. 为什么需要这一节
+
+相同 logits 可以对应不同解码策略。Greedy 每次取最大分数，容易复现但可能陷入重复；categorical sampling 按概率选 token，可以探索非最大候选，但不会自动提高事实性或质量。我们只研究选择器，不重新训练模型。改变解码规则不等于改变模型参数。
+
+从给定分布抽取一次与从不同分布各抽一次是两个问题。为了隔离影响，本节固定同一行 logits，并使用显式 random key，不依赖 notebook 里其他随机操作的次数。
+
+## 2. 先备数学与 Python / MLX 语义
+
+Categorical（类别分布）给离散 token i 分配概率 pᵢ≥0，Σpᵢ=1。softmax: pᵢ=exp(zᵢ−m)/Σⱼexp(zⱼ−m)，m=max(z)。减最大值在精确算术下不改变比值，能避免直接计算过大的指数。
+
+MLX v0.32.2 的 `mx.random.categorical` 接受 logits，不是 probabilities。若把 softmax 后的概率再当 logits，会再次指数化，得到不同分布。对于输入 (B,V)，默认 axis=-1 且不指定 shape/num_samples 时输出 (B,)。
+
+## 3. 纸笔走一遍（讲解例子，不是练习答案）
+
+用 z=[ln2,ln3,ln5]，指数比例为 2:3:5，因此 p=[0.2,0.3,0.5]。Greedy 选择 ID 2；sampling 有 0.2 的概率选择 ID 0。想象 [0,1) 被切成 [0,.2)、[.2,.5)、[.5,1)，均匀抽一个数，再找它落在哪段。这解释概率语义，不是 MLX 内部算法实现说明。
+
+连续两次都抽到 ID 2 不证明 sampling 变成了 greedy；有限样本不等于精确概率。
+
+## 4. Shape tracing 与接口契约
+
+固定 logits (1,3) → greedy ID (1,)；categorical 同样 (1,) → 为 append 增轴为 (1,1)。随机 key 用 `mx.random.key(seed)` 创建；`mx.random.split(key)` 返回两个子 key，把一个留下、一个用于此次抽样。相同 key 复用会复用随机性，不是独立抽样。
+
+## 5. 短实验计划
+
+先预测 shape 与趋势，再在未来工作副本中运行下一个单元。这里没有运行记录。若未来结果和推导不同，先检查输入、axis、dtype、mask、随机 key，再讨论数值误差；不要把一次随机输出当成分布证明。
+
+## 6. 常见误区与未来衔接
+
+本节输入约定是每行至少一个有限候选、无 NaN/+Inf；后续 top-k 允许其余候选为 -Inf。所有分数都为 -Inf 时没有合法概率分布，应在上游拒绝。
+
+固定 seed 有助于相同实现中的复现，但不保证跨 MLX 版本或硬件逐位一致。Greedy 的稳定也依赖参数、输入、模式和数值路径；并列最大值应明确 tie policy，而不是把它叫作语言模型的“偏好”。此处不把并列情况下具体索引选择作为跨实现契约。
+
+## 7. 练习（不附答案）
+
+1. 对 z=[0,0,ln2] 计算概率并比较 greedy 与 sampling 的可能输出。
+2. 解释为何重复八次结果不能验证概率恰好等于理论值。
+3. 如果希望生成两条独立序列，应该如何管理各自 key？画出 key 流程，不给训练代码。
+
+请先用纸笔作答，再决定是否在工作副本中添加自己的代码。母版不填入参考答案。
+
+## 8. 官方 API 阅读与完成边界
+
+- [MLX v0.32.2 / python/src/random.cpp](https://github.com/ml-explore/mlx/blob/v0.32.2/python/src/random.cpp)
 
 接口说明以固定版本源码为准。本次只有文本与源代码静态检查，没有运行通过声明。能够复述概念与完成练习后再进入下一节；材料覆盖范围不代表读者已经掌握。
 
