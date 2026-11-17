@@ -1,6 +1,6 @@
 # Step 21 — Autoregressive generation
 
-本章五节的教学材料已准备，材料计数：21.3 第一次实质修订 1/2，其余各节初始材料 0/2。只进行了文稿/Notebook JSON 的静态审阅；没有运行代码、实验、训练、验证、采样、checkpoint 或语料操作。材料范围完成不是学习完成、模型性能或运行通过的声明。所有实验都使用显式人工小数组或 toy callback，不依赖旧 kernel、真实语料或权重。
+本章五节的教学材料已准备，材料计数：21.1 教学修订 1/2（2026-11-17），21.3 第一次实质修订 1/2，其余各节初始材料 0/2。只进行了文稿/Notebook JSON 的静态审阅；没有运行代码、实验、训练、验证、采样、checkpoint 或语料操作。材料范围完成不是学习完成、模型性能或运行通过的声明。所有实验都使用显式人工小数组或 toy callback，不依赖旧 kernel、真实语料或权重。
 
 ## 阅读顺序与独立工作副本
 
@@ -10,25 +10,17 @@
 
 [独立母版](../notebooks/92_step21_1_generation_loop.ipynb)
 
-训练时模型同时看见许多已知位置的前缀，学习每个位置的下一个 token。生成时未来 token 不存在，只能先预测一个，再把它接回输入。这种用自己刚产生的结果作为下一步条件的方法叫 autoregressive generation（自回归生成）。这里先把“模型预测”和“挑选 token”拆开：callback 提供分数，loop 管理序列。
+2026-11-17 教学修订 1/2：原 50 行综合代码块同时引入回调、检查和循环，前面的说明未逐步对应这些动作。本次保留原函数签名、返回值、容量检查与生成行为，将教学主线重新组织为：
 
-本节只支持一条非空 prompt、固定生成长度、不使用 EOS、不缓存 KV。这样我们可以看清四个动作：feed context → take last logits → choose → append。提供的 toy callback 是完整且可替换的；它不是已训练 MiniGPT，也不读取任何语料或权重。
+1. 从 6.3 的 next-token target 和 15.4 的 `(B,T,V)` 输出，解释训练时各位置评分与生成时只取末位置的区别。
+2. 列出输入输出 shape，以同一人工转移表手算三轮：`[A] → [A,B] → [A,B,C] → [A,B,C,A]`。这些是纸面推导，非执行输出。
+3. 分开讲 callback、最后时间位置切片、argmax 索引、增轴、沿时间轴 concatenate，再各给小段源码。
+4. 以循环不变量连接每轮状态，推导最后一次 forward 长度 `L+n-1` 与返回长度 `L+n` 的区别。
+5. 解释 prompt/shape/有限值检查，再提供整合这些步骤的完整函数；末尾的完整调用明确是未来可选观察入口。
 
-**关键数学/接口：**
+已讲知识用具体母版链接恢复，不复制整套 MiniGPT，也不借旧 kernel。接口仍仅支持一条非空 prompt、固定生成次数、greedy 最小选择规则；没有 EOS、batch 生成、裁剪或 KV cache。真实模型接入仍须匹配架构、权重、完整词表和位置容量；本节不加载 checkpoint 或读取语料。
 
-概率链式法则：p(x₁,…,xₙ)=∏ₜ p(xₜ | x₁,…,xₜ₋₁)。模型输出的 logits 是未归一化分数 z；softmax(z) 才是概率。选择 argmax 时无需先 softmax，因为指数和共同分母不改变最大值位置。
-
-Python 中 `logits[:, -1, :]` 的 -1 表示时间轴最后一项，不是词表最后一项；`[:, None]` 增加一个长度为 1 的维度。`mx.concatenate(..., axis=1)` 沿时间轴连接，不会覆盖 prompt。`range(n)` 恰好迭代 n 次，n=0 时原样返回。
-
-**形状契约：**
-
-第 r 轮之前完整序列长度 L+r：IDs (1,L+r) → callback (1,L+r,V) → 最后一行 (1,V) → argmax (1,) → 增轴 (1,1) → append 后 (1,L+r+1)。本节暂不裁剪，明确要求每次调用模型时输入长度不超过 block_size。最后一个输出 token 可以让返回序列超过容量，因为它还没有被再次送入模型。
-
-**使用边界：**
-
-生成不需要 target、loss、Adam 或梯度更新；`model.eval()` 只切换模式，不是 `mx.eval` 的替代。未来接入真实模型时，先按 Step 20 恢复同架构权重和同一 token 映射，再把模型本身作为 logits_fn；输入必须是合法 token ID，输出必须是原始 (B,T,V) logits。若有 dropout，保存原模式、切换 eval，最后恢复；本 toy 没有模式。
-
-这里每步显式求值方便教学，但不声称这种 Python loop 是最快实现。不得把 A/B/C 的循环当作语言质量证据。
+`model.eval()` 与 `mx.eval(...)` 的职责继续分开；没有目标、loss 或 optimizer update。下一节才比较 greedy 与 sampling。本次仅静态检查，所有代码单元未执行且输出为空。
 
 ### 21.2 Greedy vs sampling：选最大，还是按概率抽取
 
