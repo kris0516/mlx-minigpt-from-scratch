@@ -4,6 +4,8 @@
 
 **独立复核集中修订（本轮首次修正，按既有上限累计）：** 23.1–23.5、24.1–24.2、25.3–25.5 各 **1/2**；未修改的 24.3–24.5、25.1–25.2 保持 **0/2**。Step 22.5 及更早的记录、修正次数、独立验收均原样保留。此轮只做静态源码/文稿检查与 Git 发布，未运行课程 Notebook、测试、训练、生成、评测或 benchmark。完整历史材料提交表和最新静态范围参见 [RELEASE_NOTES](RELEASE_NOTES.md)、[REPRODUCIBILITY](REPRODUCIBILITY.md) 和 [RELEASE_CHECKLIST](RELEASE_CHECKLIST.md)。
 
+**第二次教学补充后的累计台账（最终）：** 仅 **Step 23.3、Step 23.5 为 2/2**；其余第一轮已修订小节继续为原 **1/2**，未修订小节保持原 **0/2**。上方“首次修正 1/2”保留为历史快照，不被覆盖。此轮只增加 104、106 母版与同一 Step 23 讲义的 Markdown，未执行课程代码，旧验收与 Step 22.5 及更早记录不变。
+
 ## Historical snapshot — Step 22.5 material publication (superseded as current)
 
 当前已发布至 **Step 22.5**（10/25 个新小节）。最新授权允许按原路线自主补齐 Step 21–25；尚未发布的后续小节不计为完成。教材完成不代表学员掌握或运行通过。

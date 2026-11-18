@@ -213,6 +213,14 @@ history = run_training(
 
 实际源码先调用 `train_step` 完成 Adam 更新，再生成当前 `record`，然后视 `val_every` 执行验证；验证成功后才 `records.append(record)`。若验证途中报错，`estimate_validation_loss` 的 `finally` 恢复训练模式，但**此前 Adam 更新不会自动回滚**；当次 record 尚未 append，整个函数可能直接抛异常而不返回 history。此示例没有运行，不声称上述数值是观测结果。
 
+### 23.3 调用者负责的对象身份契约（Caller-side identity contract）
+
+`make_train_step(model, optimizer)` 在内部调用 `nn.value_and_grad(model, language_model_loss)`，返回的 `step` **闭包（closure）捕获这一 `model` 对象和对应 `optimizer`**；`run_training(model, train_step, ...)` 则用传入的 `model` 切换训练模式、执行验证。因此调用者必须保证两处传入的是**同一个模型实例**（`is` 的对象身份，而不仅是相同类别或 shape），且 optimizer 属于这一模型。`run_training` **不会检查** `train_step` 闭包绑定的是哪个模型；误把针对模型 A 创建的 step 与模型 B 一起传入，可能更新 A 却验证 B。
+
+`train_rng` 与 `val_rng` 必须由调用者分别创建为**两个不同的 `random.Random` 对象**（例如前文 `Random(2026)`、`Random(2027)`，要求 `train_rng is not val_rng`）。`run_training` 仅在提供 `val_tokens` 且 `val_rng is None` 时做缺失检查，**不核验两套 RNG 的对象身份，也不主动验证闭包绑定**；下游 `get_batch` 会检查传入 RNG 的类型，但同一个对象传给训练与验证仍能通过类型检查，并让两个阶段共用、推进同一随机状态。这里明确的是**调用者前置条件**，并没有为 `run_training` 添加新的防御性检查或运行任何训练。
+
+**独立复核第二次教学修订：23.3 累计 2/2（保留原首次 1/2 记录）；本次仅 Markdown，未执行。**
+
 ## Step 23.4 — Generation module
 
 # Step 23.4 — Generation module
@@ -331,3 +339,14 @@ Source modules: [config.py](../src/minigpt/config.py), [cli.py](../src/minigpt/c
 **避免 import 副作用的是源码末尾 `if __name__ == "__main__": main()`，不是 `--corpus` 的 required 标志。** `--corpus` 只在真正解析 `train` 命令时要求使用者提供显式路径；仅 `import minigpt.cli` 不调用 `main()`，不读语料、构造模型或训练。生成子命令使用另一组 `--checkpoint/--prompt` 参数。
 
 生成过程对 `run.json` 的 `itos` 长度/唯一性及模型 `vocab_size` 做一致性检查，并通过 `load_weights(..., strict=True)` 加载结构兼容的权重；但 **`(B,T,V)` logits shape 相同、参数名/shape 对得上，并不能证明 `model.safetensors` 与 `run.json` 出自同一次训练**，也不能证明词表的 ID→字符语义正确配对。目前没有内容哈希或原子配对验证协议，错误的同形状产物仍可能被误配。
+
+
+### 23.5 config.py 的 Python 机制（Dataclass / validation / dictionary expansion）
+
+`src/minigpt/config.py` 为 `ModelConfig` 和 `TrainConfig` 使用 `@dataclass(frozen=True)`：装饰器根据声明的字段及默认值**生成 `__init__` 构造器**；`frozen=True` 禁止实例创建后的**普通字段重赋值**（通常抛出 `dataclasses.FrozenInstanceError`），但**不是深冻结（deep freeze）**，不能由此推断任意嵌套可变对象均不可修改。两类配置当前声明的字段均为标量。
+
+生成的构造器完成字段赋值后调用 `__post_init__`：`ModelConfig` 检查 `vocab_size/dims/num_heads/num_blocks/max_seq_len` 均为正的 Python `int`，并要求 `dims % num_heads == 0`；`TrainConfig` 检查 batch、block、updates、验证频率与批次数为正整数，`seed` 为非负整数，`learning_rate/max_grad_norm` 为正且有限的数值。跨配置的 `block_size <= max_seq_len` **不在 `__post_init__` 内**，而由实际 CLI 的 `train_cfg.check_model(model_cfg)` 单独检查。
+
+`ModelConfig.as_model_kwargs()` 的真实源码是 `return asdict(self)`：`dataclasses.asdict` 将数据类实例字段转换成普通字典，随后 **`cli.py` 的 `train_command` 和 `generate_command` 都实际使用 `MiniGPT(**model_cfg.as_model_kwargs())`**，用 `**` 展开字典作为模型构造的关键字参数。另一个真实方法 `TrainConfig.to_dict()` 也返回 `asdict(self)`，但在 CLI 中用于写入 `run.json` 的 `manifest["train"]`，**不是**交给 `MiniGPT`。这些是源代码调用关系，不代表已运行 CLI。
+
+**独立复核第二次教学修订：23.5 累计 2/2（保留原首次 1/2 记录）；本次仅 Markdown，未执行。**

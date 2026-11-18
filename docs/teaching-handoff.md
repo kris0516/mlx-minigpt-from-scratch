@@ -68,3 +68,10 @@ MIT LICENSE read and preserved; docs/CREDITS.md published with external referenc
 - Step 24.1 does not assert independent single-head coverage; Step 24.2 separates loss-drop smoke from strict toy memorization target (100% token accuracy AND final CE ≤ 0.1), unmeasured.
 - Step 25 static checker handles partial `.py`/eligible Notebook Python-cell AST and selected structure, with old missing IDs and IPython magics reported; **not full schema validation, not run**. Step 25.4 credits link uses absolute GitHub URL.
 - Step 22.5 and earlier untouched; all current changes are corrections for independent review, not proof of code execution or course mastery. No tag or Release.
+
+
+## 2026-11-18 final two teaching clarifications (second correction, active tally)
+
+- Step **23.3 = 2/2**: caller ensures the train-step closure and run-training receive the same model instance; train_rng/val_rng are separate `random.Random` instances. Neither identity relationship is enforced by `run_training`.
+- Step **23.5 = 2/2**: `@dataclass(frozen=True)` constructor/ordinary-assignment constraint, `__post_init__` validation, `asdict` and the actual `MiniGPT(**model_cfg.as_model_kwargs())` CLI pathway are now explained.
+- Historical first-round **1/2** records above are preserved. All other correction counts unchanged; Step 22.5 and earlier untouched. Two Markdown-only lesson supplements, no Notebook/test/training/generation/benchmark execution; no work copies, tag or Release.
