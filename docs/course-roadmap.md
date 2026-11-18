@@ -1,4 +1,4 @@
-> **Current material checkpoint: Step 25.2; material is not runtime acceptance.**
+> **Current material checkpoint: Step 25.3; static checks are not runtime validation.**
 
 # Course Roadmap — Apple Silicon MLX MiniGPT from Scratch
 

@@ -64,3 +64,7 @@
 ## Step 25.2 — Documentation index
 - [Master](../notebooks/113_step25_2_documentation_index.ipynb) · [Complete INDEX](INDEX.md) · [Step 25 notes](step-25-release.md)
 - Step1–25 docs and actual published masters indexed; no runtime, initial corrections 0/2. Next 25.3.
+
+## Step 25.3 — Reproducibility audit (static evidence)
+- [Master](../notebooks/114_step25_3_reproducibility_audit.ipynb) · [Audit guide](REPRODUCIBILITY.md) · [Static audit script](../scripts/static_release_audit.py) · [Step 25 notes](step-25-release.md)
+- Pin/link/ignore inspected from remote; audit script and all runtime gates NOT run. Corrections 0/2; next 25.4.

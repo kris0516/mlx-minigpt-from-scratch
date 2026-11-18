@@ -43,3 +43,6 @@ README rewritten to newcomer-friendly quick start, baseline architecture, source
 
 ## Step 25.2 checkpoint
 Published docs/INDEX.md with Step 1–25 navigation and actual current Notebook paths. Future 25.3–25.5 entries are not yet published, update index at finish. Initial corrections 0/2. Next 25.3.
+
+## Step 25.3 checkpoint
+Wrote docs/REPRODUCIBILITY.md and read-only scripts/static_release_audit.py. Remote pin/index/work-ignore checks were read; no audit script, install, tests or smoke commands run. Next 25.4, initial correction 0/2.
