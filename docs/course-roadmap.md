@@ -1,4 +1,4 @@
-> **Current material checkpoint: Step 23.5; material does not imply learner or runtime acceptance.**
+> **Current material checkpoint: Step 24.1; no learner or runtime acceptance implied.**
 
 # Course Roadmap — Apple Silicon MLX MiniGPT from Scratch
 

@@ -22,3 +22,6 @@ Published src/minigpt/generate.py and notebooks/105_step23_4_generation_module.i
 
 ## 23.5 checkpoint
 Added config.py, cli.py, __main__.py and master 106. Explicit CLI commands are future opt-in; weights-only-for-inference artifacts are not full training-resume checkpoints. Next: 24.1. Initial corrections 0/2; preserve prior counts.
+
+## 24.1 checkpoint
+Added tests/test_data.py, tests/test_model.py, tests/test_checkpoint.py, tests/test_generate.py and notebooks/107_step24_1_unit_tests.ipynb; static only, no runtime. Corrections initial 0/2.

@@ -1,4 +1,4 @@
-> **Authoritative material checkpoint: Step 23.5 published (Step 23 material complete), Step 24.1 next.** No Notebook, training, validation, sampling, benchmark, corpus or work-copy operations were executed.
+> **Authoritative material checkpoint: Step 24.1 published; source/tests not executed.** See docs/course-progress.md.
 
 # mlx-minigpt-from-scratch
 

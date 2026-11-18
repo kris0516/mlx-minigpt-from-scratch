@@ -36,3 +36,7 @@
 ## Step 23.5 — Configuration and CLI
 - [Master](../notebooks/106_step23_5_configuration_cli.ipynb) · [config.py](../src/minigpt/config.py) · [cli.py](../src/minigpt/cli.py) · [Step 23 notes](step-23-source-refactor.md)
 - Step 23.1–23.5 teaching/source files published; NOT run. No runtime test/packaging certification. Next 24.1; initial corrections 0/2.
+
+## Step 24.1 — Unit tests
+- [Master](../notebooks/107_step24_1_unit_tests.ipynb) · [tests/test_data.py](../tests/test_data.py) · [tests/test_model.py](../tests/test_model.py) · [tests/test_checkpoint.py](../tests/test_checkpoint.py) · [tests/test_generate.py](../tests/test_generate.py) · [Step 24 notes](step-24-testing-benchmarking.md)
+- Published as static artifacts, NOT executed; initial corrections 0/2.
