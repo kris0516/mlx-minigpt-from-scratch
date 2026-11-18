@@ -40,3 +40,6 @@ Published docs/benchmark-report-template.md and notebooks/111_step24_5_readme_be
 
 ## Step 25.1 checkpoint
 README rewritten to newcomer-friendly quick start, baseline architecture, source and unmeasured benchmark table; existing historical docs preserved. Next 25.2. Initial corrections 0/2.
+
+## Step 25.2 checkpoint
+Published docs/INDEX.md with Step 1–25 navigation and actual current Notebook paths. Future 25.3–25.5 entries are not yet published, update index at finish. Initial corrections 0/2. Next 25.3.

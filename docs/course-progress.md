@@ -60,3 +60,7 @@
 ## Step 25.1 — Rewrite README
 - [Master](../notebooks/112_step25_1_readme_rewrite.ipynb) · [README](../README.md) · [Step 25 notes](step-25-release.md)
 - Comprehensive README revised, benchmark values remain Not measured. Initial corrections 0/2; next 25.2.
+
+## Step 25.2 — Documentation index
+- [Master](../notebooks/113_step25_2_documentation_index.ipynb) · [Complete INDEX](INDEX.md) · [Step 25 notes](step-25-release.md)
+- Step1–25 docs and actual published masters indexed; no runtime, initial corrections 0/2. Next 25.3.

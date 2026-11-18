@@ -45,3 +45,46 @@ README 的 shell 命令必须分成安装、复制 work、未来主动运行三�
 初始修正 0/2；下一节 25.2 Documentation index。
 
 [Published README](../README.md) uses actual src layout and unmeasured benchmark placeholders.
+
+
+## Step 25.2 — Documentation Index
+
+# Step 25.2 — Documentation index / 历史与数学导航
+
+**命令 1：**
+
+~~~bash
+git pull
+~~~
+
+**命令 2：**
+
+~~~bash
+cp -n notebooks/113_step25_2_documentation_index.ipynb notebooks/work/113_step25_2_documentation_index_$(date +%Y%m%d_%H%M%S)_work.ipynb
+~~~
+
+MLX v0.32.2 / Apple Silicon / Python 3.12。母版未执行，work 文件不覆盖。
+
+## 1. 新增什么？
+
+Step 25.1 的 README 解决新读者如何进入项目。Step 25.2 则为已有的 1–25 大 Step 建立 docs/INDEX.md，依照远程 tree 实际出现的 notebook 文件名生成路径，避免凭旧记忆编造编号。课程导航同时覆盖早期数学历史链和后期工程链。
+
+索引是**资源导航**，不是先修知识的自动掌握声明。Step 25.3–25.5 此刻仍是计划材料，最终发布前要回写这三个母版的真实路径。
+
+## 2. Shape / 依赖怎样从旧课通向工程课？
+
+Tensor 学到 (B,T,C)，MHA 将它变为 Q/K/V 的 (B,H,T,D)，dense scores 是 (B,H,T,T)，最后 MiniGPT 将整数 IDs (B,T) 映射为 logits (B,T,V)。训练将 (B,T,V) 展平为 (B*T,V)，而生成逐轮只读取最后位置 (1,V)。这条 shape 主线也作为索引中的数学先修提示。
+
+## 3. 纸面路径示例
+
+若读者要理解 Step 22.5 的 running m/l/u，先查 Step 11 (QK/Value)、Step 12.3 (stable softmax)、Step 13 (head-major)、Step 18 (MLX lazy/eval)，最后查 Step 22.4 (GQA) 和 22.5。它是阅读路线，不是要求重新执行旧 Notebook。
+
+## 4. 静态核对、范围和练习
+
+此轮只比较 tree 中的实际文件名、按 Step 分组并生成 docs/INDEX.md，没有任何 Notebook import、运行或数据加载。没有把未来 25.3–25.5 的计划路径说成已经发布。
+
+**练习（不附答案）：** ① 从 INDEX 找到 Step 13.4 的真实母版；② 为什么 Step 20 checkpointing 是 Step 25 CLI 的前置阅读；③ 为 22.5 写出至少四个先修链接。
+
+材料初稿 0/2，下一节 25.3 Reproducibility audit。
+
+[Published complete index](INDEX.md) lists the actual Notebook paths in the current tree and the Step-specific mathematical prerequisites.

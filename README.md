@@ -1,6 +1,6 @@
 # MiniGPT from Scratch — Apple Silicon × MLX
 
-> **Teaching materials prepared through Step 25.1.** No training, tests, Notebook execution, sampling, benchmark, smoke test or fresh-clone audit was performed as part of this publication. Prepared does **not** mean runtime validated or learner accepted. [Progress](docs/course-progress.md).
+> **Teaching materials prepared through Step 25.2.** No training, tests, Notebook execution, sampling, benchmark, smoke test or fresh-clone audit was performed as part of this publication. Prepared does **not** mean runtime validated or learner accepted. [Progress](docs/course-progress.md).
 
 从最小矩阵运算出发，沿 **MLP → RNN → LSTM/GRU → Seq2Seq → Attention → Transformer → Decoder-only GPT** 的历史路线，在 Apple Silicon 上构建字符级 MiniGPT 教学项目。默认核心实现保持可解释、保守的小模型；**不是**经过性能调优的生产大语言模型。
 
@@ -86,7 +86,7 @@ The CLI's `model.safetensors` + `run.json` artifact is **weights-only for infere
 | 24 Tests / benchmark protocol | [Step 24](docs/step-24-testing-benchmarking.md), [unmeasured report template](docs/benchmark-report-template.md) |
 | 25 GitHub-ready release preparation | [Step 25](docs/step-25-release.md) |
 
-The [full roadmap](docs/course-roadmap.md) describes every subsection, mathematical prerequisite and optional extension. [Progress](docs/course-progress.md) distinguishes published materials from exercise completion and runtime acceptance.
+The [complete notebook index](docs/INDEX.md) links the actual masters. The [full roadmap](docs/course-roadmap.md) describes every subsection, mathematical prerequisite and optional extension. [Progress](docs/course-progress.md) distinguishes published materials from exercise completion and runtime acceptance.
 
 ## Benchmark overview — not measured
 
