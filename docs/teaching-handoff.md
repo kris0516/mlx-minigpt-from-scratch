@@ -28,3 +28,6 @@ Added tests/test_data.py, tests/test_model.py, tests/test_checkpoint.py, tests/t
 
 ## 24.2 checkpoint
 Added scripts/tiny_overfit.py and notebooks/108_step24_2_tiny_overfit_test.ipynb; static only, no runtime. Corrections initial 0/2.
+
+## 24.3 checkpoint
+Published scripts/benchmark_memory.py and notebooks/109_step24_3_memory_benchmark.ipynb. Initial correction 0/2, no execution. Continue to next item.

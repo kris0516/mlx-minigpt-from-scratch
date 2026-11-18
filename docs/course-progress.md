@@ -44,3 +44,7 @@
 ## Step 24.2 — Tiny overfit test
 - [Master](../notebooks/108_step24_2_tiny_overfit_test.ipynb) · [scripts/tiny_overfit.py](../scripts/tiny_overfit.py) · [Step 24 notes](step-24-testing-benchmarking.md)
 - Published as static artifacts, NOT executed; initial corrections 0/2.
+
+## Step 24.3 — Memory benchmark
+- [Master](../notebooks/109_step24_3_memory_benchmark.ipynb) · [scripts/benchmark_memory.py](../scripts/benchmark_memory.py) · [Step 24 notes](step-24-testing-benchmarking.md)
+- Static materials only; no measured results, corrections 0/2.

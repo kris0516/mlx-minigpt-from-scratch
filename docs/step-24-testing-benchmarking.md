@@ -87,3 +87,46 @@ Tiny overfit（极小数据过拟合）是一种 end-to-end sanity check：如�
 **状态：** 本节仅静态编写、检查和发布，初始修正 0/2；不声称独立验收、运行通过、时间/内存/温度读数。继续下一小节。
 
 Code files: [scripts/tiny_overfit.py](../scripts/tiny_overfit.py).
+
+
+## Step 24.3 — Memory benchmark
+
+# Step 24.3 — Memory benchmark
+
+**命令一：**
+
+~~~bash
+git pull
+~~~
+
+**命令二（cp -n 不覆盖工作笔记）：**
+
+~~~bash
+cp -n notebooks/109_step24_3_memory_benchmark.ipynb notebooks/work/109_step24_3_memory_benchmark_$(date +%Y%m%d_%H%M%S)_work.ipynb
+~~~
+
+Apple Silicon / Python 3.12 / MLX v0.32.2；本轮未运行任何 Notebook、测试、训练、采样、benchmark 或代码验证。
+
+## 1. Motivation / 本节新增概念
+
+本节新增显式 MLX allocator memory 统计协议，而非复述 18.5。源码只测量**将来某次**小模型 forward 期间 active/cache/peak，使用 one process per configuration 规避旧进程缓存污染。脚本在 import 阶段不构造模型、读取系统或计时。
+
+## 2. Input, output 与 shape
+
+输入 ModelConfig: B=1、T=16、C=32、H=4、N=1、V=32；token_ids shape (1,16)，输出 raw logits (1,16,32)。手工逻辑 score shape (1,4,16,16)，如果 float32 为 4096 bytes；它只是理论单一中间张量的尺寸，不是实测分配。
+
+## 3. 纸算小例子（不是实测）
+
+如果 baseline active=1000 bytes，reset 后 raw peak=1500 bytes，则推导的 window peak=max(1000,1500)=1500，above-baseline=500 bytes。若 raw peak=0，则同样要用起点 active 做区间高点。以上数字是演算假设，与 Apple Silicon 设备无关，**不是测量数据**。
+
+## 4. 实现边界与未来验证
+
+mx.get_active_memory/mx.get_cache_memory/mx.get_peak_memory 返回分配器 bytes，不等于整机 RAM、物理驻留或 macOS Swap；mx.reset_peak_memory 在固定版重置 raw peak 为 0，不是起点 active。统计前后显式 mx.eval，输出 JSON 在未来调用时才产生；默认 stdout，不写文件。避免假称零 Swap 或低热。
+
+完整可选程序/表格在 scripts/benchmark_memory.py；此 Notebook 只标出本节新增的指标，不复制长源码。
+
+**练习（无答案）：** ① 计算 B=2,H=4,T=64 的 fp32 score 逻辑字节数；② 解释 raw peak 为0 但当前 active>0 的情况；③ 为什么两种配置应分别在干净进程观察？
+
+**状态：** 静态材料初稿 0/2；没有运行输出或性能结论。
+
+Full artifacts: [scripts/benchmark_memory.py](../scripts/benchmark_memory.py).

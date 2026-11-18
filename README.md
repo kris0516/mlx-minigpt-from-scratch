@@ -1,4 +1,4 @@
-> **Authoritative material checkpoint: Step 24.2 published; source/tests not executed.** See docs/course-progress.md.
+> **Authoritative material checkpoint: Step 24.3 published; no tests or benchmarks were executed.** See docs/course-progress.md.
 
 # mlx-minigpt-from-scratch
 
