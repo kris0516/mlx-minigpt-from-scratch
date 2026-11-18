@@ -52,3 +52,7 @@
 ## Step 24.4 — Performance / thermal protocol
 - [Master](../notebooks/110_step24_4_performance_thermal_benchmark.ipynb) · [scripts/benchmark_performance.py](../scripts/benchmark_performance.py) · [Step 24 notes](step-24-testing-benchmarking.md)
 - Static materials only; no measured results, corrections 0/2.
+
+## Step 24.5 — Benchmark table for README
+- [Master](../notebooks/111_step24_5_readme_benchmark_table.ipynb) · [docs/benchmark-report-template.md](../docs/benchmark-report-template.md) · [Step 24 notes](step-24-testing-benchmarking.md)
+- Static materials only; no measured results, corrections 0/2.

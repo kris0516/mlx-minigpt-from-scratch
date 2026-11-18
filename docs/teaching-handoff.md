@@ -34,3 +34,6 @@ Published scripts/benchmark_memory.py and notebooks/109_step24_3_memory_benchmar
 
 ## 24.4 checkpoint
 Published scripts/benchmark_performance.py and notebooks/110_step24_4_performance_thermal_benchmark.ipynb. Initial correction 0/2, no execution. Continue to next item.
+
+## 24.5 checkpoint
+Published docs/benchmark-report-template.md and notebooks/111_step24_5_readme_benchmark_table.ipynb. Initial correction 0/2, no execution. Continue to next item.

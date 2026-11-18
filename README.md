@@ -1,4 +1,4 @@
-> **Authoritative material checkpoint: Step 24.4 published; no tests or benchmarks were executed.** See docs/course-progress.md.
+> **Authoritative material checkpoint: Step 24.5 published; no tests or benchmarks were executed.** See docs/course-progress.md.
 
 # mlx-minigpt-from-scratch
 
@@ -100,3 +100,13 @@ Step 19.5 Baseline Training Run material is published with initial correction co
 
 All checkpointing and resume teaching materials, Step 20.1–20.5, are now published. Final subsection: [91_step20_5_resume_verification.ipynb](notebooks/91_step20_5_resume_verification.ipynb) · [Step 20 document](docs/step-20-checkpointing-and-recovery.md). This is material completeness only; no checkpoint verification or training was run. Stop before Step 21.
 
+
+
+## Benchmark overview — results pending
+
+| Hardware | C/H/N | T/B | MLX active/peak | Prefill positions/s | Generate tokens/s | Swap/thermal |
+|---|---|---|---|---|---|---|
+| Not recorded | 32/4/1 | 16/1 | Not measured | Not measured | Not measured | Not measured |
+| Not recorded | 64/4/2 | 32/1 | Not measured | Not measured | Not measured | Not measured |
+
+All entries are intentionally **Not measured**. See [benchmark protocol](docs/benchmark-report-template.md); no test/benchmark was run when these rows were added.

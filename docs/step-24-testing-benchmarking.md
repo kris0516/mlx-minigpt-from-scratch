@@ -173,3 +173,46 @@ Apple Silicon / Python 3.12 / MLX v0.32.2；本轮未运行任何 Notebook、测
 **状态：** 静态材料初稿 0/2；没有运行输出或性能结论。
 
 Full artifacts: [scripts/benchmark_performance.py](../scripts/benchmark_performance.py).
+
+
+## Step 24.5 — Benchmark table for README
+
+# Step 24.5 — Benchmark table for README
+
+**命令一：**
+
+~~~bash
+git pull
+~~~
+
+**命令二（cp -n 不覆盖工作笔记）：**
+
+~~~bash
+cp -n notebooks/111_step24_5_readme_benchmark_table.ipynb notebooks/work/111_step24_5_readme_benchmark_table_$(date +%Y%m%d_%H%M%S)_work.ipynb
+~~~
+
+Apple Silicon / Python 3.12 / MLX v0.32.2；本轮未运行任何 Notebook、测试、训练、采样、benchmark 或代码验证。
+
+## 1. Motivation / 本节新增概念
+
+前两节只准备统计程序，本节把未来报告所需字段整理为固定 README 表格与 docs/benchmark-report-template.md。由于本轮禁止 runtime benchmark，所有数值栏必须写 Not measured，而不是 0、不填虚构 tokens/s、也不宣称无 Swap。
+
+## 2. Input, output 与 shape
+
+每行至少包含硬件与环境、C/H/N、T/B、dtype/MLX 版本、MLX active/peak bytes、prefill positions/s、generation tokens/s、macOS Swap/thermal 来源。README 先展示摘要列，完整 JSON/设备设置留作后续可追溯记录。
+
+## 3. 纸算小例子（不是实测）
+
+配置 A 为 C=32,H=4,N=1,T=16,B=1，仅列出形状与候选参数，不预测 active 或吞吐；配置 B 是 C=64,H=4,N=2,T=32,B=1。二者不能据理论 score 大小直接填实测 peak。
+
+## 4. 实现边界与未来验证
+
+模板本身没有数据来源，任何将来填值都应同步记录 Git SHA、macOS/SoC/MLX、输入 shape/dtype、预热/同步边界、测量次数。温度与系统 Swap 必须来自对应工具，不能从 MLX allocator counters 推断。
+
+完整可选程序/表格在 docs/benchmark-report-template.md；此 Notebook 只标出本节新增的指标，不复制长源码。
+
+**练习（无答案）：** ① 说明为什么 Not measured 不等于 0；② 区分 peak_active 与 end_active 两个列名；③ 列出最少需要记录的三个可复现环境字段。
+
+**状态：** 静态材料初稿 0/2；没有运行输出或性能结论。
+
+Full artifacts: [docs/benchmark-report-template.md](../docs/benchmark-report-template.md).
