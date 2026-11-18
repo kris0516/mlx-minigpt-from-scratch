@@ -28,3 +28,7 @@
 ## Step 23.3 — Training module
 - [Master](../notebooks/104_step23_3_training_module.ipynb) · [Source](../src/minigpt/train.py) · [Step 23 notes](step-23-source-refactor.md)
 - Source and teaching material published; static-only, not executed. Initial corrections 0/2.
+
+## Step 23.4 — Generation module
+- [Master](../notebooks/105_step23_4_generation_module.ipynb) · [Source](../src/minigpt/generate.py) · [Step 23 notes](step-23-source-refactor.md)
+- Source and teaching material published; static-only, not executed. Initial corrections 0/2.

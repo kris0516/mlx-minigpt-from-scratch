@@ -165,3 +165,48 @@ Validation batches require an independently owned random.Random; training sampli
 本节材料初稿，实际修正 0/2；按用户新授权自动继续下一小节。
 
 [Complete source] (../src/minigpt/train.py) is an implementation intended for later execution, not proof of runtime acceptance.
+
+
+## Step 23.4 — Generation module
+
+# Step 23.4 — Generation module
+
+**命令一：**
+
+~~~bash
+git pull
+~~~
+
+**命令二：**
+
+~~~bash
+cp -n notebooks/105_step23_4_generation_module.ipynb notebooks/work/105_step23_4_generation_module_$(date +%Y%m%d_%H%M%S)_work.ipynb
+~~~
+
+只在独立 work 副本运行/修改；本轮只静态准备，未执行任何 Notebook、MLX、训练、生成或 benchmark。Apple Silicon / Python 3.12 / MLX v0.32.2。
+
+## 1. 动机（Motivation）
+
+Step 21.1/21.5 的生成循环仍留在 Notebook 中。本节把 greedy 与按温度的 categorical sampling 变成可导入的两个函数，保持已验收模型无 cache 的行为；新的职责是封装输入检查、窗口切片、显式随机 key 与推理模式恢复，不是训练或发明新解码架构。
+
+完整运行实现放在 **src/minigpt/generate.py**，以下 Notebook 只教学本小节新增接口，不复制旧类的长代码。
+
+## 2. Shape / Input–Output Contract
+
+模型读取 context (1,min(L+r,W))，返回 raw logits (1,T,V)。取 last[:, -1, :] -> (1,V)，greedy argmax 或 sample 选择 token (1,)，token[:,None] -> (1,1)，沿 axis=1 拼到完整 history (1,L+r+1)。返回的 greedy history (1,L+n)；sampling 额外返回 next_key (2,) uint32（固定 MLX key 约定）。W<=model.max_seq_len；n=0 无 forward。
+
+## 3. 手算小例子（Paper example, not runtime output）
+
+prompt IDs=[0,1]、block_size=3，追加 3 个 token。三轮 forward 的 context 长度为 2、3、3；最终 history 长 5。不预言具体 token，因为真实模型和参数未知。对于已知 logits [0, ln2]，greedy 选 ID 1，按温度 1 抽样则理论概率为 [1/3,2/3]；实际 draw 不填写。
+
+## 4. 限制、预期验证与静态结论
+
+Crop 保留返回历史但每轮重新计算整个窗口，**没有 KV cache**。旧模型 learned position 在新窗口从 0 编号，不能无损复用旧 K/V。该模块目前只处理单条 prompt、固定 n 个 token；没有 EOS、batch、top-p 或 GPU fused top-k。Sampling 每轮 split 显式 key，不使用隐式全局 key；温度必须为正有限。
+
+未来可验证的前提是合适的真实模型、正确的数组和显式调用；静态审核无法保证任意设备上通过，也没有任何读数、模型生成或训练记录。
+
+**练习（不附答案）：** ① 写出 L=5,W=3,n=2 的每轮 context 长度和返回 shape；② 解释为何 sample 的 key 必须随轮次更新；③ 说明 why context cropping 不能替代 KV cache。
+
+本节材料初稿，实际修正 0/2；按用户新授权自动继续下一小节。
+
+[Complete source] (../src/minigpt/generate.py) is an implementation intended for later execution, not proof of runtime acceptance.

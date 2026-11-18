@@ -16,3 +16,6 @@ Extracted unchanged baseline MiniGPT classes into src/minigpt/model.py. Next: 23
 
 ## 23.3 checkpoint
 Published src/minigpt/train.py and notebooks/104_step23_3_training_module.ipynb; static only, initial corrections 0/2. Historical counts unchanged. Proceed in order.
+
+## 23.4 checkpoint
+Published src/minigpt/generate.py and notebooks/105_step23_4_generation_module.ipynb; static only, initial corrections 0/2. Historical counts unchanged. Proceed in order.
