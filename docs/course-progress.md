@@ -20,3 +20,7 @@
 ## Step 23.1 — Data module
 - [Master](../notebooks/102_step23_1_data_module.ipynb) · [src/minigpt/data.py](../src/minigpt/data.py) · [Step 23 notes](step-23-source-refactor.md)
 - Published material only; static check performed, not executed. Initial substantive corrections 0/2. Next: 23.2.
+
+## Step 23.2 — Model module
+- [Master](../notebooks/103_step23_2_model_module.ipynb) · [src/minigpt/model.py](../src/minigpt/model.py) · [Step 23 notes](step-23-source-refactor.md)
+- Static code extraction, no execution, no checkpoint load. Initial corrections 0/2. Next: 23.3.

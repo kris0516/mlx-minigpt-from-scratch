@@ -10,3 +10,6 @@ Historical detailed teaching rules and counts are preserved in [the archived han
 
 ## 23.1 checkpoint
 Published `src/minigpt/data.py` and `notebooks/102_step23_1_data_module.ipynb`; proceed 23.2 model module without changing baseline architecture. Correction count new initial material 0/2. Historical ledgers unchanged.
+
+## 23.2 checkpoint
+Extracted unchanged baseline MiniGPT classes into src/minigpt/model.py. Next: 23.3. Initial corrections 0/2; historical counts preserved.

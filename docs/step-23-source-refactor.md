@@ -63,3 +63,60 @@ Step 16 的 Notebook 已教会数据来源、词表映射、切分与采样，�
 文件只做静态审阅；Notebook 所有 code cells 的 execution_count=null、outputs=[]。没有读语料、执行采样、导入 MLX、跑测试或改动 work 副本。当前源码属于已准备、未运行的教学材料；继续顺序进入 Step 23.2。
 
 Module: [src/minigpt/data.py](../src/minigpt/data.py). Newly introduced public functions are tested only in a future user-authorized runtime session, never inferred as PASS here.
+
+
+## Step 23.2 — Model module
+
+# Step 23.2 — Model module：将已验收 MiniGPT 从 Notebook 抽取为源码
+
+**命令 1（仓库根目录）：**
+
+~~~bash
+git pull
+~~~
+
+**命令 2（独立执行、保护 work 副本）：**
+
+~~~bash
+cp -n notebooks/103_step23_2_model_module.ipynb notebooks/work/103_step23_2_model_module_$(date +%Y%m%d_%H%M%S)_work.ipynb
+~~~
+
+只修改新的 work 副本；母版与源码均未执行。环境保持 Apple Silicon、Python 3.12、MLX v0.32.2。
+
+## 1. 为什么要把模型放进单独模块（Refactor, not redesign）？
+
+旧母版 notebooks/65_step15_4_implement_minigpt.ipynb 已有四个核心类。后续脚本反复复制相同类定义，会导致版本分叉，进而改变权重路径或 checkpoint 的含义。本节新建 src/minigpt/model.py，**直接复用原母版的类代码**，而不是引入新的 attention 算法。
+
+保留 CausalMultiHeadAttention、FeedForwardMLP、TransformerBlock、MiniGPT 四个类；仍使用 learned absolute position embedding、untied LM head、dense causal attention、GELU 和 Pre-Norm RMSNorm。22.1–22.5 中的 RoPE、SwiGLU、GQA、Flash-style、KV cache 都没有混入默认架构。
+
+## 2. 前向 shape（Input/output contract）
+
+取 B=2、T=3、C=16、H=4、D=4、V=11、N=2 作为纸面例子：
+
+| 层或中间量 | shape |
+|---|---|
+| token IDs | (2,3) int32 |
+| token embeddings / position embeddings | (2,3,16) / (3,16) |
+| 单次 QKV projection | (2,3,48)，切成三个 (2,3,16) |
+| Q/K/V head-major | (2,4,3,4) |
+| dense scores / attention weights | (2,4,3,3) |
+| merged head output / Block | (2,3,16) |
+| raw logits | (2,3,11) |
+
+约束 C % H = 0；1 ≤ T ≤ max_seq_len。Position IDs 是 forward-local 的 arange(T)，causal mask 在 forward 内构造，不会进入模型参数树。输出为 raw logits，不是分类概率。
+
+## 3. 小例子与源码职责
+
+本节新知识是**模块边界和兼容性**。长的四个类定义完整放在 src/minigpt/model.py，不在 Notebook 当作新的 150 行教学内容重复粘贴。下段仅演示包导入与未来的 shape 检查。模型参数都是随机新初始化，不能被误称为已恢复训练权重。
+
+## 4. 边界、预期验证与练习
+
+静态审查核对了原 15.4 代码中的 qkv_proj/c_proj 参数布局、forward-local mask、Block 清单与 untied lm_head。**源码抽取不等于 checkpoint 加载验证通过**。新模块也没有加入 fused kernel、混合精度或 cache。
+
+未来预期 shape 为 (2,3,11)；本轮没有任何 forward 输出、速度、显存或执行成功记录。其兼容性需要在后续 Step 24 中实际运行测试才能确定。
+
+**练习（不附答案）：** ① C=24,H=6,T=5 时写出 Q、score、head output 的 shape；② 解释更换 RoPE 为何可能影响旧 checkpoint；③ 找到 mask 不被登记为 trainable 参数的代码位置。
+
+静态材料初稿 0/2；下一节是 23.3 Training module。
+
+[Source module](../src/minigpt/model.py) is an extraction of [Step 15.4](../notebooks/65_step15_4_implement_minigpt.ipynb), not a runtime-tested replacement.
