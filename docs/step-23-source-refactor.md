@@ -210,3 +210,63 @@ Crop 保留返回历史但每轮重新计算整个窗口，**没有 KV cache**�
 本节材料初稿，实际修正 0/2；按用户新授权自动继续下一小节。
 
 [Complete source] (../src/minigpt/generate.py) is an implementation intended for later execution, not proof of runtime acceptance.
+
+
+## Step 23.5 — Configuration and CLI
+
+# Step 23.5 — Configuration and CLI：可复现参数与显式运行入口
+
+**命令一：**
+
+~~~bash
+git pull
+~~~
+
+**命令二：**
+
+~~~bash
+cp -n notebooks/106_step23_5_configuration_cli.ipynb notebooks/work/106_step23_5_configuration_cli_$(date +%Y%m%d_%H%M%S)_work.ipynb
+~~~
+
+Apple Silicon、Python 3.12、MLX 0.32.2。Notebook 母版未运行，work 文件不覆盖。
+
+## 1. 本节新问题：从 Notebook 的全局变量到可描述的运行配置
+
+Step 23.1–23.4 已把数据、模型、训练、生成的实现拆为独立模块。本节新增 src/minigpt/config.py（dataclass 与校验）和 src/minigpt/cli.py（argparse 入口），让用户**明确选择**何时加载本地语料、开始训练或生成。
+
+配置与 checkpoint 是两种东西：配置说明结构，weights 记录参数数值；训练完全恢复还需要 Adam moments、RNG state 等，不能用一个 JSON 假装包含所有内容。源文件 import 不自动运行 main。
+
+## 2. Shape 与契约
+
+ModelConfig 的 V 是真实词表大小；dims=C=64、heads=H=4、blocks=N=2、max_seq_len=Tmax=64 是候选配置，不是训练测得的最佳值。必须满足 C%H=0。TrainConfig 提供 B=4、block_size=64、updates=20、learning_rate=3e-4 与独立随机种子；必须满足 T<=Tmax。
+
+**数据流（训练命令）**：显式 UTF-8 path → vocab/IDs (L,) → train/val splits → X,Y 各 (B,T) → MiniGPT logits (B,T,V) → scalar loss () → Adam 更新 → 新目录保存 model.safetensors 与 run.json。
+
+**生成命令**：显式 checkpoint 目录 → 读取 run.json 与 model.safetensors → prompt IDs (1,Lp) → 每轮裁剪 context (1,min(Lp+r,Tmax)) → logits (1,T,V) → 追加到 history (1,Lp+r+1)。
+
+## 3. 最小配置例子与严格边界
+
+人为构造 V=3、C=16、H=4、N=1、Tmax=8，对应每头 d=4；若 token prompt 长 2、输出 3 个新 ID，最终 history shape 应是 (1,5)。只给定结构，不假设模型已经学会语言。
+
+CLI 通过明确命令才访问磁盘、构造模型、训练、生成；本次**没有执行**下列命令。
+
+~~~bash
+# 仅未来由用户明确决定是否执行
+PYTHONPATH=src uv run python -m minigpt.cli --help
+PYTHONPATH=src uv run python -m minigpt.cli train --corpus data/tinyshakespeare/input.txt --output runs/example-unique
+PYTHONPATH=src uv run python -m minigpt.cli generate --checkpoint runs/example-unique --prompt 'To be' --new-tokens 20
+~~~
+
+当前 pyproject.toml / uv.lock 不增加新打包依赖，因此使用 PYTHONPATH=src 而不是声称已安装 console_scripts。
+
+## 4. 文件、练习与预期验证
+
+src/minigpt/config.py 定义只保存 Python 标量的配置树；src/minigpt/cli.py 定义两个明确命令。train 产生的产物**只包含可用于推理的权重和描述**，不保存可恢复训练的 Adam 与精确 RNG 状态。不能把这份 CLI 自动等同于 Step 20.4 的完整恢复协议。
+
+预期配置检查：C/H=4，T<=Tmax；输出模型的理论 logits shape 仍是 (B,T,V)。CLI 的 --help、实际 save/load、训练和生成均未运行，因此没有真实成功声明。
+
+**练习（不附答案）：** ① 若 C=18,H=4，配置检查应如何失败？② 解释为何 argparse 的 --corpus 必填能避免 import 时隐式下载；③ 比较推理权重文件与完整恢复训练状态需要的额外内容。
+
+23.5 教材初稿，实际修正 0/2；完成大 Step 23 的静态材料准备，下一节 24.1 Unit tests。
+
+Source modules: [config.py](../src/minigpt/config.py), [cli.py](../src/minigpt/cli.py), [__main__.py](../src/minigpt/__main__.py). Python package is imported using PYTHONPATH=src; uv.lock unchanged; no console entry point installed.

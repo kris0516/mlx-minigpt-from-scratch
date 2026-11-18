@@ -32,3 +32,7 @@
 ## Step 23.4 — Generation module
 - [Master](../notebooks/105_step23_4_generation_module.ipynb) · [Source](../src/minigpt/generate.py) · [Step 23 notes](step-23-source-refactor.md)
 - Source and teaching material published; static-only, not executed. Initial corrections 0/2.
+
+## Step 23.5 — Configuration and CLI
+- [Master](../notebooks/106_step23_5_configuration_cli.ipynb) · [config.py](../src/minigpt/config.py) · [cli.py](../src/minigpt/cli.py) · [Step 23 notes](step-23-source-refactor.md)
+- Step 23.1–23.5 teaching/source files published; NOT run. No runtime test/packaging certification. Next 24.1; initial corrections 0/2.

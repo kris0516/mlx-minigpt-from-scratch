@@ -19,3 +19,6 @@ Published src/minigpt/train.py and notebooks/104_step23_3_training_module.ipynb;
 
 ## 23.4 checkpoint
 Published src/minigpt/generate.py and notebooks/105_step23_4_generation_module.ipynb; static only, initial corrections 0/2. Historical counts unchanged. Proceed in order.
+
+## 23.5 checkpoint
+Added config.py, cli.py, __main__.py and master 106. Explicit CLI commands are future opt-in; weights-only-for-inference artifacts are not full training-resume checkpoints. Next: 24.1. Initial corrections 0/2; preserve prior counts.
