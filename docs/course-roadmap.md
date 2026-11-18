@@ -1,3 +1,5 @@
+> **Current material checkpoint: Step 23.1; published materials are not learner or runtime acceptance.**
+
 # Course Roadmap — Apple Silicon MLX MiniGPT from Scratch
 
 > This document is the persistent curriculum plan for the repository.

@@ -16,3 +16,7 @@
 - [99_step22_3_swiglu_gated_mlp](../notebooks/99_step22_3_swiglu_gated_mlp.ipynb)
 - [100_step22_4_mqa_gqa_attention](../notebooks/100_step22_4_mqa_gqa_attention.ipynb)
 - [101_step22_5_flash_style_attention](../notebooks/101_step22_5_flash_style_attention.ipynb)
+
+## Step 23.1 — Data module
+- [Master](../notebooks/102_step23_1_data_module.ipynb) · [src/minigpt/data.py](../src/minigpt/data.py) · [Step 23 notes](step-23-source-refactor.md)
+- Published material only; static check performed, not executed. Initial substantive corrections 0/2. Next: 23.2.
