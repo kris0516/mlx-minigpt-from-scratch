@@ -176,3 +176,48 @@ Transformer baseline 有 Q/K/V (B,H,T,d)、scores (B,H,T,T) 和 logits (B,T,V)�
 仅静态来源核对，初始修正 0/2；下一节 25.5 Final release。
 
 [Published credits and research sources](CREDITS.md), [MIT LICENSE](../LICENSE) unchanged.
+
+
+## Step 25.5 — Final material publication
+
+# Step 25.5 — Final release / 教材发布收束
+
+**命令 1：**
+
+~~~bash
+git pull
+~~~
+
+**命令 2（时间戳安全副本）：**
+
+~~~bash
+cp -n notebooks/116_step25_5_final_release.ipynb notebooks/work/116_step25_5_final_release_$(date +%Y%m%d_%H%M%S)_work.ipynb
+~~~
+
+Apple Silicon / Python 3.12 / MLX v0.32.2。母版所有执行计数仍为 null，outputs 为空；不执行任一课程代码、测试、训练或 benchmark。
+
+## 1. 什么是发布完成、什么仍需验证？
+
+Step 25.1–25.4 完成公开 README、实际目录索引、静态可复现性清单与许可归属。Step 25.5 的新增内容是**发布界限与最终清单**：文档材料完整并已提交远程 main，不自动代表代码已通过性能/训练/验证。稳定 release tag 应标记一个经过相应验收的具体 SHA，不应把用户禁止的运行审查假装完成。
+
+## 2. 最终目录与 shape 主线
+
+新增源码路径 src/minigpt/{data,model,train,generate,config,cli}.py。基本形状仍是 IDs (B,T) → embeddings (B,T,C) → MHA scores (B,H,T,T) → logits (B,T,V) → scalar cross entropy ()。生成时从 logits 最后一个位置 (1,V) 选择 ID，再把 (1,1) 拼接回 history。
+
+这些都是程序接口和数学约束，并非已观察的数值。相应 scripts/tests 是未来运行入口，未在发布过程中执行。
+
+## 3. 最小发布检查例子（纯静态）
+
+若 Step 23.1 从 102 号母版开始，每节一个编号，则五节 Step 23 为 102–106，五节 Step 24 为 107–111，五节 Step 25 为 112–116；总共 15 份新母版。这一编号映射不依赖执行 MLX。完整文件/提交对应关系保存在 docs/RELEASE_NOTES.md，最后一次提交请以实时 main HEAD 为准。
+
+## 4. Tag/Release 边界、练习、结课定义
+
+本轮发布教学资料与可执行源码，原 22.5 独立验收记录不重做、不重置。连接器具备 main 写权限，但没有暴露创建 tag 或 GitHub Release 的可用动作；更重要的是 runtime gates 尚未执行。因此**不创建正式 tag**，也不冒称完整软件 release。
+
+终态为：Step 23–25 材料完成、逐节 Git 提交可追溯；项目软件仍待独立运行与回归验收。具体未完成事项见 docs/RELEASE_CHECKLIST.md。
+
+**练习（不附答案）：** ① 解释 Git commit 与 release tag 的不同责任；② 完整 train resume 还缺哪些状态？③ 为什么 Not measured 不能作为优化结论？
+
+本节初稿修正 0/2，Step 25.5 教材发布在此结束，不自行进入任何扩展研究路线。
+
+[Release notes](RELEASE_NOTES.md) and [release checklist](RELEASE_CHECKLIST.md) preserve the unexecuted/not-tagged status.

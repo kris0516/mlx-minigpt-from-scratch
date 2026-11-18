@@ -1,8 +1,8 @@
-> **Authoritative material checkpoint: Step 23.1 published; follow course-progress.md.** No Notebook, model, training, benchmark, corpus or work-copy operations were executed.
+> **Authoritative handoff: Step 25.5 material-complete, remote main published; no runtime validation or formal tag.** See course-progress.md and RELEASE_CHECKLIST.md.
 
-# Teaching handoff during publication
+# Teaching handoff — final material checkpoint
 
-Continue preparing and publishing the authorized Step 21–25 materials, one subsection per commit; stop after 25.5. Use Chinese teaching plus English terms, motivation/minimum math/hand examples/shapes and unexecuted code. No course code execution, tests, training, validation, sampling, benchmarks, corpus access, checkpoint operations or work-copy execution. Exercises remain unanswered.
+Step 21–25 teaching materials have now been prepared and published, with Step 23.1–25.5 each in a separate commit. Stop after 25.5; do not infer runtime tests or learner mastery. Use Chinese teaching plus English terms, motivation/minimum math/hand examples/shapes and unexecuted code. No course code execution, tests, training, validation, sampling, benchmarks, corpus access, checkpoint operations or work-copy execution. Exercises remain unanswered.
 
 Use separate git pull and timestamped cp -n into the tracked notebooks/work directory. Do not overwrite existing notes or add recurring mkdir. Masters remain output-free, execution_count=null. Preserve historical accepted content and cumulative correction counts, with at most two substantive correction rounds.
 
@@ -49,3 +49,13 @@ Wrote docs/REPRODUCIBILITY.md and read-only scripts/static_release_audit.py. Rem
 
 ## Step 25.4 checkpoint
 MIT LICENSE read and preserved; docs/CREDITS.md published with external references and provenance boundaries. No third-party files or data downloaded. Corrections initial 0/2. Next 25.5.
+
+
+## Final consolidated continuation state (2026-11-18)
+
+- Step 22.5 independent static acceptance is user-provided; historical records and correction counts are unchanged.
+- Step 23.1–25.5 initial substantive correction counts are 0/2 each; publication/static review is not independent runtime or learner acceptance. Preserve correction history across future sessions.
+- [Complete masters and commit ledger](RELEASE_NOTES.md); [course INDEX](INDEX.md); [source refactor](step-23-source-refactor.md); [testing protocols](step-24-testing-benchmarking.md); [release checklist](RELEASE_CHECKLIST.md).
+- Environment: Python 3.12, native Apple Silicon, MLX 0.32.2, uv.lock; work notebooks ignored. Two separate terminal commands start each lesson: git pull; timestamped cp -n to notebooks/work/.
+- No Notebook or course code, test, training, sampling, benchmark, data access, checkpoint or work-copy operations performed while authoring Steps 23–25.
+- Main published; optional experiments, performance measurements, full checkpoint compatibility, actual release tag and GitHub Release remain unresolved runtime gates. Do not automatically enter extension track.

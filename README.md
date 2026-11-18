@@ -1,6 +1,6 @@
 # MiniGPT from Scratch — Apple Silicon × MLX
 
-> **Teaching materials prepared through Step 25.4.** No training, tests, Notebook execution, sampling, benchmark, smoke test or fresh-clone audit was performed as part of this publication. Prepared does **not** mean runtime validated or learner accepted. [Progress](docs/course-progress.md).
+> **All 15 Step 23–25 teaching masters prepared through Step 25.5.** No training, tests, Notebook execution, sampling, benchmark, smoke test or fresh-clone audit was performed as part of this publication. Prepared does **not** mean runtime validated or learner accepted. [Progress](docs/course-progress.md). Stable release tag / GitHub Release **not created**; runtime acceptance pending.
 
 从最小矩阵运算出发，沿 **MLP → RNN → LSTM/GRU → Seq2Seq → Attention → Transformer → Decoder-only GPT** 的历史路线，在 Apple Silicon 上构建字符级 MiniGPT 教学项目。默认核心实现保持可解释、保守的小模型；**不是**经过性能调优的生产大语言模型。
 
@@ -100,3 +100,8 @@ See the [static reproducibility audit and pending runtime gates](docs/REPRODUCIB
 ## License and sources
 
 Code is under [MIT LICENSE](LICENSE). See the eventual [Credits and references](docs/CREDITS.md) and source documents. Tiny Shakespeare is not downloaded or bundled by publication. Keeping the baseline separate from optional architecture experiments protects the pedagogical checkpoint contract.
+
+
+## Final material publication (Step 25.5)
+
+All 15 new subsection masters **102–116** are tracked on main. See [draft release notes](docs/RELEASE_NOTES.md) and [release checklist](docs/RELEASE_CHECKLIST.md). No actual Git tag, GitHub Release, runtime test or benchmark result is implied.

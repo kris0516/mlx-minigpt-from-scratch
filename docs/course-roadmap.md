@@ -1,4 +1,4 @@
-> **Current material checkpoint: Step 25.4; attribution prepared, runtime not validated.**
+> **Authoritative current material checkpoint: Step 25.5 prepared; Steps 23–25 publication complete, runtime validation and release tag pending.** Historical progress sections below remain for provenance.
 
 # Course Roadmap — Apple Silicon MLX MiniGPT from Scratch
 
@@ -956,7 +956,7 @@ All five subsection masters, documents, and full replies have independently pass
 
 ---
 
-## Step 23 — Refactor notebooks into production-style source files
+## Step 23 — Refactor notebooks into production-style source files ✅ Materials prepared / runtime NOT verified
 
 **Goal:** turn learning prototypes into a maintainable package.
 
@@ -1000,7 +1000,7 @@ src/minigpt/generate.py
 
 ---
 
-## Step 24 — Testing, benchmarking, and Apple Silicon profiling
+## Step 24 — Testing, benchmarking, and Apple Silicon profiling ✅ Materials prepared / runtime NOT verified
 
 **Goal:** verify correctness and document the project's low-resource behavior.
 
@@ -1036,7 +1036,7 @@ src/minigpt/generate.py
 
 ---
 
-## Step 25 — GitHub-ready release
+## Step 25 — GitHub-ready release ✅ Materials prepared / runtime NOT verified
 
 **Goal:** finish the repository as a reproducible educational open-source project.
 
@@ -1114,7 +1114,7 @@ These are not required to declare the MiniGPT project complete.
 
 ---
 
-# Current course-material status
+# Historical Step 22.5 material-publication checkpoint (superseded as current)
 
 ## Course-material progress — Step 22.5
 
@@ -1134,3 +1134,8 @@ These are not required to declare the MiniGPT project complete.
 - [99_step22_3_swiglu_gated_mlp](../notebooks/99_step22_3_swiglu_gated_mlp.ipynb)
 - [100_step22_4_mqa_gqa_attention](../notebooks/100_step22_4_mqa_gqa_attention.ipynb)
 - [101_step22_5_flash_style_attention](../notebooks/101_step22_5_flash_style_attention.ipynb)
+
+
+## Final material-publication status — 2026-11-18
+
+15 new Step 23.1–25.5 masters, src modules, tests, benchmarks and release docs were committed per subsection. All runtime tests, training, generation, actual benchmark, fresh-clone, tag and GitHub Release operations remain **not performed**. See [docs/RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md) and [docs/RELEASE_NOTES.md](RELEASE_NOTES.md).

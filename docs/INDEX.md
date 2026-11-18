@@ -1,6 +1,6 @@
 # Complete Learning Index — Steps 1–25
 
-> This index lists published curriculum source files, **not** runtime results or learner mastery. As of Step 25.4, materials are published through 25.4; final 25.5 is next. No Notebook, test, training, sampling, benchmark, fresh-clone or smoke test has been executed in the publication process.
+> This index lists published curriculum source files, **not** runtime results or learner mastery. All 15 new masters through Step 25.5 are published on main. This is material completion only; runtime validation and GitHub release tag remain pending. No Notebook, test, training, sampling, benchmark, fresh-clone or smoke test has been executed in the publication process.
 
 ## How to use this index
 
@@ -250,6 +250,8 @@ For each master: start with **git pull** in the repository root, then use a uniq
 - [114_step25_3_reproducibility_audit](../notebooks/114_step25_3_reproducibility_audit.ipynb)
 - [115_step25_4_credits_references_license](../notebooks/115_step25_4_credits_references_license.ipynb)
 
+- [116_step25_5_final_release](../notebooks/116_step25_5_final_release.ipynb)
+
 ## Historical and mathematical milestones
 
 | Span | Main bridge | Prerequisites that matter |
@@ -266,3 +268,8 @@ For each master: start with **git pull** in the repository root, then use a uniq
 - [Source package](../src/minigpt/) implements untied learned-position dense causal baseline; Step 22 is optional exposition, not a silently activated RoPE/GQA/Flash/KV-cache implementation.
 - [Step 24 source and benchmark protocol](step-24-testing-benchmarking.md) is static and has no observed measurements. [Benchmark table](benchmark-report-template.md) uses Not measured.
 - [Current progress](course-progress.md), [Roadmap](course-roadmap.md), [Teaching handoff](teaching-handoff.md), [MIT License](../LICENSE).
+
+
+## Step 25.5 release handoff
+
+- [Draft materials release notes](RELEASE_NOTES.md) · [Final pending-gates checklist](RELEASE_CHECKLIST.md). No actual release tag or GitHub Release object was created.
