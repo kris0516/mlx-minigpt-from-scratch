@@ -1,6 +1,6 @@
 # Complete Learning Index — Steps 1–25
 
-> This index lists published curriculum source files, **not** runtime results or learner mastery. As of Step 25.2, material publication is complete through 25.2; the remaining 25.3–25.5 are release-preparation steps to be added subsequently. No Notebook, test, training, sampling, benchmark, fresh-clone or smoke test has been executed in the publication process.
+> This index lists published curriculum source files, **not** runtime results or learner mastery. As of Step 25.4, materials are published through 25.4; final 25.5 is next. No Notebook, test, training, sampling, benchmark, fresh-clone or smoke test has been executed in the publication process.
 
 ## How to use this index
 
@@ -246,6 +246,9 @@ For each master: start with **git pull** in the repository root, then use a uniq
 
 - [112_step25_1_readme_rewrite](../notebooks/112_step25_1_readme_rewrite.ipynb)
 - [113_step25_2_documentation_index](../notebooks/113_step25_2_documentation_index.ipynb)
+
+- [114_step25_3_reproducibility_audit](../notebooks/114_step25_3_reproducibility_audit.ipynb)
+- [115_step25_4_credits_references_license](../notebooks/115_step25_4_credits_references_license.ipynb)
 
 ## Historical and mathematical milestones
 

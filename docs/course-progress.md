@@ -68,3 +68,7 @@
 ## Step 25.3 — Reproducibility audit (static evidence)
 - [Master](../notebooks/114_step25_3_reproducibility_audit.ipynb) · [Audit guide](REPRODUCIBILITY.md) · [Static audit script](../scripts/static_release_audit.py) · [Step 25 notes](step-25-release.md)
 - Pin/link/ignore inspected from remote; audit script and all runtime gates NOT run. Corrections 0/2; next 25.4.
+
+## Step 25.4 — Credits, references, license
+- [Master](../notebooks/115_step25_4_credits_references_license.ipynb) · [Credits](CREDITS.md) · [MIT LICENSE](../LICENSE) · [Step 25 notes](step-25-release.md)
+- Static attribution check only, no tests/data downloads. Corrections 0/2; next 25.5.

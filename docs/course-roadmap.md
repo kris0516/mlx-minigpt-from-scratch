@@ -1,4 +1,4 @@
-> **Current material checkpoint: Step 25.3; static checks are not runtime validation.**
+> **Current material checkpoint: Step 25.4; attribution prepared, runtime not validated.**
 
 # Course Roadmap — Apple Silicon MLX MiniGPT from Scratch
 

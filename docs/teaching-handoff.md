@@ -46,3 +46,6 @@ Published docs/INDEX.md with Step 1–25 navigation and actual current Notebook 
 
 ## Step 25.3 checkpoint
 Wrote docs/REPRODUCIBILITY.md and read-only scripts/static_release_audit.py. Remote pin/index/work-ignore checks were read; no audit script, install, tests or smoke commands run. Next 25.4, initial correction 0/2.
+
+## Step 25.4 checkpoint
+MIT LICENSE read and preserved; docs/CREDITS.md published with external references and provenance boundaries. No third-party files or data downloaded. Corrections initial 0/2. Next 25.5.
