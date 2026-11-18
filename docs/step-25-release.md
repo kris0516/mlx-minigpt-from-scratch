@@ -126,7 +126,7 @@ cp -n notebooks/114_step25_3_reproducibility_audit.ipynb notebooks/work/114_step
 
 ## 4. 限制、练习与完成条件
 
-完整静态证据、可复现安装与测试命令、未完成 gates 在 docs/REPRODUCIBILITY.md。新增 scripts/static_release_audit.py 只在未来主动调用时读取源码并解析语法；**当前只写入文件，没有调用它**。
+完整静态证据、可复现安装与测试命令、未完成 gates 在 docs/REPRODUCIBILITY.md。`scripts/static_release_audit.py` 的新版源码只在未来主动调用时，对 `.py` 和可解析的 Notebook 纯 Python 代码单元做 AST 解析，并检查 nbformat major/minor、现有 ID 格式/唯一性与空输出；旧母版缺失 ID 仅警示，IPython magic 单元会记录为跳过。**这不是完整 Notebook schema validation；当前没有执行检查脚本。**
 
 **练习（不附答案）：** ① 为什么 uv.lock 存在不代表 uv sync 实际成功？② 解释 git SHA 和随机 seed 解决不同的复现问题；③ 为一次训练/生成 smoke test 设计最小记录表。
 
@@ -169,7 +169,7 @@ Transformer baseline 有 Q/K/V (B,H,T,d)、scores (B,H,T,T) 和 logits (B,T,V)�
 
 ## 4. 完成边界与独立练习
 
-[docs/CREDITS.md](CREDITS.md) 是唯一较长引用清单，Notebook 只讲许可分层与误区。pyproject.toml 尚无打包发行的 license 元数据字段，因此不能声称 package wheel 已通过法律/分发审核；Step 25.5 要把它保留为待检查边界。
+[docs/CREDITS.md](https://github.com/kris0516/mlx-minigpt-from-scratch/blob/main/docs/CREDITS.md) 是唯一较长引用清单，Notebook 只讲许可分层与误区。pyproject.toml 尚无打包发行的 license 元数据字段，因此不能声称 package wheel 已通过法律/分发审核；Step 25.5 要把它保留为待检查边界。
 
 **练习（不附答案）：** ① 什么属于仓库 MIT 许可、什么属于外部 MLX 自身许可？② 为什么不自动下载语料是重要的来源边界？③ 引用 FlashAttention 与本项目已经集成 fused kernel 是同一回事吗？
 
@@ -212,7 +212,7 @@ Step 25.1–25.4 完成公开 README、实际目录索引、静态可复现性�
 
 ## 4. Tag/Release 边界、练习、结课定义
 
-本轮发布教学资料与可执行源码，原 22.5 独立验收记录不重做、不重置。连接器具备 main 写权限，但没有暴露创建 tag 或 GitHub Release 的可用动作；更重要的是 runtime gates 尚未执行。因此**不创建正式 tag**，也不冒称完整软件 release。
+本轮发布教学资料与可执行源码，原 22.5 独立验收记录不重做、不重置。`scripts/static_release_audit.py` 仍只是部分静态核对，不是完整 nbformat schema 校验，且未执行；它不能替代课程单元测试或运行验证。连接器具备 main 写权限，但没有暴露创建 tag 或 GitHub Release 的可用动作；更重要的是 runtime gates 尚未执行。因此**不创建正式 tag**，也不冒称完整软件 release。
 
 终态为：Step 23–25 材料完成、逐节 Git 提交可追溯；项目软件仍待独立运行与回归验收。具体未完成事项见 docs/RELEASE_CHECKLIST.md。
 
@@ -221,3 +221,8 @@ Step 25.1–25.4 完成公开 README、实际目录索引、静态可复现性�
 本节初稿修正 0/2，Step 25.5 教材发布在此结束，不自行进入任何扩展研究路线。
 
 [Release notes](RELEASE_NOTES.md) and [release checklist](RELEASE_CHECKLIST.md) preserve the unexecuted/not-tagged status.
+
+
+## 2026-11-18 independent-review correction note
+
+Step 25.4 中的 docs/CREDITS.md 链接在 Notebook 母版和个人 work 副本均使用绝对 GitHub URL；Step 25.3/25.5 的审查脚本能力限定为 `.py` AST、可解析纯 Python Notebook code-cell AST、部分 nbformat/ID/output 结构检查，绝不等同于完整 schema 验证或已运行审查。

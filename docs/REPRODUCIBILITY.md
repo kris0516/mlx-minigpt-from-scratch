@@ -24,7 +24,7 @@ uv sync --frozen
 
 Select `.venv/bin/python` in VS Code; bind the Notebook kernel to that interpreter. Check native `arm64` and Python 3.12 using the existing Step 1/2 material. Do not edit tracked masters; use a timestamped `cp -n` under `notebooks/work/`.
 
-Optional **read-only static** source audit (still not a runtime test):
+Optional **read-only partial static** audit (still not a runtime test; command NOT executed in this session):
 
 ~~~bash
 python scripts/static_release_audit.py
@@ -50,7 +50,7 @@ A short smoke run is not a quality/convergence benchmark. The current CLI artifa
 | Gate | Status | Evidence still required |
 |---|---|---|
 | Repo tree, pin, master links (Step 25.2 snapshot) | Static inspection done | Refresh for final SHA |
-| Python source syntax / Notebook cells | Audit script prepared | Actual static audit execution if permitted |
+| `.py` AST + eligible plain-Python Notebook cell AST and limited nbformat/ID/output checks | Partial static checker source prepared; NOT RUN | Explicit static-check execution and review of skipped IPython magics / legacy missing IDs, if permitted |
 | Fresh clone + `uv sync --frozen` | NOT RUN | Real Apple Silicon shell output |
 | Import/Metal availability | NOT RUN | Project `.venv` environment observation |
 | Unit / causal / save-load tests | NOT RUN | Captured test results |
@@ -65,3 +65,8 @@ Do not mark a gate PASS based only on checked-in source code. No commands in thi
 ## Step 25.5 material closure addendum
 
 Masters 102–116, the source package, test/benchmark scripts and release documents have been authored and pushed to the remote GitHub main branch. The earlier Step 25.2 snapshot audit covered 113 masters; final tree should contain 116. **No static_release_audit.py, unit tests, smoke, sample generation, training, benchmarks or fresh clone were executed**; the checked boxes above remain limited to explicitly identified static evidence. The real tag and GitHub Release remain not created.
+
+
+## 2026-11-18 independent review clarification — audit script scope
+
+The revised `scripts/static_release_audit.py` (still **not executed**) checks Python source AST, parseable plain-Python Notebook code-cell AST, the nbformat major/minor fields, code-cell empty execution/outputs, present valid unique IDs and source/link shape. IPython magic/shell Notebook cells are **counted as skipped**; older masters with missing cell IDs are counted as legacy warnings rather than silently rewriting past material. It is **not** full `nbformat` JSON schema validation, and neither static parsing nor JSON checking proves MLX execution correctness. User work copies are not inspected.

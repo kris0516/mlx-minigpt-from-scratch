@@ -6,7 +6,7 @@ Step 21–25 teaching materials have now been prepared and published, with Step 
 
 Use separate git pull and timestamped cp -n into the tracked notebooks/work directory. Do not overwrite existing notes or add recurring mkdir. Masters remain output-free, execution_count=null. Preserve historical accepted content and cumulative correction counts, with at most two substantive correction rounds.
 
-Historical detailed teaching rules and counts are preserved in [the archived handoff](history/teaching-handoff-through-step20.md). Its former stops/current-state statements are superseded. Final consolidated handoff will activate with Step25.5.
+Historical detailed teaching rules and counts are preserved in [the archived handoff](history/teaching-handoff-through-step20.md). Its former stops/current-state statements are superseded. The final consolidated handoff **below is already active** since Step 25.5 material publication. It records material continuity only, not learner completion or runtime test success.
 
 ## 23.1 checkpoint
 Published `src/minigpt/data.py` and `notebooks/102_step23_1_data_module.ipynb`; proceed 23.2 model module without changing baseline architecture. Correction count new initial material 0/2. Historical ledgers unchanged.
@@ -54,8 +54,17 @@ MIT LICENSE read and preserved; docs/CREDITS.md published with external referenc
 ## Final consolidated continuation state (2026-11-18)
 
 - Step 22.5 independent static acceptance is user-provided; historical records and correction counts are unchanged.
-- Step 23.1–25.5 initial substantive correction counts are 0/2 each; publication/static review is not independent runtime or learner acceptance. Preserve correction history across future sessions.
+- At initial publication Step 23.1–25.5 substantive correction counts were 0/2 each; after the 2026-11-18 independent review correction, Step 23.1–23.5, 24.1–24.2 and 25.3–25.5 are now **1/2** each. Untouched 24.3–24.5 and 25.1–25.2 remain **0/2**. Material/static review never implies runtime or learner acceptance. Preserve older records and correction history across future sessions.
 - [Complete masters and commit ledger](RELEASE_NOTES.md); [course INDEX](INDEX.md); [source refactor](step-23-source-refactor.md); [testing protocols](step-24-testing-benchmarking.md); [release checklist](RELEASE_CHECKLIST.md).
 - Environment: Python 3.12, native Apple Silicon, MLX 0.32.2, uv.lock; work notebooks ignored. Two separate terminal commands start each lesson: git pull; timestamped cp -n to notebooks/work/.
 - No Notebook or course code, test, training, sampling, benchmark, data access, checkpoint or work-copy operations performed while authoring Steps 23–25.
 - Main published; optional experiments, performance measurements, full checkpoint compatibility, actual release tag and GitHub Release remain unresolved runtime gates. Do not automatically enter extension track.
+
+
+## 2026-11-18 centralized static-review correction (current)
+
+- Notebook 102–106 imports locate the repository upward from kernel CWD (root/notebooks/work) or raise explicit FileNotFoundError; no installation mode switch.
+- Corrected Step 23 run_training local record vs accumulated Adam step and evaluation failure boundary; Step 23.4 full-vocabulary sampling and mode/key semantics; Step 23.5 CLI guard/head mapping and weights-metadata pairing caveat.
+- Step 24.1 does not assert independent single-head coverage; Step 24.2 separates loss-drop smoke from strict toy memorization target (100% token accuracy AND final CE ≤ 0.1), unmeasured.
+- Step 25 static checker handles partial `.py`/eligible Notebook Python-cell AST and selected structure, with old missing IDs and IPython magics reported; **not full schema validation, not run**. Step 25.4 credits link uses absolute GitHub URL.
+- Step 22.5 and earlier untouched; all current changes are corrections for independent review, not proof of code execution or course mastery. No tag or Release.

@@ -37,7 +37,7 @@ Data: (N,) → (B,T) 的 X/Y；Model: (B,T) → (B,T,V)；mask: (T,T)；save/loa
 
 ## 4. 限制、验证规则与练习
 
-Python 标准库 unittest 不增加 pytest 依赖，uv.lock 不修改。save/load 测试将来会写入自动清理的临时目录，**当前没有任何写入**。测试基于小数组、短序列、单头/多头条件；通过也不代表所有 dtype、长上下文、性能、恢复训练状态均正确。
+Python 标准库 unittest 不增加 pytest 依赖，uv.lock 不修改。save/load 测试将来会写入自动清理的临时目录，**当前没有任何写入**。测试基于小数组、短序列、H=4 多头模型及等长 causal mask；通过也不代表所有 dtype、长上下文、性能、恢复训练状态均正确。
 
 **练习（无答案）：** ① 解释 shape 测试为何不能独自证明 causal mask 正确；② 设计一个 non-square causal mask 反例并说明不属于当前等长参考；③ 哪个测试应拒绝长度超过位置表容量？
 
@@ -45,6 +45,8 @@ Python 标准库 unittest 不增加 pytest 依赖，uv.lock 不修改。save/loa
 
 Code files: [tests/test_data.py](../tests/test_data.py), [tests/test_model.py](../tests/test_model.py), [tests/test_checkpoint.py](../tests/test_checkpoint.py), [tests/test_generate.py](../tests/test_generate.py).
 
+
+**实际覆盖范围（source-backed）：** `tests/test_model.py` 的 `make_model` 固定 `num_heads=4`，另有独立的 `(3,3)` 等长 causal mask 数学测试；**当前没有 H=1 的单头模型用例，也没有单头实现的独立验收**。Shape 检查、前缀因果性比较、weights-only save/load 和生成测试都只是已写入的用例，仍未运行。
 
 ## Step 24.2 — Tiny overfit test
 
@@ -80,7 +82,7 @@ Tiny overfit（极小数据过拟合）是一种 end-to-end sanity check：如�
 
 ## 4. 限制、验证规则与练习
 
-样本只有 4 个监督位置，50 updates 是谨慎的小规模候选，不是普适收敛保证。脚本最后根据真实运行结果报告 initial/final loss、loss_decreased，并在未下降时抛错误；不预先填结果。一个 toy 能过拟合不能证明泛化、无 Swap、低热或大模型稳定。
+样本只有 4 个监督位置，50 updates 是谨慎的小规模候选，不是普适收敛保证。脚本最后根据真实运行结果报告 initial/final loss、loss_decreased，并在未下降时作为 smoke check 抛错误；是否记住样本由准确率与最终 loss 的更严格门槛判断，结果未测量。一个 toy 能过拟合不能证明泛化、无 Swap、低热或大模型稳定。
 
 **练习（无答案）：** ① 列出第一次更新前和第 50 次更新后 loss 的参数版本；② 若 loss 不下降，应优先审查哪些数据/梯度接口？③ 为什么不能把过拟合成功当作验证集表现好？
 
@@ -88,6 +90,14 @@ Tiny overfit（极小数据过拟合）是一种 end-to-end sanity check：如�
 
 Code files: [scripts/tiny_overfit.py](../scripts/tiny_overfit.py).
 
+
+### Smoke loss decrease 与真实 toy memorization 分开
+
+`scripts/tiny_overfit.py` 维持固定 `X/Y: (1,4)`、`logits: (1,4,3)` 的小模型。**Smoke check（基本优化信号）**仅指 `final_loss_current < initial_loss`，哪怕下降极小也不能称为“记住样本”。
+
+**Memorization gate（样本记忆门槛）**另行记录 `training_token_accuracy`：在最后一次更新后重新前向，`argmax(logits, axis=-1)` 得 `(1,4)` 预测 ID，与四个 Y 按位置比较。预先指定严格教学目标为 **`training_token_accuracy == 1.0` 且 `final_loss_current <= 0.1`**；脚本报告 `memorized` 布尔字段。只有实际测到两个条件同时满足才可称本 toy 达标，50 次更新不保证达标。可选 `--require-memorization` 才把未达标作为额外运行失败；默认运行仍只对 smoke 未下降报错，**命令成功退出不等于过拟合成功**。
+
+初始若三个 logits 相等、每位置损失均为 `ln(3)` 只是纸算场景，不是实测初始损失。本轮既没有运行 50 次训练，也没有观察最终 accuracy/loss。
 
 ## Step 24.3 — Memory benchmark
 

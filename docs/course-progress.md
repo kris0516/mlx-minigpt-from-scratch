@@ -1,9 +1,14 @@
-# Course-material progress — Step 22.5
+# Course-material progress — Step 25.5 published (authoritative)
+
+**Current material checkpoint — 2026-11-18:** Step 23.1–25.5 的 **15 份新母版（102–116）已发布到 GitHub main**，仓库共有 **116 份教学母版**。这只表示教材、源码、测试/测量脚本与文档已准备；**不表示学员已经学完、独立审查此次修订通过，或运行测试/训练/采样/benchmark 成功**。没有访问用户 `notebooks/work/`，也没有创建 Git tag / GitHub Release。
+
+**独立复核集中修订（本轮首次修正，按既有上限累计）：** 23.1–23.5、24.1–24.2、25.3–25.5 各 **1/2**；未修改的 24.3–24.5、25.1–25.2 保持 **0/2**。Step 22.5 及更早的记录、修正次数、独立验收均原样保留。此轮只做静态源码/文稿检查与 Git 发布，未运行课程 Notebook、测试、训练、生成、评测或 benchmark。完整历史材料提交表和最新静态范围参见 [RELEASE_NOTES](RELEASE_NOTES.md)、[REPRODUCIBILITY](REPRODUCIBILITY.md) 和 [RELEASE_CHECKLIST](RELEASE_CHECKLIST.md)。
+
+## Historical snapshot — Step 22.5 material publication (superseded as current)
 
 当前已发布至 **Step 22.5**（10/25 个新小节）。最新授权允许按原路线自主补齐 Step 21–25；尚未发布的后续小节不计为完成。教材完成不代表学员掌握或运行通过。
 
 只进行材料编写、静态审阅和 Git 发布。没有执行 Notebook/训练/验证/测试/采样/benchmark/checkpoint，没有读取或下载语料，没有执行 work copies。Release tag/GitHub Release 未创建。
-
 ## New masters published
 
 - [92_step21_1_generation_loop](../notebooks/92_step21_1_generation_loop.ipynb)

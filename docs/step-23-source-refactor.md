@@ -4,6 +4,28 @@
 
 ## Step 23.1 — Data module
 
+**工作副本的导入位置（Working-directory discovery）**：下列代码在仓库 root、`notebooks/` 或 `notebooks/work/` 启动 kernel 时，均从 `Path.cwd()` 向上查找同时含 `pyproject.toml` 与 `src/minigpt/__init__.py` 的目录，再将其 `src` 加入 `sys.path`。这不是依赖单一 cwd 的硬编码路径；如果 kernel 在仓库树外启动，将明确抛出 `FileNotFoundError`。这段逻辑只负责定位代码，**没有运行课程代码，也不是自动安装**。
+
+**五份母版共用的导入设置（在各自 code cell 内）：**
+
+```python
+from pathlib import Path
+import sys
+
+repo_root = next(
+    (p for p in (Path.cwd(), *Path.cwd().parents)
+     if (p / "pyproject.toml").is_file()
+     and (p / "src" / "minigpt" / "__init__.py").is_file()),
+    None,
+)
+if repo_root is None:
+    raise FileNotFoundError("MiniGPT repository not found above kernel working directory")
+src_dir = str(repo_root / "src")
+if src_dir not in sys.path:
+    sys.path.insert(0, src_dir)
+```
+
+
 # Step 23.1 — Data module：把数据处理从 Notebook 迁移为可复用模块
 
 **本节新增：** 将 Step 16.1–16.3 的字符词表、连续 train/validation 切分和 shifted-window sampler 放入 `src/minigpt/data.py`。不是新 tokenizer，也不是重新获取 Tiny Shakespeare。导入模块没有文件访问或数据下载。
@@ -164,8 +186,32 @@ Validation batches require an independently owned random.Random; training sampli
 
 本节材料初稿，实际修正 0/2；按用户新授权自动继续下一小节。
 
-[Complete source] (../src/minigpt/train.py) is an implementation intended for later execution, not proof of runtime acceptance.
+[Complete source](../src/minigpt/train.py) is an implementation intended for later execution, not proof of runtime acceptance.
 
+
+### 23.3 真实 API / 时间线（教学调用，不执行）
+假设调用前已经分别准备好同一组 `model`、`optimizer`、`train_tokens`、`val_tokens`；以下为与 `src/minigpt/train.py` 函数签名对齐的**未来调用片段**，不是本 Notebook 自带模型或训练入口：
+
+```python
+from random import Random
+train_rng, val_rng = Random(2026), Random(2027)  # 两套独立 Python RNG 状态
+train_step = make_train_step(model, optimizer, max_grad_norm=1.0)
+history = run_training(
+    model, train_step, train_tokens,
+    batch_size=4, block_size=64, updates=4, train_rng=train_rng,
+    val_tokens=val_tokens, val_rng=val_rng,
+    val_every=2, val_batches=2,
+)
+```
+
+| 循环内 index | `record["update"]` | 假设进入循环前 Adam step=s | loss / validation 使用哪版参数 |
+|---|---|---|---|
+| 1 | 1 | 更新后 s+1 | 训练 loss：`θ_s`；本轮无 validation |
+| 2 | 2 | 更新后 s+2 | 训练 loss：`θ_(s+1)`；validation：`θ_(s+2)` |
+
+`record["update"]` 来自本次 `range(1, updates+1)`，再次调用 `run_training` 会从 1 重新编号；**Adam 的 `optimizer.state["step"]` 则在原对象中继续累计**，两者不可混为同一个进度字段。`train_rng` 与 `val_rng` 是两个独立的 `random.Random` 对象，**不是 MLX random key**；验证采样不会消费训练 RNG。
+
+实际源码先调用 `train_step` 完成 Adam 更新，再生成当前 `record`，然后视 `val_every` 执行验证；验证成功后才 `records.append(record)`。若验证途中报错，`estimate_validation_loss` 的 `finally` 恢复训练模式，但**此前 Adam 更新不会自动回滚**；当次 record 尚未 append，整个函数可能直接抛异常而不返回 history。此示例没有运行，不声称上述数值是观测结果。
 
 ## Step 23.4 — Generation module
 
@@ -193,7 +239,7 @@ Step 21.1/21.5 的生成循环仍留在 Notebook 中。本节把 greedy 与按�
 
 ## 2. Shape / Input–Output Contract
 
-模型读取 context (1,min(L+r,W))，返回 raw logits (1,T,V)。取 last[:, -1, :] -> (1,V)，greedy argmax 或 sample 选择 token (1,)，token[:,None] -> (1,1)，沿 axis=1 拼到完整 history (1,L+r+1)。返回的 greedy history (1,L+n)；sampling 额外返回 next_key (2,) uint32（固定 MLX key 约定）。W<=model.max_seq_len；n=0 无 forward。
+模型读取 context (1,min(L+r,W))，返回 raw logits (1,T,V)。取 logits[:, -1, :] -> last (1,V)，greedy argmax 或 sample 选择 token (1,)，token[:,None] -> (1,1)，沿 axis=1 拼到完整 history (1,L+r+1)。返回的 greedy history (1,L+n)；sampling 额外返回 next_key (2,) uint32（固定 MLX key 约定）。W<=model.max_seq_len；n=0 无 forward。
 
 ## 3. 手算小例子（Paper example, not runtime output）
 
@@ -201,7 +247,7 @@ prompt IDs=[0,1]、block_size=3，追加 3 个 token。三轮 forward 的 contex
 
 ## 4. 限制、预期验证与静态结论
 
-Crop 保留返回历史但每轮重新计算整个窗口，**没有 KV cache**。旧模型 learned position 在新窗口从 0 编号，不能无损复用旧 K/V。该模块目前只处理单条 prompt、固定 n 个 token；没有 EOS、batch、top-p 或 GPU fused top-k。Sampling 每轮 split 显式 key，不使用隐式全局 key；温度必须为正有限。
+Crop 保留返回历史但每轮重新计算整个窗口，**没有 KV cache**。旧模型 learned position 在新窗口从 0 编号，不能无损复用旧 K/V。该模块目前只处理单条 prompt、固定 n 个 token；没有 EOS、batch、top-k 或 top-p；也未实现 GPU fused sampling。Sampling 每轮 split 显式 key，不使用隐式全局 key；温度必须为正有限。
 
 未来可验证的前提是合适的真实模型、正确的数组和显式调用；静态审核无法保证任意设备上通过，也没有任何读数、模型生成或训练记录。
 
@@ -209,8 +255,15 @@ Crop 保留返回历史但每轮重新计算整个窗口，**没有 KV cache**�
 
 本节材料初稿，实际修正 0/2；按用户新授权自动继续下一小节。
 
-[Complete source] (../src/minigpt/generate.py) is an implementation intended for later execution, not proof of runtime acceptance.
+[Complete source](../src/minigpt/generate.py) is an implementation intended for later execution, not proof of runtime acceptance.
 
+
+### 23.4 精确的生成轴与两条选择策略
+`_last_logits` 的源码先得到 `logits = model(context)`，shape **`(1,T,V)`**，然后用 **`logits[:, -1, :] → last (1,V)`** 取最后一个 query 位置的全部词表分数；`last` 已经是二维数组，不能再对它执行 `last[:, -1, :]`。
+
+`history` 保存完整 prompt + 已生成 token；每轮只把 `context = history[:, -block_size:]` 交给模型，新的 `token (1,1)` 要沿时间轴追加到 **history**，不是覆盖为短 context。当前只实现 **greedy argmax** 和 **全词表（full-vocabulary）temperature categorical sampling**；**没有 top-k、top-p 或 EOS**。Step 21.4 的 top-k 教材函数没有被集成进 `generate_sample`。
+
+抽样使用 `next_key, draw_key = mx.random.split(key)`：`draw_key` 只供本轮 `mx.random.categorical`，而 `key = next_key` 留给下一轮并随 history 返回，不复用本轮抽样 key。两条生成函数都在 `model.eval()` 后将循环包进 `try/finally`，退出或抛异常时 `model.train(was_training)` 恢复调用前的模式；这不表示已成功生成，也不是发生错误时回滚 history。
 
 ## Step 23.5 — Configuration and CLI
 
@@ -265,8 +318,16 @@ src/minigpt/config.py 定义只保存 Python 标量的配置树；src/minigpt/cl
 
 预期配置检查：C/H=4，T<=Tmax；输出模型的理论 logits shape 仍是 (B,T,V)。CLI 的 --help、实际 save/load、训练和生成均未运行，因此没有真实成功声明。
 
-**练习（不附答案）：** ① 若 C=18,H=4，配置检查应如何失败？② 解释为何 argparse 的 --corpus 必填能避免 import 时隐式下载；③ 比较推理权重文件与完整恢复训练状态需要的额外内容。
+**练习（不附答案）：** ① 若 C=18,H=4，配置检查应如何失败？② 说明为何 `if __name__ == "__main__": main()` 避免 import 时启动 CLI，以及 `--corpus` 的实际用途；③ 比较推理权重文件与完整恢复训练状态需要的额外内容。
 
 23.5 教材初稿，实际修正 0/2；完成大 Step 23 的静态材料准备，下一节 24.1 Unit tests。
 
 Source modules: [config.py](../src/minigpt/config.py), [cli.py](../src/minigpt/cli.py), [__main__.py](../src/minigpt/__main__.py). Python package is imported using PYTHONPATH=src; uv.lock unchanged; no console entry point installed.
+
+
+### 23.5 命令行与真实模型参数的逐层映射
+训练子命令的 `--heads` 由 `argparse` 写到 `args.heads`；`train_command` 执行 `ModelConfig(num_heads=args.heads, ...)`，之后 `model_cfg.as_model_kwargs()` 把 `num_heads` 传入 `MiniGPT(**...)`。即 **`--heads → args.heads → ModelConfig.num_heads → MiniGPT(num_heads=...)`**。例如 `--dims 16 --heads 4` 的每头维度为 4；`dims % num_heads != 0` 会在配置检查时被拒绝。
+
+**避免 import 副作用的是源码末尾 `if __name__ == "__main__": main()`，不是 `--corpus` 的 required 标志。** `--corpus` 只在真正解析 `train` 命令时要求使用者提供显式路径；仅 `import minigpt.cli` 不调用 `main()`，不读语料、构造模型或训练。生成子命令使用另一组 `--checkpoint/--prompt` 参数。
+
+生成过程对 `run.json` 的 `itos` 长度/唯一性及模型 `vocab_size` 做一致性检查，并通过 `load_weights(..., strict=True)` 加载结构兼容的权重；但 **`(B,T,V)` logits shape 相同、参数名/shape 对得上，并不能证明 `model.safetensors` 与 `run.json` 出自同一次训练**，也不能证明词表的 ID→字符语义正确配对。目前没有内容哈希或原子配对验证协议，错误的同形状产物仍可能被误配。

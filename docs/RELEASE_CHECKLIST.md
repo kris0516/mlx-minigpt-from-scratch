@@ -15,7 +15,7 @@ This is a **material-publication** checklist, not a runtime signoff.
 
 ## NOT DONE: require future explicit runtime authorization
 
-- [ ] Independent full static AST/Notebook audit has been **executed** (script prepared only).
+- [ ] Partial static checker (`.py` AST, eligible Notebook Python-cell AST, selected nbformat fields/IDs/outputs) has been **executed** and its skips/warnings reviewed; script prepared only, not full schema validation.
 - [ ] Fresh clone + `uv sync --frozen` on a compatible Apple Silicon Mac.
 - [ ] Actual import, MLX/Metal availability and unit tests.
 - [ ] Tiny overfit, validation and train/generate smoke test.

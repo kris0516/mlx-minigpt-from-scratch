@@ -1,4 +1,4 @@
-"""Tiny optional overfit diagnostic. Never run at lesson publication time.
+"""Tiny optional training diagnostic: smoke decrease versus strict memorization.
 
 Run later ONLY with explicit learner approval:
 PYTHONPATH=src uv run python scripts/tiny_overfit.py --updates 50
@@ -33,24 +33,46 @@ def tiny_overfit(updates: int = 50):
     for _ in range(updates):
         loss, _ = train_step(X, Y)
         losses.append(float(loss.item()))  # measured on parameters before this update
+    # Distinguish minimal optimization signal from actual toy memorization.
+    final_logits = model(X)  # (1,4,3), after the final Adam update
     final_loss = language_model_loss(model, X, Y)
-    mx.eval(final_loss)
+    predicted = mx.argmax(final_logits, axis=-1).astype(mx.int32)  # (1,4)
+    token_accuracy = mx.mean((predicted == Y).astype(mx.float32))  # scalar ()
+    mx.eval(final_loss, token_accuracy)
     final = float(final_loss.item())
-    if not all(math.isfinite(v) for v in (initial, final, *losses)):
-        raise FloatingPointError("Nonfinite training curve")
+    accuracy = float(token_accuracy.item())
+    if not all(math.isfinite(v) for v in (initial, final, accuracy, *losses)):
+        raise FloatingPointError("Nonfinite training curve or token accuracy")
+
+    # A tiny loss drop is only a smoke result, NOT proof of memorization.
+    smoke_loss_decreased = bool(final < initial)
+    memorized = bool(accuracy == 1.0 and final <= 0.1)
     return {"updates": updates, "initial_loss": initial,
             "train_loss_pre_update": losses, "final_loss_current": final,
-            "loss_decreased": bool(final < initial)}
+            "loss_decreased": smoke_loss_decreased,  # legacy field: smoke only
+            "training_token_accuracy": accuracy,
+            "memorization_target": {"token_accuracy": 1.0, "final_loss_at_most": 0.1},
+            "memorized": memorized}
 
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--updates", type=int, default=50)
+    parser.add_argument(
+        "--require-memorization", action="store_true",
+        help="also require 100%% token accuracy and final loss <= 0.1",
+    )
     args = parser.parse_args()
     result = tiny_overfit(args.updates)
     print(json.dumps(result, indent=2))
     if not result["loss_decreased"]:
-        raise AssertionError("Tiny overfit did not reduce loss; investigate before scale-up")
+        raise AssertionError("Smoke check failed: toy loss did not decrease")
+    if args.require_memorization and not result["memorized"]:
+        raise AssertionError(
+            "Toy memorization not reached: require 100% accuracy and loss <= 0.1"
+        )
+    if not result["memorized"]:
+        print("Smoke decrease alone is not toy memorization; strict gate unmet.")
 
 
 if __name__ == "__main__":
