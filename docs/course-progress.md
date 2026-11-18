@@ -24,3 +24,7 @@
 ## Step 23.2 — Model module
 - [Master](../notebooks/103_step23_2_model_module.ipynb) · [src/minigpt/model.py](../src/minigpt/model.py) · [Step 23 notes](step-23-source-refactor.md)
 - Static code extraction, no execution, no checkpoint load. Initial corrections 0/2. Next: 23.3.
+
+## Step 23.3 — Training module
+- [Master](../notebooks/104_step23_3_training_module.ipynb) · [Source](../src/minigpt/train.py) · [Step 23 notes](step-23-source-refactor.md)
+- Source and teaching material published; static-only, not executed. Initial corrections 0/2.

@@ -13,3 +13,6 @@ Published `src/minigpt/data.py` and `notebooks/102_step23_1_data_module.ipynb`; 
 
 ## 23.2 checkpoint
 Extracted unchanged baseline MiniGPT classes into src/minigpt/model.py. Next: 23.3. Initial corrections 0/2; historical counts preserved.
+
+## 23.3 checkpoint
+Published src/minigpt/train.py and notebooks/104_step23_3_training_module.ipynb; static only, initial corrections 0/2. Historical counts unchanged. Proceed in order.

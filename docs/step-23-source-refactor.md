@@ -120,3 +120,48 @@ cp -n notebooks/103_step23_2_model_module.ipynb notebooks/work/103_step23_2_mode
 静态材料初稿 0/2；下一节是 23.3 Training module。
 
 [Source module](../src/minigpt/model.py) is an extraction of [Step 15.4](../notebooks/65_step15_4_implement_minigpt.ipynb), not a runtime-tested replacement.
+
+
+## Step 23.3 — Training module
+
+# Step 23.3 — Training module
+
+**命令一：**
+
+~~~bash
+git pull
+~~~
+
+**命令二：**
+
+~~~bash
+cp -n notebooks/104_step23_3_training_module.ipynb notebooks/work/104_step23_3_training_module_$(date +%Y%m%d_%H%M%S)_work.ipynb
+~~~
+
+只在独立 work 副本运行/修改；本轮只静态准备，未执行任何 Notebook、MLX、训练、生成或 benchmark。Apple Silicon / Python 3.12 / MLX v0.32.2。
+
+## 1. 动机（Motivation）
+
+前面 17.5、19.2、19.3 已把 loss、gradient、Adam、validation 放在 Notebook。本节将这些接口迁到 src/minigpt/train.py；新增的是函数之间的清晰契约，不是更大的模型或已执行训练。仍使用 uncompiled step，便于看清显式 mx.eval 边界与变化的 optimizer state。
+
+完整运行实现放在 **src/minigpt/train.py**，以下 Notebook 只教学本小节新增接口，不复制旧类的长代码。
+
+## 2. Shape / Input–Output Contract
+
+输入：X/Y 都是 (B,T) int32；MiniGPT 产生 logits (B,T,V)。将 logits 展平为 (B*T,V)，targets 展平为 (B*T,)，cross_entropy 后均值为标量 ()。nn.value_and_grad 返回 model 参数树的梯度；global_grad_norm 把所有梯度叶子平方归约为一个标量。make_train_step 绑定同一 model 和 Adam，返回 (loss_before_update, preclip_norm)，各 shape ()。验证函数只前向，不更新 Adam。
+
+## 3. 手算小例子（Paper example, not runtime output）
+
+令 B=1,T=2,V=3，原 logits 为两个全 0 行，targets=[0,2]。每位置 softmax 为 [1/3,1/3,1/3]，交叉熵平均为 ln(3)。这是纸上数值，不代表随机模型执行输出。该 loss 是当前参数更新**之前**的版本；下一次 validation 用的是更新后的参数。
+
+## 4. 限制、预期验证与静态结论
+
+Validation batches require an independently owned random.Random; training sampling must not reuse validation RNG. max_grad_norm=None disables clipping; a positive finite value enables global clipping. Nonfinite loss/grad norm abort before optimizer.update, but other runtime failures are not promised away. The returned metrics are Python numbers only when explicitly called. No torch, autocast, graph compilation, automatic checkpoint, no fabricated loss curve.
+
+未来可验证的前提是合适的真实模型、正确的数组和显式调用；静态审核无法保证任意设备上通过，也没有任何读数、模型生成或训练记录。
+
+**练习（不附答案）：** ① 列出 B=4,T=8,V=32 时展平前后 shapes；② 解释为什么返回 old-parameter loss 不等于更新后的 validation loss；③ 画出训练 RNG 和验证 RNG 的分开调用路线。
+
+本节材料初稿，实际修正 0/2；按用户新授权自动继续下一小节。
+
+[Complete source] (../src/minigpt/train.py) is an implementation intended for later execution, not proof of runtime acceptance.
