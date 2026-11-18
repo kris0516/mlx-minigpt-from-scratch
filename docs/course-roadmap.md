@@ -1,4 +1,4 @@
-> **Current material checkpoint: Step 24.5; material prepared, no runtime results.**
+> **Current material checkpoint: Step 25.1; published ≠ runtime verified.**
 
 # Course Roadmap — Apple Silicon MLX MiniGPT from Scratch
 

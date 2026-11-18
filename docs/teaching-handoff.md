@@ -37,3 +37,6 @@ Published scripts/benchmark_performance.py and notebooks/110_step24_4_performanc
 
 ## 24.5 checkpoint
 Published docs/benchmark-report-template.md and notebooks/111_step24_5_readme_benchmark_table.ipynb. Initial correction 0/2, no execution. Continue to next item.
+
+## Step 25.1 checkpoint
+README rewritten to newcomer-friendly quick start, baseline architecture, source and unmeasured benchmark table; existing historical docs preserved. Next 25.2. Initial corrections 0/2.

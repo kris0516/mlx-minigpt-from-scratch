@@ -1,0 +1,47 @@
+# Step 25 — GitHub-ready Educational Release
+
+> Documentation and release preparation only. Runtime tests, training, benchmarking, fresh clone, and release tag are not presumed.
+
+## Step 25.1 — Rewrite main README
+
+# Step 25.1 — Rewrite main README
+
+**终端命令一：**
+
+~~~bash
+git pull
+~~~
+
+**终端命令二（工作副本不覆盖）：**
+
+~~~bash
+cp -n notebooks/112_step25_1_readme_rewrite.ipynb notebooks/work/112_step25_1_readme_rewrite_$(date +%Y%m%d_%H%M%S)_work.ipynb
+~~~
+
+MLX v0.32.2、Apple Silicon、Python 3.12。所有代码单元未执行。
+
+## 1. 为什么重写 README？
+
+旧 README 混有大量在 Step 19–20 时写下的停止点与进度声明，即使顶部另有权威 banner，新的读者仍可能误认为项目只到 19.5。现在换成面向实际使用的首页，依次呈现目标、可复现环境、架构图、快速开始、Source 模块、课程路径、benchmark 模板与许可。
+
+README 是面向新访问者的**导航入口**，不是详细讲义、实验结果或 checkpoint 记录。Step 1–22 的历史课程内容仍保留在 docs 与 Notebooks，不因重写而丢失。
+
+## 2. 必须准确写出的契约
+
+真正的模型输入 IDs (B,T) → hidden (B,T,C) → logits (B,T,V)，C=H×d。默认 baseline 保留 learned absolute positions、untied output head、dense causal MHA 和 GELU MLP，不能把 Step 22 的可选 RoPE/GQA/Flash 示例宣传成已集成。
+
+README 的 shell 命令必须分成安装、复制 work、未来主动运行三个类别。加载本地语料是可选显式动作，CLI 输出仅为 inference weights + metadata，不是完整 optimizer resume。
+
+## 3. 纸面阅读示例
+
+只用结构量：C=16、H=4 → d=4；若输入 IDs shape (2,3)，模型输出 shape 应为 (2,3,V)。这些符号足够解释架构图，不能由此填写 README 的实际速度或内存字段。Benchmark 表全部保留 Not measured。
+
+## 4. 验收边界、练习与下一节
+
+静态核对 README 内每个路径是否应存在、复制命令是否使用 cp -n 和时间戳，以及是否存在误导性的运行成功/低热声明。真正的 fresh clone、uv sync、训练或测试都未执行。
+
+**练习（不附答案）：** ① 找出说明 baseline 不是 GQA 的句子；② 解释 Not measured 为何不能改成 0；③ 说明为什么 README 需要区分 release material status 与 runtime validation status。
+
+初始修正 0/2；下一节 25.2 Documentation index。
+
+[Published README](../README.md) uses actual src layout and unmeasured benchmark placeholders.
