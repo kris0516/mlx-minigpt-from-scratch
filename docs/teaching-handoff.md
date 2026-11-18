@@ -25,3 +25,6 @@ Added config.py, cli.py, __main__.py and master 106. Explicit CLI commands are f
 
 ## 24.1 checkpoint
 Added tests/test_data.py, tests/test_model.py, tests/test_checkpoint.py, tests/test_generate.py and notebooks/107_step24_1_unit_tests.ipynb; static only, no runtime. Corrections initial 0/2.
+
+## 24.2 checkpoint
+Added scripts/tiny_overfit.py and notebooks/108_step24_2_tiny_overfit_test.ipynb; static only, no runtime. Corrections initial 0/2.
