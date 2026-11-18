@@ -130,3 +130,46 @@ mx.get_active_memory/mx.get_cache_memory/mx.get_peak_memory 返回分配器 byte
 **状态：** 静态材料初稿 0/2；没有运行输出或性能结论。
 
 Full artifacts: [scripts/benchmark_memory.py](../scripts/benchmark_memory.py).
+
+
+## Step 24.4 — Performance / thermal protocol
+
+# Step 24.4 — Performance / thermal protocol
+
+**命令一：**
+
+~~~bash
+git pull
+~~~
+
+**命令二（cp -n 不覆盖工作笔记）：**
+
+~~~bash
+cp -n notebooks/110_step24_4_performance_thermal_benchmark.ipynb notebooks/work/110_step24_4_performance_thermal_benchmark_$(date +%Y%m%d_%H%M%S)_work.ipynb
+~~~
+
+Apple Silicon / Python 3.12 / MLX v0.32.2；本轮未运行任何 Notebook、测试、训练、采样、benchmark 或代码验证。
+
+## 1. Motivation / 本节新增概念
+
+本节将 Step 19.5 的测量意识与 Step 21 的生成路径分开：prefill forward throughput 和无 KV-cache 生成 throughput 是两种指标。代码仅为未来短时、谨慎 benchmark 准备，**没有真实计时、温度或功耗观测**。
+
+## 2. Input, output 与 shape
+
+未来输入 token IDs (1,T)，MiniGPT logits (1,T,V)；一次 forward latency 的计时窗口从 perf_counter 开始，到 mx.eval(output) 完成。生成从一项 ID 开始，追加 n 项，返回 (1,1+n)。输出分别是 positions/second=T/median_forward_seconds 和 generated_tokens/second=n/median_generate_seconds。
+
+## 3. 纸算小例子（不是实测）
+
+假设（纯纸算）T=16，某次同步 forward 用 0.008 s，则这次 16/0.008=2000 positions/s；若生成 5 个 token 用 0.05 s，则 100 generated tokens/s。两种单位不同，不能把 2000 与 100 简单当成同任务加速比。假设值不得进入 README 实测表。
+
+## 4. 实现边界与未来验证
+
+脚本仅报告 wall-clock，非 GPU kernel-only 时间；warmups 不保证稳定态。生成仍每步重新计算窗口，未实现 KV cache。没有读取温度传感器、功率计或系统 Swap，因此相关 JSON 字段保留 null。Apple Silicon unified memory 与 allocator 统计不可冒充热测数据；不要用长时间满载实验作为本轮检查。
+
+完整可选程序/表格在 scripts/benchmark_performance.py；此 Notebook 只标出本节新增的指标，不复制长源码。
+
+**练习（无答案）：** ① 解释为什么若把 mx.eval 放在计时窗口外，MLX lazy evaluation 会污染结果；② 编写 forward 与 decode 的不同吞吐单位；③ 需要什么额外仪器才可以宣称实际设备温度曲线？
+
+**状态：** 静态材料初稿 0/2；没有运行输出或性能结论。
+
+Full artifacts: [scripts/benchmark_performance.py](../scripts/benchmark_performance.py).

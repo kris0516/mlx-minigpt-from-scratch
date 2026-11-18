@@ -48,3 +48,7 @@
 ## Step 24.3 — Memory benchmark
 - [Master](../notebooks/109_step24_3_memory_benchmark.ipynb) · [scripts/benchmark_memory.py](../scripts/benchmark_memory.py) · [Step 24 notes](step-24-testing-benchmarking.md)
 - Static materials only; no measured results, corrections 0/2.
+
+## Step 24.4 — Performance / thermal protocol
+- [Master](../notebooks/110_step24_4_performance_thermal_benchmark.ipynb) · [scripts/benchmark_performance.py](../scripts/benchmark_performance.py) · [Step 24 notes](step-24-testing-benchmarking.md)
+- Static materials only; no measured results, corrections 0/2.

@@ -31,3 +31,6 @@ Added scripts/tiny_overfit.py and notebooks/108_step24_2_tiny_overfit_test.ipynb
 
 ## 24.3 checkpoint
 Published scripts/benchmark_memory.py and notebooks/109_step24_3_memory_benchmark.ipynb. Initial correction 0/2, no execution. Continue to next item.
+
+## 24.4 checkpoint
+Published scripts/benchmark_performance.py and notebooks/110_step24_4_performance_thermal_benchmark.ipynb. Initial correction 0/2, no execution. Continue to next item.
